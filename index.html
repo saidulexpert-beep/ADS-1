@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -23,28 +23,29 @@
     :root {
       --primary: #6C5CE7;
       --primary-dark: #4834d4;
-      --secondary: #A29BFE;
-      --bg: #0b0f19;
-      --surface: #151c2c;
-      --surface-card: #1e273d;
+      --secondary: #a29bfe;
+      --bg: #080c16;
+      --surface: #121826;
+      --surface-card: #182236;
       --text: #ffffff;
-      --text-muted: #94a3b8;
+      --text-muted: #8e9bb2;
       --success: #00b894;
       --accent: #fd79a8;
-      --wa-header: #075E54;
-      --wa-bg: #EFEAE2;
-      --wa-my: #DCF8C6;
+      --tg-blue: #2AABEE;
+      --tg-bg: #0e1621;
+      --chat-my: #2b5278;
+      --chat-admin: #182533;
     }
     
     * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
     body { background: var(--bg); color: var(--text); padding-bottom: 95px; min-height: 100vh; overflow-x: hidden; }
     #app { max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; display: none; }
 
-    .page-section { display: none; animation: fadeIn .25s ease-out; }
+    .page-section { display: none; animation: fadeIn .28s cubic-bezier(0.4, 0, 0.2, 1); }
     .page-section.active { display: block; }
-    @keyframes fadeIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
 
-    /* ================= FULL SCREEN PROFESSIONAL LOADER ================= */
+    /* ================= ULTRA-MODERN ANIMATED LOADER ================= */
     .loader-overlay {
       position: fixed;
       inset: 0;
@@ -53,20 +54,24 @@
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      background: radial-gradient(circle at center, #1b2438 0%, #080a10 100%);
-      padding: 40px 20px;
+      background: radial-gradient(circle at 50% 35%, #18243f 0%, #060911 100%);
+      padding: 45px 22px;
+      overflow: hidden;
     }
-    .loader-glow-orb {
+    .loader-bg-particles {
       position: absolute;
-      width: 280px;
-      height: 280px;
+      width: 320px;
+      height: 320px;
       border-radius: 50%;
-      background: linear-gradient(135deg, rgba(108, 92, 231, 0.25), rgba(0, 184, 148, 0.15));
-      filter: blur(50px);
+      background: radial-gradient(circle, rgba(108, 92, 231, 0.35) 0%, rgba(0, 184, 148, 0.1) 70%, transparent 100%);
+      filter: blur(60px);
       z-index: 1;
-      animation: floatGlow 4s ease-in-out infinite alternate;
+      animation: pulseGlow 4s ease-in-out infinite alternate;
     }
-    @keyframes floatGlow { 0% { transform: scale(0.9) translate(-10px, -10px); } 100% { transform: scale(1.1) translate(10px, 10px); } }
+    @keyframes pulseGlow {
+      0% { transform: scale(0.85) translate(-15px, -10px); opacity: 0.7; }
+      100% { transform: scale(1.15) translate(15px, 15px); opacity: 1; }
+    }
 
     .loader-center {
       position: relative;
@@ -75,77 +80,89 @@
       margin-top: auto;
       margin-bottom: auto;
       width: 100%;
-      max-width: 360px;
+      max-width: 340px;
     }
-    .core-spinner-ring {
+    .orbital-spinner {
       position: relative;
-      width: 90px;
-      height: 90px;
-      margin: 0 auto 24px;
+      width: 110px;
+      height: 110px;
+      margin: 0 auto 28px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    .core-spin {
+    .orbital-ring {
       position: absolute;
       inset: 0;
       border-radius: 50%;
-      border: 3.5px solid transparent;
+      border: 3px solid transparent;
       border-top-color: var(--primary);
-      border-right-color: var(--success);
-      animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+      border-bottom-color: var(--success);
+      animation: spinRing 1.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
     }
-    .core-spinner-ring i {
+    .orbital-ring-inner {
+      position: absolute;
+      inset: 12px;
+      border-radius: 50%;
+      border: 2px dashed rgba(162, 155, 254, 0.7);
+      animation: spinRingRev 3s linear infinite;
+    }
+    .orbital-spinner i {
       font-size: 2.2rem;
       color: #fff;
-      text-shadow: 0 0 15px rgba(255,255,255,0.6);
+      filter: drop-shadow(0 0 16px rgba(108, 92, 231, 0.9));
+      animation: iconPulse 2s ease-in-out infinite;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes spinRing { to { transform: rotate(360deg); } }
+    @keyframes spinRingRev { to { transform: rotate(-360deg); } }
+    @keyframes iconPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
 
     .loader-title {
-      color: #fff;
+      font-size: 1.65rem;
       font-weight: 900;
-      font-size: 1.5rem;
       letter-spacing: 0.5px;
       margin-bottom: 6px;
-      background: linear-gradient(135deg, #fff, var(--secondary));
+      background: linear-gradient(135deg, #ffffff 30%, #a29bfe 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    .loader-sub {
-      color: var(--text-muted);
-      font-size: 0.88rem;
-      font-weight: 500;
-      display: flex;
+    .loader-pill-status {
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
       gap: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--secondary);
+      backdrop-filter: blur(10px);
     }
-
-    /* Loader Stats Row */
     .loader-stats-bar {
       position: relative;
       z-index: 2;
       width: 100%;
-      max-width: 380px;
+      max-width: 400px;
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       gap: 8px;
-      background: rgba(255, 255, 255, 0.04);
+      background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 20px;
+      border-radius: 22px;
       padding: 14px 10px;
       backdrop-filter: blur(16px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
     }
     .loader-stat-col { text-align: center; }
-    .loader-stat-col h4 { font-size: 0.98rem; font-weight: 800; color: #fff; }
-    .loader-stat-col p { font-size: 0.65rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-top: 2px; }
+    .loader-stat-col h4 { font-size: 0.96rem; font-weight: 800; color: #fff; }
+    .loader-stat-col p { font-size: 0.65rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-top: 2px; }
 
     /* ================= MAIN APP HEADER ================= */
     .header {
-      background: linear-gradient(145deg, #182138, #0e1424);
+      background: linear-gradient(145deg, #162035, #0d1424);
       border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-      padding: 24px 20px 20px;
+      padding: 22px 18px;
       border-radius: 0 0 26px 26px;
     }
     .top-bar { display: flex; justify-content: space-between; align-items: center; }
@@ -153,8 +170,8 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      background: rgba(255, 255, 255, 0.06);
-      padding: 6px 16px 6px 6px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 5px 16px 5px 5px;
       border-radius: 50px;
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
@@ -162,7 +179,7 @@
     .user-info h3 { font-size: 0.92rem; font-weight: 700; color: #fff; }
     .user-info p { font-size: 0.7rem; color: var(--text-muted); font-weight: 600; }
     .support-btn {
-      background: linear-gradient(135deg, #00b894, #00cec9);
+      background: linear-gradient(135deg, #2AABEE, #229ED9);
       color: #fff;
       width: 44px;
       height: 44px;
@@ -173,7 +190,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 15px rgba(0, 184, 148, 0.3);
+      box-shadow: 0 4px 18px rgba(42, 171, 238, 0.35);
       transition: transform .2s;
     }
     .support-btn:active { transform: scale(0.92); }
@@ -182,15 +199,15 @@
     .hero-redeem-card {
       background: var(--surface);
       margin: 18px 18px 10px;
-      border-radius: 22px;
-      padding: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      border-radius: 24px;
+      padding: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      box-shadow: 0 12px 35px rgba(0,0,0,0.4);
     }
     .sec-title { font-size: 1rem; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; color: #fff; }
     
     .progress-container {
-      background: rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.05);
       border-radius: 20px;
       height: 12px;
       width: 100%;
@@ -202,7 +219,7 @@
       background: linear-gradient(90deg, var(--primary), var(--success));
       height: 100%;
       width: 0%;
-      transition: width .5s ease-in-out;
+      transition: width .5s ease;
       border-radius: 20px;
       box-shadow: 0 0 12px rgba(0, 184, 148, 0.5);
     }
@@ -210,11 +227,11 @@
 
     .input-box {
       width: 100%;
-      padding: 12px 14px;
-      border: 1.5px solid rgba(255,255,255,0.1);
+      padding: 13px 14px;
+      border: 1.5px solid rgba(255,255,255,0.12);
       border-radius: 14px;
       font-size: 0.92rem;
-      background: rgba(0,0,0,0.3);
+      background: rgba(0,0,0,0.35);
       color: #fff;
       outline: none;
       font-weight: 600;
@@ -231,7 +248,7 @@
       color: #fff;
       border: none;
       font-weight: 700;
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -241,7 +258,7 @@
       transition: .2s;
     }
     .btn-act:disabled {
-      background: #2b3548 !important;
+      background: #252f42 !important;
       color: #64748b !important;
       box-shadow: none;
       cursor: not-allowed;
@@ -249,24 +266,25 @@
     }
     .btn-act:active { transform: scale(0.98); }
 
-    /* 5-Digit Key Slots */
+    /* 5-Character Secret Key Slots */
     .key-slots-container { display: flex; justify-content: center; gap: 8px; margin: 15px 0 10px; }
     .key-digit-box {
-      width: 44px;
-      height: 50px;
+      width: 46px;
+      height: 52px;
       border-radius: 14px;
-      background: rgba(0,0,0,0.35);
+      background: rgba(0,0,0,0.4);
       border: 2px dashed rgba(255,255,255,0.18);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.35rem;
+      font-size: 1.3rem;
       font-weight: 900;
       color: var(--secondary);
+      text-transform: uppercase;
     }
     .key-digit-box.unlocked {
       border: 2px solid var(--success);
-      background: rgba(0, 184, 148, 0.12);
+      background: rgba(0, 184, 148, 0.15);
       color: var(--success);
       animation: popDigit 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
@@ -274,8 +292,8 @@
 
     .copy-key-box {
       margin-top: 12px;
-      background: rgba(255,255,255,0.04);
-      border: 1.5px dashed rgba(108,92,231,0.5);
+      background: rgba(255,255,255,0.03);
+      border: 1.5px dashed rgba(108,92,231,0.4);
       border-radius: 14px;
       padding: 10px 14px;
       display: flex;
@@ -294,17 +312,56 @@
     }
     .btn-copy:disabled { background: #334155; color:#64748b; cursor: not-allowed; }
 
-    /* Code Reveal Card */
+    /* Code Reveal Card with Copy Icon */
     .code-reveal-box {
-      background: linear-gradient(135deg, #00b894, #00cec9);
-      color: #062b24;
-      padding: 18px;
-      border-radius: 16px;
-      text-align: center;
+      background: linear-gradient(135deg, #0984e3, #00cec9);
+      color: #fff;
+      padding: 16px 20px;
+      border-radius: 18px;
       margin-top: 14px;
-      box-shadow: 0 8px 24px rgba(0,184,148,0.3);
+      box-shadow: 0 8px 24px rgba(9, 132, 227, 0.35);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
-    .code-reveal-box h3 { font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; color:#fff; text-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+    .code-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(0,0,0,0.25);
+      border-radius: 12px;
+      padding: 8px 14px;
+      border: 1px dashed rgba(255,255,255,0.4);
+    }
+    .code-row h3 { font-size: 1.35rem; font-weight: 900; letter-spacing: 2px; }
+    .btn-copy-code {
+      background: #fff;
+      color: #0984e3;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.05rem;
+      transition: .2s;
+    }
+    .btn-copy-code:active { transform: scale(0.9); }
+
+    .claimed-badge {
+      background: rgba(0, 184, 148, 0.12);
+      border: 1.5px solid var(--success);
+      color: var(--success);
+      padding: 14px;
+      border-radius: 14px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 0.88rem;
+      margin-top: 12px;
+      display: none;
+    }
 
     /* ================= AD CARDS ================= */
     .sec-head { font-size: 1rem; font-weight: 800; margin: 20px 20px 12px; display: flex; align-items: center; gap: 8px; color: #fff; }
@@ -350,7 +407,7 @@
     .slot-2 i { color: #54a0ff; }
     .slot-3 i { color: #1dd1a1; }
     .slot-4 i { color: #ff6b6b; }
-    .ad-card.completed { opacity: 0.45; filter: grayscale(1); pointer-events: none; }
+    .ad-card.completed { opacity: 0.4; filter: grayscale(1); pointer-events: none; }
 
     /* ================= LEADERBOARD ================= */
     .stat-counters-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; padding: 15px 18px 10px; }
@@ -397,75 +454,109 @@
       font-size: 0.78rem;
     }
 
-    /* ================= FULL SCREEN SUPPORT CHAT ================= */
+    /* ================= PROFESSIONAL TELEGRAM SUPPORT CHAT ================= */
     #page-support {
       position: fixed;
       inset: 0;
-      background: var(--wa-bg);
+      background: var(--tg-bg);
       z-index: 999999;
       display: none;
       flex-direction: column;
       height: 100dvh;
     }
     #page-support.active { display: flex; }
-    .wa-top-bar {
-      background: var(--wa-header);
+    .tg-top-bar {
+      background: #17212b;
       color: #fff;
-      padding: 14px 16px;
+      padding: 12px 16px;
       display: flex;
       align-items: center;
       gap: 12px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
     }
-    .wa-back-btn { background: none; border: none; color: #fff; font-size: 1.25rem; cursor: pointer; padding: 4px 8px; }
-    .wa-user-info { display: flex; align-items: center; gap: 10px; flex: 1; }
-    .wa-user-info img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1.5px solid #fff; }
-    .wa-user-info h4 { font-size: 0.92rem; font-weight: 700; }
-    .wa-user-info p { font-size: 0.7rem; opacity: 0.85; }
+    .tg-back-btn { background: none; border: none; color: #fff; font-size: 1.25rem; cursor: pointer; padding: 4px 6px; }
+    .tg-chat-user { display: flex; align-items: center; gap: 10px; flex: 1; }
+    .tg-chat-user img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--tg-blue); }
+    .tg-chat-user h4 { font-size: 0.92rem; font-weight: 700; }
+    .tg-chat-user p { font-size: 0.7rem; color: var(--tg-blue); font-weight: 600; }
 
-    .wa-chat-body {
+    .tg-chat-body {
       flex: 1;
-      padding: 15px;
+      padding: 16px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 14px;
     }
-    .wa-msg {
-      max-width: 80%;
+    
+    /* Message Row with Profile Logo */
+    .msg-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      width: 100%;
+    }
+    .msg-row.admin { justify-content: flex-start; }
+    .msg-row.user { justify-content: flex-end; }
+    .msg-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .msg-bubble {
+      max-width: 75%;
       padding: 9px 13px;
-      border-radius: 12px;
+      border-radius: 16px;
       font-size: 0.84rem;
-      line-height: 1.4;
-      color: #111;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.12);
+      line-height: 1.45;
+      color: #fff;
+      position: relative;
+      word-break: break-word;
     }
-    .wa-msg.admin { align-self: flex-start; background: #fff; border-top-left-radius: 2px; }
-    .wa-msg.user { align-self: flex-end; background: var(--wa-my); border-top-right-radius: 2px; }
-    .wa-msg-time { font-size: 0.65rem; color: #666; text-align: right; margin-top: 4px; }
-
-    /* Modern Scaled Chat Bar */
-    .wa-bottom-bar {
-      background: #f0f2f5;
-      padding: 8px 12px;
+    .msg-row.admin .msg-bubble {
+      background: var(--chat-admin);
+      border-bottom-left-radius: 4px;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .msg-row.user .msg-bubble {
+      background: var(--chat-my);
+      border-bottom-right-radius: 4px;
+    }
+    .msg-time {
+      font-size: 0.65rem;
+      color: rgba(255,255,255,0.5);
+      text-align: right;
+      margin-top: 4px;
       display: flex;
       align-items: center;
-      gap: 8px;
-      border-top: 1px solid #ddd;
+      justify-content: flex-end;
+      gap: 4px;
     }
-    .wa-input {
-      flex: 1;
+
+    .tg-bottom-bar {
+      background: #17212b;
       padding: 10px 14px;
-      border-radius: 24px;
-      border: 1px solid #ccc;
-      outline: none;
-      font-size: 0.84rem;
-      background: #fff;
-      color: #111;
-      height: 42px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-top: 1px solid rgba(255,255,255,0.08);
     }
-    .wa-send-btn-circle {
-      background: linear-gradient(135deg, #00a884, #075E54);
+    .tg-input {
+      flex: 1;
+      padding: 11px 16px;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.12);
+      outline: none;
+      font-size: 0.85rem;
+      background: #0e1621;
+      color: #fff;
+    }
+    .tg-input:focus { border-color: var(--tg-blue); }
+    .tg-send-btn {
+      background: var(--tg-blue);
       color: #fff;
       width: 42px;
       height: 42px;
@@ -476,9 +567,8 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      box-shadow: 0 2px 6px rgba(7,94,84,0.3);
+      box-shadow: 0 4px 12px rgba(42, 171, 238, 0.3);
     }
-    .wa-send-btn-circle i { font-size: 1rem; margin-left: 2px; }
 
     /* ================= BOTTOM NAVIGATION ================= */
     .nav {
@@ -488,7 +578,7 @@
       transform: translateX(-50%);
       width: 90%;
       max-width: 420px;
-      background: rgba(21, 28, 44, 0.92);
+      background: rgba(18, 24, 38, 0.94);
       backdrop-filter: blur(14px);
       display: flex;
       justify-content: space-around;
@@ -518,39 +608,43 @@
       transform: translateX(-50%);
       background: #1e293b;
       color: #fff;
-      padding: 9px 18px;
+      padding: 9px 20px;
       border-radius: 30px;
       font-size: 0.8rem;
       opacity: 0;
       transition: .3s;
       z-index: 9999999;
       font-weight: 600;
-      border: 1px solid rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
       box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      pointer-events: none;
     }
-    .toast.show { opacity: 1; top: 38px; }
+    .toast.show { opacity: 1; top: 36px; }
   </style>
 </head>
 <body>
 
-  <!-- ================= PRO FULLSCREEN LOADER ================= -->
+  <!-- ================= ULTRA-MODERN ANIMATED LOADER ================= -->
   <div id="loader" class="loader-overlay">
-    <div class="loader-glow-orb"></div>
+    <div class="loader-bg-particles"></div>
     
     <div style="width: 100%; text-align: center; position: relative; z-index: 2;">
-      <span style="font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase; color: var(--secondary); font-weight: 800;">Welcome to Platform</span>
+      <span style="font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: var(--secondary); font-weight: 800;">Secure Cloud Architecture</span>
     </div>
 
     <div class="loader-center">
-      <div class="core-spinner-ring">
-        <div class="core-spin"></div>
-        <i class="fas fa-gem"></i>
+      <div class="orbital-spinner">
+        <div class="orbital-ring"></div>
+        <div class="orbital-ring-inner"></div>
+        <i class="fas fa-cube"></i>
       </div>
       <div class="loader-title">Earn & Redeem Pro</div>
-      <div class="loader-sub"><i class="fas fa-circle-notch fa-spin"></i> অপেক্ষা করুন, প্রস্তুত হচ্ছে...</div>
+      <div class="loader-pill-status">
+        <i class="fas fa-circle-notch fa-spin"></i> <span id="ldr-status-text">সিস্টেম প্রস্তুত হচ্ছে...</span>
+      </div>
     </div>
 
-    <!-- Live Stats Row on Fullscreen Loader -->
+    <!-- Live Stats Row -->
     <div class="loader-stats-bar">
       <div class="loader-stat-col">
         <h4 id="ldr-members">1,450</h4>
@@ -574,13 +668,13 @@
     <div class="header">
       <div class="top-bar">
         <div class="user-pill">
-          <img id="u-img" src="https://via.placeholder.com/45">
+          <img id="u-img" src="https://api.dicebear.com/7.x/bottts/svg?seed=user">
           <div class="user-info">
             <h3 id="u-name">User</h3>
             <p id="u-id">ID: ...</p>
           </div>
         </div>
-        <button class="support-btn" onclick="openFullSupport()"><i class="fab fa-whatsapp"></i></button>
+        <button class="support-btn" onclick="openFullSupport()"><i class="fab fa-telegram-plane"></i></button>
       </div>
     </div>
 
@@ -593,7 +687,7 @@
         
         <!-- Progress Bar -->
         <div class="progress-label">
-          <span>বিজ্ঞাপন টাস্ক প্রগ্রেস</span>
+          <span>দৈনিক বিজ্ঞাপন টাস্ক</span>
           <span id="progress-percent">0%</span>
         </div>
         <div class="progress-container">
@@ -609,27 +703,30 @@
           <div id="pin-input-group" style="display:none; margin-top:12px;">
             <input type="text" id="entered-key" class="input-box" placeholder="টেলিগ্রাম চ্যানেলে পাওয়া PIN দিন">
             <button id="btn-verify-pin" class="btn-act" style="background:var(--success);" onclick="verifyKeyPin()">
-              <i class="fas fa-check"></i> PIN যাচাই করুন
+              <i class="fas fa-shield-check"></i> PIN যাচাই করুন
             </button>
           </div>
         </div>
 
         <!-- Verified Indicator -->
         <div id="verified-state" style="display:none; margin-top:10px; text-align:center; color:var(--success); font-weight:700; font-size:.88rem;">
-          <i class="fas fa-circle-check"></i> PIN ভেরিফাইড সম্পন্ন হয়েছে!
+          <i class="fas fa-circle-check"></i> চ্যানেল সাবস্ক্রাইব ও PIN ভেরিফাইড!
         </div>
 
-        <!-- 2. REDEEM CODE CONTAINER (DIRECTLY AFTER UNLOCK) -->
-        <div style="margin-top: 14px;">
+        <!-- 2. REDEEM CODE CONTAINER -->
+        <div id="redeem-action-wrapper" style="margin-top: 14px;">
           <button id="btn-claim-redeem" class="btn-act" disabled onclick="openRedeemAnimation()">
-            <i class="fas fa-lock"></i> Redeem Code (Lock)
+            <i class="fas fa-lock"></i> Get Redeem Code (Lock)
           </button>
 
-          <!-- Code Revealed Modal Card -->
+          <!-- Code Revealed Modal Card with Copy Icon -->
           <div id="redeem-code-box" style="display:none;">
             <div class="code-reveal-box">
               <small style="font-weight:700; opacity:0.9;">আপনার রিডিম কোড প্রস্তুত:</small>
-              <h3 id="revealed-code">PRO2026</h3>
+              <div class="code-row">
+                <h3 id="revealed-code">PRO2026</h3>
+                <button class="btn-copy-code" onclick="copyRedeemCode()"><i class="fas fa-copy"></i></button>
+              </div>
             </div>
             <a id="bot-redeem-link" href="#" target="_blank" class="btn-act" style="margin-top:10px; text-decoration:none; background:linear-gradient(135deg,#ff7675,#e17055);">
               <i class="fas fa-robot"></i> এই বটে গিয়ে রিডিম করুন
@@ -637,9 +734,13 @@
           </div>
         </div>
 
-        <!-- 3. 5-DIGIT SECRET KEY PROGRESSION -->
+        <div id="redeem-claimed-box" class="claimed-badge">
+          <i class="fas fa-check-double"></i> আজকের রিডিম কোড সফলভাবে গ্রহণ করা হয়েছে! রাত ১২টার পর আবার পাবেন।
+        </div>
+
+        <!-- 3. 5-CHARACTER ALPHANUMERIC SECRET KEY PROGRESSION -->
         <div style="margin-top:20px; text-align:center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 14px;">
-          <small style="color:var(--text-muted); font-weight:600; font-size:0.75rem;">আপনার ৫ সংখ্যার সিক্রেট Key আনলক স্ট্যাটাস:</small>
+          <small style="color:var(--text-muted); font-weight:600; font-size:0.75rem;">আপনার ৫ ডিজিটের সিক্রেট Key আনলক স্ট্যাটাস:</small>
           <div class="key-slots-container">
             <div class="key-digit-box" id="digit-0">-</div>
             <div class="key-digit-box" id="digit-1">-</div>
@@ -680,30 +781,33 @@
     </div>
   </div>
 
-  <!-- ================= FULLSCREEN SUPPORT CHAT ================= -->
+  <!-- ================= PROFESSIONAL TELEGRAM SUPPORT CHAT ================= -->
   <div id="page-support">
-    <div class="wa-top-bar">
-      <button class="wa-back-btn" onclick="closeFullSupport()"><i class="fas fa-arrow-left"></i></button>
-      <div class="wa-user-info">
-        <img src="https://via.placeholder.com/45">
+    <div class="tg-top-bar">
+      <button class="tg-back-btn" onclick="closeFullSupport()"><i class="fas fa-arrow-left"></i></button>
+      <div class="tg-chat-user">
+        <img src="https://telegram.org/img/t_logo.png" alt="Telegram Admin">
         <div>
           <h4>Official Admin Support</h4>
-          <p>অনলাইন | কাস্টমার হেল্প ডেস্ক</p>
+          <p><i class="fas fa-circle" style="font-size:0.5rem;"></i> অনলাইন কাস্টমার সার্ভিস</p>
         </div>
       </div>
     </div>
 
-    <div class="wa-chat-body" id="chat-messages">
-      <div class="wa-msg admin">
-        হ্যালো! Earn & Redeem অফিসিয়াল সাপোর্টে স্বাগতম। আপনার যেকোনো সমস্যার কথা জানান (সর্বোচ্চ ৫টি বার্তা)।
-        <div class="wa-msg-time">Official Support</div>
+    <div class="tg-chat-body" id="chat-messages">
+      <!-- Admin Initial Message -->
+      <div class="msg-row admin">
+        <img src="https://telegram.org/img/t_logo.png" class="msg-avatar" alt="Admin">
+        <div class="msg-bubble">
+          হ্যালো! Earn & Redeem অফিসিয়াল সাপোর্টে স্বাগতম। আপনার যেকোনো সমস্যার কথা জানান (সর্বোচ্চ ৫টি বার্তা)।
+          <div class="msg-time">Support Admin</div>
+        </div>
       </div>
     </div>
 
-    <!-- Compact Send Row with visible icon -->
-    <div class="wa-bottom-bar">
-      <input type="text" id="chat-text-input" class="wa-input" placeholder="বার্তা লিখুন...">
-      <button class="wa-send-btn-circle" onclick="sendSupportMessage()">
+    <div class="tg-bottom-bar">
+      <input type="text" id="chat-text-input" class="tg-input" placeholder="মেসেজ লিখুন...">
+      <button class="tg-send-btn" onclick="sendSupportMessage()">
         <i class="fas fa-paper-plane"></i>
       </button>
     </div>
@@ -723,7 +827,11 @@
   </div>
 
   <script>
-    // Firebase Init
+    // Admin Telegram ID (as requested)
+    const OFFICIAL_ADMIN_ID = "7358825471";
+    const ADMIN_AVATAR = "https://telegram.org/img/t_logo.png";
+
+    // Firebase Config
     const firebaseConfig = {
       apiKey: "AIzaSyAsENiikJ5YQ1F8UHrixdJVEINAhO4PG30",
       authDomain: "bot2-3d8bc.firebaseapp.com",
@@ -738,37 +846,47 @@
     const tg = window.Telegram?.WebApp;
     if (tg) { try { tg.ready(); tg.expand(); } catch(e){} }
 
-    // Central App State (Fully syncable from Firebase DB)
     let appState = {
-      user: { dailyAds: {}, singleKey: '', isVerified: false, lastActive: '' },
+      user: { dailyAds: {}, singleKey: '', isVerified: false, lastActive: '', redeemClaimed: false },
       config: {
         dailyAdLimit: 10,
         redeemPin: "7788",
         redeemCode: "REDEEM-PRO-2026",
         keyChannelLink: "https://t.me",
         botLink: "https://t.me",
-        adminId: "123456",
+        botToken: "", // Telegram bot token to check channel membership
+        channelId: "", // Telegram channel ID (e.g., @yourchannel or -100xxxx)
+        adminId: OFFICIAL_ADMIN_ID,
         stats: { members: 1450, active: 420, earn: 24800 },
         customAdScript: "",
         adSlots: [
-          { network: 'adsgram', id: '46350' },       // Adsgram Slot 1
-          { network: 'adsgram', id: '46351' },       // Adsgram Slot 2
-          { network: 'monetag', id: '11737228' },    // Monetag Slot 3
-          { network: 'monetag', id: '11595952' }     // Monetag Slot 4
+          { network: 'adsgram', id: '46350' },
+          { network: 'adsgram', id: '46351' },
+          { network: 'monetag', id: '11737228' },
+          { network: 'monetag', id: '11595952' }
         ],
         moreBots: {}
       }
     };
 
     let isBooted = false;
-    let tgUser = tg?.initDataUnsafe?.user || { id: '123456', first_name: 'Guest User', photo_url: 'https://via.placeholder.com/100' };
+    let tgUser = tg?.initDataUnsafe?.user || { id: '123456', first_name: 'Guest User', photo_url: '' };
+    const userAvatarUrl = tgUser.photo_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${tgUser.id}`;
 
     function toast(msg) {
       const t = document.getElementById('toast');
       t.innerText = msg; t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 2500);
+      setTimeout(() => t.classList.remove('show'), 2600);
     }
-    function todayStr() { return new Date().toISOString().slice(0, 10); }
+
+    // Local Midnight string (YYYY-MM-DD)
+    function todayStr() {
+      const d = new Date();
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
 
     function switchTab(tabId, el) {
       document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
@@ -777,9 +895,8 @@
       const page = document.getElementById('page-' + tabId);
       if (page) page.classList.add('active');
 
-      if (el) {
-        el.classList.add('active');
-      } else {
+      if (el) el.classList.add('active');
+      else {
         const mapping = { home:0, leaderboard:1, bots:2 };
         if (mapping[tabId] !== undefined) document.querySelectorAll('.nav-item')[mapping[tabId]].classList.add('active');
       }
@@ -797,14 +914,34 @@
       document.getElementById('page-support').classList.remove('active');
     }
 
-    // Unlock PIN Check
     function triggerChannelUnlock() {
       const url = appState.config.keyChannelLink || 'https://t.me';
       if (tg?.openTelegramLink && url.includes('t.me/')) tg.openTelegramLink(url);
       else window.open(url, '_blank');
 
       document.getElementById('pin-input-group').style.display = 'block';
-      toast("টেলিগ্রাম চ্যানেল থেকে PIN সংগ্রহ করে লিখুন");
+      toast("চ্যানেল থেকে PIN সংগ্রহ করে লিখুন");
+    }
+
+    // Telegram Bot API Channel Join Check
+    async function checkTelegramChannelJoined(userId) {
+      const token = appState.config.botToken;
+      const channel = appState.config.channelId;
+      if (!token || !channel) return true; // যদি অ্যাডমিন কনফিগে বট টোকেন না থাকে তবে পাস করবে
+
+      try {
+        const cleanChan = channel.startsWith('@') || channel.startsWith('-') ? channel : '@' + channel;
+        const res = await fetch(`https://api.telegram.org/bot${token}/getChatMember?chat_id=${encodeURIComponent(cleanChan)}&user_id=${userId}`);
+        const data = await res.json();
+        if (data.ok) {
+          const status = data.result.status;
+          return ['member', 'administrator', 'creator'].includes(status);
+        }
+        return false;
+      } catch (err) {
+        console.error("TG Membership Check Error:", err);
+        return false;
+      }
     }
 
     async function verifyKeyPin() {
@@ -812,14 +949,18 @@
       const actualPin = String(appState.config.redeemPin || '7788').trim();
 
       if (!entered) return toast("দয়া করে PIN লিখুন");
+      if (entered !== actualPin) return toast("ভুল PIN! চ্যানেলে গিয়ে সঠিক PIN সংগ্রহ করুন");
 
-      if (entered === actualPin) {
-        await db.ref('users/' + appState.user.id).update({ isVerified: true });
-        toast("PIN যাচাই সফল হয়েছে!");
-        updateRedeemUI();
-      } else {
-        toast("ভুল PIN! চ্যানেলে গিয়ে সঠিক PIN সংগ্রহ করুন");
+      toast("টেলিগ্রাম চ্যানেল জয়েনিং চেক হচ্ছে...");
+      const isJoined = await checkTelegramChannelJoined(tgUser.id);
+      if (!isJoined) {
+        return toast("আপনি টেলিগ্রাম চ্যানেলে জয়েন করেননি! আগে জয়েন করুন");
       }
+
+      await db.ref('users/' + appState.user.id).update({ isVerified: true });
+      appState.user.isVerified = true;
+      toast("PIN ও চ্যানেল ভেরিফিকেশন সফল হয়েছে!");
+      updateRedeemUI();
     }
 
     function copyRedeemKey() {
@@ -827,6 +968,12 @@
       if (!k || k.length < 5) return toast("কী এখনো সম্পূর্ণ আনলক হয়নি!");
       navigator.clipboard.writeText(k);
       toast("Secret Key কপি হয়েছে: " + k);
+    }
+
+    function copyRedeemCode() {
+      const code = appState.config.redeemCode || 'PRO2026';
+      navigator.clipboard.writeText(code);
+      toast("রিডিম কোড কপি হয়েছে: " + code);
     }
 
     // Progression and Redeem Unlock Status
@@ -846,14 +993,14 @@
       document.getElementById('progress-percent').innerText = `${percent}%`;
       document.getElementById('progress-bar-fill').style.width = `${percent}%`;
 
-      // 5-Digit Progressive Unlock Display
+      // 5-Character Secret Key (Alphanumeric like 4HIBQ)
       const digitsUnlockedCount = Math.min(5, Math.floor(maxWatchedInAnySlot / 2));
-      const myKey = String(appState.user.singleKey || "12345");
+      const myKey = String(appState.user.singleKey || "4HIBQ");
 
       for (let i = 0; i < 5; i++) {
         const elDigit = document.getElementById(`digit-${i}`);
-        if (i < digitsUnlockedCount) {
-          elDigit.innerText = myKey[i] || (i+1);
+        if (i < digitsUnlockedCount && myKey[i]) {
+          elDigit.innerText = myKey[i];
           elDigit.classList.add('unlocked');
         } else {
           elDigit.innerText = "-";
@@ -868,13 +1015,28 @@
         copyStatus.innerText = "Key সম্পূর্ণ আনলক হয়েছে!";
       } else {
         copyBtn.disabled = true;
-        copyStatus.innerText = `${digitsUnlockedCount}/5 সংখ্যা আনলক হয়েছে`;
+        copyStatus.innerText = `${digitsUnlockedCount}/5 ডিজিট আনলক হয়েছে`;
       }
 
       // Verified State UI
       if (appState.user.isVerified) {
         document.getElementById('unlock-container').style.display = 'none';
         document.getElementById('verified-state').style.display = 'block';
+      } else {
+        document.getElementById('unlock-container').style.display = 'block';
+        document.getElementById('verified-state').style.display = 'none';
+      }
+
+      // Check if Redeem already claimed today
+      const wrapper = document.getElementById('redeem-action-wrapper');
+      const claimedBadge = document.getElementById('redeem-claimed-box');
+      if (appState.user.redeemClaimed) {
+        wrapper.style.display = 'none';
+        claimedBadge.style.display = 'block';
+        return;
+      } else {
+        wrapper.style.display = 'block';
+        claimedBadge.style.display = 'none';
       }
 
       // Redeem Button Activation
@@ -885,16 +1047,22 @@
         btnClaim.style.background = 'linear-gradient(135deg, #00b894, #00cec9)';
       } else {
         btnClaim.disabled = true;
-        btnClaim.innerHTML = `<i class="fas fa-lock"></i> Redeem Code (${percent}%)`;
+        btnClaim.innerHTML = `<i class="fas fa-lock"></i> Get Redeem Code (${percent}%)`;
+        btnClaim.style.background = '#252f42';
       }
     }
 
-    function openRedeemAnimation() {
+    async function openRedeemAnimation() {
       const box = document.getElementById('redeem-code-box');
       box.style.display = 'block';
       document.getElementById('revealed-code').innerText = appState.config.redeemCode || 'PRO2026';
       document.getElementById('bot-redeem-link').href = appState.config.botLink || 'https://t.me';
-      toast("অভিনন্দন! রিডিম কোড ওপেন হয়েছে");
+      
+      // Claim done: save to firebase and hide Claim button
+      await db.ref('users/' + appState.user.id).update({ redeemClaimed: true });
+      appState.user.redeemClaimed = true;
+      document.getElementById('btn-claim-redeem').style.display = 'none';
+      toast("অভিনন্দন! রিডিম কোড আনলক হয়েছে");
     }
 
     // Render 4 Ad Cards
@@ -929,12 +1097,77 @@
       updateRedeemUI();
     }
 
+    // Secret Key Generator & Firebase Stock Management
+    async function allocateSecretKeyForUser(userId) {
+      if (appState.user.singleKey && appState.user.singleKey.length === 5) {
+        return appState.user.singleKey;
+      }
+
+      // Check Firebase Key Pool
+      const poolRef = db.ref('secret_keys_pool');
+      const snap = await poolRef.once('value');
+      let allocatedKey = null;
+
+      if (snap.exists()) {
+        const keysObj = snap.val();
+        for (let key in keysObj) {
+          if (keysObj[key].status === 'available') {
+            allocatedKey = key;
+            break;
+          }
+        }
+      }
+
+      // If pool doesn't have an available key, generate alphanumeric 5-char key (e.g., 4HIBQ)
+      if (!allocatedKey) {
+        const chars = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+        allocatedKey = "";
+        for (let i = 0; i < 5; i++) allocatedKey += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+
+      // Update Key status in Pool
+      await poolRef.child(allocatedKey).set({
+        status: 'used',
+        assignedTo: userId,
+        assignedAt: Date.now()
+      });
+
+      // Update Key Stats in Firebase
+      await updateKeyStatsInFirebase();
+
+      return allocatedKey;
+    }
+
+    async function updateKeyStatsInFirebase() {
+      const snap = await db.ref('secret_keys_pool').once('value');
+      let used = 0, remaining = 0;
+      if (snap.exists()) {
+        const obj = snap.val();
+        for (let k in obj) {
+          if (obj[k].status === 'used') used++;
+          else remaining++;
+        }
+      }
+      await db.ref('keys_stats').set({
+        usedKeys: used,
+        remainingKeys: remaining,
+        lastUpdated: Date.now()
+      });
+    }
+
     // Watch Ad Processor
     let slotLocks = {};
     async function watchAd(i) {
       if (slotLocks[i]) return; 
       slotLocks[i] = true;
       const slot = appState.config.adSlots[i];
+      const limit = Number(appState.config.dailyAdLimit || 10);
+      const done = (appState.user.dailyAds && appState.user.dailyAds[i]) ? appState.user.dailyAds[i] : 0;
+
+      if (done >= limit) {
+        slotLocks[i] = false;
+        return toast("এই স্লটের দৈনিক অ্যাড লিমিট শেষ!");
+      }
 
       try {
         toast('বিজ্ঞাপন লোড হচ্ছে... সম্পূর্ণ দেখুন');
@@ -964,9 +1197,11 @@
           newAds[i] = (newAds[i] || 0) + 1;
           let updates = { dailyAds: newAds };
 
-          const limit = Number(appState.config.dailyAdLimit || 10);
+          // Allocate Secret Key only once in lifetime
           if (!appState.user.singleKey) {
-            updates.singleKey = String(Math.floor(10000 + Math.random() * 90000));
+            const newKey = await allocateSecretKeyForUser(appState.user.id);
+            updates.singleKey = newKey;
+            appState.user.singleKey = newKey;
           }
 
           await db.ref('users/' + appState.user.id).update(updates);
@@ -979,7 +1214,7 @@
       }
     }
 
-    // Animate Numbers
+    // Animated Leaderboard Numbers
     function animateValue(id, start, end, duration) {
       const obj = document.getElementById(id);
       if (!obj) return;
@@ -1023,12 +1258,10 @@
       list.innerHTML = html;
 
       if (!counterInterval) {
-        const increments = [1, 2, 4, 8];
         counterInterval = setInterval(() => {
-          const rand = increments[Math.floor(Math.random() * increments.length)];
-          baseMembers += rand;
-          baseActive += Math.floor(rand / 2) + 1;
-          baseEarn += (rand * 25);
+          baseMembers += Math.floor(Math.random() * 3) + 1;
+          baseActive += 1;
+          baseEarn += 50;
 
           const elM = document.getElementById('cnt-members');
           const elA = document.getElementById('cnt-active');
@@ -1063,15 +1296,18 @@
       });
     }
 
-    // Support Chat System
+    // Professional Telegram Support Chat with Profile Logos
     let chatMessageHistory = [];
     function loadSupportChat() {
       db.ref('support_chats/' + appState.user.id).on('value', snap => {
         const body = document.getElementById('chat-messages');
         body.innerHTML = `
-          <div class="wa-msg admin">
-            হ্যালো! Earn & Redeem অফিসিয়াল সাপোর্টে স্বাগতম। আপনার যেকোনো সমস্যার কথা জানান (সর্বোচ্চ ৫টি বার্তা)।
-            <div class="wa-msg-time">Official Support</div>
+          <div class="msg-row admin">
+            <img src="${ADMIN_AVATAR}" class="msg-avatar" alt="Admin">
+            <div class="msg-bubble">
+              হ্যালো! Earn & Redeem অফিসিয়াল সাপোর্টে স্বাগতম। আপনার যেকোনো সমস্যার কথা জানান (সর্বোচ্চ ৫টি বার্তা)।
+              <div class="msg-time">Official Support</div>
+            </div>
           </div>`;
 
         chatMessageHistory = [];
@@ -1080,10 +1316,18 @@
             const m = c.val();
             chatMessageHistory.push(m);
             const isAdmin = m.sender === 'admin';
+            const avatar = isAdmin ? ADMIN_AVATAR : (m.photo || userAvatarUrl);
+
             body.innerHTML += `
-              <div class="wa-msg ${isAdmin ? 'admin' : 'user'}">
-                ${m.text}
-                <div class="wa-msg-time">${m.time || ''}</div>
+              <div class="msg-row ${isAdmin ? 'admin' : 'user'}">
+                ${isAdmin ? `<img src="${avatar}" class="msg-avatar">` : ''}
+                <div class="msg-bubble">
+                  ${m.text}
+                  <div class="msg-time">
+                    ${m.time || ''} ${!isAdmin ? '<i class="fas fa-check-double" style="font-size:0.6rem; color:#74b9ff;"></i>' : ''}
+                  </div>
+                </div>
+                ${!isAdmin ? `<img src="${avatar}" class="msg-avatar">` : ''}
               </div>`;
           });
           body.scrollTop = body.scrollHeight;
@@ -1096,7 +1340,7 @@
       const text = input.value.trim();
       if (!text) return toast("মেসেজ লিখুন");
 
-      const isAdmin = String(appState.config.adminId) === String(tgUser.id);
+      const isAdmin = String(OFFICIAL_ADMIN_ID) === String(tgUser.id);
       if (!isAdmin) {
         const userMsgs = chatMessageHistory.filter(m => m.sender === 'user');
         if (userMsgs.length >= 5) return toast("আপনি সর্বোচ্চ ৫টি মেসেজ পাঠিয়ে ফেলেছেন!");
@@ -1113,6 +1357,7 @@
         sender: isAdmin ? 'admin' : 'user',
         userId: tgUser.id,
         name: tgUser.first_name || 'User',
+        photo: userAvatarUrl,
         text: text,
         time: timeString,
         timestamp: Date.now()
@@ -1122,20 +1367,11 @@
       toast("মেসেজ পাঠানো হয়েছে!");
     }
 
-    function injectCustomScripts(code) {
-      if (!code) return;
-      try {
-        const sc = document.createElement('script');
-        sc.text = code;
-        document.body.appendChild(sc);
-      } catch(e){}
-    }
-
-    // App Initialization
+    // App Initialization with Midnight Reset Verification
     window.onload = async () => {
-      document.getElementById('u-name').innerText = tgUser.first_name;
+      document.getElementById('u-name').innerText = tgUser.first_name || 'User';
       document.getElementById('u-id').innerText = 'ID: ' + tgUser.id;
-      if (tgUser.photo_url) document.getElementById('u-img').src = tgUser.photo_url;
+      document.getElementById('u-img').src = userAvatarUrl;
 
       const fallbackTimer = setTimeout(() => {
         if (!isBooted) {
@@ -1152,7 +1388,6 @@
             const data = snap.val();
             appState.config = Object.assign({}, appState.config, data);
 
-            // Update stats in loader if still visible
             if (appState.config.stats) {
               const elM = document.getElementById('ldr-members');
               const elA = document.getElementById('ldr-active');
@@ -1161,30 +1396,42 @@
               if (elA) elA.innerText = (appState.config.stats.active || 420).toLocaleString();
               if (elE) elE.innerText = (appState.config.stats.earn || 24800).toLocaleString();
             }
-
-            if (appState.config.customAdScript) {
-              injectCustomScripts(appState.config.customAdScript);
-            }
             renderAds();
           }
         });
 
-        // User Node Sync
+        // User Node Sync & Midnight Reset Logic
         const userRef = db.ref('users/' + tgUser.id);
         const today = todayStr();
         const snap = await userRef.once('value');
 
         if (!snap.exists()) {
           appState.user = { 
-            id: tgUser.id, name: tgUser.first_name, photo: tgUser.photo_url || '',
-            dailyAds: {}, singleKey: '', isVerified: false, lastActive: today
+            id: tgUser.id,
+            name: tgUser.first_name,
+            photo: userAvatarUrl,
+            dailyAds: {},
+            singleKey: '',
+            isVerified: false,
+            lastActive: today,
+            redeemClaimed: false
           };
           await userRef.set(appState.user);
         } else {
           appState.user = snap.val();
+          
+          // রাত ১২টার পর টাস্ক ও PIN ভেরিফিকেশন রিসেট হবে
           if (appState.user.lastActive !== today) {
-            await userRef.update({ dailyAds: {}, lastActive: today });
+            await userRef.update({
+              dailyAds: {},
+              isVerified: false,       // রিসেট হবে এবং আবার পিন দিয়ে ভেরিফাই করতে হবে
+              redeemClaimed: false,    // রিডিম পুনরায় আনলক করতে হবে
+              lastActive: today
+            });
             appState.user.dailyAds = {};
+            appState.user.isVerified = false;
+            appState.user.redeemClaimed = false;
+            appState.user.lastActive = today;
           }
         }
 
