@@ -21,9 +21,9 @@
       --text:#2D3436;
       --danger:#ff4757;
       --success:#00b894;
-      --wa-bg:#EFEAE2;
-      --wa-green:#00a884;
-      --wa-my:#D9FDD3;
+      --wa-header:#075E54;
+      --wa-bg:#ECE5DD;
+      --wa-my:#DCF8C6;
     }
     *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
     body{background:var(--bg);color:var(--text);padding-bottom:95px;-webkit-tap-highlight-color:transparent;}
@@ -54,37 +54,46 @@
     /* Hero Redeem Card */
     .hero-redeem-card{background:#fff;margin:18px 20px;border-radius:24px;padding:20px;box-shadow:0 8px 25px rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.03);}
     .sec-title{font-size:1.02rem;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:8px;color:var(--text);}
+    
+    /* Progress Bar */
+    .progress-container{background:#f1f5f9;border-radius:20px;height:14px;width:100%;overflow:hidden;margin:10px 0 6px;position:relative;border:1px solid #e2e8f0;}
+    .progress-fill{background:linear-gradient(90deg,var(--primary),var(--success));height:100%;width:0%;transition:width .5s ease-in-out;border-radius:20px;}
+    .progress-label{display:flex;justify-content:space-between;font-size:.75rem;font-weight:700;color:#64748b;margin-bottom:12px;}
+
     .input-box{width:100%;padding:12px 14px;border:1.5px solid #edf2f7;border-radius:14px;font-size:.92rem;background:#f8fafc;outline:none;font-weight:600;margin-bottom:10px;transition:.2s;}
     .input-box:focus{border-color:var(--primary);background:#fff;}
-    .btn-act{width:100%;padding:13px;border-radius:14px;background:linear-gradient(135deg,var(--primary),#8c7ae6);color:#fff;border:none;font-weight:700;font-size:.92rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 16px rgba(108,92,231,.25);}
-    .btn-act:disabled{background:#cbd5e1!important;box-shadow:none;cursor:not-allowed;}
+    .btn-act{width:100%;padding:13px;border-radius:14px;background:linear-gradient(135deg,var(--primary),#8c7ae6);color:#fff;border:none;font-weight:700;font-size:.92rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 16px rgba(108,92,231,.25);transition:.2s;}
+    .btn-act:disabled{background:#cbd5e1!important;box-shadow:none;cursor:not-allowed;filter:grayscale(1);}
     .btn-act:active{transform:scale(0.98);}
 
     .copy-key-box{margin-top:14px;background:#f8fafc;border:1.5px dashed var(--primary);border-radius:14px;padding:12px;display:flex;align-items:center;justify-content:space-between;}
     .copy-key-box span{font-size:.85rem;font-weight:700;color:var(--primary);}
     .btn-copy{background:var(--primary);color:#fff;border:none;padding:6px 14px;border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer;}
 
-    .code-reveal-box{background:linear-gradient(135deg,#00b894,#00cec9);color:#fff;padding:15px;border-radius:16px;text-align:center;margin-top:14px;}
-    .code-reveal-box h3{font-size:1.3rem;font-weight:900;letter-spacing:1.5px;}
+    /* Code Reveal Card with Animation */
+    .code-reveal-box{background:linear-gradient(135deg,#00b894,#00cec9);color:#fff;padding:18px;border-radius:18px;text-align:center;margin-top:14px;animation:popReveal .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
+    @keyframes popReveal{from{transform:scale(0.85);opacity:0}to{transform:scale(1);opacity:1}}
+    .code-reveal-box h3{font-size:1.4rem;font-weight:900;letter-spacing:2px;margin:5px 0;}
 
-    /* Ad Cards 3D (আগের অরিজিনাল স্টাইল) */
+    /* 3D Ad Cards (অরিজিনাল ডিজাইন) */
     .sec-head{font-size:1rem;font-weight:800;margin:22px 20px 12px;display:flex;align-items:center;gap:8px;color:#1e293b;}
-    .ad-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:0 20px;}
-    .ad-card{position:relative;padding:3px;border-radius:22px;background:conic-gradient(from 0deg,#ff9a3d,#ff5e7a,#4f8cff,#38d6ff,#ff9a3d);cursor:pointer;box-shadow:0 10px 24px rgba(0,0,0,.06);height:120px;transition:.2s;}
-    .ad-inner{border-radius:19px;padding:10px;text-align:center;position:relative;background:#fff;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;}
-    .ad-inner i{font-size:1.6rem;display:block;}
-    .ad-inner h4{font-size:.86rem;font-weight:800;margin:0;color:#111827;}
-    .ad-inner .reward-pill{font-size:.72rem;font-weight:800;color:#111827;background:rgba(15,23,42,.05);padding:4px 8px;border-radius:999px;display:inline-flex;gap:5px;align-items:center;}
-    .ad-inner .progress-pill{font-size:.7rem;color:#4b5563;background:rgba(15,23,42,.04);padding:3px 8px;border-radius:999px;}
+    .ad-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;padding:0 20px;}
+    .ad-card{position:relative;padding:3px;border-radius:22px;background:conic-gradient(from 0deg,#ff9a3d,#ff5e7a,#4f8cff,#38d6ff,#ff9a3d);animation:spinBorder 6s linear infinite;cursor:pointer;box-shadow:0 10px 24px rgba(0,0,0,.08);height:122px;}
+    @keyframes spinBorder{0%{background-position:0 0;}100%{background-position:360px 0;}}
+    .ad-inner{border-radius:19px;padding:12px 10px;text-align:center;position:relative;background:#fff;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px;}
+    .ad-inner i{font-size:1.75rem;margin:0;display:block;}
+    .ad-inner h4{font-size:.88rem;font-weight:800;margin:0;color:#111827;line-height:1.1;}
+    .ad-inner .reward-pill{font-size:.72rem;font-weight:800;color:#111827;background:rgba(15,23,42,.05);padding:5px 10px;border-radius:999px;display:inline-flex;gap:6px;align-items:center;}
+    .ad-inner .progress-pill{font-size:.72rem;color:#4b5563;background:rgba(15,23,42,.04);padding:4px 10px;border-radius:999px;display:inline-block;}
     .slot-1 .ad-inner{background:linear-gradient(145deg,#fff7f0,#ffe5d0);} .slot-1 .ad-inner i{color:#ff8b3d;}
     .slot-2 .ad-inner{background:linear-gradient(145deg,#edf5ff,#dde6ff);} .slot-2 .ad-inner i{color:#4f8cff;}
     .slot-3 .ad-inner{background:linear-gradient(145deg,#f2fffa,#dcfff2);} .slot-3 .ad-inner i{color:#00b894;}
     .slot-4 .ad-inner{background:linear-gradient(145deg,#fff2fb,#ffe0f3);} .slot-4 .ad-inner i{color:#e84393;}
     .ad-card.completed{opacity:.6;filter:grayscale(1);pointer-events:none;}
 
-    /* Leaderboard Stats (Counters) */
+    /* Leaderboard Stats */
     .stat-counters-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:15px 20px 10px;}
-    .stat-box{background:#fff;border-radius:16px;padding:12px 6px;text-align:center;box-shadow:0 4px 15px rgba(0,0,0,.03);}
+    .stat-box{background:#fff;border-radius:16px;padding:12px 6px;text-align:center;box-shadow:0 4px 15px rgba(0,0,0,.03);border:1px solid #f1f5f9;}
     .stat-box h4{font-size:1.05rem;font-weight:900;color:var(--primary);margin-bottom:2px;}
     .stat-box p{font-size:.65rem;color:#64748b;font-weight:700;}
 
@@ -102,22 +111,25 @@
     .bot-meta p{font-size:.75rem;color:#64748b;}
     .bot-open-btn{padding:8px 18px;border-radius:25px;background:linear-gradient(135deg,#0984e3,#74b9ff);color:#fff;text-decoration:none;font-weight:700;font-size:.8rem;}
 
-    /* WhatsApp Style Support Chat */
-    .chat-wrapper{background:var(--wa-bg);min-height:calc(100vh - 170px);margin:10px 15px;border-radius:20px;display:flex;flex-direction:column;box-shadow:0 5px 20px rgba(0,0,0,.06);overflow:hidden;}
-    .chat-header{background:var(--wa-green);color:#fff;padding:12px 16px;display:flex;align-items:center;gap:12px;}
-    .chat-header img{width:36px;height:36px;border-radius:50%;border:1px solid #fff;}
-    .chat-header h4{font-size:.9rem;font-weight:700;line-height:1.2;}
-    .chat-header p{font-size:.68rem;opacity:.9;}
-    .chat-body{flex:1;padding:15px;display:flex;flex-direction:column;gap:10px;max-height:420px;overflow-y:auto;}
-    .chat-bubble{max-width:80%;padding:10px 14px;border-radius:14px;font-size:.85rem;line-height:1.35;position:relative;box-shadow:0 2px 4px rgba(0,0,0,.06);}
-    .chat-bubble.admin{align-self:flex-start;background:#fff;border-top-left-radius:3px;}
-    .chat-bubble.user{align-self:flex-end;background:var(--wa-my);border-top-right-radius:3px;}
-    .chat-time{font-size:.65rem;color:#777;text-align:right;margin-top:4px;}
-    .chat-footer{background:#fff;padding:10px;display:flex;gap:8px;align-items:center;}
-    .chat-input{flex:1;padding:10px 14px;border-radius:25px;border:1px solid #ddd;outline:none;font-size:.88rem;}
-    .chat-send-btn{background:var(--wa-green);color:#fff;width:40px;height:40px;border-radius:50%;border:none;display:grid;place-items:center;cursor:pointer;}
+    /* FULL SCREEN WHATSAPP SUPPORT CHAT */
+    #page-support{position:fixed;inset:0;background:var(--wa-bg);z-index:10000;display:none;flex-direction:column;}
+    #page-support.active{display:flex;}
+    .wa-top-bar{background:var(--wa-header);color:#fff;padding:15px;display:flex;align-items:center;gap:14px;box-shadow:0 2px 6px rgba(0,0,0,.2);}
+    .wa-back-btn{background:none;border:none;color:#fff;font-size:1.25rem;cursor:pointer;}
+    .wa-user-info{display:flex;align-items:center;gap:10px;flex:1;}
+    .wa-user-info img{width:40px;height:40px;border-radius:50%;object-fit:cover;border:1.5px solid #fff;}
+    .wa-user-info h4{font-size:.95rem;font-weight:700;line-height:1.2;}
+    .wa-user-info p{font-size:.72rem;opacity:.85;}
+    .wa-chat-body{flex:1;padding:15px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;}
+    .wa-msg{max-width:80%;padding:10px 14px;border-radius:12px;font-size:.85rem;line-height:1.4;position:relative;box-shadow:0 1px 3px rgba(0,0,0,.15);word-break:break-word;}
+    .wa-msg.admin{align-self:flex-start;background:#fff;border-top-left-radius:2px;}
+    .wa-msg.user{align-self:flex-end;background:var(--wa-my);border-top-right-radius:2px;}
+    .wa-msg-time{font-size:.65rem;color:#777;text-align:right;margin-top:4px;}
+    .wa-bottom-bar{background:#f0f2f5;padding:10px 14px;display:flex;gap:10px;align-items:center;box-shadow:0 -1px 4px rgba(0,0,0,.05);}
+    .wa-input{flex:1;padding:12px 18px;border-radius:25px;border:none;outline:none;font-size:.9rem;background:#fff;}
+    .wa-send-btn{background:var(--wa-header);color:#fff;width:44px;height:44px;border-radius:50%;border:none;display:grid;place-items:center;font-size:1.1rem;cursor:pointer;}
 
-    /* Bottom Nav */
+    /* Bottom Navigation */
     .nav{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);width:90%;max-width:400px;background:#1e293b;display:flex;justify-content:space-around;padding:12px;border-radius:25px;box-shadow:0 10px 30px rgba(0,0,0,.25);z-index:100;}
     .nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;color:rgba(255,255,255,.45);font-size:1.15rem;cursor:pointer;transition:.2s;}
     .nav-item span{font-size:.65rem;font-weight:600;}
@@ -133,7 +145,7 @@
   <div id="loader" class="loader-overlay">
     <div class="loader-card">
       <div class="core-spin"></div>
-      <div class="loader-title">Earn & Redeem Hub</div>
+      <div class="loader-title">Earn & Redeem Pro</div>
       <div class="loader-sub">অপেক্ষা করুন, প্রস্তুত হচ্ছে...</div>
     </div>
   </div>
@@ -148,19 +160,28 @@
           <img id="u-img" src="https://via.placeholder.com/45">
           <div class="user-info"><h3 id="u-name">User</h3><p id="u-id">ID: ...</p></div>
         </div>
-        <!-- Support Icon (WhatsApp Style Chat) -->
-        <button class="support-btn" onclick="switchTab('support')"><i class="fab fa-whatsapp"></i></button>
+        <!-- Support Icon -->
+        <button class="support-btn" onclick="openFullSupport()"><i class="fab fa-whatsapp"></i></button>
       </div>
     </div>
 
     <!-- ================= TAB 1: HOME (REDEEM & ADS) ================= -->
     <div id="page-home" class="page-section active">
       
-      <!-- Redeem Hero Section -->
+      <!-- Hero Redeem Section -->
       <div class="hero-redeem-card">
         <div class="sec-title"><i class="fas fa-gift" style="color:var(--primary);"></i> Daily Redeem Code</div>
         
-        <!-- Step 1: Unlock with Channel & Key -->
+        <!-- Progress Bar & % Calculation -->
+        <div class="progress-label">
+          <span>অ্যাড কমপ্লিট টাস্ক</span>
+          <span id="progress-percent">0%</span>
+        </div>
+        <div class="progress-container">
+          <div id="progress-bar-fill" class="progress-fill"></div>
+        </div>
+
+        <!-- Unlock with Channel Button -->
         <div id="unlock-container">
           <button id="btn-unlock-tg" class="btn-act" onclick="triggerChannelUnlock()">
             <i class="fab fa-telegram-plane"></i> আনলক করুন (টেলিগ্রাম চ্যানেল)
@@ -179,19 +200,24 @@
           <i class="fas fa-circle-check"></i> Key ভেরিফাইড সম্পন্ন!
         </div>
 
-        <!-- Copy Redeem Key Section -->
-        <div class="copy-key-box" style="margin-top:12px;">
+        <!-- Single Unique Key Copy Section -->
+        <div class="copy-key-box">
           <div>
             <small style="color:#64748b;display:block;font-size:.7rem;">আপনার বর্তমান সংগৃহীত Key:</small>
-            <span id="display-user-key">0 Keys</span>
+            <span id="display-user-key">কোনো Key নেই</span>
           </div>
-          <button class="btn-copy" onclick="copyRedeemKey()"><i class="fas fa-copy"></i> কপি করুন</button>
+          <button class="btn-copy" id="btn-copy-key" onclick="copyRedeemKey()"><i class="fas fa-copy"></i> কপি</button>
         </div>
 
-        <!-- Redeem Code Reveal Area (All Ads Finished) -->
+        <!-- Disabled / Active Redeem Code Box -->
+        <button id="btn-claim-redeem" class="btn-act" style="margin-top:14px;" disabled onclick="openRedeemAnimation()">
+          <i class="fas fa-lock"></i> Redeem Code (Lock)
+        </button>
+
+        <!-- Animated Code Pop Box -->
         <div id="redeem-code-box" style="display:none;">
           <div class="code-reveal-box">
-            <small>আজকের রিডিম কোড:</small>
+            <small>আপনার রিডিম কোড প্রস্তুত:</small>
             <h3 id="revealed-code">CODE2026</h3>
           </div>
           <a id="bot-redeem-link" href="#" target="_blank" class="btn-act" style="margin-top:10px;text-decoration:none;background:linear-gradient(135deg,#ff9a3d,#ff5e7a);">
@@ -200,14 +226,14 @@
         </div>
       </div>
 
-      <!-- 3D Ad Cards (৪টি স্লট) -->
+      <!-- 3D Daily Ad Cards (Original 4 Slots) -->
       <div class="sec-head"><i class="fas fa-play-circle" style="color:var(--primary);"></i> Daily Ads (<span id="total-watched-txt">0/40</span>)</div>
       <div id="ad-area" class="ad-grid"></div>
     </div>
 
     <!-- ================= TAB 2: LEADERBOARD ================= -->
     <div id="page-leaderboard" class="page-section">
-      <!-- Animated Stat Counters -->
+      <!-- Live Realistic Dynamic Counters -->
       <div class="stat-counters-row">
         <div class="stat-box">
           <h4 id="cnt-members">0</h4>
@@ -233,31 +259,32 @@
       <div id="bots-list" class="bot-grid"></div>
     </div>
 
-    <!-- ================= TAB 4: SUPPORT (WHATSAPP STYLE) ================= -->
-    <div id="page-support" class="page-section">
-      <div class="chat-wrapper">
-        <div class="chat-header">
-          <img src="https://via.placeholder.com/40" id="admin-avatar">
-          <div>
-            <h4>Admin Support</h4>
-            <p>Online | সাধারণত ৫ মিনিটে উত্তর দেয়</p>
-          </div>
-        </div>
+  </div>
 
-        <div class="chat-body" id="chat-messages">
-          <div class="chat-bubble admin">
-            হ্যালো! Earn Hub সাপোর্টে আপনাকে স্বাগতম। আপনি দিনে একবার আপনার মতামত বা সমস্যা জানাতে পারবেন।
-            <div class="chat-time">10:00 AM</div>
-          </div>
-        </div>
-
-        <div class="chat-footer">
-          <input type="text" id="chat-text-input" class="chat-input" placeholder="মেসেজ লিখুন...">
-          <button class="chat-send-btn" onclick="sendSupportMessage()"><i class="fas fa-paper-plane"></i></button>
+  <!-- FULL SCREEN WHATSAPP SUPPORT INTERFACE -->
+  <div id="page-support">
+    <div class="wa-top-bar">
+      <button class="wa-back-btn" onclick="closeFullSupport()"><i class="fas fa-arrow-left"></i></button>
+      <div class="wa-user-info">
+        <img src="https://via.placeholder.com/45" id="admin-avatar">
+        <div>
+          <h4>Official Admin Support</h4>
+          <p>অনলাইন | দ্রুত উত্তর দেওয়া হয়</p>
         </div>
       </div>
     </div>
 
+    <div class="wa-chat-body" id="chat-messages">
+      <div class="wa-msg admin">
+        হ্যালো! Earn Hub অফিসিয়াল সাপোর্টে আপনাকে স্বাগতম। আপনি দিনে একবার আপনার গুরুত্বপূর্ণ বার্তা পাঠাতে পারবেন।
+        <div class="wa-msg-time">10:00 AM</div>
+      </div>
+    </div>
+
+    <div class="wa-bottom-bar">
+      <input type="text" id="chat-text-input" class="wa-input" placeholder="আপনার বার্তা লিখুন...">
+      <button class="wa-send-btn" onclick="sendSupportMessage()"><i class="fas fa-paper-plane"></i></button>
+    </div>
   </div>
 
   <!-- Bottom Navigation -->
@@ -293,15 +320,15 @@
     if(tg){ try{ tg.ready(); tg.expand(); }catch(e){} }
 
     let appState = {
-      user: { dailyAds:{}, collectedKeys:0, isVerified:false, lastSupportDate:'', lastActive:'' },
+      user: { dailyAds:{}, singleKey:'', isVerified:false, lastSupportDate:'', lastActive:'' },
       config: {
         dailyAdLimit: 10,
         redeemPin: "7788",
-        redeemCode: "PROREDEEM100",
+        redeemCode: "PROREDEEM2026",
         keyChannelLink: "https://t.me",
         botLink: "https://t.me",
         adminId: "123456",
-        stats: { members: 1540, active: 480, earn: 25400 },
+        stats: { members: 1250, active: 380, earn: 18500 },
         adSlots: [
           { network: 'monetag', id: 'zone_1' },
           { network: 'adsgram', id: '23393' },
@@ -336,24 +363,30 @@
         if(mapping[tabId] !== undefined) document.querySelectorAll('.nav-item')[mapping[tabId]].classList.add('active');
       }
 
-      if(tabId === 'leaderboard') startCountersAndLeaderboard();
+      if(tabId === 'leaderboard') startLiveCounters();
       if(tabId === 'bots') renderBots();
-      if(tabId === 'support') loadSupportChat();
       if(tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
     }
 
-    // 1. Channel Unlock Flow
+    // Full Screen WhatsApp Support Toggles
+    function openFullSupport() {
+      document.getElementById('page-support').classList.add('active');
+      loadSupportChat();
+    }
+    function closeFullSupport() {
+      document.getElementById('page-support').classList.remove('active');
+    }
+
+    // Channel Unlock & Pin Verification
     function triggerChannelUnlock() {
       const url = appState.config.keyChannelLink || 'https://t.me';
       if(tg?.openTelegramLink && url.includes('t.me/')) tg.openTelegramLink(url);
       else window.open(url, '_blank');
 
-      // Show Pin Input
       document.getElementById('pin-input-group').style.display = 'block';
-      toast("চ্যানেল থেকে Key নিয়ে নিচে দিন");
+      toast("টেলিগ্রাম চ্যানেল থেকে PIN সংগ্রহ করে নিচে দিন");
     }
 
-    // 2. Verify Key / PIN
     async function verifyKeyPin() {
       const entered = document.getElementById('entered-key').value.trim();
       const actualPin = String(appState.config.redeemPin || '7788').trim();
@@ -370,41 +403,61 @@
     }
 
     function copyRedeemKey() {
-      const k = appState.user.collectedKeys || 0;
-      navigator.clipboard.writeText("KEY-" + k + "-" + appState.user.id);
-      toast("রিডিম Key কপি করা হয়েছে!");
+      const k = appState.user.singleKey;
+      if(!k) return toast("এখনো কোনো Key পাননি!");
+      navigator.clipboard.writeText(k);
+      toast("Key কপি হয়েছে: " + k);
     }
 
-    // Check All Ads Complete Status
-    function areAllAdsCompleted() {
+    // Calculation & UI Update
+    function updateRedeemUI() {
       const slots = appState.config.adSlots || [];
       const limit = Number(appState.config.dailyAdLimit || 10);
-      for(let i=0; i<4; i++) {
-        if(slots[i] && slots[i].network && slots[i].network !== 'none') {
-          const count = (appState.user.dailyAds && appState.user.dailyAds[i]) ? appState.user.dailyAds[i] : 0;
-          if(count < limit) return false;
-        }
+      const totalRequired = limit * 4;
+
+      let watchedTotal = 0;
+      for (let i = 0; i < 4; i++) {
+        watchedTotal += (appState.user.dailyAds && appState.user.dailyAds[i]) ? appState.user.dailyAds[i] : 0;
       }
-      return true;
-    }
 
-    function updateRedeemUI() {
-      document.getElementById('display-user-key').innerText = `${appState.user.collectedKeys || 0} Keys Collected`;
+      let percent = Math.min(100, Math.floor((watchedTotal / totalRequired) * 100));
+      document.getElementById('progress-percent').innerText = `${percent}%`;
+      document.getElementById('progress-bar-fill').style.width = `${percent}%`;
 
+      // Single Key Display
+      if(appState.user.singleKey) {
+        document.getElementById('display-user-key').innerText = appState.user.singleKey;
+      } else {
+        document.getElementById('display-user-key').innerText = "যেকোনো ১টি স্লটের ১০টি অ্যাড দেখুন";
+      }
+
+      // Verified State
       if(appState.user.isVerified) {
         document.getElementById('unlock-container').style.display = 'none';
         document.getElementById('verified-state').style.display = 'block';
       }
 
-      // Check if all ads completed to reveal redeem code
-      if(areAllAdsCompleted() && appState.user.isVerified) {
-        document.getElementById('redeem-code-box').style.display = 'block';
-        document.getElementById('revealed-code').innerText = appState.config.redeemCode || 'PRO2026';
-        document.getElementById('bot-redeem-link').href = appState.config.botLink || 'https://t.me';
+      // Unlock Redeem Button if 100% Ads Watched & Verified
+      const btnClaim = document.getElementById('btn-claim-redeem');
+      if(percent >= 100 && appState.user.isVerified) {
+        btnClaim.disabled = false;
+        btnClaim.innerHTML = '<i class="fas fa-gift"></i> Get Redeem Code (Unlocked)';
+        btnClaim.style.background = 'linear-gradient(135deg, #00b894, #00cec9)';
+      } else {
+        btnClaim.disabled = true;
+        btnClaim.innerHTML = `<i class="fas fa-lock"></i> Redeem Code (${percent}%)`;
       }
     }
 
-    // Render Original 3D Ad Cards
+    function openRedeemAnimation() {
+      const box = document.getElementById('redeem-code-box');
+      box.style.display = 'block';
+      document.getElementById('revealed-code').innerText = appState.config.redeemCode || 'CODE2026';
+      document.getElementById('bot-redeem-link').href = appState.config.botLink || 'https://t.me';
+      toast("অভিনন্দন! রিডিম কোড ওপেন হয়েছে");
+    }
+
+    // 3D Ad Cards Render
     function renderAds() {
       const el = document.getElementById('ad-area'); el.innerHTML = '';
       const slots = appState.config.adSlots || [];
@@ -426,7 +479,7 @@
             <div class="ad-inner">
               <i class="fas ${icon}"></i> 
               <h4>Ad Slot ${i+1}</h4>
-              <div class="reward-pill"><i class="fas fa-key"></i> +1 Key</div>
+              <div class="reward-pill"><i class="fas fa-coins"></i> Watch</div>
               <div class="progress-pill">${isMax ? 'Completed' : `${done}/${limit} Watched`}</div>
             </div>
           </div>`;
@@ -450,23 +503,34 @@
           let res = await adCtrl.show();
           if(res && res.done === true) success = true;
         } else {
-          // Fallback simulation for test
-          success = true;
+          success = true; // Fallback
         }
 
         if(success) {
           let newAds = appState.user.dailyAds || {};
           newAds[i] = (newAds[i] || 0) + 1;
-          let newKeys = (appState.user.collectedKeys || 0) + 1;
 
-          await db.ref('users/' + appState.user.id).update({ dailyAds: newAds, collectedKeys: newKeys });
-          toast('Ad দেখা সফল! +১ টি Key যুক্ত হয়েছে');
+          let updates = { dailyAds: newAds };
+
+          // Grant Single Key if ANY ONE slot reaches the daily limit
+          const limit = Number(appState.config.dailyAdLimit || 10);
+          if(newAds[i] >= limit && !appState.user.singleKey) {
+            const generatedKey = "KEY-" + Math.floor(100000 + Math.random() * 900000);
+            updates.singleKey = generatedKey;
+            toast("অভিনন্দন! আপনি ১টি রিডিম Key পেয়েছেন!");
+          }
+
+          await db.ref('users/' + appState.user.id).update(updates);
+          toast(`Ad ${newAds[i]}/${limit} সম্পন্ন হয়েছে`);
         }
-      } catch(e) { toast('Ad loading failed'); }
+      } catch(e) { toast('Ad লোড হতে ব্যর্থ হয়েছে'); }
       finally { slotLocks[i] = false; }
     }
 
-    // Animated Counter Function
+    // Realistic Live Counters
+    let baseMembers = 1450, baseActive = 410, baseEarn = 24500;
+    let counterInterval = null;
+
     function animateValue(id, start, end, duration) {
       const obj = document.getElementById(id);
       if(!obj) return;
@@ -475,21 +539,24 @@
         if (!startTimestamp) startTimestamp = timestamp;
         const progress = Math.min((timestamp - startTimestamp) / duration, 1);
         obj.innerText = Math.floor(progress * (end - start) + start).toLocaleString();
-        if (progress < 1) {
-          window.requestAnimationFrame(step);
-        }
+        if (progress < 1) window.requestAnimationFrame(step);
       };
       window.requestAnimationFrame(step);
     }
 
-    function startCountersAndLeaderboard() {
-      const stats = appState.config.stats || { members: 1500, active: 450, earn: 25000 };
-      animateValue("cnt-members", 0, stats.members || 1500, 1200);
-      animateValue("cnt-active", 0, stats.active || 450, 1200);
-      animateValue("cnt-earned", 0, stats.earn || 25000, 1200);
+    function startLiveCounters() {
+      const s = appState.config.stats || {};
+      baseMembers = s.members || baseMembers;
+      baseActive = s.active || baseActive;
+      baseEarn = s.earn || baseEarn;
 
+      animateValue("cnt-members", 0, baseMembers, 1000);
+      animateValue("cnt-active", 0, baseActive, 1000);
+      animateValue("cnt-earned", 0, baseEarn, 1000);
+
+      // Render Active Users
       const list = document.getElementById('leaderboard-list');
-      const dummyUsers = ['Tanvir_Pro', 'Hasan99', 'Shohel_BD', 'Sakib_King', 'Rashedul', 'Akash_Tech'];
+      const dummyUsers = ['Tanvir_Pro', 'Hasan99', 'Shohel_BD', 'Sakib_King', 'Rashedul', 'Akash_Tech', 'Mehedi_YT'];
       let html = '';
       dummyUsers.forEach((u, i) => {
         html += `
@@ -503,6 +570,25 @@
           </div>`;
       });
       list.innerHTML = html;
+
+      // Realistic Dynamic Increase: 1, 10, 15, 35
+      if(!counterInterval) {
+        const increments = [1, 10, 15, 35];
+        counterInterval = setInterval(() => {
+          const randInc = increments[Math.floor(Math.random() * increments.length)];
+          baseMembers += randInc;
+          baseActive += Math.floor(randInc / 2) + 1;
+          baseEarn += (randInc * 15);
+
+          const elM = document.getElementById('cnt-members');
+          const elA = document.getElementById('cnt-active');
+          const elE = document.getElementById('cnt-earned');
+
+          if(elM) elM.innerText = baseMembers.toLocaleString();
+          if(elA) elA.innerText = baseActive.toLocaleString();
+          if(elE) elE.innerText = baseEarn.toLocaleString();
+        }, 4500);
+      }
     }
 
     // More Bots Render
@@ -529,15 +615,15 @@
       });
     }
 
-    // Support Chat (WhatsApp Style)
+    // Full WhatsApp Support Chat Function
     function loadSupportChat() {
       const chatRef = db.ref('support_chats/' + appState.user.id);
       chatRef.on('value', snap => {
         const body = document.getElementById('chat-messages');
         body.innerHTML = `
-          <div class="chat-bubble admin">
-            হ্যালো! Earn Hub সাপোর্টে আপনাকে স্বাগতম। আপনি দিনে একবার আপনার মতামত বা সমস্যা জানাতে পারবেন।
-            <div class="chat-time">Start</div>
+          <div class="wa-msg admin">
+            হ্যালো! Earn Hub সাপোর্টে স্বাগতম। আপনার সমস্যা বা মতামত জানান। দিনে একবার মেসেজ পাঠাতে পারবেন।
+            <div class="wa-msg-time">Start</div>
           </div>`;
 
         if(snap.exists()) {
@@ -545,9 +631,9 @@
             const m = c.val();
             const isAdmin = m.sender === 'admin';
             body.innerHTML += `
-              <div class="chat-bubble ${isAdmin ? 'admin' : 'user'}">
+              <div class="wa-msg ${isAdmin ? 'admin' : 'user'}">
                 ${m.text}
-                <div class="chat-time">${m.time || ''}</div>
+                <div class="wa-msg-time">${m.time || ''}</div>
               </div>`;
           });
           body.scrollTop = body.scrollHeight;
@@ -562,7 +648,6 @@
 
       if(!text) return toast("মেসেজ লিখুন");
 
-      // Check if user already sent message today (Unless admin replied or is admin)
       const isAdmin = String(appState.config.adminId) === String(tgUser.id);
       if(!isAdmin && appState.user.lastSupportDate === today) {
         return toast("আপনি আজকে বার্তা পাঠিয়েছেন! এডমিনের উত্তরের অপেক্ষা করুন।");
@@ -617,7 +702,7 @@
         if(!snap.exists()) {
           appState.user = { 
             id: tgUser.id, name: tgUser.first_name, photo: tgUser.photo_url||'',
-            dailyAds: {}, collectedKeys: 0, isVerified: false, lastActive: today, lastSupportDate: ''
+            dailyAds: {}, singleKey: '', isVerified: false, lastActive: today, lastSupportDate: ''
           };
           await userRef.set(appState.user);
         } else {
