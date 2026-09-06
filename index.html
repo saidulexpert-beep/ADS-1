@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Earn & Redeem Hub</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Earn & Redeem Pro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   
   <!-- Firebase SDKs -->
@@ -12,179 +12,573 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-  <!-- Adsgram SDK Default Fallback -->
+  <!-- Adsgram SDK -->
   <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 
+  <!-- Monetag SDKs -->
+  <script src="//libtl.com/sdk.js" data-zone="11737228" data-sdk="show_11737228"></script>
+  <script src="//libtl.com/sdk.js" data-zone="11595952" data-sdk="show_11595952"></script>
+
   <style>
-    :root{
-      --primary:#6C5CE7;
-      --secondary:#A29BFE;
-      --bg:#F0F3F8;
-      --surface:#FFFFFF;
-      --text:#2D3436;
-      --danger:#ff4757;
-      --success:#00b894;
-      --wa-header:#075E54;
-      --wa-bg:#EFEAE2;
-      --wa-my:#DCF8C6;
+    :root {
+      --primary: #6C5CE7;
+      --primary-dark: #4834d4;
+      --secondary: #A29BFE;
+      --bg: #0b0f19;
+      --surface: #151c2c;
+      --surface-card: #1e273d;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --success: #00b894;
+      --accent: #fd79a8;
+      --wa-header: #075E54;
+      --wa-bg: #EFEAE2;
+      --wa-my: #DCF8C6;
     }
-    *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
-    body{background:var(--bg);color:var(--text);padding-bottom:95px;-webkit-tap-highlight-color:transparent;}
-    #app{max-width:480px;margin:0 auto;min-height:100vh;position:relative;display:none;}
-
-    .page-section{display:none;animation:fadeIn .25s ease-out;}
-    .page-section.active{display:block;}
-    @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-
-    /* Loader */
-    .loader-overlay{position:fixed;inset:0;z-index:9999;display:flex;justify-content:center;align-items:center;flex-direction:column;background:linear-gradient(135deg,#05060a,#0b0d18 40%,#090a12);}
-    .loader-card{width:min(340px,90vw);border-radius:24px;padding:24px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(14px);text-align:center;}
-    .core-spin{width:60px;height:60px;border-radius:50%;border:4px solid transparent;border-top-color:var(--primary);border-right-color:var(--secondary);margin:0 auto 12px;animation:spin 1s linear infinite;}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    .loader-title{color:#fff;font-weight:800;font-size:1.1rem;}
-    .loader-sub{color:rgba(255,255,255,.7);font-size:.82rem;}
-
-    /* Header */
-    .header{background:linear-gradient(135deg,#4834d4,#6C5CE7);padding:40px 20px 25px;border-radius:0 0 30px 30px;color:#fff;box-shadow:0 10px 25px rgba(108,92,231,.25);}
-    .top-bar{display:flex;justify-content:space-between;align-items:center;}
-    .user-pill{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.15);padding:5px 14px 5px 6px;border-radius:50px;backdrop-filter:blur(8px);}
-    .user-pill img{width:40px;height:40px;border-radius:50%;border:2px solid #fff;object-fit:cover;}
-    .user-info h3{font-size:.9rem;font-weight:700;}
-    .user-info p{font-size:.7rem;opacity:.85;}
-    .support-btn{background:rgba(255,255,255,.2);color:#fff;width:40px;height:40px;border-radius:50%;border:none;font-size:1.15rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s;}
-    .support-btn:active{transform:scale(0.92);}
-
-    /* Hero Redeem Card */
-    .hero-redeem-card{background:#fff;margin:18px 20px;border-radius:24px;padding:20px;box-shadow:0 8px 25px rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.03);}
-    .sec-title{font-size:1.02rem;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:8px;color:var(--text);}
     
-    /* Progress Bar */
-    .progress-container{background:#f1f5f9;border-radius:20px;height:14px;width:100%;overflow:hidden;margin:10px 0 6px;position:relative;border:1px solid #e2e8f0;}
-    .progress-fill{background:linear-gradient(90deg,var(--primary),var(--success));height:100%;width:0%;transition:width .5s ease-in-out;border-radius:20px;}
-    .progress-label{display:flex;justify-content:space-between;font-size:.75rem;font-weight:700;color:#64748b;margin-bottom:12px;}
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background: var(--bg); color: var(--text); padding-bottom: 95px; min-height: 100vh; overflow-x: hidden; }
+    #app { max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; display: none; }
 
-    .input-box{width:100%;padding:12px 14px;border:1.5px solid #edf2f7;border-radius:14px;font-size:.92rem;background:#f8fafc;outline:none;font-weight:600;margin-bottom:10px;transition:.2s;}
-    .input-box:focus{border-color:var(--primary);background:#fff;}
-    .btn-act{width:100%;padding:13px;border-radius:14px;background:linear-gradient(135deg,var(--primary),#8c7ae6);color:#fff;border:none;font-weight:700;font-size:.92rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 16px rgba(108,92,231,.25);transition:.2s;}
-    .btn-act:disabled{background:#cbd5e1!important;box-shadow:none;cursor:not-allowed;filter:grayscale(1);}
-    .btn-act:active{transform:scale(0.98);}
+    .page-section { display: none; animation: fadeIn .25s ease-out; }
+    .page-section.active { display: block; }
+    @keyframes fadeIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
 
-    /* 5-Digit Animated Key Reveal Boxes */
-    .key-slots-container{display:flex;justify-content:center;gap:10px;margin:15px 0 10px;}
-    .key-digit-box{width:42px;height:48px;border-radius:12px;background:#f8fafc;border:2px dashed #cbd5e1;display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:900;color:var(--primary);box-shadow:inset 0 2px 4px rgba(0,0,0,0.02);}
-    .key-digit-box.unlocked{border:2px solid var(--primary);background:rgba(108,92,231,0.06);animation:popDigit 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
-    @keyframes popDigit{0%{transform:scale(0.5);opacity:0;}100%{transform:scale(1);opacity:1;}}
+    /* ================= FULL SCREEN PROFESSIONAL LOADER ================= */
+    .loader-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      background: radial-gradient(circle at center, #1b2438 0%, #080a10 100%);
+      padding: 40px 20px;
+    }
+    .loader-glow-orb {
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(108, 92, 231, 0.25), rgba(0, 184, 148, 0.15));
+      filter: blur(50px);
+      z-index: 1;
+      animation: floatGlow 4s ease-in-out infinite alternate;
+    }
+    @keyframes floatGlow { 0% { transform: scale(0.9) translate(-10px, -10px); } 100% { transform: scale(1.1) translate(10px, 10px); } }
 
-    .copy-key-box{margin-top:14px;background:#f8fafc;border:1.5px dashed var(--primary);border-radius:14px;padding:12px;display:flex;align-items:center;justify-content:space-between;}
-    .btn-copy{background:var(--primary);color:#fff;border:none;padding:8px 16px;border-radius:10px;font-size:.8rem;font-weight:700;cursor:pointer;transition:.2s;}
-    .btn-copy:disabled{background:#cbd5e1;cursor:not-allowed;}
+    .loader-center {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      margin-top: auto;
+      margin-bottom: auto;
+      width: 100%;
+      max-width: 360px;
+    }
+    .core-spinner-ring {
+      position: relative;
+      width: 90px;
+      height: 90px;
+      margin: 0 auto 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .core-spin {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 3.5px solid transparent;
+      border-top-color: var(--primary);
+      border-right-color: var(--success);
+      animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+    }
+    .core-spinner-ring i {
+      font-size: 2.2rem;
+      color: #fff;
+      text-shadow: 0 0 15px rgba(255,255,255,0.6);
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loader-title {
+      color: #fff;
+      font-weight: 900;
+      font-size: 1.5rem;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      background: linear-gradient(135deg, #fff, var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .loader-sub {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    /* Loader Stats Row */
+    .loader-stats-bar {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 380px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 14px 10px;
+      backdrop-filter: blur(16px);
+    }
+    .loader-stat-col { text-align: center; }
+    .loader-stat-col h4 { font-size: 0.98rem; font-weight: 800; color: #fff; }
+    .loader-stat-col p { font-size: 0.65rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-top: 2px; }
+
+    /* ================= MAIN APP HEADER ================= */
+    .header {
+      background: linear-gradient(145deg, #182138, #0e1424);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 24px 20px 20px;
+      border-radius: 0 0 26px 26px;
+    }
+    .top-bar { display: flex; justify-content: space-between; align-items: center; }
+    .user-pill {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 6px 16px 6px 6px;
+      border-radius: 50px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .user-pill img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
+    .user-info h3 { font-size: 0.92rem; font-weight: 700; color: #fff; }
+    .user-info p { font-size: 0.7rem; color: var(--text-muted); font-weight: 600; }
+    .support-btn {
+      background: linear-gradient(135deg, #00b894, #00cec9);
+      color: #fff;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: none;
+      font-size: 1.25rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(0, 184, 148, 0.3);
+      transition: transform .2s;
+    }
+    .support-btn:active { transform: scale(0.92); }
+
+    /* ================= HERO REDEEM CARD ================= */
+    .hero-redeem-card {
+      background: var(--surface);
+      margin: 18px 18px 10px;
+      border-radius: 22px;
+      padding: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    .sec-title { font-size: 1rem; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; color: #fff; }
+    
+    .progress-container {
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 20px;
+      height: 12px;
+      width: 100%;
+      overflow: hidden;
+      margin: 8px 0;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .progress-fill {
+      background: linear-gradient(90deg, var(--primary), var(--success));
+      height: 100%;
+      width: 0%;
+      transition: width .5s ease-in-out;
+      border-radius: 20px;
+      box-shadow: 0 0 12px rgba(0, 184, 148, 0.5);
+    }
+    .progress-label { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; color: var(--text-muted); }
+
+    .input-box {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      font-size: 0.92rem;
+      background: rgba(0,0,0,0.3);
+      color: #fff;
+      outline: none;
+      font-weight: 600;
+      margin-bottom: 10px;
+      transition: .2s;
+    }
+    .input-box:focus { border-color: var(--primary); }
+
+    .btn-act {
+      width: 100%;
+      padding: 13px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff;
+      border: none;
+      font-weight: 700;
+      font-size: 0.92rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 6px 18px rgba(108, 92, 231, 0.35);
+      transition: .2s;
+    }
+    .btn-act:disabled {
+      background: #2b3548 !important;
+      color: #64748b !important;
+      box-shadow: none;
+      cursor: not-allowed;
+      filter: grayscale(1);
+    }
+    .btn-act:active { transform: scale(0.98); }
+
+    /* 5-Digit Key Slots */
+    .key-slots-container { display: flex; justify-content: center; gap: 8px; margin: 15px 0 10px; }
+    .key-digit-box {
+      width: 44px;
+      height: 50px;
+      border-radius: 14px;
+      background: rgba(0,0,0,0.35);
+      border: 2px dashed rgba(255,255,255,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: var(--secondary);
+    }
+    .key-digit-box.unlocked {
+      border: 2px solid var(--success);
+      background: rgba(0, 184, 148, 0.12);
+      color: var(--success);
+      animation: popDigit 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes popDigit { 0% { transform: scale(0.5); opacity:0; } 100% { transform: scale(1); opacity:1; } }
+
+    .copy-key-box {
+      margin-top: 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1.5px dashed rgba(108,92,231,0.5);
+      border-radius: 14px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .btn-copy {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-copy:disabled { background: #334155; color:#64748b; cursor: not-allowed; }
 
     /* Code Reveal Card */
-    .code-reveal-box{background:linear-gradient(135deg,#00b894,#00cec9);color:#fff;padding:18px;border-radius:18px;text-align:center;margin-top:14px;animation:popReveal .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
-    @keyframes popReveal{from{transform:scale(0.85);opacity:0}to{transform:scale(1);opacity:1}}
-    .code-reveal-box h3{font-size:1.4rem;font-weight:900;letter-spacing:2px;margin:5px 0;}
+    .code-reveal-box {
+      background: linear-gradient(135deg, #00b894, #00cec9);
+      color: #062b24;
+      padding: 18px;
+      border-radius: 16px;
+      text-align: center;
+      margin-top: 14px;
+      box-shadow: 0 8px 24px rgba(0,184,148,0.3);
+    }
+    .code-reveal-box h3 { font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; color:#fff; text-shadow: 0 2px 5px rgba(0,0,0,0.2); }
 
-    /* 3D Ad Cards */
-    .sec-head{font-size:1rem;font-weight:800;margin:22px 20px 12px;display:flex;align-items:center;gap:8px;color:#1e293b;}
-    .ad-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;padding:0 20px;}
-    .ad-card{position:relative;padding:3px;border-radius:22px;background:conic-gradient(from 0deg,#ff9a3d,#ff5e7a,#4f8cff,#38d6ff,#ff9a3d);animation:spinBorder 6s linear infinite;cursor:pointer;box-shadow:0 10px 24px rgba(0,0,0,.08);height:122px;}
-    @keyframes spinBorder{0%{background-position:0 0;}100%{background-position:360px 0;}}
-    .ad-inner{border-radius:19px;padding:12px 10px;text-align:center;position:relative;background:#fff;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px;}
-    .ad-inner i{font-size:1.75rem;margin:0;display:block;}
-    .ad-inner h4{font-size:.88rem;font-weight:800;margin:0;color:#111827;line-height:1.1;}
-    .ad-inner .reward-pill{font-size:.72rem;font-weight:800;color:#111827;background:rgba(15,23,42,.05);padding:5px 10px;border-radius:999px;display:inline-flex;gap:6px;align-items:center;}
-    .ad-inner .progress-pill{font-size:.72rem;color:#4b5563;background:rgba(15,23,42,.04);padding:4px 10px;border-radius:999px;display:inline-block;}
-    .slot-1 .ad-inner{background:linear-gradient(145deg,#fff7f0,#ffe5d0);} .slot-1 .ad-inner i{color:#ff8b3d;}
-    .slot-2 .ad-inner{background:linear-gradient(145deg,#edf5ff,#dde6ff);} .slot-2 .ad-inner i{color:#4f8cff;}
-    .slot-3 .ad-inner{background:linear-gradient(145deg,#f2fffa,#dcfff2);} .slot-3 .ad-inner i{color:#00b894;}
-    .slot-4 .ad-inner{background:linear-gradient(145deg,#fff2fb,#ffe0f3);} .slot-4 .ad-inner i{color:#e84393;}
-    .ad-card.completed{opacity:.6;filter:grayscale(1);pointer-events:none;}
+    /* ================= AD CARDS ================= */
+    .sec-head { font-size: 1rem; font-weight: 800; margin: 20px 20px 12px; display: flex; align-items: center; gap: 8px; color: #fff; }
+    .ad-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 0 18px; }
+    .ad-card {
+      position: relative;
+      padding: 2px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.08);
+      cursor: pointer;
+      height: 125px;
+      transition: transform 0.2s;
+    }
+    .ad-card:active { transform: scale(0.97); }
+    .ad-inner {
+      border-radius: 18px;
+      padding: 12px 10px;
+      text-align: center;
+      background: var(--surface-card);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+    }
+    .ad-inner i { font-size: 1.7rem; margin-bottom: 2px; }
+    .ad-inner h4 { font-size: 0.88rem; font-weight: 800; color: #fff; }
+    .ad-inner .reward-pill {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #fff;
+      background: rgba(255,255,255,0.08);
+      padding: 4px 10px;
+      border-radius: 20px;
+      display: inline-flex;
+      gap: 5px;
+      align-items: center;
+    }
+    .ad-inner .progress-pill { font-size: 0.7rem; color: var(--text-muted); }
+    .slot-1 i { color: #ff9f43; }
+    .slot-2 i { color: #54a0ff; }
+    .slot-3 i { color: #1dd1a1; }
+    .slot-4 i { color: #ff6b6b; }
+    .ad-card.completed { opacity: 0.45; filter: grayscale(1); pointer-events: none; }
 
-    /* Leaderboard Stats */
-    .stat-counters-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:15px 20px 10px;}
-    .stat-box{background:#fff;border-radius:16px;padding:12px 6px;text-align:center;box-shadow:0 4px 15px rgba(0,0,0,.03);border:1px solid #f1f5f9;}
-    .stat-box h4{font-size:1.05rem;font-weight:900;color:var(--primary);margin-bottom:2px;}
-    .stat-box p{font-size:.65rem;color:#64748b;font-weight:700;}
+    /* ================= LEADERBOARD ================= */
+    .stat-counters-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; padding: 15px 18px 10px; }
+    .stat-box { background: var(--surface); border-radius: 16px; padding: 12px 8px; text-align: center; border: 1px solid rgba(255,255,255,0.06); }
+    .stat-box h4 { font-size: 1.05rem; font-weight: 900; color: var(--secondary); }
+    .stat-box p { font-size: 0.65rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; }
 
-    .leader-row{display:flex;align-items:center;justify-content:space-between;background:#fff;padding:12px 16px;border-radius:16px;margin:0 20px 10px;box-shadow:0 3px 10px rgba(0,0,0,.02);}
-    .leader-left{display:flex;align-items:center;gap:12px;font-weight:700;font-size:.88rem;}
-    .leader-left img{width:38px;height:38px;border-radius:50%;object-fit:cover;}
-    .active-tag{font-size:.68rem;padding:3px 8px;border-radius:20px;background:rgba(0,184,148,.12);color:var(--success);font-weight:700;display:inline-flex;align-items:center;gap:4px;}
+    .leader-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface);
+      padding: 12px 16px;
+      border-radius: 16px;
+      margin: 0 18px 10px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    .leader-left { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 0.88rem; color: #fff; }
+    .leader-left img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; }
+    .active-tag { font-size: 0.68rem; padding: 3px 8px; border-radius: 20px; background: rgba(0,184,148,0.15); color: var(--success); font-weight: 700; }
 
-    /* More Bots */
-    .bot-grid{display:grid;grid-template-columns:1fr;gap:12px;padding:0 20px 30px;}
-    .bot-card{background:#fff;border-radius:18px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 15px rgba(0,0,0,.03);}
-    .bot-meta{display:flex;align-items:center;gap:12px;}
-    .bot-meta img{width:45px;height:45px;border-radius:12px;object-fit:cover;}
-    .bot-meta h4{font-size:.9rem;font-weight:700;}
-    .bot-meta p{font-size:.75rem;color:#64748b;}
-    .bot-open-btn{padding:8px 18px;border-radius:25px;background:linear-gradient(135deg,#0984e3,#74b9ff);color:#fff;text-decoration:none;font-weight:700;font-size:.8rem;}
+    /* ================= MORE BOTS ================= */
+    .bot-grid { display: grid; grid-template-columns: 1fr; gap: 12px; padding: 0 18px 30px; }
+    .bot-card {
+      background: var(--surface);
+      border-radius: 18px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .bot-meta { display: flex; align-items: center; gap: 12px; }
+    .bot-meta img { width: 44px; height: 44px; border-radius: 12px; object-fit: cover; }
+    .bot-meta h4 { font-size: 0.9rem; font-weight: 700; color: #fff; }
+    .bot-meta p { font-size: 0.72rem; color: var(--text-muted); }
+    .bot-open-btn {
+      padding: 7px 16px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #0984e3, #74b9ff);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.78rem;
+    }
 
-    /* FULL SCREEN SUPPORT CHAT (REDESIGNED SEND BUTTON) */
-    #page-support{position:fixed;inset:0;background:var(--wa-bg);z-index:10000;display:none;flex-direction:column;}
-    #page-support.active{display:flex;}
-    .wa-top-bar{background:var(--wa-header);color:#fff;padding:15px;display:flex;align-items:center;gap:14px;box-shadow:0 2px 6px rgba(0,0,0,.2);}
-    .wa-back-btn{background:none;border:none;color:#fff;font-size:1.25rem;cursor:pointer;}
-    .wa-user-info{display:flex;align-items:center;gap:10px;flex:1;}
-    .wa-user-info img{width:40px;height:40px;border-radius:50%;object-fit:cover;border:1.5px solid #fff;}
-    .wa-user-info h4{font-size:.95rem;font-weight:700;line-height:1.2;}
-    .wa-user-info p{font-size:.72rem;opacity:.85;}
-    .wa-chat-body{flex:1;padding:15px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;}
-    .wa-msg{max-width:80%;padding:10px 14px;border-radius:14px;font-size:.85rem;line-height:1.4;position:relative;box-shadow:0 1px 3px rgba(0,0,0,.15);word-break:break-word;}
-    .wa-msg.admin{align-self:flex-start;background:#fff;border-top-left-radius:2px;}
-    .wa-msg.user{align-self:flex-end;background:var(--wa-my);border-top-right-radius:2px;}
-    .wa-msg-time{font-size:.65rem;color:#777;text-align:right;margin-top:4px;}
+    /* ================= FULL SCREEN SUPPORT CHAT ================= */
+    #page-support {
+      position: fixed;
+      inset: 0;
+      background: var(--wa-bg);
+      z-index: 999999;
+      display: none;
+      flex-direction: column;
+      height: 100dvh;
+    }
+    #page-support.active { display: flex; }
+    .wa-top-bar {
+      background: var(--wa-header);
+      color: #fff;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    .wa-back-btn { background: none; border: none; color: #fff; font-size: 1.25rem; cursor: pointer; padding: 4px 8px; }
+    .wa-user-info { display: flex; align-items: center; gap: 10px; flex: 1; }
+    .wa-user-info img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1.5px solid #fff; }
+    .wa-user-info h4 { font-size: 0.92rem; font-weight: 700; }
+    .wa-user-info p { font-size: 0.7rem; opacity: 0.85; }
 
-    /* Premium Modern Send Button */
-    .wa-bottom-bar{background:#f0f2f5;padding:10px 14px;display:flex;gap:10px;align-items:center;}
-    .wa-input{flex:1;padding:12px 18px;border-radius:25px;border:none;outline:none;font-size:.9rem;background:#fff;}
-    .wa-send-btn-circle{
+    .wa-chat-body {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .wa-msg {
+      max-width: 80%;
+      padding: 9px 13px;
+      border-radius: 12px;
+      font-size: 0.84rem;
+      line-height: 1.4;
+      color: #111;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.12);
+    }
+    .wa-msg.admin { align-self: flex-start; background: #fff; border-top-left-radius: 2px; }
+    .wa-msg.user { align-self: flex-end; background: var(--wa-my); border-top-right-radius: 2px; }
+    .wa-msg-time { font-size: 0.65rem; color: #666; text-align: right; margin-top: 4px; }
+
+    /* Modern Scaled Chat Bar */
+    .wa-bottom-bar {
+      background: #f0f2f5;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-top: 1px solid #ddd;
+    }
+    .wa-input {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: 24px;
+      border: 1px solid #ccc;
+      outline: none;
+      font-size: 0.84rem;
+      background: #fff;
+      color: #111;
+      height: 42px;
+    }
+    .wa-send-btn-circle {
       background: linear-gradient(135deg, #00a884, #075E54);
       color: #fff;
-      width: 46px;
-      height: 46px;
+      width: 42px;
+      height: 42px;
+      min-width: 42px;
       border-radius: 50%;
       border: none;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 10px rgba(7,94,84,0.3);
       cursor: pointer;
-      transition: transform 0.2s ease;
+      box-shadow: 0 2px 6px rgba(7,94,84,0.3);
     }
-    .wa-send-btn-circle:active{ transform: scale(0.92); }
-    .wa-send-btn-circle i { font-size: 1.15rem; margin-left: 2px; }
+    .wa-send-btn-circle i { font-size: 1rem; margin-left: 2px; }
 
-    /* Bottom Navigation */
-    .nav{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);width:90%;max-width:400px;background:#1e293b;display:flex;justify-content:space-around;padding:12px;border-radius:25px;box-shadow:0 10px 30px rgba(0,0,0,.25);z-index:100;}
-    .nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;color:rgba(255,255,255,.45);font-size:1.15rem;cursor:pointer;transition:.2s;}
-    .nav-item span{font-size:.65rem;font-weight:600;}
-    .nav-item.active{color:#fff;transform:translateY(-2px);}
+    /* ================= BOTTOM NAVIGATION ================= */
+    .nav {
+      position: fixed;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 420px;
+      background: rgba(21, 28, 44, 0.92);
+      backdrop-filter: blur(14px);
+      display: flex;
+      justify-content: space-around;
+      padding: 12px;
+      border-radius: 26px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.08);
+      z-index: 100;
+    }
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: rgba(255,255,255,0.4);
+      font-size: 1.15rem;
+      cursor: pointer;
+      transition: .2s;
+    }
+    .nav-item span { font-size: 0.65rem; font-weight: 600; }
+    .nav-item.active { color: var(--secondary); transform: translateY(-2px); }
 
-    .toast{position:fixed;top:30px;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:10px 20px;border-radius:30px;font-size:.82rem;opacity:0;transition:.3s;z-index:12000;font-weight:600;}
-    .toast.show{opacity:1;top:45px;}
+    .toast {
+      position: fixed;
+      top: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e293b;
+      color: #fff;
+      padding: 9px 18px;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      opacity: 0;
+      transition: .3s;
+      z-index: 9999999;
+      font-weight: 600;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    .toast.show { opacity: 1; top: 38px; }
   </style>
 </head>
 <body>
 
-  <!-- Loader -->
+  <!-- ================= PRO FULLSCREEN LOADER ================= -->
   <div id="loader" class="loader-overlay">
-    <div class="loader-card">
-      <div class="core-spin"></div>
+    <div class="loader-glow-orb"></div>
+    
+    <div style="width: 100%; text-align: center; position: relative; z-index: 2;">
+      <span style="font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase; color: var(--secondary); font-weight: 800;">Welcome to Platform</span>
+    </div>
+
+    <div class="loader-center">
+      <div class="core-spinner-ring">
+        <div class="core-spin"></div>
+        <i class="fas fa-gem"></i>
+      </div>
       <div class="loader-title">Earn & Redeem Pro</div>
-      <div class="loader-sub">অপেক্ষা করুন, প্রস্তুত হচ্ছে...</div>
+      <div class="loader-sub"><i class="fas fa-circle-notch fa-spin"></i> অপেক্ষা করুন, প্রস্তুত হচ্ছে...</div>
+    </div>
+
+    <!-- Live Stats Row on Fullscreen Loader -->
+    <div class="loader-stats-bar">
+      <div class="loader-stat-col">
+        <h4 id="ldr-members">1,450</h4>
+        <p>Total Member</p>
+      </div>
+      <div class="loader-stat-col">
+        <h4 id="ldr-active" style="color:var(--success);">420</h4>
+        <p>Total Active</p>
+      </div>
+      <div class="loader-stat-col">
+        <h4 id="ldr-earned" style="color:#fbc531;">24,800</h4>
+        <p>Total Earn</p>
+      </div>
     </div>
   </div>
 
   <div id="toast" class="toast">Alert</div>
 
   <div id="app">
-    <!-- Header -->
+    <!-- Top Header -->
     <div class="header">
       <div class="top-bar">
         <div class="user-pill">
           <img id="u-img" src="https://via.placeholder.com/45">
-          <div class="user-info"><h3 id="u-name">User</h3><p id="u-id">ID: ...</p></div>
+          <div class="user-info">
+            <h3 id="u-name">User</h3>
+            <p id="u-id">ID: ...</p>
+          </div>
         </div>
         <button class="support-btn" onclick="openFullSupport()"><i class="fab fa-whatsapp"></i></button>
       </div>
@@ -193,41 +587,59 @@
     <!-- ================= TAB 1: HOME ================= -->
     <div id="page-home" class="page-section active">
       
-      <!-- Hero Redeem Section -->
+      <!-- HERO REDEEM SECTION -->
       <div class="hero-redeem-card">
-        <div class="sec-title"><i class="fas fa-gift" style="color:var(--primary);"></i> Daily Redeem Code</div>
+        <div class="sec-title"><i class="fas fa-gift" style="color:var(--secondary);"></i> Daily Redeem System</div>
         
         <!-- Progress Bar -->
         <div class="progress-label">
-          <span>অ্যাড কমপ্লিট টাস্ক</span>
+          <span>বিজ্ঞাপন টাস্ক প্রগ্রেস</span>
           <span id="progress-percent">0%</span>
         </div>
         <div class="progress-container">
           <div id="progress-bar-fill" class="progress-fill"></div>
         </div>
 
-        <!-- Unlock with Telegram Channel PIN -->
-        <div id="unlock-container">
+        <!-- 1. UNLOCK TELEGRAM PIN -->
+        <div id="unlock-container" style="margin-top: 14px;">
           <button id="btn-unlock-tg" class="btn-act" onclick="triggerChannelUnlock()">
             <i class="fab fa-telegram-plane"></i> আনলক করুন (টেলিগ্রাম চ্যানেল)
           </button>
           
-          <div id="pin-input-group" style="display:none;margin-top:12px;">
+          <div id="pin-input-group" style="display:none; margin-top:12px;">
             <input type="text" id="entered-key" class="input-box" placeholder="টেলিগ্রাম চ্যানেলে পাওয়া PIN দিন">
-            <button id="btn-verify-pin" class="btn-act" style="background:var(--primary);" onclick="verifyKeyPin()">
+            <button id="btn-verify-pin" class="btn-act" style="background:var(--success);" onclick="verifyKeyPin()">
               <i class="fas fa-check"></i> PIN যাচাই করুন
             </button>
           </div>
         </div>
 
         <!-- Verified Indicator -->
-        <div id="verified-state" style="display:none;margin-top:10px;text-align:center;color:var(--success);font-weight:700;font-size:.9rem;">
-          <i class="fas fa-circle-check"></i> PIN ভেরিফাইড সম্পন্ন!
+        <div id="verified-state" style="display:none; margin-top:10px; text-align:center; color:var(--success); font-weight:700; font-size:.88rem;">
+          <i class="fas fa-circle-check"></i> PIN ভেরিফাইড সম্পন্ন হয়েছে!
         </div>
 
-        <!-- 5-Digit Progressive Animated Key Section -->
-        <div style="margin-top:14px; text-align:center;">
-          <small style="color:#64748b;font-weight:600;font-size:0.75rem;">আপনার ৫ সংখ্যার সিক্রেট Key আনলক স্ট্যাটাস:</small>
+        <!-- 2. REDEEM CODE CONTAINER (DIRECTLY AFTER UNLOCK) -->
+        <div style="margin-top: 14px;">
+          <button id="btn-claim-redeem" class="btn-act" disabled onclick="openRedeemAnimation()">
+            <i class="fas fa-lock"></i> Redeem Code (Lock)
+          </button>
+
+          <!-- Code Revealed Modal Card -->
+          <div id="redeem-code-box" style="display:none;">
+            <div class="code-reveal-box">
+              <small style="font-weight:700; opacity:0.9;">আপনার রিডিম কোড প্রস্তুত:</small>
+              <h3 id="revealed-code">PRO2026</h3>
+            </div>
+            <a id="bot-redeem-link" href="#" target="_blank" class="btn-act" style="margin-top:10px; text-decoration:none; background:linear-gradient(135deg,#ff7675,#e17055);">
+              <i class="fas fa-robot"></i> এই বটে গিয়ে রিডিম করুন
+            </a>
+          </div>
+        </div>
+
+        <!-- 3. 5-DIGIT SECRET KEY PROGRESSION -->
+        <div style="margin-top:20px; text-align:center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 14px;">
+          <small style="color:var(--text-muted); font-weight:600; font-size:0.75rem;">আপনার ৫ সংখ্যার সিক্রেট Key আনলক স্ট্যাটাস:</small>
           <div class="key-slots-container">
             <div class="key-digit-box" id="digit-0">-</div>
             <div class="key-digit-box" id="digit-1">-</div>
@@ -238,29 +650,14 @@
         </div>
 
         <div class="copy-key-box">
-          <span id="key-copy-status" style="font-size:0.78rem;font-weight:700;color:var(--primary);">৫টি সংখ্যা আনলক হলে কপি করুন</span>
-          <button class="btn-copy" id="btn-copy-key" disabled onclick="copyRedeemKey()"><i class="fas fa-copy"></i> কপি করুন</button>
+          <span id="key-copy-status" style="font-size:0.75rem; font-weight:700; color:var(--secondary);">৫টি ডিজিট আনলক হলে কপি করুন</span>
+          <button class="btn-copy" id="btn-copy-key" disabled onclick="copyRedeemKey()"><i class="fas fa-copy"></i> কপি</button>
         </div>
 
-        <!-- Disabled / Active Redeem Code Box -->
-        <button id="btn-claim-redeem" class="btn-act" style="margin-top:14px;" disabled onclick="openRedeemAnimation()">
-          <i class="fas fa-lock"></i> Redeem Code (Lock)
-        </button>
-
-        <!-- Code Revealed Pop-up -->
-        <div id="redeem-code-box" style="display:none;">
-          <div class="code-reveal-box">
-            <small>আপনার রিডিম কোড প্রস্তুত:</small>
-            <h3 id="revealed-code">CODE2026</h3>
-          </div>
-          <a id="bot-redeem-link" href="#" target="_blank" class="btn-act" style="margin-top:10px;text-decoration:none;background:linear-gradient(135deg,#ff9a3d,#ff5e7a);">
-            <i class="fas fa-robot"></i> এই বটে গিয়ে রিডিম করুন
-          </a>
-        </div>
       </div>
 
       <!-- 3D Daily Ad Cards -->
-      <div class="sec-head"><i class="fas fa-play-circle" style="color:var(--primary);"></i> Daily Ads (<span id="total-watched-txt">0/40</span>)</div>
+      <div class="sec-head"><i class="fas fa-play-circle" style="color:var(--secondary);"></i> Daily Watch Ads (<span id="total-watched-txt">0/40</span>)</div>
       <div id="ad-area" class="ad-grid"></div>
     </div>
 
@@ -268,8 +665,8 @@
     <div id="page-leaderboard" class="page-section">
       <div class="stat-counters-row">
         <div class="stat-box"><h4 id="cnt-members">0</h4><p>Total Member</p></div>
-        <div class="stat-box"><h4 id="cnt-active">0</h4><p>Total Active</p></div>
-        <div class="stat-box"><h4 id="cnt-earned">0</h4><p>Total Earn</p></div>
+        <div class="stat-box"><h4 id="cnt-active" style="color:var(--success);">0</h4><p>Total Active</p></div>
+        <div class="stat-box"><h4 id="cnt-earned" style="color:#fbc531;">0</h4><p>Total Earn</p></div>
       </div>
 
       <div class="sec-head"><i class="fas fa-ranking-star" style="color:#e11d48;"></i> Active Users Ranking</div>
@@ -278,12 +675,12 @@
 
     <!-- ================= TAB 3: MORE BOTS ================= -->
     <div id="page-bots" class="page-section">
-      <div class="sec-head"><i class="fas fa-cubes" style="color:var(--primary);"></i> Our Telegram Bots</div>
+      <div class="sec-head"><i class="fas fa-cubes" style="color:var(--secondary);"></i> Our Telegram Bots</div>
       <div id="bots-list" class="bot-grid"></div>
     </div>
   </div>
 
-  <!-- FULL SCREEN WHATSAPP SUPPORT -->
+  <!-- ================= FULLSCREEN SUPPORT CHAT ================= -->
   <div id="page-support">
     <div class="wa-top-bar">
       <button class="wa-back-btn" onclick="closeFullSupport()"><i class="fas fa-arrow-left"></i></button>
@@ -291,20 +688,21 @@
         <img src="https://via.placeholder.com/45">
         <div>
           <h4>Official Admin Support</h4>
-          <p>অনলাইন | সাপোর্ট ডেস্ক</p>
+          <p>অনলাইন | কাস্টমার হেল্প ডেস্ক</p>
         </div>
       </div>
     </div>
 
     <div class="wa-chat-body" id="chat-messages">
       <div class="wa-msg admin">
-        হ্যালো! Earn Hub অফিসিয়াল সাপোর্টে স্বাগতম। আপনি সর্বোচ্চ ৫টি বার্তা পাঠাতে পারবেন।
-        <div class="wa-msg-time">Start</div>
+        হ্যালো! Earn & Redeem অফিসিয়াল সাপোর্টে স্বাগতম। আপনার যেকোনো সমস্যার কথা জানান (সর্বোচ্চ ৫টি বার্তা)।
+        <div class="wa-msg-time">Official Support</div>
       </div>
     </div>
 
+    <!-- Compact Send Row with visible icon -->
     <div class="wa-bottom-bar">
-      <input type="text" id="chat-text-input" class="wa-input" placeholder="আপনার বার্তা লিখুন...">
+      <input type="text" id="chat-text-input" class="wa-input" placeholder="বার্তা লিখুন...">
       <button class="wa-send-btn-circle" onclick="sendSupportMessage()">
         <i class="fas fa-paper-plane"></i>
       </button>
@@ -325,7 +723,7 @@
   </div>
 
   <script>
-    // Firebase Configuration
+    // Firebase Init
     const firebaseConfig = {
       apiKey: "AIzaSyAsENiikJ5YQ1F8UHrixdJVEINAhO4PG30",
       authDomain: "bot2-3d8bc.firebaseapp.com",
@@ -337,37 +735,38 @@
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
-    const tg = window.Telegram.WebApp;
-    if(tg){ try{ tg.ready(); tg.expand(); }catch(e){} }
+    const tg = window.Telegram?.WebApp;
+    if (tg) { try { tg.ready(); tg.expand(); } catch(e){} }
 
+    // Central App State (Fully syncable from Firebase DB)
     let appState = {
-      user: { dailyAds:{}, singleKey:'', isVerified:false, lastActive:'' },
+      user: { dailyAds: {}, singleKey: '', isVerified: false, lastActive: '' },
       config: {
         dailyAdLimit: 10,
         redeemPin: "7788",
-        redeemCode: "PROREDEEM2026",
+        redeemCode: "REDEEM-PRO-2026",
         keyChannelLink: "https://t.me",
         botLink: "https://t.me",
         adminId: "123456",
-        stats: { members: 1250, active: 380, earn: 18500 },
+        stats: { members: 1450, active: 420, earn: 24800 },
         customAdScript: "",
         adSlots: [
-          { network: 'adsgram', id: '23393' },
-          { network: 'adsgram', id: '23393' },
-          { network: 'adsgram', id: '23393' },
-          { network: 'adsgram', id: '23393' }
+          { network: 'adsgram', id: '46350' },       // Adsgram Slot 1
+          { network: 'adsgram', id: '46351' },       // Adsgram Slot 2
+          { network: 'monetag', id: '11737228' },    // Monetag Slot 3
+          { network: 'monetag', id: '11595952' }     // Monetag Slot 4
         ],
         moreBots: {}
       }
     };
 
     let isBooted = false;
-    let tgUser = tg?.initDataUnsafe?.user || {id: '123456', first_name: 'Guest User', photo_url: 'https://via.placeholder.com/100'};
+    let tgUser = tg?.initDataUnsafe?.user || { id: '123456', first_name: 'Guest User', photo_url: 'https://via.placeholder.com/100' };
 
     function toast(msg) {
       const t = document.getElementById('toast');
       t.innerText = msg; t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 2600);
+      setTimeout(() => t.classList.remove('show'), 2500);
     }
     function todayStr() { return new Date().toISOString().slice(0, 10); }
 
@@ -376,18 +775,18 @@
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
 
       const page = document.getElementById('page-' + tabId);
-      if(page) page.classList.add('active');
+      if (page) page.classList.add('active');
 
-      if(el) {
+      if (el) {
         el.classList.add('active');
       } else {
         const mapping = { home:0, leaderboard:1, bots:2 };
-        if(mapping[tabId] !== undefined) document.querySelectorAll('.nav-item')[mapping[tabId]].classList.add('active');
+        if (mapping[tabId] !== undefined) document.querySelectorAll('.nav-item')[mapping[tabId]].classList.add('active');
       }
 
-      if(tabId === 'leaderboard') startLiveCounters();
-      if(tabId === 'bots') renderBots();
-      if(tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+      if (tabId === 'leaderboard') startLiveCounters();
+      if (tabId === 'bots') renderBots();
+      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
     }
 
     function openFullSupport() {
@@ -398,41 +797,40 @@
       document.getElementById('page-support').classList.remove('active');
     }
 
-    // Channel Unlock & Pin Verification
+    // Unlock PIN Check
     function triggerChannelUnlock() {
       const url = appState.config.keyChannelLink || 'https://t.me';
-      if(tg?.openTelegramLink && url.includes('t.me/')) tg.openTelegramLink(url);
+      if (tg?.openTelegramLink && url.includes('t.me/')) tg.openTelegramLink(url);
       else window.open(url, '_blank');
 
       document.getElementById('pin-input-group').style.display = 'block';
-      toast("চ্যানেল থেকে PIN সংগ্রহ করে নিচে দিন");
+      toast("টেলিগ্রাম চ্যানেল থেকে PIN সংগ্রহ করে লিখুন");
     }
 
     async function verifyKeyPin() {
       const entered = document.getElementById('entered-key').value.trim();
       const actualPin = String(appState.config.redeemPin || '7788').trim();
 
-      if(!entered) return toast("PIN লিখুন");
+      if (!entered) return toast("দয়া করে PIN লিখুন");
 
-      if(entered === actualPin) {
+      if (entered === actualPin) {
         await db.ref('users/' + appState.user.id).update({ isVerified: true });
-        toast("সঠিক PIN! আনলক সফল");
+        toast("PIN যাচাই সফল হয়েছে!");
         updateRedeemUI();
       } else {
-        toast("ভুল PIN! চ্যানেলে গিয়ে সঠিক PIN নিন");
+        toast("ভুল PIN! চ্যানেলে গিয়ে সঠিক PIN সংগ্রহ করুন");
       }
     }
 
     function copyRedeemKey() {
       const k = appState.user.singleKey;
-      if(!k || k.length < 5) return toast("কী এখনো সম্পূর্ণ আনলক হয়নি!");
+      if (!k || k.length < 5) return toast("কী এখনো সম্পূর্ণ আনলক হয়নি!");
       navigator.clipboard.writeText(k);
-      toast("Key কপি হয়েছে: " + k);
+      toast("Secret Key কপি হয়েছে: " + k);
     }
 
-    // 5-Digit Progress & UI Calculations
+    // Progression and Redeem Unlock Status
     function updateRedeemUI() {
-      const slots = appState.config.adSlots || [];
       const limit = Number(appState.config.dailyAdLimit || 10);
       const totalRequired = limit * 4;
 
@@ -441,20 +839,20 @@
       for (let i = 0; i < 4; i++) {
         const done = (appState.user.dailyAds && appState.user.dailyAds[i]) ? appState.user.dailyAds[i] : 0;
         watchedTotal += done;
-        if(done > maxWatchedInAnySlot) maxWatchedInAnySlot = done;
+        if (done > maxWatchedInAnySlot) maxWatchedInAnySlot = done;
       }
 
       let percent = Math.min(100, Math.floor((watchedTotal / totalRequired) * 100));
       document.getElementById('progress-percent').innerText = `${percent}%`;
       document.getElementById('progress-bar-fill').style.width = `${percent}%`;
 
-      // 5-Digit Progressive Unlock Display (1 digit every 2 ads in single slot)
+      // 5-Digit Progressive Unlock Display
       const digitsUnlockedCount = Math.min(5, Math.floor(maxWatchedInAnySlot / 2));
       const myKey = String(appState.user.singleKey || "12345");
 
-      for(let i=0; i<5; i++) {
+      for (let i = 0; i < 5; i++) {
         const elDigit = document.getElementById(`digit-${i}`);
-        if(i < digitsUnlockedCount) {
+        if (i < digitsUnlockedCount) {
           elDigit.innerText = myKey[i] || (i+1);
           elDigit.classList.add('unlocked');
         } else {
@@ -465,7 +863,7 @@
 
       const copyBtn = document.getElementById('btn-copy-key');
       const copyStatus = document.getElementById('key-copy-status');
-      if(digitsUnlockedCount >= 5) {
+      if (digitsUnlockedCount >= 5) {
         copyBtn.disabled = false;
         copyStatus.innerText = "Key সম্পূর্ণ আনলক হয়েছে!";
       } else {
@@ -473,15 +871,15 @@
         copyStatus.innerText = `${digitsUnlockedCount}/5 সংখ্যা আনলক হয়েছে`;
       }
 
-      // PIN verification UI
-      if(appState.user.isVerified) {
+      // Verified State UI
+      if (appState.user.isVerified) {
         document.getElementById('unlock-container').style.display = 'none';
         document.getElementById('verified-state').style.display = 'block';
       }
 
-      // Redeem Code Activation
+      // Redeem Button Activation
       const btnClaim = document.getElementById('btn-claim-redeem');
-      if(percent >= 100 && appState.user.isVerified) {
+      if (percent >= 100 && appState.user.isVerified) {
         btnClaim.disabled = false;
         btnClaim.innerHTML = '<i class="fas fa-gift"></i> Get Redeem Code (Unlocked)';
         btnClaim.style.background = 'linear-gradient(135deg, #00b894, #00cec9)';
@@ -494,19 +892,20 @@
     function openRedeemAnimation() {
       const box = document.getElementById('redeem-code-box');
       box.style.display = 'block';
-      document.getElementById('revealed-code').innerText = appState.config.redeemCode || 'CODE2026';
+      document.getElementById('revealed-code').innerText = appState.config.redeemCode || 'PRO2026';
       document.getElementById('bot-redeem-link').href = appState.config.botLink || 'https://t.me';
       toast("অভিনন্দন! রিডিম কোড ওপেন হয়েছে");
     }
 
-    // Render 3D Ad Cards
+    // Render 4 Ad Cards
     function renderAds() {
-      const el = document.getElementById('ad-area'); el.innerHTML = '';
+      const el = document.getElementById('ad-area'); 
+      el.innerHTML = '';
       const slots = appState.config.adSlots || [];
       const limit = Number(appState.config.dailyAdLimit || 10);
 
       let totalWatched = 0;
-      for (let i=0; i<4; i++) {
+      for (let i = 0; i < 4; i++) {
         const slot = slots[i];
         const done = (appState.user.dailyAds && appState.user.dailyAds[i]) ? appState.user.dailyAds[i] : 0;
         totalWatched += done;
@@ -530,62 +929,60 @@
       updateRedeemUI();
     }
 
-    // Strict Watch Ad Processing
+    // Watch Ad Processor
     let slotLocks = {};
     async function watchAd(i) {
-      if(slotLocks[i]) return; slotLocks[i] = true;
+      if (slotLocks[i]) return; 
+      slotLocks[i] = true;
       const slot = appState.config.adSlots[i];
+
       try {
         toast('বিজ্ঞাপন লোড হচ্ছে... সম্পূর্ণ দেখুন');
         let success = false;
         
         if (slot.network === 'monetag') {
-          if (typeof window['show_'+slot.id] === 'function') {
-            await window['show_'+slot.id]();
+          const fnName = 'show_' + slot.id;
+          if (typeof window[fnName] === 'function') {
+            await window[fnName]();
             success = true;
           } else {
-            throw new Error("Monetag স্ক্রিপ্ট লোড হয়নি");
+            throw new Error("Monetag অ্যাড লোড হয়নি। পুনরায় চেষ্টা করুন।");
           }
         } else if (slot.network === 'adsgram') {
           if (typeof window.Adsgram === 'undefined') throw new Error("Adsgram স্ক্রিপ্ট প্রস্তুত নয়");
-          const adCtrl = window.Adsgram.init({ blockId: slot.id ? String(slot.id) : '23393' });
+          const adCtrl = window.Adsgram.init({ blockId: slot.id ? String(slot.id) : '46350' });
           let res = await adCtrl.show();
-          if(res && res.done === true) {
+          if (res && res.done === true) {
             success = true;
           } else {
             throw new Error("বিজ্ঞাপনটি সম্পূর্ণ দেখা হয়নি");
           }
         }
 
-        if(success) {
+        if (success) {
           let newAds = appState.user.dailyAds || {};
           newAds[i] = (newAds[i] || 0) + 1;
           let updates = { dailyAds: newAds };
 
           const limit = Number(appState.config.dailyAdLimit || 10);
-          
-          // Generate 5-Digit Key if slot has progress and user has no key yet
-          if(!appState.user.singleKey) {
+          if (!appState.user.singleKey) {
             updates.singleKey = String(Math.floor(10000 + Math.random() * 90000));
           }
 
           await db.ref('users/' + appState.user.id).update(updates);
-          toast(`Ad ${newAds[i]}/${limit} সম্পন্ন হয়েছে`);
+          toast(`Ad ${newAds[i]}/${limit} সম্পন্ন হয়েছে!`);
         }
       } catch(e) { 
-        toast(e.message || 'বিজ্ঞাপন দেখা ব্যর্থ হয়েছে!'); 
+        toast(e.message || 'বিজ্ঞাপন দেখা সম্পন্ন হয়নি!'); 
       } finally { 
         slotLocks[i] = false; 
       }
     }
 
-    // Realistic Counters
-    let baseMembers = 1450, baseActive = 410, baseEarn = 24500;
-    let counterInterval = null;
-
+    // Animate Numbers
     function animateValue(id, start, end, duration) {
       const obj = document.getElementById(id);
-      if(!obj) return;
+      if (!obj) return;
       let startTimestamp = null;
       const step = (timestamp) => {
         if (!startTimestamp) startTimestamp = timestamp;
@@ -596,55 +993,64 @@
       window.requestAnimationFrame(step);
     }
 
+    let baseMembers = 1450, baseActive = 420, baseEarn = 24800;
+    let counterInterval = null;
+
     function startLiveCounters() {
       const s = appState.config.stats || {};
       baseMembers = s.members || baseMembers;
       baseActive = s.active || baseActive;
       baseEarn = s.earn || baseEarn;
 
-      animateValue("cnt-members", 0, baseMembers, 1000);
-      animateValue("cnt-active", 0, baseActive, 1000);
-      animateValue("cnt-earned", 0, baseEarn, 1000);
+      animateValue("cnt-members", 0, baseMembers, 800);
+      animateValue("cnt-active", 0, baseActive, 800);
+      animateValue("cnt-earned", 0, baseEarn, 800);
 
       const list = document.getElementById('leaderboard-list');
-      const dummyUsers = ['Tanvir_Pro', 'Hasan99', 'Shohel_BD', 'Sakib_King', 'Rashedul', 'Akash_Tech', 'Mehedi_YT'];
+      const dummyUsers = ['Tanvir_BD', 'Sakib_King', 'Hasan_99', 'Shohel_Rider', 'Rashedul', 'Akash_Pro', 'Mehedi_YT'];
       let html = '';
       dummyUsers.forEach((u, i) => {
         html += `
           <div class="leader-row">
             <div class="leader-left">
-              <span style="color:#94a3b8;width:20px;">#${i+1}</span>
+              <span style="color:#64748b; width:18px;">#${i+1}</span>
               <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${u}">
               <span>${u}</span>
             </div>
-            <div class="active-tag"><i class="fas fa-circle" style="font-size:.45rem;"></i> Active Now</div>
+            <div class="active-tag"><i class="fas fa-circle" style="font-size:.45rem;"></i> Active</div>
           </div>`;
       });
       list.innerHTML = html;
 
-      if(!counterInterval) {
-        const increments = [1, 10, 15, 35];
+      if (!counterInterval) {
+        const increments = [1, 2, 4, 8];
         counterInterval = setInterval(() => {
-          const randInc = increments[Math.floor(Math.random() * increments.length)];
-          baseMembers += randInc;
-          baseActive += Math.floor(randInc / 2) + 1;
-          baseEarn += (randInc * 15);
+          const rand = increments[Math.floor(Math.random() * increments.length)];
+          baseMembers += rand;
+          baseActive += Math.floor(rand / 2) + 1;
+          baseEarn += (rand * 25);
 
           const elM = document.getElementById('cnt-members');
           const elA = document.getElementById('cnt-active');
           const elE = document.getElementById('cnt-earned');
 
-          if(elM) elM.innerText = baseMembers.toLocaleString();
-          if(elA) elA.innerText = baseActive.toLocaleString();
-          if(elE) elE.innerText = baseEarn.toLocaleString();
-        }, 4500);
+          if (elM) elM.innerText = baseMembers.toLocaleString();
+          if (elA) elA.innerText = baseActive.toLocaleString();
+          if (elE) elE.innerText = baseEarn.toLocaleString();
+        }, 5000);
       }
     }
 
     function renderBots() {
-      const el = document.getElementById('bots-list'); el.innerHTML = '';
+      const el = document.getElementById('bots-list'); 
+      el.innerHTML = '';
       const bots = appState.config.moreBots || {};
-      Object.keys(bots).forEach(k => {
+      const keys = Object.keys(bots);
+      if (keys.length === 0) {
+        el.innerHTML = `<div style="text-align:center; color:var(--text-muted); font-size:0.85rem; padding:20px;">নতুন বট শীঘ্রই যোগ করা হবে!</div>`;
+        return;
+      }
+      keys.forEach(k => {
         const b = bots[k];
         el.innerHTML += `
           <div class="bot-card">
@@ -657,19 +1063,19 @@
       });
     }
 
-    // Support Chat
+    // Support Chat System
     let chatMessageHistory = [];
     function loadSupportChat() {
       db.ref('support_chats/' + appState.user.id).on('value', snap => {
         const body = document.getElementById('chat-messages');
         body.innerHTML = `
           <div class="wa-msg admin">
-            হ্যালো! Earn Hub অফিসিয়াল সাপোর্টে স্বাগতম। আপনি সর্বোচ্চ ৫টি বার্তা পাঠাতে পারবেন।
-            <div class="wa-msg-time">Start</div>
+            হ্যালো! Earn & Redeem অফিসিয়াল সাপোর্টে স্বাগতম। আপনার যেকোনো সমস্যার কথা জানান (সর্বোচ্চ ৫টি বার্তা)।
+            <div class="wa-msg-time">Official Support</div>
           </div>`;
 
         chatMessageHistory = [];
-        if(snap.exists()) {
+        if (snap.exists()) {
           snap.forEach(c => {
             const m = c.val();
             chatMessageHistory.push(m);
@@ -688,19 +1094,15 @@
     async function sendSupportMessage() {
       const input = document.getElementById('chat-text-input');
       const text = input.value.trim();
-      if(!text) return toast("মেসেজ লিখুন");
+      if (!text) return toast("মেসেজ লিখুন");
 
       const isAdmin = String(appState.config.adminId) === String(tgUser.id);
-      if(!isAdmin) {
+      if (!isAdmin) {
         const userMsgs = chatMessageHistory.filter(m => m.sender === 'user');
-        if(userMsgs.length >= 5) {
-          return toast("আপনি সর্বোচ্চ ৫টি মেসেজ পাঠিয়ে ফেলেছেন!");
-        }
-        if(chatMessageHistory.length > 0) {
+        if (userMsgs.length >= 5) return toast("আপনি সর্বোচ্চ ৫টি মেসেজ পাঠিয়ে ফেলেছেন!");
+        if (chatMessageHistory.length > 0) {
           const lastMsg = chatMessageHistory[chatMessageHistory.length - 1];
-          if(lastMsg.sender === 'user') {
-            return toast("এডমিনের উত্তরের জন্য অপেক্ষা করুন");
-          }
+          if (lastMsg.sender === 'user') return toast("এডমিনের উত্তরের জন্য অপেক্ষা করুন");
         }
       }
 
@@ -720,68 +1122,83 @@
       toast("মেসেজ পাঠানো হয়েছে!");
     }
 
-    // Load custom script from Firebase
     function injectCustomScripts(code) {
-      if(!code) return;
+      if (!code) return;
       try {
         const sc = document.createElement('script');
         sc.text = code;
         document.body.appendChild(sc);
-      } catch(e) {}
+      } catch(e){}
     }
 
-    // Initialization
+    // App Initialization
     window.onload = async () => {
       document.getElementById('u-name').innerText = tgUser.first_name;
       document.getElementById('u-id').innerText = 'ID: ' + tgUser.id;
-      if(tgUser.photo_url) document.getElementById('u-img').src = tgUser.photo_url;
+      if (tgUser.photo_url) document.getElementById('u-img').src = tgUser.photo_url;
 
       const fallbackTimer = setTimeout(() => {
-        if(!isBooted) {
+        if (!isBooted) {
           document.getElementById('loader').style.display = 'none';
           document.getElementById('app').style.display = 'block';
           isBooted = true;
         }
-      }, 3000);
+      }, 3500);
 
       try {
+        // Firebase Config Real-time Listener
         db.ref('config').on('value', snap => {
-          if(snap.exists()) {
-            appState.config = snap.val();
-            if(appState.config.customAdScript) {
+          if (snap.exists()) {
+            const data = snap.val();
+            appState.config = Object.assign({}, appState.config, data);
+
+            // Update stats in loader if still visible
+            if (appState.config.stats) {
+              const elM = document.getElementById('ldr-members');
+              const elA = document.getElementById('ldr-active');
+              const elE = document.getElementById('ldr-earned');
+              if (elM) elM.innerText = (appState.config.stats.members || 1450).toLocaleString();
+              if (elA) elA.innerText = (appState.config.stats.active || 420).toLocaleString();
+              if (elE) elE.innerText = (appState.config.stats.earn || 24800).toLocaleString();
+            }
+
+            if (appState.config.customAdScript) {
               injectCustomScripts(appState.config.customAdScript);
             }
             renderAds();
           }
         });
 
+        // User Node Sync
         const userRef = db.ref('users/' + tgUser.id);
         const today = todayStr();
         const snap = await userRef.once('value');
 
-        if(!snap.exists()) {
+        if (!snap.exists()) {
           appState.user = { 
-            id: tgUser.id, name: tgUser.first_name, photo: tgUser.photo_url||'',
+            id: tgUser.id, name: tgUser.first_name, photo: tgUser.photo_url || '',
             dailyAds: {}, singleKey: '', isVerified: false, lastActive: today
           };
           await userRef.set(appState.user);
         } else {
           appState.user = snap.val();
-          if(appState.user.lastActive !== today) {
+          if (appState.user.lastActive !== today) {
             await userRef.update({ dailyAds: {}, lastActive: today });
             appState.user.dailyAds = {};
           }
         }
 
         userRef.on('value', live => {
-          if(live.exists()) {
+          if (live.exists()) {
             appState.user = live.val();
             renderAds();
-            if(!isBooted) {
+            if (!isBooted) {
               clearTimeout(fallbackTimer);
               isBooted = true;
-              document.getElementById('loader').style.display = 'none';
-              document.getElementById('app').style.display = 'block';
+              setTimeout(() => {
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById('app').style.display = 'block';
+              }, 600);
             }
           }
         });
