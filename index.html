@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Earn Wallet</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
+  <!-- Telegram WebApp SDK -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <style>
+    /* ✅ 3D PREMIUM MODERN DESIGN */
+    :root{--primary:#6C5CE7;--secondary:#A29BFE;--bg:#F0F3F8;--surface:#FFF;--text:#2D3436;--danger:#ff4757;--success:#00b894;}
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+    body{background:var(--bg);color:var(--text);padding-bottom:90px;-webkit-tap-highlight-color:transparent;}
+    #app{max-width:480px;margin:0 auto;min-height:100vh;position:relative;display:none; transition:filter .2s ease;}
+    #app.blurred{filter:blur(10px);}
+
+    .page-section { display: none; animation: fadeIn 0.25s ease; }
+    .page-section.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Ultra Fast Loader */
+    .loader-overlay{position:fixed;inset:0;z-index:9999;display:flex;justify-content:center;align-items:center;flex-direction:column;background: radial-gradient(1200px 700px at 20% 20%, rgba(108,92,231,.35), transparent 55%),linear-gradient(135deg,#05060a,#0b0d18 40%, #090a12);transition:opacity 0.25s ease, visibility 0.25s;}
+    .loader-card{position:relative;z-index:2;width:min(340px,90vw);border-radius:24px;padding:24px 20px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);box-shadow:0 25px 60px rgba(0,0,0,.5);backdrop-filter:blur(12px);text-align:center;}
+    .loader-core{position:relative;width:70px;height:70px;margin:0 auto 12px;display:grid;place-items:center;}
+    .core-spin{position:absolute;inset:0;border-radius:50%;border:3px solid transparent;border-top-color:var(--primary);border-right-color:var(--secondary);animation:spin .8s linear infinite;}
+    .core-logo{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#6C5CE7,#A29BFE);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.1rem;}
+    @keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+    .loader-title{color:#fff;font-weight:800;font-size:1rem;letter-spacing:1px;}
+    .loader-sub{color:rgba(255,255,255,.75);font-size:.8rem;margin-top:4px;}
+
+    /* Telegram Warning Screen */
+    #tg-warning{display:none;position:fixed;inset:0;background:#18191a;color:#fff;z-index:99999;padding:30px;text-align:center;flex-direction:column;justify-content:center;align-items:center;}
+    #tg-warning i{font-size:3.5rem;color:#0088cc;margin-bottom:15px;}
+    #tg-warning h2{font-size:1.3rem;margin-bottom:8px;}
+    #tg-warning p{font-size:0.9rem;opacity:0.8;margin-bottom:20px;}
+
+    /* Header & Balance */
+    .header{background:linear-gradient(180deg,#4b3ee0,#6C5CE7);padding:50px 22px 75px;border-radius:0 0 40px 40px;color:#fff;box-shadow:0 15px 30px rgba(108,92,231,.35);position:relative;}
+    .top-bar{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:2;}
+    .user-pill{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.15);padding:5px 14px 5px 5px;border-radius:50px;backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);}
+    .user-pill img{width:42px;height:42px;border-radius:50%;border:2px solid #fff;object-fit:cover;}
+    .user-info h3{font-size:.92rem;font-weight:700;line-height:1.1;}
+    .user-info p{font-size:.7rem;opacity:.85;}
+    .support-btn{background:rgba(255,255,255,.2);color:#fff;width:40px;height:40px;border-radius:50%;border:none;font-size:1.15rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+
+    .balance-card{background:linear-gradient(135deg,#f8f5ff,#e3d6ff);width:88%;margin:-65px auto 20px;padding:22px;border-radius:24px;box-shadow:0 18px 35px rgba(76,62,224,.25);text-align:center;position:relative;z-index:10;color:#3b2b6b;border:2px solid rgba(255,255,255,.9);}
+    .bal-title{font-size:.75rem;text-transform:uppercase;color:rgba(59,43,107,.7);letter-spacing:1px;font-weight:700;}
+    .bal-amt{font-size:2.5rem;font-weight:800;color:#3b2b6b;margin:4px 0;}
+    .currency{color:#f6b04a;font-size:1.15rem;}
+    .stats{display:flex;justify-content:space-between;margin-top:16px;padding-top:16px;border-top:2px dashed rgba(93,71,163,.25);}
+    .stat-box h4{font-size:1.05rem;color:#3b2b6b;margin-bottom:2px;}
+    .stat-box p{font-size:.72rem;color:rgba(59,43,107,.8);font-weight:600;}
+
+    .sec-head{font-size:1.05rem;font-weight:800;margin:22px 0 12px;color:var(--text);display:flex;align-items:center;gap:10px;padding:0 20px;}
+    .sec-head i{color:var(--primary);font-size:1.15rem;}
+
+    /* 3D Ad Cards */
+    .ad-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:0 20px;}
+    .ad-card{position:relative;padding:2.5px;border-radius:20px;background:conic-gradient(from 0deg,#ff9a3d,#ff5e7a,#4f8cff,#38d6ff,#ff9a3d);animation:spinBorder 6s linear infinite;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,.06);height:120px;}
+    @keyframes spinBorder{0%{background-position:0 0;}100%{background-position:360px 0;}}
+    .ad-inner{border-radius:18px;padding:12px 8px;text-align:center;background:#fff;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px;}
+    .ad-inner i{font-size:1.7rem;margin:0;display:block;}
+    .ad-inner h4{font-size:.85rem;font-weight:800;margin:0;color:#111827;}
+    .ad-inner .reward-pill{font-size:.7rem;font-weight:800;color:#111827;background:rgba(15,23,42,.05);padding:4px 8px;border-radius:999px;display:inline-flex;gap:5px;align-items:center;}
+    .ad-inner .progress-pill{font-size:.7rem;color:#4b5563;background:rgba(15,23,42,.04);padding:3px 8px;border-radius:999px;}
+    .slot-1 .ad-inner{background:linear-gradient(145deg,#fff7f0,#ffe5d0);} .slot-1 .ad-inner i{color:#ff8b3d;}
+    .slot-2 .ad-inner{background:linear-gradient(145deg,#edf5ff,#dde6ff);} .slot-2 .ad-inner i{color:#4f8cff;}
+    .slot-3 .ad-inner{background:linear-gradient(145deg,#f2fffa,#dcfff2);} .slot-3 .ad-inner i{color:#00b894;}
+    .slot-4 .ad-inner{background:linear-gradient(145deg,#fff2fb,#ffe0f3);} .slot-4 .ad-inner i{color:#e84393;}
+    .ad-card.disabled{opacity:.6;filter:grayscale(1);pointer-events:none;}
+
+    /* Tasks */
+    .task-list{display:flex;flex-direction:column;gap:12px;padding:0 20px 25px;}
+    .task-item{background:var(--surface);padding:14px;border-radius:16px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 12px rgba(0,0,0,.03);}
+    .task-left{display:flex;align-items:center;gap:12px;}
+    .task-icon{width:42px;height:42px;border-radius:12px;object-fit:cover;}
+    .task-info h4{font-size:.9rem;font-weight:700;}
+    .task-info small{color:#00b894;font-weight:600;font-size:.78rem;}
+    .btn-act{padding:8px 18px;border-radius:50px;border:none;font-weight:700;font-size:.78rem;cursor:pointer;min-width:85px;}
+    .btn-start{background:var(--text);color:#fff;}
+    .btn-wait{background:#ffeaa7;color:#d63031;cursor:not-allowed;}
+    .btn-claim{background:var(--primary);color:#fff;animation:pulse 1s infinite;}
+    @keyframes pulse{50%{transform:scale(1.05)}}
+
+    /* Premium Cards & Forms */
+    .premium-card { background: var(--surface); margin: 0 20px 15px; padding: 20px; border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.04); }
+    .card-title { font-size: 1rem; font-weight: 800; margin-bottom: 12px; color: var(--text); display:flex; align-items:center; gap:10px; }
+    .ref-link-box { background: rgba(108,92,231,0.08); padding: 14px; border-radius: 12px; font-size: 0.88rem; word-break: break-all; margin-bottom: 14px; border: 1px dashed var(--primary); text-align: center; font-weight: 700; color: var(--primary); }
+    .flex-btns { display: flex; gap: 10px; }
+    .btn-blue { flex: 1; background: linear-gradient(135deg, #0984e3, #74b9ff); color: #fff; padding: 12px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; }
+    .btn-dark { background: var(--text); color: #fff; padding: 12px 18px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer;}
+    .btn-red { background: linear-gradient(135deg, #ff4757, #ff6b81); width: 100%; padding: 13px; border-radius: 12px; color: white; font-weight: bold; border: none; margin-top: 10px;}
+
+    .input-group { margin-bottom: 14px; }
+    .input-group select, .input-group input { width: 100%; padding: 13px; border: 1px solid #e1e1e1; border-radius: 12px; font-size: 0.92rem; background: #f9f9f9; outline: none; font-weight: 600; }
+    .input-group select:focus, .input-group input:focus { border-color: var(--primary); background: #fff; }
+    .btn-main { width: 100%; padding: 14px; border-radius: 12px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #fff; border: none; font-size: .95rem; font-weight: 800; cursor: pointer; display:flex; align-items:center; justify-content:center; gap:8px;}
+    .btn-main:active { transform: scale(0.98); }
+
+    /* Leaderboard */
+    .leaderboard-title { text-align:center; font-weight:900; font-size:1.25rem; color:var(--text); margin-top:15px; }
+    .podium-container { display: flex; justify-content: center; align-items: flex-end; gap: 8px; margin: 100px 10px 25px; }
+    .podium-item { text-align: center; display: flex; flex-direction: column; align-items: center; position: relative; background: #fff; padding: 15px 6px 10px; border-radius: 18px; box-shadow: 0 8px 20px rgba(0,0,0,0.05); width: 31%; }
+    .podium-img { width: 52px; height: 52px; border-radius: 50%; border: 3px solid; object-fit: cover; background: #fff; position: absolute; top: -28px; }
+    .crown { position: absolute; top: -55px; font-size: 1.6rem; z-index: 5; }
+    .rank-name { font-size: 0.78rem; font-weight: 800; color: #333; margin-top: 26px; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;}
+    .rank-stats-col { display: flex; flex-direction: column; gap: 4px; width: 100%; }
+    .rank-badge { font-size: 0.68rem; font-weight: 800; padding: 4px 2px; border-radius: 6px; width: 100%; }
+    .badge-bal { background: rgba(108,92,231,0.1); color: var(--primary); }
+    .badge-ref { background: rgba(0,184,148,0.1); color: #00b894; }
+    .rank-1 { z-index: 10; margin: 0 4px; transform: translateY(-16px); width: 36%; border: 2px solid rgba(255,215,0,0.5); }
+    .rank-1 .podium-img { width: 65px; height: 65px; border-color: #ffd700; top: -36px; } 
+    .rank-1 .crown { color: #ffd700; font-size: 2.2rem; top: -68px; }
+    .rank-2 { border: 2px solid rgba(192,192,192,0.5); } .rank-2 .podium-img { border-color: #c0c0c0; } .rank-2 .crown { color: #c0c0c0; }
+    .rank-3 { border: 2px solid rgba(205,127,50,0.5); } .rank-3 .podium-img { border-color: #cd7f32; } .rank-3 .crown { color: #cd7f32; }
+    .leader-list { padding: 0 20px 25px; }
+    .leader-row { display: flex; align-items: center; justify-content: space-between; background: #fff; padding: 12px 14px; border-radius: 14px; margin-bottom: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.03); border-left: 4px solid var(--primary);}
+    .leader-left { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 0.88rem; color: #333; }
+    .leader-left img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+    .rank-num { font-size: 1rem; font-weight: 900; color: #aaa; width: 24px; }
+    .leader-right-stats { text-align: right; display: flex; flex-direction: column; gap: 3px; }
+    .leader-right-bal { font-weight: 800; color: var(--primary); font-size: 0.82rem; }
+    .leader-right-ref { font-size: 0.72rem; color: #00b894; font-weight: 700; }
+
+    /* Bottom Nav */
+    .nav{position:fixed;bottom:15px;left:50%;transform:translateX(-50%);width:88%;max-width:380px;background:#2d3436;display:flex;justify-content:space-around;padding:14px;border-radius:22px;box-shadow:0 8px 25px rgba(0,0,0,.3);z-index:100;}
+    .nav i{font-size:1.35rem;color:rgba(255,255,255,.4);cursor:pointer;transition:.25s;}
+    .nav i.active{color:#fff;transform:translateY(-4px);text-shadow:0 0 12px #fff;}
+
+    .toast{position:fixed;top:30px;left:50%;transform:translateX(-50%);background:#2d3436;color:#fff;padding:10px 22px;border-radius:30px;font-size:.85rem;opacity:0;transition:.3s;z-index:10000;font-weight:600;pointer-events:none;}
+    .toast.show{opacity:1;top:45px;}
+
+    /* Bonus Modal */
+    .bonus-overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:12000;padding:16px;background:rgba(0,0,0,.35);backdrop-filter:blur(8px);}
+    .bonus-overlay.show{display:flex;}
+    .bonus-card{width:100%;max-width:400px;border-radius:24px;background:linear-gradient(135deg,#111827,#1f2937);box-shadow:0 20px 50px rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.12);position:relative;padding:22px 18px;text-align:center;color:#fff;}
+    .bonus-badge{display:inline-flex;gap:6px;align-items:center;background:rgba(255,255,255,.08);padding:6px 12px;border-radius:999px;font-weight:700;font-size:.78rem;margin-bottom:12px;}
+    .bonus-amt{font-size:2.2rem;font-weight:900;color:#facc15;margin-bottom:12px;}
+    .bonus-actions{display:flex;flex-direction:column;gap:10px;}
+    .bonus-btn{width:100%;border:none;border-radius:14px;padding:13px;font-weight:800;font-size:.92rem;cursor:pointer;}
+    .bonus-claim{background:linear-gradient(135deg,#6C5CE7,#A29BFE);color:#fff;}
+    .bonus-close{background:rgba(255,255,255,.08);color:#eee;}
+  </style>
+</head>
+<body>
+
+  <!-- External Browser Warning -->
+  <div id="tg-warning">
+    <i class="fab fa-telegram"></i>
+    <h2>Telegram-এ খুলুন</h2>
+    <p>এই অ্যাপটি শুধুমাত্র Telegram Mini App হিসেবে ব্যবহারের জন্য তৈরি করা হয়েছে। দয়া করে আপনার টেলিগ্রাম বট থেকে প্রবেশ করুন।</p>
+  </div>
+
+  <!-- Ultra Fast Loader -->
+  <div id="loader" class="loader-overlay">
+    <div class="loader-card">
+      <div class="loader-core">
+        <div class="core-spin"></div>
+        <div class="core-logo"><i class="fas fa-bolt"></i></div>
+      </div>
+      <div class="loader-title">Earn Wallet</div>
+      <div class="loader-sub">দ্রুত লোড হচ্ছে…</div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast">Alert</div>
+
+  <!-- Daily Bonus Modal -->
+  <div id="bonusOverlay" class="bonus-overlay">
+    <div class="bonus-card">
+      <div class="bonus-badge"><i class="fas fa-gift"></i> DAILY BONUS</div>
+      <h3 style="margin-bottom:6px;">আজকের বোনাস নিন!</h3>
+      <p id="bonusSubText" style="font-size:.82rem; opacity:.85; margin-bottom:12px;">বোনাস নিশ্চিত করতে সম্পূর্ণ অ্যাডটি দেখুন।</p>
+      <div class="bonus-amt"><span id="bonusAmt">20</span> <span class="currency">টাকা</span></div>
+      <div class="bonus-actions">
+        <button id="btnClaimBonus" class="bonus-btn bonus-claim" onclick="claimDailyBonus()"><i class="fas fa-play-circle"></i> Watch Ad & Claim</button>
+        <button id="btnCancelBonus" class="bonus-btn bonus-close" onclick="hideBonus()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main App Layout -->
+  <div id="app">
+    <!-- Header & Balance -->
+    <div class="header">
+      <div class="top-bar">
+        <div class="user-pill">
+          <img id="u-img" src="https://via.placeholder.com/45">
+          <div class="user-info">
+            <h3 id="u-name">User</h3>
+            <p id="u-id">ID: ...</p>
+          </div>
+        </div>
+        <button class="support-btn" onclick="openSupport()"><i class="fas fa-headset"></i></button>
+      </div>
+    </div>
+    
+    <div class="balance-card">
+      <div class="bal-title">Total Balance</div>
+      <div class="bal-amt"><span id="u-bal">0.00</span> <span class="currency">টাকা</span></div>
+      <div class="stats">
+        <div class="stat-box"><h4 id="u-earn">0.00</h4><p>Earned</p></div>
+        <div class="stat-box"><h4 id="u-ref">0</h4><p>Referrals</p></div>
+      </div>
+    </div>
+
+    <!-- TAB 1: HOME -->
+    <div id="page-home" class="page-section active">
+      <div class="sec-head"><i class="fas fa-gift"></i> Daily Rewards</div>
+      <div style="padding: 0 20px 10px;">
+        <button class="btn-main" onclick="showBonus()" style="background: linear-gradient(135deg, #00b894, #00cec9);"><i class="fas fa-box-open"></i> Open Daily Bonus</button>
+      </div>
+
+      <div class="sec-head"><i class="fas fa-play-circle"></i> Daily Ads</div>
+      <div id="ad-area" class="ad-grid"></div>
+
+      <div class="sec-head"><i class="fas fa-tasks"></i> Tasks</div>
+      <div id="task-area" class="task-list"></div>
+    </div>
+
+    <!-- TAB 2: REFERRAL -->
+    <div id="page-referral" class="page-section">
+      <div class="premium-card">
+        <div class="card-title"><i class="fas fa-link" style="color:#0984e3;"></i> Your Referral Link</div>
+        <p style="font-size:0.82rem; color:#555; margin-bottom:10px; font-weight:600;">প্রতি সফল রেফারে পাবেন <b id="ref-bonus-txt" style="color:var(--primary);">...</b></p>
+        <div class="ref-link-box" id="ref-link-text">Loading...</div>
+        <div class="flex-btns">
+          <button class="btn-blue" onclick="shareLink()"><i class="fab fa-telegram-plane"></i> শেয়ার করুন</button>
+          <button class="btn-dark" onclick="copyLink()"><i class="fas fa-copy"></i></button>
+        </div>
+      </div>
+      <div class="premium-card">
+        <div class="card-title"><i class="fas fa-video" style="color:#ff4757;"></i> টিউটোরিয়াল</div>
+        <p style="font-size:0.82rem; color:#555; margin-bottom: 5px;">কাজ বুঝতে ভিডিওটি সম্পূর্ণ দেখুন।</p>
+        <button class="btn-red" onclick="openTutorial()"><i class="fab fa-youtube"></i> টিউটোরিয়াল ভিডিও দেখুন</button>
+      </div>
+    </div>
+
+    <!-- TAB 3: LEADERBOARD -->
+    <div id="page-leaderboard" class="page-section">
+      <div class="leaderboard-title">🏆 Top 10 Earners</div>
+      <div class="podium-container" id="podium-area"></div>
+      <div class="leader-list" id="leader-list-area"></div>
+    </div>
+
+    <!-- TAB 4: WITHDRAW -->
+    <div id="page-withdraw" class="page-section">
+      <div class="premium-card">
+        <div class="card-title"><i class="fas fa-wallet" style="color:var(--primary);"></i> Withdraw Funds</div>
+        <div class="input-group"><select id="wd-method"><option value="">Select Method</option></select></div>
+        <div class="input-group"><input type="text" id="wd-account" placeholder="Account Number"></div>
+        <div class="input-group"><input type="number" id="wd-amount" placeholder="Amount"></div>
+        <button class="btn-main" onclick="requestWithdraw()"><i class="fas fa-paper-plane"></i> Request Withdraw</button>
+        <div style="font-size: 0.8rem; color: #ff4757; text-align: center; margin-top: 12px; font-weight: 700;" id="wd-notice">Minimum withdraw: ...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="nav">
+    <i class="fas fa-home active nav-item" onclick="switchTab('home', this)"></i>
+    <i class="fas fa-users nav-item" onclick="switchTab('referral', this)"></i>
+    <i class="fas fa-trophy nav-item" onclick="switchTab('leaderboard', this)"></i>
+    <i class="fas fa-wallet nav-item" onclick="switchTab('withdraw', this)"></i>
+  </div>
+
+  <script>
+    // ✅ আপনার নতুন ফায়ারবেস কনফিগারেশন
+    const firebaseConfig = {
+      apiKey: "AIzaSyAsENiikJ5YQ1F8UHrixdJVEINAhO4PG30",
+      authDomain: "bot2-3d8bc.firebaseapp.com",
+      databaseURL: "https://bot2-3d8bc-default-rtdb.firebaseio.com",
+      projectId: "bot2-3d8bc",
+      storageBucket: "bot2-3d8bc.firebasestorage.app",
+      messagingSenderId: "77444577377",
+      appId: "1:77444577377:web:05a9910049d166878d5220"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // ✅ TELEGRAM LOGIN SYSTEM
+    const tg = window.Telegram ? window.Telegram.WebApp : null;
+    let tgUser = null;
+
+    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+      try { tg.ready(); tg.expand(); } catch(e){}
+      tgUser = tg.initDataUnsafe.user;
+    } else {
+      // যদি লোকাল টেস্ট বা টেলিগ্রামের বাইরে খোলা হয়
+      const urlParams = new URLSearchParams(window.location.search);
+      const testId = urlParams.get('test_id');
+      if(testId) {
+        tgUser = { id: testId, first_name: 'Tester', photo_url: '' };
+      } else {
+        // রিয়েল টেলিগ্রাম ইউজার ছাড়া ওপেন করতে বাধা দেবে
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('tg-warning').style.display = 'flex';
+      }
+    }
+
+    let appState = { user: { balance:0, totalEarned:0, referrals:0, dailyAds:{}, taskHistory:{} }, config: { adSlots:[], webTasks:{} } };
+    let isBooted = false;
+
+    function toast(msg) {
+      const t = document.getElementById('toast');
+      t.innerText = msg; t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2500);
+    }
+    function todayStr() { return new Date().toISOString().slice(0, 10); }
+
+    function switchTab(tabId, el) {
+      document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.getElementById('page-' + tabId).classList.add('active');
+      el.classList.add('active');
+      if(tabId === 'leaderboard') loadLeaderboard();
+      if(tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+    }
+
+    function preloadAds() {
+      const slots = appState.config.adSlots || [];
+      slots.forEach(slot => {
+        if(slot.network === 'monetag' && slot.id && !document.querySelector(`script[data-zone="${slot.id}"]`)){
+          const sc = document.createElement('script'); sc.src = '//libtl.com/sdk.js'; sc.dataset.zone = slot.id; sc.dataset.sdk = 'show_' + slot.id; document.body.appendChild(sc);
+        } else if(slot.network === 'adsgram' && !document.getElementById('adsg-script')){
+          const sc = document.createElement('script'); sc.id='adsg-script'; sc.src = 'https://sad.adsgram.ai/js/sad.min.js'; document.body.appendChild(sc);
+        } else if(slot.network === 'gigapub' && !document.getElementById('giga-script')){
+          const sc = document.createElement('script'); sc.id='giga-script'; sc.src = 'https://ad.gigapub.tech/script?id=1'; document.body.appendChild(sc);
+        }
+      });
+    }
+
+    function updateTextElements() {
+      const sym = appState.config.currencySymbol || "TK";
+      document.getElementById('u-bal').innerText = (appState.user.balance || 0).toFixed(2);
+      document.getElementById('u-earn').innerText = (appState.user.totalEarned || 0).toFixed(2);
+      document.getElementById('u-ref').innerText = appState.user.referrals || 0;
+      document.querySelectorAll('.currency').forEach(el => el.innerText = sym);
+      
+      document.getElementById('ref-link-text').innerText = getRefLink();
+      document.getElementById('ref-bonus-txt').innerText = (appState.config.refBonus || 5) + " " + sym;
+      document.getElementById('bonusAmt').innerText = appState.config.dailyBonusAmount || 20;
+      document.getElementById('wd-notice').innerText = appState.config.withdrawNotice || `Minimum withdraw: ${appState.config.minWithdraw||10} ${sym}`;
+
+      const wdSel = document.getElementById('wd-method'); 
+      let currentVal = wdSel.value;
+      wdSel.innerHTML = '<option value="">Select Method</option>';
+      if(appState.config.paymentMethods) {
+        appState.config.paymentMethods.forEach(m => {
+          wdSel.innerHTML += `<option value="${m}" ${currentVal===m?'selected':''}>${m}</option>`;
+        });
+      }
+    }
+
+    function renderAds() {
+      const el = document.getElementById('ad-area'); el.innerHTML = '';
+      const slots = appState.config.adSlots || [];
+      const limit = Number(appState.config.dailyAdLimit || 10);
+      const reward = Number(appState.config.adReward || 0.5);
+      const sym = appState.config.currencySymbol || "TK";
+
+      for (let i=0; i<4; i++) {
+        const slot = slots[i];
+        const done = (appState.user.dailyAds && appState.user.dailyAds[i]) ? appState.user.dailyAds[i] : 0;
+        const max = done >= limit;
+        const configured = slot && slot.network && slot.network !== 'none';
+        const cardClass = !configured ? 'not-set disabled' : (max ? 'disabled' : '');
+        const extraClass = 'slot-' + (i+1);
+        const icon = (i===0?'fa-play':i===1?'fa-circle-play':i===2?'fa-bolt':'fa-gem');
+
+        el.innerHTML += `
+          <div class="ad-card ${extraClass} ${cardClass}" onclick="${(!configured||max)?'':'watchAd('+i+')'}">
+            <div class="ad-inner">
+              <i class="fas ${icon}"></i> <h4>Ad Slot ${i+1}</h4>
+              <div class="reward-pill"><i class="fas fa-coins"></i> +${reward} ${sym}</div>
+              ${configured ? `<div class="progress-pill">${done}/${limit} Watched</div>` : `<div class="progress-pill">Not Configured</div>`}
+            </div>
+          </div>`;
+      }
+    }
+
+    let slotLocks = {};
+    async function watchAd(i) {
+      if(slotLocks[i]) return; slotLocks[i] = true;
+      const slot = appState.config.adSlots[i];
+      try {
+        toast('Loading Ad...');
+        let success = false;
+        
+        if (slot.network === 'monetag') {
+          if (typeof window['show_'+slot.id] === 'function') { await window['show_'+slot.id](); success = true; } 
+          else throw new Error("Please wait, Ad loading...");
+        } else if (slot.network === 'gigapub') {
+          if (typeof window.showGiga === 'function') { await window.showGiga(); success = true; }
+          else throw new Error("Please wait, Ad loading...");
+        } else if (slot.network === 'adsgram') {
+          if(typeof window.Adsgram === 'undefined') throw new Error("Please wait, Ad loading...");
+          const adCtrl = window.Adsgram.init({ blockId: slot.id ? String(slot.id) : '23393' });
+          let res = await adCtrl.show();
+          if(!res || res.done !== true) throw new Error("Ad Closed");
+          success = true;
+        }
+
+        if(success) {
+          const r = Number(appState.config.adReward || 0.5);
+          let newBal = (appState.user.balance || 0) + r;
+          let newEarn = (appState.user.totalEarned || 0) + r;
+          let newAds = appState.user.dailyAds || {};
+          newAds[i] = (newAds[i] || 0) + 1;
+          
+          await db.ref('users/' + appState.user.id).update({ balance: newBal, totalEarned: newEarn, dailyAds: newAds });
+          toast('Success! +'+r);
+        }
+      } catch(e) { 
+        toast(e.message === "Ad Closed" ? "Ad Closed!" : 'Failed/Ad Blocked'); 
+      } finally { slotLocks[i] = false; }
+    }
+
+    function renderTasks() {
+      const el = document.getElementById('task-area'); el.innerHTML = '';
+      const tasks = appState.config.webTasks || {};
+      const sym = appState.config.currencySymbol || "TK";
+
+      Object.keys(tasks).forEach(k => {
+        const t = tasks[k];
+        const isDone = appState.user.taskHistory && appState.user.taskHistory[k];
+        if(isDone) return;
+        
+        el.innerHTML += `
+          <div class="task-item">
+            <div class="task-left">
+              <img src="${t.icon || 'https://via.placeholder.com/40'}" class="task-icon">
+              <div class="task-info"><h4>${t.name}</h4><small>+${t.reward} ${sym}</small></div>
+            </div>
+            <button id="btn-${k}" class="btn-act btn-start" onclick="runTask('${k}')">Start</button>
+          </div>`;
+      });
+    }
+
+    function runTask(id) {
+      const t = appState.config.webTasks[id];
+      if(tg && tg.openLink) tg.openLink(t.url); else window.open(t.url, '_blank');
+      const btn = document.getElementById('btn-'+id);
+      let s = 15; btn.className = 'btn-act btn-wait'; btn.disabled = true;
+      const iv = setInterval(() => {
+        btn.innerText = s+'s'; s--;
+        if(s < 0) { clearInterval(iv); btn.className = 'btn-act btn-claim'; btn.disabled = false; btn.innerText = 'Claim'; btn.onclick = () => claimTask(id, t); }
+      }, 1000);
+    }
+
+    async function claimTask(id, t) {
+      const newBal = (appState.user.balance || 0) + Number(t.reward); 
+      const newEarn = (appState.user.totalEarned || 0) + Number(t.reward);
+      let th = appState.user.taskHistory || {}; th[id] = true;
+      await db.ref('users/' + appState.user.id).update({ balance: newBal, totalEarned: newEarn, taskHistory: th });
+      toast('Claimed Successfully!');
+    }
+
+    function showBonus(){ 
+      if(appState.user.dailyBonusDate === todayStr()) {
+        toast("আজকের বোনাস আগেই নেওয়া হয়েছে!"); return;
+      }
+      document.getElementById('bonusOverlay').classList.add('show'); 
+      document.getElementById('app').classList.add('blurred'); 
+    }
+    
+    function hideBonus(){ 
+      document.getElementById('bonusOverlay').classList.remove('show'); 
+      document.getElementById('app').classList.remove('blurred'); 
+    }
+
+    async function claimDailyBonus() {
+      const btn = document.getElementById('btnClaimBonus'); 
+      const subText = document.getElementById('bonusSubText');
+      btn.disabled = true;
+
+      try {
+        const slots = appState.config.adSlots || [];
+        const validSlot = slots.find(s => s && s.network !== 'none');
+
+        if (validSlot && validSlot.network === 'adsgram' && typeof window.Adsgram !== 'undefined') {
+          subText.innerText = "অ্যাড লোড হচ্ছে...";
+          const adCtrl = window.Adsgram.init({ blockId: String(validSlot.id) });
+          let res = await adCtrl.show();
+          if(!res || res.done !== true) throw new Error("Ad Closed");
+        } else if (validSlot && validSlot.network === 'monetag' && typeof window['show_'+validSlot.id] === 'function') {
+          await window['show_'+validSlot.id]();
+        }
+
+        const amt = Number(appState.config.dailyBonusAmount || 20);
+        const newBal = (appState.user.balance || 0) + amt;
+        const newEarn = (appState.user.totalEarned || 0) + amt;
+        
+        await db.ref('users/' + appState.user.id).update({ 
+          balance: newBal, 
+          totalEarned: newEarn, 
+          dailyBonusDate: todayStr() 
+        });
+        
+        hideBonus(); 
+        toast('বোনাস ক্লেইম সফল! +' + amt);
+      } catch(e) { 
+        toast("অ্যাড সম্পূর্ণ দেখা হয়নি!");
+      } finally { 
+        btn.disabled = false;
+      }
+    }
+
+    async function requestWithdraw() {
+      const method = document.getElementById('wd-method').value;
+      const account = document.getElementById('wd-account').value.trim();
+      const amount = Number(document.getElementById('wd-amount').value);
+      const minWd = Number(appState.config.minWithdraw || 10);
+
+      if(!method || !account) return toast('সবগুলো ফিল্ড পূরণ করুন');
+      if(isNaN(amount) || amount <= 0) return toast('সঠিক পরিমাণ দিন');
+      if(amount < minWd) return toast(`সর্বনিম্ন উইথড্র ${minWd}`);
+      if(amount > appState.user.balance) return toast('অপর্যাপ্ত ব্যালেন্স!');
+
+      try {
+        const wdId = 'WD' + Date.now();
+        await db.ref('withdrawals/' + wdId).set({ 
+          userId: appState.user.id, 
+          userName: appState.user.name || 'User', 
+          method: method, 
+          account: account, 
+          amount: amount, 
+          status: 'pending', 
+          timestamp: firebase.database.ServerValue.TIMESTAMP 
+        });
+        await db.ref('users/' + appState.user.id).update({ balance: (appState.user.balance - amount) });
+        
+        document.getElementById('wd-account').value = ''; 
+        document.getElementById('wd-amount').value = '';
+        toast('উইথড্র রিকোয়েস্ট সফল হয়েছে!');
+      } catch(e) { toast('উইথড্র প্রসেসে সমস্যা হয়েছে'); }
+    }
+
+    function getRefLink() { 
+      const bot = appState.config.botUsername || "YourBot";
+      return `https://t.me/${bot}?start=${appState.user.id}`; 
+    }
+    function copyLink() { navigator.clipboard.writeText(getRefLink()); toast('Link Copied!'); }
+    function shareLink() {
+      const url = `https://t.me/share/url?url=${encodeURIComponent(getRefLink())}&text=Join%20Now!`;
+      if(tg && tg.openTelegramLink) tg.openTelegramLink(url); else window.open(url, '_blank');
+    }
+    function openTutorial() { if(appState.config.tutorialLink) window.open(appState.config.tutorialLink, '_blank'); else toast('No tutorial available'); }
+    function openSupport() { if(appState.config.supportLink) window.open(appState.config.supportLink, '_blank'); }
+
+    // ✅ ULTRA FAST APP INITIALIZATION
+    window.onload = async () => {
+      if(!tgUser) return; // টেলিগ্রাম ইউজার ছাড়া লোড হবে না
+
+      document.getElementById('u-name').innerText = tgUser.first_name || 'User';
+      document.getElementById('u-id').innerText = 'ID: ' + tgUser.id;
+      if(tgUser.photo_url) document.getElementById('u-img').src = tgUser.photo_url;
+
+      const userRef = db.ref('users/' + tgUser.id);
+      const configRef = db.ref('config');
+
+      // প্যারালাল ফাস্ট ফেচ
+      try {
+        const [configSnap, userSnap] = await Promise.all([
+          configRef.once('value'),
+          userRef.once('value')
+        ]);
+
+        if(configSnap.exists()) {
+          appState.config = configSnap.val();
+          preloadAds();
+        }
+
+        const today = todayStr();
+        if(!userSnap.exists()) {
+          // নতুন ইউজার রেজিস্ট্রেশন
+          appState.user = { 
+            id: tgUser.id, 
+            name: tgUser.first_name || 'User', 
+            photo: tgUser.photo_url || '', 
+            balance: 0, 
+            totalEarned: 0, 
+            referrals: 0, 
+            dailyAds: {}, 
+            taskHistory: {}, 
+            lastActive: today, 
+            dailyBonusDate: '' 
+          };
+          await userRef.set(appState.user);
+
+          // রেফারেল ট্র্যাকিং
+          let refBy = (tg && tg.initDataUnsafe && tg.initDataUnsafe.start_param) ? tg.initDataUnsafe.start_param : null;
+          if(!refBy) {
+            const params = new URLSearchParams(window.location.search);
+            refBy = params.get('start') || params.get('startapp');
+          }
+
+          if(refBy && String(refBy) !== String(tgUser.id)) {
+            const rBonus = Number(appState.config.refBonus || 5);
+            const refSnap = await db.ref('users/' + refBy).once('value');
+            if(refSnap.exists()){
+              const r = refSnap.val();
+              db.ref('users/' + refBy).update({
+                referrals: (r.referrals || 0) + 1,
+                balance: (r.balance || 0) + rBonus,
+                totalEarned: (r.totalEarned || 0) + rBonus
+              });
+            }
+          }
+        } else {
+          appState.user = userSnap.val();
+          if(appState.user.lastActive !== today) {
+            userRef.update({ dailyAds: {}, lastActive: today });
+            appState.user.dailyAds = {};
+          }
+        }
+
+        // রেন্ডারিং ও ইনস্ট্যান্ট লোডার হাইড
+        updateTextElements();
+        renderAds();
+        renderTasks();
+
+        // লোডার বন্ধ এবং মূল অ্যাপ দেখানো (সুপার ফাস্ট)
+        const loader = document.getElementById('loader');
+        loader.style.opacity = '0';
+        setTimeout(() => {
+          loader.style.display = 'none';
+          document.getElementById('app').style.display = 'block';
+          if(appState.user.dailyBonusDate !== today) showBonus();
+        }, 200);
+
+        // লাইভ ডেটা লিসেনার
+        userRef.on('value', snap => {
+          if(snap.exists()) {
+            appState.user = snap.val();
+            updateTextElements();
+          }
+        });
+
+        configRef.on('value', snap => {
+          if(snap.exists()) {
+            appState.config = snap.val();
+            updateTextElements();
+            renderAds();
+            renderTasks();
+          }
+        });
+
+      } catch(e) {
+        console.error("Fast Boot Error:", e);
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+      }
+    };
+
+    // সেফ লিডারবোর্ড লোড
+    async function loadLeaderboard() {
+      try {
+        const sym = appState.config.currencySymbol || "TK";
+        const snap = await db.ref('users').orderByChild('balance').limitToLast(10).once('value');
+        let users = []; 
+        snap.forEach(child => { 
+          const val = child.val();
+          if(val && Number(val.balance) >= 0) users.push(val); 
+        });
+        users.reverse();
+        
+        let p1 = '', p2 = '', p3 = '', listHtml = '';
+        users.forEach((u, i) => {
+          let pic = u.photo || 'https://via.placeholder.com/100';
+          let name = (u.name || 'User').substring(0, 10);
+          let bal = Number(u.balance || 0).toFixed(2);
+          let refs = u.referrals || 0;
+          let safeImg = `onerror="this.src='https://via.placeholder.com/100'"`;
+          let statsHtml = `
+            <div class="rank-stats-col">
+              <div class="rank-badge badge-bal">${bal} ${sym}</div>
+              <div class="rank-badge badge-ref"><i class="fas fa-users"></i> ${refs} Refs</div>
+            </div>`;
+          
+          if(i === 0) p1 = `<div class="podium-item rank-1"><i class="fas fa-crown crown"></i><img src="${pic}" class="podium-img" ${safeImg}><div class="rank-name">${name}</div>${statsHtml}</div>`;
+          else if(i === 1) p2 = `<div class="podium-item rank-2"><i class="fas fa-crown crown"></i><img src="${pic}" class="podium-img" ${safeImg}><div class="rank-name">${name}</div>${statsHtml}</div>`;
+          else if(i === 2) p3 = `<div class="podium-item rank-3"><i class="fas fa-crown crown"></i><img src="${pic}" class="podium-img" ${safeImg}><div class="rank-name">${name}</div>${statsHtml}</div>`;
+          else {
+            listHtml += `
+              <div class="leader-row">
+                <div class="leader-left">
+                  <div class="rank-num">#${i+1}</div> 
+                  <img src="${pic}" ${safeImg}> 
+                  <span>${name}</span>
+                </div>
+                <div class="leader-right-stats">
+                  <span class="leader-right-bal">${bal} ${sym}</span>
+                  <span class="leader-right-ref"><i class="fas fa-users"></i> ${refs} Refs</span>
+                </div>
+              </div>`;
+          }
+        });
+        
+        document.getElementById('podium-area').innerHTML = (p2 || '') + (p1 || '') + (p3 || '');
+        document.getElementById('leader-list-area').innerHTML = listHtml || '<p style="text-align:center; color:#888; font-size:0.85rem;">No data found</p>';
+      } catch(e) {
+        console.error("Leaderboard error:", e);
+      }
+    }
+  </script>
+</body>
+</html>
