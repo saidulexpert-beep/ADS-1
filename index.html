@@ -70,12 +70,12 @@
     .copy-key-box span{font-size:.85rem;font-weight:700;color:var(--primary);}
     .btn-copy{background:var(--primary);color:#fff;border:none;padding:6px 14px;border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer;}
 
-    /* Code Reveal Card with Animation */
+    /* Code Reveal Card */
     .code-reveal-box{background:linear-gradient(135deg,#00b894,#00cec9);color:#fff;padding:18px;border-radius:18px;text-align:center;margin-top:14px;animation:popReveal .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
     @keyframes popReveal{from{transform:scale(0.85);opacity:0}to{transform:scale(1);opacity:1}}
     .code-reveal-box h3{font-size:1.4rem;font-weight:900;letter-spacing:2px;margin:5px 0;}
 
-    /* 3D Ad Cards (অরিজিনাল ডিজাইন) */
+    /* 3D Ad Cards */
     .sec-head{font-size:1rem;font-weight:800;margin:22px 20px 12px;display:flex;align-items:center;gap:8px;color:#1e293b;}
     .ad-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;padding:0 20px;}
     .ad-card{position:relative;padding:3px;border-radius:22px;background:conic-gradient(from 0deg,#ff9a3d,#ff5e7a,#4f8cff,#38d6ff,#ff9a3d);animation:spinBorder 6s linear infinite;cursor:pointer;box-shadow:0 10px 24px rgba(0,0,0,.08);height:122px;}
@@ -129,7 +129,7 @@
     .wa-input{flex:1;padding:12px 18px;border-radius:25px;border:none;outline:none;font-size:.9rem;background:#fff;}
     .wa-send-btn{background:var(--wa-header);color:#fff;width:44px;height:44px;border-radius:50%;border:none;display:grid;place-items:center;font-size:1.1rem;cursor:pointer;}
 
-    /* Bottom Navigation */
+    /* Bottom Navigation (Leaderboard uses Referral 'fa-users' icon) */
     .nav{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);width:90%;max-width:400px;background:#1e293b;display:flex;justify-content:space-around;padding:12px;border-radius:25px;box-shadow:0 10px 30px rgba(0,0,0,.25);z-index:100;}
     .nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;color:rgba(255,255,255,.45);font-size:1.15rem;cursor:pointer;transition:.2s;}
     .nav-item span{font-size:.65rem;font-weight:600;}
@@ -160,7 +160,6 @@
           <img id="u-img" src="https://via.placeholder.com/45">
           <div class="user-info"><h3 id="u-name">User</h3><p id="u-id">ID: ...</p></div>
         </div>
-        <!-- Support Icon -->
         <button class="support-btn" onclick="openFullSupport()"><i class="fab fa-whatsapp"></i></button>
       </div>
     </div>
@@ -269,15 +268,15 @@
         <img src="https://via.placeholder.com/45" id="admin-avatar">
         <div>
           <h4>Official Admin Support</h4>
-          <p>অনলাইন | দ্রুত উত্তর দেওয়া হয়</p>
+          <p>অনলাইন | সাপোর্ট ডেস্ক</p>
         </div>
       </div>
     </div>
 
     <div class="wa-chat-body" id="chat-messages">
       <div class="wa-msg admin">
-        হ্যালো! Earn Hub অফিসিয়াল সাপোর্টে আপনাকে স্বাগতম। আপনি দিনে একবার আপনার গুরুত্বপূর্ণ বার্তা পাঠাতে পারবেন।
-        <div class="wa-msg-time">10:00 AM</div>
+        হ্যালো! Earn Hub অফিসিয়াল সাপোর্টে আপনাকে স্বাগতম। আপনি সর্বোচ্চ ৫টি বার্তা পাঠাতে পারবেন।
+        <div class="wa-msg-time">Start</div>
       </div>
     </div>
 
@@ -287,14 +286,14 @@
     </div>
   </div>
 
-  <!-- Bottom Navigation -->
+  <!-- Bottom Navigation (Referral Icon 'fa-users' used for Leaderboard) -->
   <div class="nav">
     <div class="nav-item active" onclick="switchTab('home', this)">
       <i class="fas fa-home"></i>
       <span>Home</span>
     </div>
     <div class="nav-item" onclick="switchTab('leaderboard', this)">
-      <i class="fas fa-trophy"></i>
+      <i class="fas fa-users"></i>
       <span>Leaderboard</span>
     </div>
     <div class="nav-item" onclick="switchTab('bots', this)">
@@ -320,7 +319,7 @@
     if(tg){ try{ tg.ready(); tg.expand(); }catch(e){} }
 
     let appState = {
-      user: { dailyAds:{}, singleKey:'', isVerified:false, lastSupportDate:'', lastActive:'' },
+      user: { dailyAds:{}, singleKey:'', isVerified:false, lastActive:'' },
       config: {
         dailyAdLimit: 10,
         redeemPin: "7788",
@@ -368,7 +367,7 @@
       if(tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
     }
 
-    // Full Screen WhatsApp Support Toggles
+    // Support Modal Controller
     function openFullSupport() {
       document.getElementById('page-support').classList.add('active');
       loadSupportChat();
@@ -377,7 +376,7 @@
       document.getElementById('page-support').classList.remove('active');
     }
 
-    // Channel Unlock & Pin Verification
+    // Channel Unlock & Pin
     function triggerChannelUnlock() {
       const url = appState.config.keyChannelLink || 'https://t.me';
       if(tg?.openTelegramLink && url.includes('t.me/')) tg.openTelegramLink(url);
@@ -409,7 +408,7 @@
       toast("Key কপি হয়েছে: " + k);
     }
 
-    // Calculation & UI Update
+    // Progress & UI Update
     function updateRedeemUI() {
       const slots = appState.config.adSlots || [];
       const limit = Number(appState.config.dailyAdLimit || 10);
@@ -424,20 +423,17 @@
       document.getElementById('progress-percent').innerText = `${percent}%`;
       document.getElementById('progress-bar-fill').style.width = `${percent}%`;
 
-      // Single Key Display
       if(appState.user.singleKey) {
         document.getElementById('display-user-key').innerText = appState.user.singleKey;
       } else {
         document.getElementById('display-user-key').innerText = "যেকোনো ১টি স্লটের ১০টি অ্যাড দেখুন";
       }
 
-      // Verified State
       if(appState.user.isVerified) {
         document.getElementById('unlock-container').style.display = 'none';
         document.getElementById('verified-state').style.display = 'block';
       }
 
-      // Unlock Redeem Button if 100% Ads Watched & Verified
       const btnClaim = document.getElementById('btn-claim-redeem');
       if(percent >= 100 && appState.user.isVerified) {
         btnClaim.disabled = false;
@@ -488,46 +484,87 @@
       updateRedeemUI();
     }
 
+    // STRICT WATCH AD (No Fallback, Ad verification mandatory)
     let slotLocks = {};
     async function watchAd(i) {
       if(slotLocks[i]) return; slotLocks[i] = true;
       const slot = appState.config.adSlots[i];
       try {
-        toast('Loading Ad...');
+        toast('অ্যাড লোড হচ্ছে... সম্পূর্ণ দেখুন');
         let success = false;
         
-        if (slot.network === 'monetag' && typeof window['show_'+slot.id] === 'function') {
-          await window['show_'+slot.id](); success = true;
-        } else if (slot.network === 'adsgram' && typeof window.Adsgram !== 'undefined') {
+        if (slot.network === 'monetag') {
+          if (typeof window['show_'+slot.id] === 'function') {
+            await window['show_'+slot.id]();
+            success = true;
+          } else {
+            throw new Error("Monetag script ready নয়");
+          }
+        } else if (slot.network === 'adsgram') {
+          if (typeof window.Adsgram === 'undefined') throw new Error("Adsgram script not ready");
           const adCtrl = window.Adsgram.init({ blockId: slot.id ? String(slot.id) : '23393' });
           let res = await adCtrl.show();
-          if(res && res.done === true) success = true;
-        } else {
-          success = true; // Fallback
+          if(res && res.done === true) {
+            success = true;
+          } else {
+            throw new Error("অ্যাডটি সম্পূর্ণ দেখা হয়নি");
+          }
         }
 
+        // Only Count if ad was 100% watched
         if(success) {
           let newAds = appState.user.dailyAds || {};
           newAds[i] = (newAds[i] || 0) + 1;
-
           let updates = { dailyAds: newAds };
 
-          // Grant Single Key if ANY ONE slot reaches the daily limit
           const limit = Number(appState.config.dailyAdLimit || 10);
+          
+          // Claim unique single key from Firebase if limit reached and user has no key
           if(newAds[i] >= limit && !appState.user.singleKey) {
-            const generatedKey = "KEY-" + Math.floor(100000 + Math.random() * 900000);
-            updates.singleKey = generatedKey;
-            toast("অভিনন্দন! আপনি ১টি রিডিম Key পেয়েছেন!");
+            const assignedKey = await claimUniqueKeyFromFirebase(appState.user.id);
+            if(assignedKey) {
+              updates.singleKey = assignedKey;
+              toast("অভিনন্দন! আপনি ১টি ইউনিক রিডিম Key পেয়েছেন!");
+            }
           }
 
           await db.ref('users/' + appState.user.id).update(updates);
           toast(`Ad ${newAds[i]}/${limit} সম্পন্ন হয়েছে`);
         }
-      } catch(e) { toast('Ad লোড হতে ব্যর্থ হয়েছে'); }
-      finally { slotLocks[i] = false; }
+      } catch(e) { 
+        toast(e.message || 'অ্যাড দেখা ব্যর্থ হয়েছে! পুরো অ্যাডটি দেখুন'); 
+      } finally { 
+        slotLocks[i] = false; 
+      }
     }
 
-    // Realistic Live Counters
+    // SECURE UNIQUE KEY DISPATCHER (Firebase Transaction)
+    async function claimUniqueKeyFromFirebase(userId) {
+      const keysRef = db.ref('available_keys');
+      let assignedKey = null;
+
+      const result = await keysRef.transaction(keys => {
+        if (keys) {
+          const keyList = Object.keys(keys);
+          if (keyList.length > 0) {
+            const firstKeyId = keyList[0];
+            assignedKey = keys[firstKeyId];
+            delete keys[firstKeyId]; // Remove so nobody else gets it
+            return keys;
+          }
+        }
+        return keys;
+      });
+
+      if (result.committed && assignedKey) {
+        return assignedKey;
+      } else {
+        // Emergency unique key generator if Firebase pool is empty
+        return "KEY-" + Math.floor(100000 + Math.random() * 900000);
+      }
+    }
+
+    // Realistic Counters
     let baseMembers = 1450, baseActive = 410, baseEarn = 24500;
     let counterInterval = null;
 
@@ -554,7 +591,6 @@
       animateValue("cnt-active", 0, baseActive, 1000);
       animateValue("cnt-earned", 0, baseEarn, 1000);
 
-      // Render Active Users
       const list = document.getElementById('leaderboard-list');
       const dummyUsers = ['Tanvir_Pro', 'Hasan99', 'Shohel_BD', 'Sakib_King', 'Rashedul', 'Akash_Tech', 'Mehedi_YT'];
       let html = '';
@@ -571,7 +607,6 @@
       });
       list.innerHTML = html;
 
-      // Realistic Dynamic Increase: 1, 10, 15, 35
       if(!counterInterval) {
         const increments = [1, 10, 15, 35];
         counterInterval = setInterval(() => {
@@ -591,7 +626,7 @@
       }
     }
 
-    // More Bots Render
+    // More Bots
     function renderBots() {
       const el = document.getElementById('bots-list'); el.innerHTML = '';
       const bots = appState.config.moreBots || {
@@ -615,20 +650,24 @@
       });
     }
 
-    // Full WhatsApp Support Chat Function
+    // Support Chat (5 Message Limit & Strict Admin Reply Wait Logic)
+    let chatMessageHistory = [];
+
     function loadSupportChat() {
       const chatRef = db.ref('support_chats/' + appState.user.id);
       chatRef.on('value', snap => {
         const body = document.getElementById('chat-messages');
         body.innerHTML = `
           <div class="wa-msg admin">
-            হ্যালো! Earn Hub সাপোর্টে স্বাগতম। আপনার সমস্যা বা মতামত জানান। দিনে একবার মেসেজ পাঠাতে পারবেন।
+            হ্যালো! Earn Hub অফিসিয়াল সাপোর্টে স্বাগতম। আপনি সর্বোচ্চ ৫টি বার্তা পাঠাতে পারবেন।
             <div class="wa-msg-time">Start</div>
           </div>`;
 
+        chatMessageHistory = [];
         if(snap.exists()) {
           snap.forEach(c => {
             const m = c.val();
+            chatMessageHistory.push(m);
             const isAdmin = m.sender === 'admin';
             body.innerHTML += `
               <div class="wa-msg ${isAdmin ? 'admin' : 'user'}">
@@ -644,13 +683,25 @@
     async function sendSupportMessage() {
       const input = document.getElementById('chat-text-input');
       const text = input.value.trim();
-      const today = todayStr();
 
       if(!text) return toast("মেসেজ লিখুন");
 
       const isAdmin = String(appState.config.adminId) === String(tgUser.id);
-      if(!isAdmin && appState.user.lastSupportDate === today) {
-        return toast("আপনি আজকে বার্তা পাঠিয়েছেন! এডমিনের উত্তরের অপেক্ষা করুন।");
+
+      if(!isAdmin) {
+        // Count user's total sent messages
+        const userMsgs = chatMessageHistory.filter(m => m.sender === 'user');
+        if(userMsgs.length >= 5) {
+          return toast("আপনি সর্বোচ্চ ৫টি মেসেজ পাঠিয়ে ফেলেছেন!");
+        }
+
+        // Check if last message was by user and admin hasn't replied yet
+        if(chatMessageHistory.length > 0) {
+          const lastMsg = chatMessageHistory[chatMessageHistory.length - 1];
+          if(lastMsg.sender === 'user') {
+            return toast("এডমিনের উত্তরের জন্য অপেক্ষা করুন");
+          }
+        }
       }
 
       const now = new Date();
@@ -664,10 +715,6 @@
         time: timeString,
         timestamp: Date.now()
       });
-
-      if(!isAdmin) {
-        await db.ref('users/' + appState.user.id).update({ lastSupportDate: today });
-      }
 
       input.value = '';
       toast("মেসেজ পাঠানো হয়েছে!");
@@ -702,7 +749,7 @@
         if(!snap.exists()) {
           appState.user = { 
             id: tgUser.id, name: tgUser.first_name, photo: tgUser.photo_url||'',
-            dailyAds: {}, singleKey: '', isVerified: false, lastActive: today, lastSupportDate: ''
+            dailyAds: {}, singleKey: '', isVerified: false, lastActive: today
           };
           await userRef.set(appState.user);
         } else {
