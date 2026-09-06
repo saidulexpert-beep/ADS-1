@@ -3,118 +3,137 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Earn Wallet</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <title>Redeem & Earn Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <style>
-    :root{--primary:#6C5CE7;--secondary:#A29BFE;--bg:#F0F3F8;--surface:#FFF;--text:#2D3436;--danger:#ff4757;--success:#00b894;}
+    :root{
+      --primary:#6C5CE7;
+      --secondary:#A29BFE;
+      --bg:#F4F7FC;
+      --surface:#FFFFFF;
+      --text:#2D3436;
+      --danger:#ff4757;
+      --success:#00b894;
+      --gold:#f1c40f;
+    }
     *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
     body{background:var(--bg);color:var(--text);padding-bottom:95px;-webkit-tap-highlight-color:transparent;}
-    #app{max-width:480px;margin:0 auto;min-height:100vh;position:relative;display:none; transition:filter .25s ease;}
-    #app.blurred{filter:blur(10px);}
+    #app{max-width:480px;margin:0 auto;min-height:100vh;position:relative;display:none;}
 
-    .page-section { display: none; animation: fadeIn 0.3s ease; }
+    .page-section { display: none; animation: fadeIn 0.25s ease-out; }
     .page-section.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
     /* Loader */
-    .loader-overlay{position:fixed;inset:0;z-index:9999;display:flex;justify-content:center;align-items:center;flex-direction:column;background: radial-gradient(1200px 700px at 20% 20%, rgba(108,92,231,.35), transparent 55%),radial-gradient(900px 600px at 80% 70%, rgba(0,184,148,.22), transparent 50%),linear-gradient(135deg,#05060a,#0b0d18 40%, #090a12);overflow:hidden;}
-    .loader-card{position:relative;z-index:2;width:min(360px,92vw);border-radius:26px;padding:22px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(14px);text-align:center;}
-    .loader-core{position:relative;width:75px;height:75px;margin:8px auto 14px;display:grid;place-items:center;}
-    .core-spin{position:absolute;inset:0;border-radius:50%;border:4px solid transparent;border-top-color: var(--primary);border-right-color: var(--secondary);animation: spin 1s linear infinite;}
-    .core-logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#6C5CE7,#A29BFE);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.2rem;}
-    @keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
-    .loader-title{color:#fff;font-weight:800;font-size:1.1rem;margin-bottom:4px;}
-    .loader-sub{color:rgba(255,255,255,.7);font-size:.85rem;}
+    .loader-overlay{position:fixed;inset:0;z-index:9999;display:flex;justify-content:center;align-items:center;flex-direction:column;background:radial-gradient(circle at center, #1e1b4b, #090a0f);}
+    .loader-card{width:min(340px,90vw);border-radius:24px;padding:25px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(14px);text-align:center;}
+    .core-spin{width:65px;height:65px;border-radius:50%;border:4px solid transparent;border-top-color:var(--primary);border-right-color:var(--secondary);margin:0 auto 15px;animation:spin 1s linear infinite;}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .loader-title{color:#fff;font-weight:800;font-size:1.1rem;}
+    .loader-sub{color:rgba(255,255,255,.7);font-size:.82rem;margin-top:4px;}
 
     /* Header */
-    .header{background:linear-gradient(180deg,#4b3ee0,#6C5CE7);padding:45px 22px 75px;border-radius:0 0 35px 35px;color:#fff;box-shadow:0 10px 25px rgba(108,92,231,.3);}
+    .header{background:linear-gradient(135deg,#4834d4,#6C5CE7);padding:40px 20px 25px;border-radius:0 0 30px 30px;color:#fff;box-shadow:0 10px 25px rgba(108,92,231,.25);}
     .top-bar{display:flex;justify-content:space-between;align-items:center;}
-    .user-pill{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.15);padding:6px 14px 6px 6px;border-radius:50px;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2);}
-    .user-pill img{width:42px;height:42px;border-radius:50%;border:2px solid #fff;object-fit:cover;}
-    .user-info h3{font-size:.92rem;font-weight:700;line-height:1.1;}
+    .user-pill{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.15);padding:5px 14px 5px 6px;border-radius:50px;backdrop-filter:blur(8px);}
+    .user-pill img{width:40px;height:40px;border-radius:50%;border:2px solid #fff;object-fit:cover;}
+    .user-info h3{font-size:.9rem;font-weight:700;}
     .user-info p{font-size:.7rem;opacity:.85;}
-    .support-btn{background:rgba(255,255,255,.2);color:#fff;width:42px;height:42px;border-radius:50%;border:none;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(5px);transition: .2s;}
-    .support-btn:active{transform:scale(0.9);}
+    .support-btn{background:rgba(255,255,255,.2);color:#fff;width:40px;height:40px;border-radius:50%;border:none;font-size:1.15rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s;}
+    .support-btn:active{transform:scale(0.92);}
 
-    /* Redesigned Total Balance Card */
-    .balance-card{background:#fff;width:90%;margin:-55px auto 20px;padding:22px 20px;border-radius:24px;box-shadow:0 12px 30px rgba(0,0,0,.08);text-align:center;position:relative;z-index:10;}
-    .bal-title{font-size:.78rem;text-transform:uppercase;color:#888;letter-spacing:1px;font-weight:700;}
-    .bal-amt{font-size:2.5rem;font-weight:800;color:var(--text);margin:4px 0 14px;}
-    .bal-amt .currency{color:var(--primary);font-size:1.2rem;margin-left:4px;}
-    
-    .card-actions{display:flex;gap:12px;margin-top:10px;}
-    .btn-action{flex:1;padding:12px 14px;border-radius:14px;border:none;font-weight:700;font-size:.88rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:0.2s;}
-    .btn-withdraw{background:linear-gradient(135deg, #00b894, #00cec9);color:#fff;box-shadow:0 4px 12px rgba(0,184,148,.3);}
-    .btn-action:active{transform:scale(0.96);}
+    /* Redeem Card (Total Balance এর জায়গায়) */
+    .redeem-hero{background:#fff;margin:18px 20px;border-radius:24px;padding:20px;box-shadow:0 8px 25px rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.03);}
+    .card-title{font-size:1.02rem;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:8px;color:var(--text);}
+    .input-box{width:100%;padding:12px 15px;border:1.5px solid #edf2f7;border-radius:14px;font-size:.92rem;background:#f8fafc;outline:none;font-weight:600;margin-bottom:10px;transition:.2s;}
+    .input-box:focus{border-color:var(--primary);background:#fff;}
+    .btn-act-main{width:100%;padding:13px;border-radius:14px;background:linear-gradient(135deg,var(--primary),#8c7ae6);color:#fff;border:none;font-weight:700;font-size:.92rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 16px rgba(108,92,231,.25);}
+    .btn-act-main:active{transform:scale(0.98);}
 
-    .sec-head{font-size:1.05rem;font-weight:800;margin:20px 0 12px;color:var(--text);display:flex;align-items:center;gap:8px;padding:0 20px;}
-    .sec-head i{color:var(--primary);}
+    /* Inline Action Links ( | দিয়ে এক লাইনে) */
+    .inline-action-bar{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:14px;padding-top:12px;border-top:1px dashed #e2e8f0;font-size:.82rem;font-weight:700;}
+    .inline-action-bar a, .inline-action-bar span.action-btn{color:var(--primary);text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:4px;}
+    .inline-action-bar span.divider{color:#cbd5e1;font-weight:300;}
 
-    /* 3D Ad Cards */
-    .ad-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:0 20px;}
-    .ad-card{padding:2px;border-radius:20px;background:conic-gradient(from 0deg,#ff9a3d,#ff5e7a,#4f8cff,#38d6ff,#ff9a3d);cursor:pointer;box-shadow:0 6px 16px rgba(0,0,0,.06);height:115px;}
-    .ad-inner{border-radius:18px;padding:12px 10px;text-align:center;background:#fff;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;}
-    .ad-inner i{font-size:1.6rem;display:block;}
-    .ad-inner h4{font-size:.85rem;font-weight:800;color:#111827;}
-    .ad-inner .reward-pill{font-size:.7rem;font-weight:800;color:#111827;background:rgba(15,23,42,.05);padding:4px 8px;border-radius:20px;display:inline-flex;gap:5px;align-items:center;}
-    .ad-inner .progress-pill{font-size:.68rem;color:#666;background:rgba(15,23,42,.04);padding:3px 8px;border-radius:20px;}
-    .slot-1 .ad-inner{background:linear-gradient(145deg,#fff7f0,#ffe5d0);} .slot-1 .ad-inner i{color:#ff8b3d;}
-    .slot-2 .ad-inner{background:linear-gradient(145deg,#edf5ff,#dde6ff);} .slot-2 .ad-inner i{color:#4f8cff;}
-    .slot-3 .ad-inner{background:linear-gradient(145deg,#f2fffa,#dcfff2);} .slot-3 .ad-inner i{color:#00b894;}
-    .slot-4 .ad-inner{background:linear-gradient(145deg,#fff2fb,#ffe0f3);} .slot-4 .ad-inner i{color:#e84393;}
-    .ad-card.disabled{opacity:.6;filter:grayscale(1);pointer-events:none;}
+    /* Ad Cards */
+    .sec-head{font-size:1rem;font-weight:800;margin:22px 20px 12px;display:flex;align-items:center;gap:8px;color:#1e293b;}
+    .ad-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 20px;}
+    .ad-card{padding:2px;border-radius:18px;background:conic-gradient(from 0deg,#ff9a3d,#ff5e7a,#4f8cff,#38d6ff,#ff9a3d);cursor:pointer;box-shadow:0 5px 15px rgba(0,0,0,.04);height:110px;}
+    .ad-inner{border-radius:16px;padding:10px;text-align:center;background:#fff;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;}
+    .ad-inner i{font-size:1.5rem;color:var(--primary);}
+    .ad-inner h4{font-size:.85rem;font-weight:700;}
+    .ad-inner .progress-pill{font-size:.68rem;color:#64748b;background:#f1f5f9;padding:3px 10px;border-radius:20px;font-weight:600;}
+    .ad-card.completed{opacity:.65;pointer-events:none;filter:grayscale(1);}
+    .ad-card.completed .ad-inner{background:#f8fafc;}
 
     /* Tasks */
-    .task-list{display:flex;flex-direction:column;gap:12px;padding:0 20px 30px;}
-    .task-item{background:var(--surface);padding:14px;border-radius:18px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 12px rgba(0,0,0,.03);}
+    .task-list{display:flex;flex-direction:column;gap:10px;padding:0 20px 20px;}
+    .task-item{background:#fff;padding:12px 15px;border-radius:16px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 12px rgba(0,0,0,.02);}
     .task-left{display:flex;align-items:center;gap:12px;}
-    .task-icon{width:42px;height:42px;border-radius:12px;object-fit:cover;}
-    .task-info h4{font-size:.9rem;font-weight:700;}
-    .task-info small{color:#00b894;font-weight:700;font-size:.78rem;}
-    .btn-act{padding:8px 18px;border-radius:50px;border:none;font-weight:700;font-size:.8rem;cursor:pointer;}
-    .btn-start{background:var(--text);color:#fff;}
-    .btn-wait{background:#ffeaa7;color:#d63031;cursor:not-allowed;}
-    .btn-claim{background:var(--primary);color:#fff;animation:pulse 1s infinite;}
-    @keyframes pulse{50%{transform:scale(1.05)}}
+    .task-icon{width:40px;height:40px;border-radius:12px;object-fit:cover;}
+    .btn-task{padding:7px 18px;border-radius:30px;border:none;font-weight:700;font-size:.78rem;cursor:pointer;}
+    .btn-start{background:#1e293b;color:#fff;}
+    .btn-wait{background:#fef08a;color:#854d0e;cursor:not-allowed;}
+    .btn-claim{background:var(--primary);color:#fff;}
 
-    /* Forms & Redeem Section */
-    .premium-card{background:var(--surface);margin:0 20px 15px;padding:20px;border-radius:20px;box-shadow:0 8px 20px rgba(0,0,0,0.04);}
-    .card-title{font-size:1.05rem;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
-    .input-group{margin-bottom:14px;}
-    .input-group select, .input-group input{width:100%;padding:13px 15px;border:1px solid #e2e8f0;border-radius:12px;font-size:.95rem;background:#f8fafc;outline:none;font-weight:600;}
-    .btn-main{width:100%;padding:14px;border-radius:14px;background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;border:none;font-size:.95rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
-    .btn-main:active{transform:scale(0.98);}
+    /* Leaderboard & Fake Notifications */
+    .activity-marquee-box{background:#fff;margin:15px 20px;padding:12px 15px;border-radius:16px;box-shadow:0 4px 15px rgba(0,0,0,.03);display:flex;align-items:center;gap:12px;overflow:hidden;border-left:4px solid var(--success);}
+    .activity-marquee-box i{font-size:1.3rem;color:var(--success);}
+    .activity-text{font-size:.82rem;font-weight:600;color:#334155;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 
-    .btn-link{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;border-radius:12px;text-decoration:none;font-weight:700;font-size:0.9rem;margin-top:10px;}
-    .btn-key{background:linear-gradient(135deg,#0088cc,#00a0e9);color:#fff;}
-    .btn-bot{background:linear-gradient(135deg,#ff9a3d,#ff5e7a);color:#fff;}
+    .leader-row{display:flex;align-items:center;justify-content:space-between;background:#fff;padding:12px 16px;border-radius:16px;margin:0 20px 10px;box-shadow:0 3px 10px rgba(0,0,0,.02);}
+    .leader-left{display:flex;align-items:center;gap:12px;font-weight:700;font-size:.88rem;}
+    .leader-left img{width:38px;height:38px;border-radius:50%;object-fit:cover;}
+    .active-badge{font-size:.7rem;padding:3px 8px;border-radius:20px;background:rgba(0,184,148,.12);color:var(--success);font-weight:700;display:inline-flex;align-items:center;gap:4px;}
+
+    /* More Bots Page */
+    .bot-grid{display:grid;grid-template-columns:1fr;gap:12px;padding:0 20px 30px;}
+    .bot-card{background:#fff;border-radius:18px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 15px rgba(0,0,0,.03);}
+    .bot-meta{display:flex;align-items:center;gap:12px;}
+    .bot-meta img{width:46px;height:46px;border-radius:14px;object-fit:cover;}
+    .bot-meta h4{font-size:.92rem;font-weight:700;color:#1e293b;}
+    .bot-meta p{font-size:.75rem;color:#64748b;}
+    .bot-open-btn{padding:8px 18px;border-radius:25px;background:linear-gradient(135deg,#0984e3,#74b9ff);color:#fff;text-decoration:none;font-weight:700;font-size:.8rem;}
+
+    /* Support / Community Page */
+    .community-card{background:#fff;margin:15px 20px 10px;padding:16px;border-radius:20px;box-shadow:0 4px 15px rgba(0,0,0,.03);}
+    .msg-list{display:flex;flex-direction:column;gap:12px;padding:10px 20px 30px;}
+    .msg-box{background:#fff;border-radius:18px;padding:14px;box-shadow:0 3px 12px rgba(0,0,0,.02);position:relative;border:1px solid transparent;}
+    .msg-box.pinned{border:2px solid var(--gold);background:linear-gradient(180deg,#fff,#fffdf0);}
+    .pin-label{position:absolute;top:10px;right:14px;font-size:.72rem;color:#d97706;font-weight:800;display:flex;align-items:center;gap:4px;}
+    .msg-header{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+    .msg-header img{width:34px;height:34px;border-radius:50%;object-fit:cover;}
+    .msg-header h4{font-size:.85rem;font-weight:700;}
+    .admin-tag{background:var(--primary);color:#fff;font-size:.65rem;padding:2px 6px;border-radius:6px;margin-left:4px;font-weight:700;}
+    .msg-body{font-size:.85rem;color:#334155;line-height:1.4;margin-bottom:10px;}
+    .msg-footer{display:flex;align-items:center;justify-content:space-between;font-size:.78rem;color:#64748b;border-top:1px dashed #f1f5f9;padding-top:8px;}
+    .like-btn{cursor:pointer;color:#e11d48;font-weight:700;display:flex;align-items:center;gap:5px;border:none;background:transparent;}
+    .pin-btn{cursor:pointer;color:#d97706;font-weight:700;background:transparent;border:none;}
 
     /* Bottom Nav */
-    .nav{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);width:90%;max-width:400px;background:#2d3436;display:flex;justify-content:space-around;padding:14px;border-radius:25px;box-shadow:0 10px 30px rgba(0,0,0,.25);z-index:100;}
-    .nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;color:rgba(255,255,255,.45);font-size:1.2rem;cursor:pointer;transition:.2s;}
+    .nav{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);width:90%;max-width:400px;background:#1e293b;display:flex;justify-content:space-around;padding:12px;border-radius:25px;box-shadow:0 10px 30px rgba(0,0,0,.25);z-index:100;}
+    .nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;color:rgba(255,255,255,.45);font-size:1.15rem;cursor:pointer;transition:.2s;}
     .nav-item span{font-size:.65rem;font-weight:600;}
-    .nav-item.active{color:#fff;transform:translateY(-3px);}
+    .nav-item.active{color:#fff;transform:translateY(-2px);}
 
-    .toast{position:fixed;top:30px;left:50%;transform:translateX(-50%);background:#2d3436;color:#fff;padding:10px 22px;border-radius:30px;font-size:.85rem;opacity:0;transition:.3s;z-index:12000;font-weight:600;}
+    .toast{position:fixed;top:30px;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:10px 20px;border-radius:30px;font-size:.82rem;opacity:0;transition:.3s;z-index:12000;font-weight:600;}
     .toast.show{opacity:1;top:45px;}
   </style>
 </head>
 <body>
 
-  <!-- Loader -->
+  <!-- Loading Animation -->
   <div id="loader" class="loader-overlay">
     <div class="loader-card">
-      <div class="loader-core">
-        <div class="core-spin"></div>
-        <div class="core-logo"><i class="fas fa-bolt"></i></div>
-      </div>
-      <div class="loader-title">Earn Wallet</div>
+      <div class="core-spin"></div>
+      <div class="loader-title">Redeem Hub</div>
       <div class="loader-sub">অপেক্ষা করুন, প্রস্তুত হচ্ছে...</div>
     </div>
   </div>
@@ -127,95 +146,98 @@
       <div class="top-bar">
         <div class="user-pill">
           <img id="u-img" src="https://via.placeholder.com/45">
-          <div class="user-info"><h3 id="u-name">...</h3><p id="u-id">...</p></div>
+          <div class="user-info"><h3 id="u-name">User</h3><p id="u-id">ID: ...</p></div>
         </div>
-        <!-- Support Button (Direct Link Without Popup) -->
-        <button class="support-btn" onclick="openDirectSupport()"><i class="fas fa-headset"></i></button>
+        <!-- Support Page Button -->
+        <button class="support-btn" onclick="switchTab('support')"><i class="fas fa-comments"></i></button>
       </div>
     </div>
 
-    <!-- Balance Card -->
-    <div class="balance-card">
-      <div class="bal-title">Total Balance</div>
-      <div class="bal-amt"><span id="u-bal">0.00</span><span class="currency">TK</span></div>
-      <div class="card-actions">
-        <button class="btn-action btn-withdraw" onclick="switchTab('withdraw')">
-          <i class="fas fa-wallet"></i> Withdraw
-        </button>
-      </div>
-    </div>
-
-    <!-- ================= TAB 1: HOME ================= -->
+    <!-- ================= TAB 1: HOME (REDEEM & ADS) ================= -->
     <div id="page-home" class="page-section active">
-      <div class="sec-head"><i class="fas fa-play-circle"></i> Daily Ads</div>
-      <div id="ad-area" class="ad-grid"></div>
-
-      <div class="sec-head"><i class="fas fa-tasks"></i> Available Tasks</div>
-      <div id="task-area" class="task-list"></div>
-    </div>
-
-    <!-- ================= TAB 2: REDEEM CODE (Formerly Referral) ================= -->
-    <div id="page-redeem" class="page-section">
-      <div class="premium-card">
-        <div class="card-title"><i class="fas fa-key" style="color:var(--primary);"></i> Unlock Redeem Section</div>
-        <p style="font-size:0.83rem;color:#666;margin-bottom:12px;line-height:1.4;">
-          প্রথমে আপনার সিক্রেট Key দিয়ে রিডিম সেকশনটি আনলক করুন।
-        </p>
-        <div id="key-step">
-          <div class="input-group">
-            <input type="text" id="access-key" placeholder="Enter Secret Key">
-          </div>
-          <button class="btn-main" onclick="verifyUnlockKey()"><i class="fas fa-lock-open"></i> Unlock Redeem</button>
+      
+      <!-- Professional Redeem Hero Section -->
+      <div class="redeem-hero">
+        <div class="card-title"><i class="fas fa-shield-halved" style="color:var(--primary);"></i> Daily Redeem Code</div>
+        
+        <!-- Step 1: Secret Key Verification -->
+        <div id="step-key">
+          <input type="text" id="input-key" class="input-box" placeholder="সিক্রেট Key দিন...">
+          <button class="btn-act-main" onclick="verifyUnlockKey()"><i class="fas fa-unlock"></i> আনলক করুন</button>
         </div>
 
-        <div id="redeem-step" style="display:none;margin-top:15px;padding-top:15px;border-top:1px dashed #ddd;">
-          <div class="card-title" style="font-size:0.95rem;color:#00b894;"><i class="fas fa-gift"></i> Redeem Code</div>
-          <div class="input-group">
-            <input type="text" id="redeem-code" placeholder="Enter Redeem Code">
-          </div>
-          <button class="btn-main" style="background:linear-gradient(135deg, #00b894, #00cec9);" onclick="applyRedeemCode()">
-            <i class="fas fa-check-circle"></i> Claim Reward
+        <!-- Step 2: Hidden Redeem Input Box -->
+        <div id="step-code" style="display:none;margin-top:12px;">
+          <input type="text" id="input-code" class="input-box" placeholder="আপনার রিডিম কোডটি লিখুন...">
+          <button class="btn-act-main" style="background:linear-gradient(135deg,var(--success),#00cec9);" onclick="claimRedeemCode()">
+            <i class="fas fa-gift"></i> রিডিম করুন
           </button>
         </div>
 
-        <!-- External Buttons -->
-        <div style="margin-top:20px;">
-          <a id="channel-link-btn" href="#" target="_blank" class="btn-link btn-key">
-            <i class="fab fa-telegram-plane"></i> Key সংগ্রহ করুন (Channel)
-          </a>
-          <a id="bot-link-btn" href="#" target="_blank" class="btn-link btn-bot">
-            <i class="fas fa-robot"></i> রিডিম করুন / কোড নিন (Bot)
-          </a>
+        <!-- Inline Links: Key সংগ্রহ | Key কপি | রিডিম কোড নিন -->
+        <div class="inline-action-bar">
+          <a id="btn-chan-link" href="#" target="_blank"><i class="fab fa-telegram-plane"></i> Key সংগ্রহ করুন</a>
+          <span class="divider">|</span>
+          <span class="action-btn" onclick="copyCurrentKey()"><i class="fas fa-copy"></i> Key কপি</span>
+          <span class="divider">|</span>
+          <a id="btn-bot-link" href="#" target="_blank"><i class="fas fa-robot"></i> রিডিম কোড নিন</a>
         </div>
       </div>
+
+      <!-- Daily Ads Grid -->
+      <div class="sec-head"><i class="fas fa-play-circle" style="color:var(--primary);"></i> Daily Ads (<span id="ads-summary">0/10</span>)</div>
+      <div id="ad-area" class="ad-grid"></div>
+
+      <!-- Tasks Section -->
+      <div class="sec-head"><i class="fas fa-list-check" style="color:var(--primary);"></i> Social Tasks</div>
+      <div id="task-area" class="task-list"></div>
     </div>
 
-    <!-- ================= TAB 3: WITHDRAW ================= -->
-    <div id="page-withdraw" class="page-section">
-      <div class="premium-card">
-        <div class="card-title"><i class="fas fa-wallet" style="color:var(--primary);"></i> Withdraw Funds</div>
-        <div class="input-group"><select id="wd-method"><option value="">Select Method</option></select></div>
-        <div class="input-group"><input type="text" id="wd-account" placeholder="Account Number (e.g. Bkash/Nagad)"></div>
-        <div class="input-group"><input type="number" id="wd-amount" placeholder="Amount"></div>
-        <button class="btn-main" onclick="requestWithdraw()"><i class="fas fa-paper-plane"></i> Submit Withdrawal</button>
-        <div style="font-size: 0.8rem; color: #ff4757; text-align: center; margin-top: 15px; font-weight: 700;" id="wd-notice">Minimum withdraw: ...</div>
+    <!-- ================= TAB 2: LEADERBOARD ================= -->
+    <div id="page-leaderboard" class="page-section">
+      <!-- Live Fake Notification Ticker -->
+      <div class="activity-marquee-box">
+        <i class="fas fa-bolt"></i>
+        <div class="activity-text" id="ticker-text">User @alex**刚刚 রিডিম Key সংগ্রহ করেছেন!</div>
       </div>
+
+      <div class="sec-head"><i class="fas fa-fire" style="color:#e11d48;"></i> Active Users Ranking</div>
+      <div id="leaderboard-list"></div>
     </div>
+
+    <!-- ================= TAB 3: MORE BOTS ================= -->
+    <div id="page-bots" class="page-section">
+      <div class="sec-head"><i class="fas fa-cubes" style="color:var(--primary);"></i> Our Telegram Bots</div>
+      <div id="bots-list" class="bot-grid"></div>
+    </div>
+
+    <!-- ================= TAB 4: SUPPORT / COMMUNITY ================= -->
+    <div id="page-support" class="page-section">
+      <div class="community-card">
+        <div class="card-title"><i class="fas fa-paper-plane" style="color:var(--primary);"></i> Ask / Send Message</div>
+        <textarea id="comm-msg" class="input-box" rows="2" placeholder="আপনার সমস্যা বা বার্তা লিখুন..." style="resize:none;"></textarea>
+        <button class="btn-act-main" onclick="sendCommunityMessage()"><i class="fas fa-comment-dots"></i> মেসেজ পাঠান</button>
+      </div>
+
+      <div class="sec-head"><i class="fas fa-comments" style="color:var(--primary);"></i> Public Community Feed</div>
+      <div id="messages-container" class="msg-list"></div>
+    </div>
+
   </div>
 
-  <!-- Bottom Navigation (Referral icon used for Redeem) -->
+  <!-- Bottom Navigation -->
   <div class="nav">
     <div class="nav-item active" onclick="switchTab('home', this)">
       <i class="fas fa-home"></i>
       <span>Home</span>
     </div>
-    <div class="nav-item" onclick="switchTab('redeem', this)">
-      <i class="fas fa-users"></i>
-      <span>Redeem</span>
+    <div class="nav-item" onclick="switchTab('leaderboard', this)">
+      <i class="fas fa-trophy"></i>
+      <span>Leaderboard</span>
     </div>
-    <div class="nav-item" onclick="switchTab('withdraw', this)">
-      <i class="fas fa-wallet"></i>
-      <span>Withdraw</span>
+    <div class="nav-item" onclick="switchTab('bots', this)">
+      <i class="fas fa-robot"></i>
+      <span>More Bots</span>
     </div>
   </div>
 
@@ -235,10 +257,20 @@
     const tg = window.Telegram.WebApp;
     if(tg){ try{ tg.ready(); tg.expand(); }catch(e){} }
 
-    let appState = { 
-      user: { balance:0, totalEarned:0, dailyAds:{}, taskHistory:{}, lastRedeemDate:'' }, 
-      config: { adSlots:[], webTasks:{}, redeemKey:"1234", redeemCode:"BONUS50", redeemReward:50, keyChannelLink:"", botLink:"", supportLink:"" } 
+    let appState = {
+      user: { dailyAds:{}, lastRedeemDate:'', taskHistory:{} },
+      config: { 
+        dailyAdLimit: 10,
+        redeemKey: "KEY100",
+        redeemCode: "REDEEM2026",
+        keyChannelLink: "https://t.me",
+        botLink: "https://t.me",
+        adminId: "123456",
+        moreBots: {},
+        adSlots: []
+      }
     };
+
     let isBooted = false;
     let isKeyUnlocked = false;
     let tgUser = tg?.initDataUnsafe?.user || {id: '123456', first_name: 'Guest User', photo_url: 'https://via.placeholder.com/100'};
@@ -246,80 +278,115 @@
     function toast(msg) {
       const t = document.getElementById('toast');
       t.innerText = msg; t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 2800);
+      setTimeout(() => t.classList.remove('show'), 2600);
     }
     function todayStr() { return new Date().toISOString().slice(0, 10); }
 
     function switchTab(tabId, el) {
       document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-      document.getElementById('page-' + tabId).classList.add('active');
+      
+      const target = document.getElementById('page-' + tabId);
+      if(target) target.classList.add('active');
+
       if(el) {
         el.classList.add('active');
       } else {
-        const idx = tabId === 'home' ? 0 : tabId === 'redeem' ? 1 : 2;
-        document.querySelectorAll('.nav-item')[idx].classList.add('active');
+        const mapping = { home:0, leaderboard:1, bots:2 };
+        if(mapping[tabId] !== undefined) document.querySelectorAll('.nav-item')[mapping[tabId]].classList.add('active');
       }
+
+      if(tabId === 'leaderboard') renderLeaderboard();
+      if(tabId === 'bots') renderBots();
+      if(tabId === 'support') listenCommunityFeed();
       if(tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
     }
 
-    // Direct Support
-    function openDirectSupport() {
-      const link = appState.config.supportLink || "https://t.me/support";
-      if(tg?.openTelegramLink && link.includes('t.me/')) {
-        tg.openTelegramLink(link);
+    // Key Copy Feature
+    function copyCurrentKey() {
+      const k = appState.config.redeemKey || "Not Available";
+      navigator.clipboard.writeText(k);
+      toast("Key কপি হয়েছে: " + k);
+    }
+
+    // Verify Secret Key
+    function verifyUnlockKey() {
+      const val = document.getElementById('input-key').value.trim();
+      const actual = String(appState.config.redeemKey || "").trim();
+
+      if(!val) return toast("দয়া করে Key দিন");
+      if(val === actual) {
+        isKeyUnlocked = true;
+        document.getElementById('step-code').style.display = 'block';
+        toast("Key সঠিক হয়েছে! কোড লিখুন");
       } else {
-        window.open(link, '_blank');
+        toast("ভুল Key! চ্যানেল থেকে সঠিক Key নিন");
       }
     }
 
-    function updateTextElements() {
-      const sym = appState.config.currencySymbol || "TK";
-      document.getElementById('u-bal').innerText = (appState.user.balance || 0).toFixed(2);
-      document.querySelectorAll('.currency').forEach(el => el.innerText = sym);
-      document.getElementById('wd-notice').innerText = `Minimum withdraw: ${appState.config.minWithdraw||10} ${sym}`;
+    // Check All Ads Complete Status
+    function checkAllAdsFinished() {
+      const limit = Number(appState.config.dailyAdLimit || 10);
+      const slots = appState.config.adSlots || [];
+      for(let i=0; i<4; i++) {
+        if(slots[i] && slots[i].network && slots[i].network !== 'none') {
+          const watched = (appState.user.dailyAds && appState.user.dailyAds[i]) ? appState.user.dailyAds[i] : 0;
+          if(watched < limit) return false;
+        }
+      }
+      return true;
+    }
 
-      // Redeem Links update
-      const channelBtn = document.getElementById('channel-link-btn');
-      const botBtn = document.getElementById('bot-link-btn');
-      channelBtn.href = appState.config.keyChannelLink || '#';
-      botBtn.href = appState.config.botLink || '#';
+    // Claim Redeem Code
+    async function claimRedeemCode() {
+      if(!isKeyUnlocked) return toast("আগে Key দিয়ে আনলক করুন");
+      if(!checkAllAdsFinished()) return toast("সব Ads দেখা শেষ না করলে রিডিম হবে না!");
 
-      const wdSel = document.getElementById('wd-method'); 
-      let currentVal = wdSel.value;
-      wdSel.innerHTML = '<option value="">Select Method</option>';
-      if(appState.config.paymentMethods) {
-        appState.config.paymentMethods.forEach(m => {
-          wdSel.innerHTML += `<option value="${m}" ${currentVal===m?'selected':''}>${m}</option>`;
-        });
+      const today = todayStr();
+      if(appState.user.lastRedeemDate === today) {
+        return toast("আজকে ইতিমধ্যে রিডিম সম্পন্ন করেছেন!");
+      }
+
+      const val = document.getElementById('input-code').value.trim();
+      const actual = String(appState.config.redeemCode || "").trim();
+
+      if(!val) return toast("কোড লিখুন");
+
+      if(val === actual) {
+        await db.ref('users/' + appState.user.id).update({ lastRedeemDate: today });
+        toast("অভিনন্দন! রিডিম সফল হয়েছে!");
+        document.getElementById('input-code').value = '';
+      } else {
+        toast("ভুল কোড! সঠিক কোডটি দিন");
       }
     }
 
+    // Render Ads
     function renderAds() {
       const el = document.getElementById('ad-area'); el.innerHTML = '';
       const slots = appState.config.adSlots || [];
       const limit = Number(appState.config.dailyAdLimit || 10);
-      const reward = Number(appState.config.adReward || 0.5);
-      const sym = appState.config.currencySymbol || "TK";
 
+      let totalWatched = 0;
       for (let i=0; i<4; i++) {
         const slot = slots[i];
         const done = (appState.user.dailyAds && appState.user.dailyAds[i]) ? appState.user.dailyAds[i] : 0;
-        const max = done >= limit;
+        totalWatched += done;
+        const isMax = done >= limit;
         const configured = slot && slot.network && slot.network !== 'none';
-        const cardClass = !configured ? 'disabled' : (max ? 'disabled' : '');
-        const extraClass = (i===0?'slot-1':i===1?'slot-2':i===2?'slot-3':'slot-4');
-        const icon = (i===0?'fa-play':i===1?'fa-circle-play':i===2?'fa-bolt':'fa-gem');
+        
+        const cardClass = isMax ? 'completed' : (!configured ? 'completed' : '');
 
         el.innerHTML += `
-          <div class="ad-card ${extraClass} ${cardClass}" onclick="${(!configured||max)?'':'watchAd('+i+')'}">
+          <div class="ad-card ${cardClass}" onclick="${(!configured||isMax)?'':'watchAd('+i+')'}">
             <div class="ad-inner">
-              <i class="fas ${icon}"></i> <h4>Ad Slot ${i+1}</h4>
-              <div class="reward-pill"><i class="fas fa-coins"></i> +${reward} ${sym}</div>
-              ${configured ? `<div class="progress-pill">${done}/${limit} Watched</div>` : `<div class="progress-pill">Inactive</div>`}
+              <i class="fas fa-play-circle"></i>
+              <h4>Ad Slot ${i+1}</h4>
+              <div class="progress-pill">${isMax ? 'Completed' : done + '/' + limit + ' Watched'}</div>
             </div>
           </div>`;
       }
+      document.getElementById('ads-summary').innerText = `${totalWatched}/${limit * 4}`;
     }
 
     let slotLocks = {};
@@ -339,93 +406,19 @@
         }
 
         if(success) {
-          const r = Number(appState.config.adReward || 0.5);
-          let newBal = (appState.user.balance || 0) + r;
-          let newEarn = (appState.user.totalEarned || 0) + r;
           let newAds = appState.user.dailyAds || {};
           newAds[i] = (newAds[i] || 0) + 1;
-          await db.ref('users/' + appState.user.id).update({ balance: newBal, totalEarned: newEarn, dailyAds: newAds });
-          toast('Success! +'+r);
+          await db.ref('users/' + appState.user.id + '/dailyAds').set(newAds);
+          toast('Ad Completed!');
         }
-      } catch(e) { toast('Failed to load Ad'); }
+      } catch(e) { toast('Ad loading failed'); }
       finally { slotLocks[i] = false; }
     }
 
-    // Check if user watched all ads
-    function hasCompletedAllAds() {
-      const slots = appState.config.adSlots || [];
-      const limit = Number(appState.config.dailyAdLimit || 10);
-      let watchedAll = true;
-
-      for(let i=0; i<4; i++) {
-        if(slots[i] && slots[i].network && slots[i].network !== 'none') {
-          const count = (appState.user.dailyAds && appState.user.dailyAds[i]) ? appState.user.dailyAds[i] : 0;
-          if(count < limit) {
-            watchedAll = false;
-            break;
-          }
-        }
-      }
-      return watchedAll;
-    }
-
-    // Verify Unlock Key
-    function verifyUnlockKey() {
-      const enteredKey = document.getElementById('access-key').value.trim();
-      const actualKey = String(appState.config.redeemKey || "1234").trim();
-
-      if(!enteredKey) return toast('অনুগ্রহ করে Key টি দিন');
-
-      if(enteredKey === actualKey) {
-        isKeyUnlocked = true;
-        document.getElementById('redeem-step').style.display = 'block';
-        toast('Key সঠিক হয়েছে! রিডিম কোড দিন');
-      } else {
-        toast('ভুল Key! টেলিগ্রাম চ্যানেল থেকে সঠিক Key নিন');
-      }
-    }
-
-    // Apply Redeem Code
-    async function applyRedeemCode() {
-      if(!isKeyUnlocked) return toast('প্রথমে Key দিয়ে আনলক করুন');
-
-      const today = todayStr();
-      if(appState.user.lastRedeemDate === today) {
-        return toast('আপনি আজকের কোড ইতিমধ্যে রিডিম করেছেন!');
-      }
-
-      // Requirement: Check all ads completed
-      if(!hasCompletedAllAds()) {
-        return toast('আগে সব Daily Ads দেখা শেষ করুন!');
-      }
-
-      const enteredCode = document.getElementById('redeem-code').value.trim();
-      const actualCode = String(appState.config.redeemCode || "BONUS50").trim();
-      const reward = Number(appState.config.redeemReward || 50);
-
-      if(!enteredCode) return toast('রিডিম কোড লিখুন');
-
-      if(enteredCode === actualCode) {
-        const newBal = (appState.user.balance || 0) + reward;
-        const newEarn = (appState.user.totalEarned || 0) + reward;
-
-        await db.ref('users/' + appState.user.id).update({
-          balance: newBal,
-          totalEarned: newEarn,
-          lastRedeemDate: today
-        });
-
-        document.getElementById('redeem-code').value = '';
-        toast(`অভিনন্দন! রিডিম সফল +${reward}`);
-      } else {
-        toast('ভুল রিডিম কোড! সঠিক কোড দিন');
-      }
-    }
-
+    // Tasks
     function renderTasks() {
       const el = document.getElementById('task-area'); el.innerHTML = '';
       const tasks = appState.config.webTasks || {};
-      const sym = appState.config.currencySymbol || "TK";
 
       Object.keys(tasks).forEach(k => {
         const t = tasks[k];
@@ -434,60 +427,153 @@
           <div class="task-item">
             <div class="task-left">
               <img src="${t.icon || 'https://via.placeholder.com/40'}" class="task-icon">
-              <div class="task-info"><h4>${t.name}</h4><small>+${t.reward} ${sym}</small></div>
+              <div style="font-size:.9rem;font-weight:700;">${t.name}</div>
             </div>
-            <button id="btn-${k}" class="btn-act btn-start" onclick="runTask('${k}')">Start</button>
+            <button id="btn-${k}" class="btn-task btn-start" onclick="runTask('${k}')">Start</button>
           </div>`;
       });
     }
 
     function runTask(id) {
       const t = appState.config.webTasks[id];
-      if(tg && tg.openLink) tg.openLink(t.url); else window.open(t.url, '_blank');
+      if(tg?.openLink) tg.openLink(t.url); else window.open(t.url, '_blank');
       const btn = document.getElementById('btn-'+id);
-      let s = 10; btn.className = 'btn-act btn-wait'; btn.disabled = true;
+      let s = 10; btn.className = 'btn-task btn-wait'; btn.disabled = true;
       const iv = setInterval(() => {
         btn.innerText = s+'s'; s--;
-        if(s < 0) { 
-          clearInterval(iv); btn.className = 'btn-act btn-claim'; btn.disabled = false; btn.innerText = 'Claim'; 
+        if(s < 0) {
+          clearInterval(iv); btn.className = 'btn-task btn-claim'; btn.disabled = false; btn.innerText = 'Claim';
           btn.onclick = async () => {
-            const r = Number(t.reward);
             let th = appState.user.taskHistory || {}; th[id] = true;
-            await db.ref('users/' + appState.user.id).update({ 
-              balance: (appState.user.balance || 0) + r, 
-              totalEarned: (appState.user.totalEarned || 0) + r, 
-              taskHistory: th 
-            });
-            toast('Claimed Successfully!');
+            await db.ref('users/' + appState.user.id + '/taskHistory').set(th);
+            toast('Task Done!');
           };
         }
       }, 1000);
     }
 
-    async function requestWithdraw() {
-      const method = document.getElementById('wd-method').value;
-      const account = document.getElementById('wd-account').value;
-      const amount = Number(document.getElementById('wd-amount').value);
-      const minWd = Number(appState.config.minWithdraw || 10);
-
-      if(!method || !account || !amount) return toast('সব তথ্য পূরণ করুন');
-      if(amount < minWd) return toast(`সর্বনিম্ন উইথড্র ${minWd}`);
-      if(amount > appState.user.balance) return toast('পর্যাপ্ত ব্যালেন্স নেই');
-
-      try {
-        const wdId = 'WD' + Date.now();
-        await db.ref('withdrawals/' + wdId).set({ 
-          userId: appState.user.id, 
-          userName: appState.user.name || 'User', 
-          method, account, amount, status: 'pending', timestamp: Date.now() 
-        });
-        await db.ref('users/' + appState.user.id).update({ balance: appState.user.balance - amount });
-        document.getElementById('wd-account').value = ''; document.getElementById('wd-amount').value = '';
-        toast('উইথড্র রিকোয়েস্ট সফল হয়েছে!');
-      } catch(e) { toast('উইথড্র রিকোয়েস্ট ব্যর্থ হয়েছে'); }
+    // Leaderboard + Fake Notification Ticker
+    function renderLeaderboard() {
+      const list = document.getElementById('leaderboard-list');
+      const sampleNames = ['Rahim_01', 'King_Bro', 'Shakib_75', 'Tonmoy', 'Hassan_BD', 'Akash_Official', 'Tanvir99', 'Sohan_Khan'];
+      let html = '';
+      sampleNames.forEach((n, idx) => {
+        html += `
+          <div class="leader-row">
+            <div class="leader-left">
+              <span style="color:#94a3b8;width:20px;">#${idx+1}</span>
+              <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${n}">
+              <span>${n}</span>
+            </div>
+            <div class="active-badge"><i class="fas fa-circle" style="font-size:.45rem;"></i> Active Now</div>
+          </div>`;
+      });
+      list.innerHTML = html;
     }
 
-    // Startup & Login Handlers
+    // Fake Ticker Loop
+    const fakeEvents = [
+      'User @samir_**刚刚 রিডিম Key সংগ্রহ করেছেন!',
+      'User @robiul_07 সম্পূর্ণ Ads সম্পন্ন করেছেন!',
+      'User @tanim_yt রিডিম কোড সফলভাবে ক্লেইম করেছেন!',
+      'User @mehedi_22 Key আনলক করেছেন!'
+    ];
+    let tickerIdx = 0;
+    setInterval(() => {
+      const t = document.getElementById('ticker-text');
+      if(t) {
+        tickerIdx = (tickerIdx + 1) % fakeEvents.length;
+        t.innerText = fakeEvents[tickerIdx];
+      }
+    }, 4000);
+
+    // More Bots Render
+    function renderBots() {
+      const el = document.getElementById('bots-list'); el.innerHTML = '';
+      const bots = appState.config.moreBots || {
+        bot1: { name: "Refer & Earn Bot", desc: "সেরা রেফারেল ইনকাম বট", link: "https://t.me", icon: "https://via.placeholder.com/60" },
+        bot2: { name: "Quiz Bot BD", desc: "কুইজ খেলে রিওয়ার্ড জিতুন", link: "https://t.me", icon: "https://via.placeholder.com/60" }
+      };
+
+      Object.keys(bots).forEach(k => {
+        const b = bots[k];
+        el.innerHTML += `
+          <div class="bot-card">
+            <div class="bot-meta">
+              <img src="${b.icon || 'https://via.placeholder.com/60'}">
+              <div>
+                <h4>${b.name}</h4>
+                <p>${b.desc}</p>
+              </div>
+            </div>
+            <a href="${b.link}" target="_blank" class="bot-open-btn">Open Bot</a>
+          </div>`;
+      });
+    }
+
+    // Community / Support Chat System
+    function listenCommunityFeed() {
+      db.ref('community_messages').limitToLast(25).on('value', snap => {
+        const box = document.getElementById('messages-container');
+        box.innerHTML = '';
+        if(!snap.exists()) return;
+
+        let msgs = [];
+        snap.forEach(c => msgs.push({ id: c.key, ...c.val() }));
+        // Pinned messages first
+        msgs.sort((a,b) => (b.isPinned ? 1 : 0) - (a.isPinned ? 1 : 0));
+
+        msgs.forEach(m => {
+          const isMeAdmin = String(appState.config.adminId) === String(tgUser.id);
+          const isSenderAdmin = String(appState.config.adminId) === String(m.userId);
+
+          box.innerHTML += `
+            <div class="msg-box ${m.isPinned ? 'pinned' : ''}">
+              ${m.isPinned ? '<div class="pin-label"><i class="fas fa-thumbtack"></i> Pinned</div>' : ''}
+              <div class="msg-header">
+                <img src="${m.photo || 'https://via.placeholder.com/40'}">
+                <h4>${m.name} ${isSenderAdmin ? '<span class="admin-tag">ADMIN</span>' : ''}</h4>
+              </div>
+              <div class="msg-body">${m.text}</div>
+              <div class="msg-footer">
+                <button class="like-btn" onclick="likeCommunityMsg('${m.id}', ${m.likes||0})">
+                  <i class="fas fa-heart"></i> ${m.likes || 0}
+                </button>
+                ${isMeAdmin ? `<button class="pin-btn" onclick="togglePinMsg('${m.id}', ${!m.isPinned})"><i class="fas fa-thumbtack"></i> ${m.isPinned ? 'Unpin' : 'Pin'}</button>` : ''}
+              </div>
+            </div>`;
+        });
+      });
+    }
+
+    async function sendCommunityMessage() {
+      const text = document.getElementById('comm-msg').value.trim();
+      if(!text) return toast("মেসেজ লিখুন!");
+
+      await db.ref('community_messages').push({
+        userId: tgUser.id,
+        name: tgUser.first_name || 'User',
+        photo: tgUser.photo_url || '',
+        text: text,
+        likes: 0,
+        isPinned: false,
+        timestamp: Date.now()
+      });
+
+      document.getElementById('comm-msg').value = '';
+      toast("মেসেজ পাঠানো হয়েছে!");
+    }
+
+    async function likeCommunityMsg(id, count) {
+      await db.ref('community_messages/' + id + '/likes').set(count + 1);
+    }
+
+    async function togglePinMsg(id, status) {
+      await db.ref('community_messages/' + id + '/isPinned').set(status);
+      toast(status ? "Post Pinned!" : "Post Unpinned!");
+    }
+
+    // App Initialization
     window.onload = async () => {
       document.getElementById('u-name').innerText = tgUser.first_name;
       document.getElementById('u-id').innerText = 'ID: ' + tgUser.id;
@@ -495,8 +581,8 @@
 
       const fallbackTimer = setTimeout(() => {
         if(!isBooted) {
-          document.getElementById('loader').style.display='none';
-          document.getElementById('app').style.display='block';
+          document.getElementById('loader').style.display = 'none';
+          document.getElementById('app').style.display = 'block';
           isBooted = true;
         }
       }, 3000);
@@ -505,7 +591,10 @@
         db.ref('config').on('value', snap => {
           if(snap.exists()) {
             appState.config = snap.val();
-            if(isBooted) { updateTextElements(); renderAds(); renderTasks(); }
+            document.getElementById('btn-chan-link').href = appState.config.keyChannelLink || '#';
+            document.getElementById('btn-bot-link').href = appState.config.botLink || '#';
+            renderAds();
+            renderTasks();
           }
         });
 
@@ -515,33 +604,35 @@
 
         if(!snap.exists()) {
           appState.user = { 
-            id: tgUser.id, name: tgUser.first_name, photo: tgUser.photo_url||'', 
-            balance: 0, totalEarned: 0, dailyAds: {}, taskHistory: {}, lastActive: today, lastRedeemDate: ''
+            id: tgUser.id, name: tgUser.first_name, photo: tgUser.photo_url||'',
+            dailyAds: {}, taskHistory: {}, lastActive: today, lastRedeemDate: ''
           };
           await userRef.set(appState.user);
         } else {
           appState.user = snap.val();
+          if(appState.user.lastActive !== today) {
+            await userRef.update({ dailyAds: {}, lastActive: today });
+            appState.user.dailyAds = {};
+          }
         }
 
-        userRef.on('value', liveSnap => {
-          if(liveSnap.exists()) {
-            appState.user = liveSnap.val();
-            updateTextElements();
+        userRef.on('value', live => {
+          if(live.exists()) {
+            appState.user = live.val();
             renderAds();
             renderTasks();
-
             if(!isBooted) {
               clearTimeout(fallbackTimer);
               isBooted = true;
-              document.getElementById('loader').style.display='none';
-              document.getElementById('app').style.display='block';
+              document.getElementById('loader').style.display = 'none';
+              document.getElementById('app').style.display = 'block';
             }
           }
         });
       } catch(e) {
         clearTimeout(fallbackTimer);
-        document.getElementById('loader').style.display='none';
-        document.getElementById('app').style.display='block';
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
       }
     };
   </script>
