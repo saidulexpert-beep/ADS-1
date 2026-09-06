@@ -48,11 +48,9 @@
     .bal-amt{font-size:2.5rem;font-weight:800;color:var(--text);margin:4px 0 14px;}
     .bal-amt .currency{color:var(--primary);font-size:1.2rem;margin-left:4px;}
     
-    /* Quick Action Buttons inside balance card */
     .card-actions{display:flex;gap:12px;margin-top:10px;}
     .btn-action{flex:1;padding:12px 14px;border-radius:14px;border:none;font-weight:700;font-size:.88rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:0.2s;}
     .btn-withdraw{background:linear-gradient(135deg, #00b894, #00cec9);color:#fff;box-shadow:0 4px 12px rgba(0,184,148,.3);}
-    .btn-refer{background:linear-gradient(135deg, #6C5CE7, #a29bfe);color:#fff;box-shadow:0 4px 12px rgba(108,92,231,.3);}
     .btn-action:active{transform:scale(0.96);}
 
     .sec-head{font-size:1.05rem;font-weight:800;margin:20px 0 12px;color:var(--text);display:flex;align-items:center;gap:8px;padding:0 20px;}
@@ -85,27 +83,17 @@
     .btn-claim{background:var(--primary);color:#fff;animation:pulse 1s infinite;}
     @keyframes pulse{50%{transform:scale(1.05)}}
 
-    /* Modals & Support */
-    .support-modal-overlay{position:fixed;inset:0;z-index:11000;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;backdrop-filter:blur(5px);padding:20px;}
-    .support-modal-overlay.show{display:flex;}
-    .support-modal{background:#fff;width:100%;max-width:350px;border-radius:24px;padding:22px;text-align:center;position:relative;box-shadow:0 20px 40px rgba(0,0,0,0.2);animation:pop .2s ease-out;}
-    .close-modal-btn{position:absolute;top:15px;right:15px;width:32px;height:32px;border-radius:50%;background:#f1f2f6;border:none;color:#555;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-    .support-title{font-size:1.15rem;font-weight:800;color:var(--text);margin-bottom:6px;}
-    .support-sub{font-size:.85rem;color:#777;margin-bottom:18px;}
-    .support-links{display:flex;flex-direction:column;gap:10px;}
-    .support-link-btn{display:flex;align-items:center;gap:14px;padding:12px 18px;border-radius:14px;text-decoration:none;font-weight:700;font-size:.92rem;color:#fff;transition:0.2s;}
-    .btn-whatsapp{background:linear-gradient(135deg, #25D366, #128C7E);}
-    .btn-telegram{background:linear-gradient(135deg, #0088cc, #00a0e9);}
-    .btn-web{background:linear-gradient(135deg, #6C5CE7, #341f97);}
-    .support-link-btn:active{transform:scale(0.97);}
-    .support-link-btn i{font-size:1.3rem;}
-
-    /* Forms */
+    /* Forms & Redeem Section */
     .premium-card{background:var(--surface);margin:0 20px 15px;padding:20px;border-radius:20px;box-shadow:0 8px 20px rgba(0,0,0,0.04);}
     .card-title{font-size:1.05rem;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
     .input-group{margin-bottom:14px;}
     .input-group select, .input-group input{width:100%;padding:13px 15px;border:1px solid #e2e8f0;border-radius:12px;font-size:.95rem;background:#f8fafc;outline:none;font-weight:600;}
     .btn-main{width:100%;padding:14px;border-radius:14px;background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;border:none;font-size:.95rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
+    .btn-main:active{transform:scale(0.98);}
+
+    .btn-link{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;border-radius:12px;text-decoration:none;font-weight:700;font-size:0.9rem;margin-top:10px;}
+    .btn-key{background:linear-gradient(135deg,#0088cc,#00a0e9);color:#fff;}
+    .btn-bot{background:linear-gradient(135deg,#ff9a3d,#ff5e7a);color:#fff;}
 
     /* Bottom Nav */
     .nav{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);width:90%;max-width:400px;background:#2d3436;display:flex;justify-content:space-around;padding:14px;border-radius:25px;box-shadow:0 10px 30px rgba(0,0,0,.25);z-index:100;}
@@ -113,29 +101,13 @@
     .nav-item span{font-size:.65rem;font-weight:600;}
     .nav-item.active{color:#fff;transform:translateY(-3px);}
 
-    /* Podium / Leaderboard */
-    .podium-container{display:flex;justify-content:center;align-items:flex-end;gap:8px;margin:90px 10px 25px;}
-    .podium-item{text-align:center;position:relative;background:#fff;padding:15px 8px 10px;border-radius:20px;box-shadow:0 8px 20px rgba(0,0,0,0.05);width:31%;}
-    .podium-img{width:50px;height:50px;border-radius:50%;border:3px solid;object-fit:cover;position:absolute;top:-28px;background:#fff;left:50%;transform:translateX(-50%);}
-    .crown{position:absolute;top:-52px;font-size:1.6rem;left:50%;transform:translateX(-50%);}
-    .rank-name{font-size:.78rem;font-weight:800;color:#333;margin-top:26px;margin-bottom:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-    .rank-badge{font-size:.68rem;font-weight:800;padding:4px 2px;border-radius:6px;background:rgba(108,92,231,.08);color:var(--primary);}
-    .rank-1{transform:translateY(-15px);width:35%;border:2px solid #ffd700;}.rank-1 .podium-img{width:62px;height:62px;top:-36px;border-color:#ffd700;}.rank-1 .crown{color:#ffd700;font-size:2.2rem;top:-68px;}
-    .rank-2{border:2px solid #c0c0c0;}.rank-2 .podium-img{border-color:#c0c0c0;}.rank-2 .crown{color:#c0c0c0;}
-    .rank-3{border:2px solid #cd7f32;}.rank-3 .podium-img{border-color:#cd7f32;}.rank-3 .crown{color:#cd7f32;}
-
-    .leader-list{padding:0 20px 30px;}
-    .leader-row{display:flex;align-items:center;justify-content:space-between;background:#fff;padding:12px 14px;border-radius:14px;margin-bottom:10px;box-shadow:0 4px 12px rgba(0,0,0,0.02);}
-    .leader-left{display:flex;align-items:center;gap:10px;font-weight:700;font-size:.88rem;}
-    .leader-left img{width:38px;height:38px;border-radius:50%;object-fit:cover;}
     .toast{position:fixed;top:30px;left:50%;transform:translateX(-50%);background:#2d3436;color:#fff;padding:10px 22px;border-radius:30px;font-size:.85rem;opacity:0;transition:.3s;z-index:12000;font-weight:600;}
     .toast.show{opacity:1;top:45px;}
-    @keyframes pop{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
   </style>
 </head>
 <body>
 
-  <!-- Premium Loader -->
+  <!-- Loader -->
   <div id="loader" class="loader-overlay">
     <div class="loader-card">
       <div class="loader-core">
@@ -149,20 +121,6 @@
 
   <div id="toast" class="toast">Alert</div>
 
-  <!-- Support Modal Popup -->
-  <div id="supportModal" class="support-modal-overlay">
-    <div class="support-modal">
-      <button class="close-modal-btn" onclick="toggleSupportModal()"><i class="fas fa-times"></i></button>
-      <div class="support-title"><i class="fas fa-headset" style="color:var(--primary);"></i> গ্রাহক সহায়তা</div>
-      <div class="support-sub">যেকোনো সমস্যায় আমাদের সাথে যোগাযোগ করুন</div>
-      <div class="support-links">
-        <a id="btn-wa" href="#" target="_blank" class="support-link-btn btn-whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp Support</a>
-        <a id="btn-tg" href="#" target="_blank" class="support-link-btn btn-telegram"><i class="fab fa-telegram-plane"></i> Telegram Support</a>
-        <a id="btn-wb" href="#" target="_blank" class="support-link-btn btn-web"><i class="fas fa-globe"></i> Visit Website</a>
-      </div>
-    </div>
-  </div>
-
   <div id="app">
     <!-- Header -->
     <div class="header">
@@ -171,21 +129,18 @@
           <img id="u-img" src="https://via.placeholder.com/45">
           <div class="user-info"><h3 id="u-name">...</h3><p id="u-id">...</p></div>
         </div>
-        <!-- Support Icon (Opens Modal with Close feature) -->
-        <button class="support-btn" onclick="toggleSupportModal()"><i class="fas fa-headset"></i></button>
+        <!-- Support Button (Direct Link Without Popup) -->
+        <button class="support-btn" onclick="openDirectSupport()"><i class="fas fa-headset"></i></button>
       </div>
     </div>
 
-    <!-- Redesigned Balance Card With Actions -->
+    <!-- Balance Card -->
     <div class="balance-card">
       <div class="bal-title">Total Balance</div>
       <div class="bal-amt"><span id="u-bal">0.00</span><span class="currency">TK</span></div>
       <div class="card-actions">
         <button class="btn-action btn-withdraw" onclick="switchTab('withdraw')">
           <i class="fas fa-wallet"></i> Withdraw
-        </button>
-        <button class="btn-action btn-refer" onclick="copyRefLink()">
-          <i class="fas fa-user-plus"></i> Refer Link
         </button>
       </div>
     </div>
@@ -199,11 +154,40 @@
       <div id="task-area" class="task-list"></div>
     </div>
 
-    <!-- ================= TAB 2: LEADERBOARD ================= -->
-    <div id="page-leaderboard" class="page-section">
-      <div style="text-align:center;font-weight:800;font-size:1.2rem;margin-top:15px;"><i class="fas fa-trophy" style="color:#ffd700;"></i> Top 10 Earners</div>
-      <div class="podium-container" id="podium-area"></div>
-      <div class="leader-list" id="leader-list-area"></div>
+    <!-- ================= TAB 2: REDEEM CODE (Formerly Referral) ================= -->
+    <div id="page-redeem" class="page-section">
+      <div class="premium-card">
+        <div class="card-title"><i class="fas fa-key" style="color:var(--primary);"></i> Unlock Redeem Section</div>
+        <p style="font-size:0.83rem;color:#666;margin-bottom:12px;line-height:1.4;">
+          প্রথমে আপনার সিক্রেট Key দিয়ে রিডিম সেকশনটি আনলক করুন।
+        </p>
+        <div id="key-step">
+          <div class="input-group">
+            <input type="text" id="access-key" placeholder="Enter Secret Key">
+          </div>
+          <button class="btn-main" onclick="verifyUnlockKey()"><i class="fas fa-lock-open"></i> Unlock Redeem</button>
+        </div>
+
+        <div id="redeem-step" style="display:none;margin-top:15px;padding-top:15px;border-top:1px dashed #ddd;">
+          <div class="card-title" style="font-size:0.95rem;color:#00b894;"><i class="fas fa-gift"></i> Redeem Code</div>
+          <div class="input-group">
+            <input type="text" id="redeem-code" placeholder="Enter Redeem Code">
+          </div>
+          <button class="btn-main" style="background:linear-gradient(135deg, #00b894, #00cec9);" onclick="applyRedeemCode()">
+            <i class="fas fa-check-circle"></i> Claim Reward
+          </button>
+        </div>
+
+        <!-- External Buttons -->
+        <div style="margin-top:20px;">
+          <a id="channel-link-btn" href="#" target="_blank" class="btn-link btn-key">
+            <i class="fab fa-telegram-plane"></i> Key সংগ্রহ করুন (Channel)
+          </a>
+          <a id="bot-link-btn" href="#" target="_blank" class="btn-link btn-bot">
+            <i class="fas fa-robot"></i> রিডিম করুন / কোড নিন (Bot)
+          </a>
+        </div>
+      </div>
     </div>
 
     <!-- ================= TAB 3: WITHDRAW ================= -->
@@ -219,15 +203,15 @@
     </div>
   </div>
 
-  <!-- Bottom Navigation -->
+  <!-- Bottom Navigation (Referral icon used for Redeem) -->
   <div class="nav">
     <div class="nav-item active" onclick="switchTab('home', this)">
       <i class="fas fa-home"></i>
       <span>Home</span>
     </div>
-    <div class="nav-item" onclick="switchTab('leaderboard', this)">
-      <i class="fas fa-trophy"></i>
-      <span>Ranking</span>
+    <div class="nav-item" onclick="switchTab('redeem', this)">
+      <i class="fas fa-users"></i>
+      <span>Redeem</span>
     </div>
     <div class="nav-item" onclick="switchTab('withdraw', this)">
       <i class="fas fa-wallet"></i>
@@ -251,8 +235,12 @@
     const tg = window.Telegram.WebApp;
     if(tg){ try{ tg.ready(); tg.expand(); }catch(e){} }
 
-    let appState = { user: { balance:0, totalEarned:0, referrals:0, dailyAds:{}, taskHistory:{} }, config: { adSlots:[], webTasks:{}, support:{} } };
+    let appState = { 
+      user: { balance:0, totalEarned:0, dailyAds:{}, taskHistory:{}, lastRedeemDate:'' }, 
+      config: { adSlots:[], webTasks:{}, redeemKey:"1234", redeemCode:"BONUS50", redeemReward:50, keyChannelLink:"", botLink:"", supportLink:"" } 
+    };
     let isBooted = false;
+    let isKeyUnlocked = false;
     let tgUser = tg?.initDataUnsafe?.user || {id: '123456', first_name: 'Guest User', photo_url: 'https://via.placeholder.com/100'};
 
     function toast(msg) {
@@ -269,41 +257,20 @@
       if(el) {
         el.classList.add('active');
       } else {
-        const idx = tabId === 'home' ? 0 : tabId === 'leaderboard' ? 1 : 2;
+        const idx = tabId === 'home' ? 0 : tabId === 'redeem' ? 1 : 2;
         document.querySelectorAll('.nav-item')[idx].classList.add('active');
       }
-      if(tabId === 'leaderboard') loadLeaderboard();
       if(tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
     }
 
-    // Support Modal Controller
-    function toggleSupportModal() {
-      const m = document.getElementById('supportModal');
-      m.classList.toggle('show');
-    }
-
-    function updateSupportLinks() {
-      const sp = appState.config.support || {};
-      const wa = document.getElementById('btn-wa');
-      const tgBtn = document.getElementById('btn-tg');
-      const wb = document.getElementById('btn-wb');
-
-      wa.href = sp.whatsapp ? `https://wa.me/${sp.whatsapp}` : '#';
-      tgBtn.href = sp.telegram ? `https://t.me/${sp.telegram.replace('@','')}` : '#';
-      wb.href = sp.website || '#';
-
-      wa.onclick = () => { if(!sp.whatsapp) { toast('WhatsApp support not configured'); return false; } };
-      tgBtn.onclick = () => { if(!sp.telegram) { toast('Telegram support not configured'); return false; } };
-      wb.onclick = () => { if(!sp.website) { toast('Website not configured'); return false; } };
-    }
-
-    function getRefLink() {
-      return `https://t.me/${appState.config.botUsername||"bot"}/app?startapp=${appState.user.id}`;
-    }
-
-    function copyRefLink() {
-      navigator.clipboard.writeText(getRefLink());
-      toast('রেফারেল লিংক কপি হয়েছে!');
+    // Direct Support
+    function openDirectSupport() {
+      const link = appState.config.supportLink || "https://t.me/support";
+      if(tg?.openTelegramLink && link.includes('t.me/')) {
+        tg.openTelegramLink(link);
+      } else {
+        window.open(link, '_blank');
+      }
     }
 
     function updateTextElements() {
@@ -311,6 +278,12 @@
       document.getElementById('u-bal').innerText = (appState.user.balance || 0).toFixed(2);
       document.querySelectorAll('.currency').forEach(el => el.innerText = sym);
       document.getElementById('wd-notice').innerText = `Minimum withdraw: ${appState.config.minWithdraw||10} ${sym}`;
+
+      // Redeem Links update
+      const channelBtn = document.getElementById('channel-link-btn');
+      const botBtn = document.getElementById('bot-link-btn');
+      channelBtn.href = appState.config.keyChannelLink || '#';
+      botBtn.href = appState.config.botLink || '#';
 
       const wdSel = document.getElementById('wd-method'); 
       let currentVal = wdSel.value;
@@ -378,6 +351,77 @@
       finally { slotLocks[i] = false; }
     }
 
+    // Check if user watched all ads
+    function hasCompletedAllAds() {
+      const slots = appState.config.adSlots || [];
+      const limit = Number(appState.config.dailyAdLimit || 10);
+      let watchedAll = true;
+
+      for(let i=0; i<4; i++) {
+        if(slots[i] && slots[i].network && slots[i].network !== 'none') {
+          const count = (appState.user.dailyAds && appState.user.dailyAds[i]) ? appState.user.dailyAds[i] : 0;
+          if(count < limit) {
+            watchedAll = false;
+            break;
+          }
+        }
+      }
+      return watchedAll;
+    }
+
+    // Verify Unlock Key
+    function verifyUnlockKey() {
+      const enteredKey = document.getElementById('access-key').value.trim();
+      const actualKey = String(appState.config.redeemKey || "1234").trim();
+
+      if(!enteredKey) return toast('অনুগ্রহ করে Key টি দিন');
+
+      if(enteredKey === actualKey) {
+        isKeyUnlocked = true;
+        document.getElementById('redeem-step').style.display = 'block';
+        toast('Key সঠিক হয়েছে! রিডিম কোড দিন');
+      } else {
+        toast('ভুল Key! টেলিগ্রাম চ্যানেল থেকে সঠিক Key নিন');
+      }
+    }
+
+    // Apply Redeem Code
+    async function applyRedeemCode() {
+      if(!isKeyUnlocked) return toast('প্রথমে Key দিয়ে আনলক করুন');
+
+      const today = todayStr();
+      if(appState.user.lastRedeemDate === today) {
+        return toast('আপনি আজকের কোড ইতিমধ্যে রিডিম করেছেন!');
+      }
+
+      // Requirement: Check all ads completed
+      if(!hasCompletedAllAds()) {
+        return toast('আগে সব Daily Ads দেখা শেষ করুন!');
+      }
+
+      const enteredCode = document.getElementById('redeem-code').value.trim();
+      const actualCode = String(appState.config.redeemCode || "BONUS50").trim();
+      const reward = Number(appState.config.redeemReward || 50);
+
+      if(!enteredCode) return toast('রিডিম কোড লিখুন');
+
+      if(enteredCode === actualCode) {
+        const newBal = (appState.user.balance || 0) + reward;
+        const newEarn = (appState.user.totalEarned || 0) + reward;
+
+        await db.ref('users/' + appState.user.id).update({
+          balance: newBal,
+          totalEarned: newEarn,
+          lastRedeemDate: today
+        });
+
+        document.getElementById('redeem-code').value = '';
+        toast(`অভিনন্দন! রিডিম সফল +${reward}`);
+      } else {
+        toast('ভুল রিডিম কোড! সঠিক কোড দিন');
+      }
+    }
+
     function renderTasks() {
       const el = document.getElementById('task-area'); el.innerHTML = '';
       const tasks = appState.config.webTasks || {};
@@ -443,36 +487,6 @@
       } catch(e) { toast('উইথড্র রিকোয়েস্ট ব্যর্থ হয়েছে'); }
     }
 
-    async function loadLeaderboard() {
-      const sym = appState.config.currencySymbol || "TK";
-      const snap = await db.ref('users').orderByChild('balance').limitToLast(10).once('value');
-      let users = [];
-      snap.forEach(c => { if(c.val().balance > 0) users.push(c.val()); });
-      users.reverse();
-
-      let p1 = '', p2 = '', p3 = '', listHtml = '';
-      users.forEach((u, i) => {
-        let pic = u.photo || 'https://via.placeholder.com/100';
-        let name = u.name ? u.name.substring(0, 10) : 'User';
-        let bal = Number(u.balance || 0).toFixed(2);
-        let safeImg = `onerror="this.src='https://via.placeholder.com/100'"`;
-        let badge = `<div class="rank-badge">${bal} ${sym}</div>`;
-
-        if(i === 0) p1 = `<div class="podium-item rank-1"><i class="fas fa-crown crown"></i><img src="${pic}" class="podium-img" ${safeImg}><div class="rank-name">${name}</div>${badge}</div>`;
-        else if(i === 1) p2 = `<div class="podium-item rank-2"><i class="fas fa-crown crown"></i><img src="${pic}" class="podium-img" ${safeImg}><div class="rank-name">${name}</div>${badge}</div>`;
-        else if(i === 2) p3 = `<div class="podium-item rank-3"><i class="fas fa-crown crown"></i><img src="${pic}" class="podium-img" ${safeImg}><div class="rank-name">${name}</div>${badge}</div>`;
-        else {
-          listHtml += `
-            <div class="leader-row">
-              <div class="leader-left"><span style="color:#aaa;width:20px;">#${i+1}</span> <img src="${pic}" ${safeImg}> <span>${name}</span></div>
-              <span style="font-weight:800;color:var(--primary);">${bal} ${sym}</span>
-            </div>`;
-        }
-      });
-      document.getElementById('podium-area').innerHTML = p2 + p1 + p3;
-      document.getElementById('leader-list-area').innerHTML = listHtml;
-    }
-
     // Startup & Login Handlers
     window.onload = async () => {
       document.getElementById('u-name').innerText = tgUser.first_name;
@@ -491,7 +505,6 @@
         db.ref('config').on('value', snap => {
           if(snap.exists()) {
             appState.config = snap.val();
-            updateSupportLinks();
             if(isBooted) { updateTextElements(); renderAds(); renderTasks(); }
           }
         });
@@ -503,7 +516,7 @@
         if(!snap.exists()) {
           appState.user = { 
             id: tgUser.id, name: tgUser.first_name, photo: tgUser.photo_url||'', 
-            balance: 0, totalEarned: 0, referrals: 0, dailyAds: {}, taskHistory: {}, lastActive: today 
+            balance: 0, totalEarned: 0, dailyAds: {}, taskHistory: {}, lastActive: today, lastRedeemDate: ''
           };
           await userRef.set(appState.user);
         } else {
