@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Official Support Desk</title>
+  <title>𝐆𝐌𝐀𝐈𝐋 𝐇𝐔𝐁 ˢᵘᵖᵖᵒʳᵗ</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   
@@ -28,6 +28,7 @@
       --online: #00b894;
       --danger: #eb4d4b;
       --warning: #f0932b;
+      --star-active: #f1c40f;
     }
     
     * { 
@@ -60,10 +61,10 @@
     .tg-top-bar {
       background: var(--tg-surface);
       color: #fff;
-      padding: 12px 16px;
+      padding: 10px 14px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       border-bottom: 1px solid var(--chat-border);
       box-shadow: 0 4px 15px rgba(0,0,0,0.3);
       z-index: 10;
@@ -101,6 +102,7 @@
       object-fit: cover; 
       border: 2px solid var(--tg-blue); 
       display: block;
+      background: #111;
     }
     .online-badge {
       width: 11px;
@@ -126,11 +128,20 @@
       align-items: center;
       gap: 6px;
     }
-    
-    /* Verified Badge */
-    .verified-icon {
-      color: var(--tg-blue);
-      font-size: 0.9rem;
+
+    /* CONTINUOUS ROTATING VERIFIED BADGE */
+    @keyframes spinVerified {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .tg-verified-svg {
+      width: 19px;
+      height: 19px;
+      display: inline-block;
+      vertical-align: middle;
+      flex-shrink: 0;
+      animation: spinVerified 6s linear infinite;
     }
 
     .user-text-info p { 
@@ -138,6 +149,24 @@
       color: var(--tg-blue); 
       font-weight: 600; 
     }
+
+    /* ADMIN COMPLETE SUPPORT BUTTON IN HEADER */
+    .btn-complete-ticket {
+      display: none;
+      background: linear-gradient(135deg, #00b894, #00cec9);
+      color: #fff;
+      border: none;
+      padding: 7px 11px;
+      border-radius: 12px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 3px 10px rgba(0, 184, 148, 0.35);
+      transition: transform 0.2s;
+    }
+    .btn-complete-ticket:active { transform: scale(0.95); }
 
     /* SEARCH BAR (For Admin) */
     .search-box {
@@ -242,11 +271,12 @@
       object-fit: cover;
       flex-shrink: 0;
       border: 1px solid rgba(255,255,255,0.15);
+      background: #111;
     }
 
     .msg-bubble {
-      max-width: 78%;
-      padding: 10px 14px;
+      max-width: 82%;
+      padding: 11px 14px;
       border-radius: 16px;
       font-size: 0.86rem;
       line-height: 1.45;
@@ -277,6 +307,42 @@
       gap: 4px;
     }
     .tick-blue { color: #54a0ff; font-weight: 700; }
+
+    /* RATING CARD STYLING */
+    .rating-card {
+      margin-top: 8px;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px dashed rgba(255, 255, 255, 0.2);
+      border-radius: 14px;
+      padding: 12px;
+      text-align: center;
+    }
+    .rating-stars {
+      display: flex;
+      justify-content: center;
+      gap: 9px;
+      margin: 10px 0 6px 0;
+    }
+    .rating-star-btn {
+      font-size: 1.6rem;
+      color: #4b5563;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .rating-star-btn.active {
+      color: var(--star-active);
+      text-shadow: 0 0 10px rgba(241, 196, 15, 0.6);
+      transform: scale(1.18);
+    }
+    .rating-star-btn:hover {
+      color: var(--star-active);
+    }
+    .rating-status-text {
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: #2ed573;
+      margin-top: 5px;
+    }
 
     /* TYPING INDICATOR */
     .typing-bar {
@@ -426,7 +492,6 @@
     .btn-action:hover { background: rgba(255,255,255,0.15); }
     .btn-danger { background: var(--danger) !important; color: #fff; }
     .btn-success { background: var(--online) !important; color: #fff; }
-    .btn-warning { background: var(--warning) !important; color: #fff; }
 
     /* TOAST */
     .toast {
@@ -457,19 +522,29 @@
     <!-- Top Bar -->
     <div class="tg-top-bar">
       <button id="btn-back" class="tg-back-btn" onclick="handleSupportBack()"><i class="fas fa-arrow-left"></i></button>
+      
       <div class="tg-chat-user" onclick="handleHeaderClick()">
         <div class="tg-avatar-wrap">
-          <img id="support-header-img" src="https://telegram.org/img/t_logo.png" alt="Avatar">
+          <img id="support-header-img" src="https://i.postimg.cc/vmSBzy63/file-00000000eb4c81faa545e57c85285455.png" alt="Avatar">
           <div class="online-badge"></div>
         </div>
         <div class="user-text-info">
           <h4 id="support-header-title">
-            <span>Official Support</span>
-            <i class="fas fa-certificate verified-icon"></i>
+            <span>𝐆𝐌𝐀𝐈𝐋 𝐇𝐔𝐁 ˢᵘᵖᵖᵒʳᵗ</span>
+            <!-- Authentic Telegram 8-pointed star rotating verified badge -->
+            <svg class="tg-verified-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10.29 2.3c.75-.4 1.67-.4 2.42 0l1.58.84c.32.17.68.26 1.04.26h1.79c.85 0 1.63.45 2.05 1.18l.89 1.55c.18.31.44.57.75.75l1.55.89c.73.42 1.18 1.2 1.18 2.05v1.79c0 .36.09.72.26 1.04l.84 1.58c.4.75.4 1.67 0 2.42l-.84 1.58c-.17.32-.26.68-.26 1.04v1.79c0 .85-.45 1.63-1.18 2.05l-1.55.89c-.31.18-.57.44-.75.75l-.89 1.55c-.42.73-1.2 1.18-2.05 1.18h-1.79c-.36 0-.72.09-1.04.26l-1.58.84c-.75.4-1.67.4-2.42 0l-1.58-.84a2.44 2.44 0 0 0-1.04-.26h-1.79c-.85 0-1.63-.45-2.05-1.18l-.89-1.55a2.44 2.44 0 0 0-.75-.75l-1.55-.89c-.73-.42-1.18-1.2-1.18-2.05v-1.79c0-.36-.09-.72-.26-1.04l-.84-1.58a2.44 2.44 0 0 1 0-2.42l.84-1.58c.17-.32.26-.68.26-1.04V6.18c0-.85.45-1.63 1.18-2.05l1.55-.89c.31-.18.57-.44.75-.75l.89-1.55c.42-.73 1.2-1.18 2.05-1.18h1.79c.36 0 .72-.09 1.04-.26l1.58-.84z" fill="#2AABEE"/>
+              <path d="M9.3 12.2l1.9 1.9 4.3-4.3" stroke="#ffffff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
           </h4>
           <p id="support-header-sub">অনলাইন সাপোর্ট টিম</p>
         </div>
       </div>
+
+      <!-- Admin Support Complete Action -->
+      <button id="btn-complete-ticket" class="btn-complete-ticket" onclick="completeSupportTicket()">
+        <i class="fas fa-check-circle"></i> সমাধান সম্পন্ন
+      </button>
     </div>
 
     <!-- Admin Search Input -->
@@ -483,9 +558,9 @@
     <!-- Messages Area -->
     <div class="tg-chat-body" id="chat-messages">
       <div class="msg-row admin">
-        <img src="https://telegram.org/img/t_logo.png" class="msg-avatar" alt="Admin">
+        <img src="https://i.postimg.cc/vmSBzy63/file-00000000eb4c81faa545e57c85285455.png" class="msg-avatar" alt="Admin">
         <div class="msg-bubble">
-          হ্যালো! আমাদের সাপোর্ট সেবায় স্বাগতম। আপনি কোনো সমস্যার সম্মুখীন হলে বিস্তারিত লিখে জানান।
+          হ্যালো! <b>𝐆𝐌𝐀𝐈𝐋 𝐇𝐔𝐁 ˢᵘᵖᵖᵒʳᵗ</b> এ আপনাকে স্বাগতম। আপনার সমস্যা বা অভিযোগ বিস্তারিত লিখুন।
           <div class="msg-time">Official Support</div>
         </div>
       </div>
@@ -526,7 +601,7 @@
 
       <!-- Action: Temporary Mute -->
       <div class="modal-section">
-        <label>বার্তা পাঠানো বন্ধ করুন (Mute):</label>
+        <label>বার্তা পাঠানো সাময়িক বন্ধ করুন (Mute):</label>
         <div class="btn-group">
           <button class="btn-action" onclick="setModerationStatus('mute', 2)">২ ঘন্টা</button>
           <button class="btn-action" onclick="setModerationStatus('mute', 24)">১ দিন</button>
@@ -536,7 +611,7 @@
 
       <!-- Action: Message Limit & Ban -->
       <div class="modal-section">
-        <label>ব্যবহারকারীর মেসেজ লিমিট নির্ধারণ (০ = আনলিমিটেড):</label>
+        <label>মেসেজ লিমিট নির্ধারণ (০ = আনলিমিটেড):</label>
         <div style="display:flex; gap:8px;">
           <input type="number" id="modal-msg-limit" style="width:70px; background:#0e1621; border:1px solid var(--chat-border); color:#fff; padding:6px 10px; border-radius:8px; outline:none; font-size:0.8rem;" placeholder="0">
           <button class="btn-action btn-success" style="flex:1;" onclick="updateMessageLimit()">লিমিট সেট করুন</button>
@@ -552,7 +627,15 @@
 
   <script>
     const OFFICIAL_ADMIN_ID = "7358825471";
-    const ADMIN_AVATAR = "https://telegram.org/img/t_logo.png";
+    // Official Logo provided by user
+    const OFFICIAL_LOGO = "https://i.postimg.cc/vmSBzy63/file-00000000eb4c81faa545e57c85285455.png";
+    const OFFICIAL_TITLE = "𝐆𝐌𝐀𝐈𝐋 𝐇𝐔𝐁 ˢᵘᵖᵖᵒʳᵗ";
+
+    const VERIFIED_BADGE_SVG = `
+      <svg class="tg-verified-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10.29 2.3c.75-.4 1.67-.4 2.42 0l1.58.84c.32.17.68.26 1.04.26h1.79c.85 0 1.63.45 2.05 1.18l.89 1.55c.18.31.44.57.75.75l1.55.89c.73.42 1.18 1.2 1.18 2.05v1.79c0 .36.09.72.26 1.04l.84 1.58c.4.75.4 1.67 0 2.42l-.84 1.58c-.17.32-.26.68-.26 1.04v1.79c0 .85-.45 1.63-1.18 2.05l-1.55.89c-.31.18-.57.44-.75.75l-.89 1.55c-.42.73-1.2 1.18-2.05 1.18h-1.79c-.36 0-.72.09-1.04.26l-1.58.84c-.75.4-1.67.4-2.42 0l-1.58-.84a2.44 2.44 0 0 0-1.04-.26h-1.79c-.85 0-1.63-.45-2.05-1.18l-.89-1.55a2.44 2.44 0 0 0-.75-.75l-1.55-.89c-.73-.42-1.18-1.2-1.18-2.05v-1.79c0-.36-.09-.72-.26-1.04l-.84-1.58a2.44 2.44 0 0 1 0-2.42l.84-1.58c.17-.32.26-.68.26-1.04V6.18c0-.85.45-1.63 1.18-2.05l1.55-.89c.31-.18.57-.44.75-.75l.89-1.55c.42-.73 1.2-1.18 2.05-1.18h1.79c.36 0 .72-.09 1.04-.26l1.58-.84z" fill="#2AABEE"/>
+        <path d="M9.3 12.2l1.9 1.9 4.3-4.3" stroke="#ffffff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>`;
 
     // Firebase Config
     const firebaseConfig = {
@@ -578,14 +661,13 @@
     let allInboxThreads = [];
     let typingTimer = null;
 
-    // Active Firebase Listeners References to prevent Memory Leaks
+    // Listeners for cleanup
     let currentChatRef = null;
     let currentTypingRef = null;
     let currentUserMetaRef = null;
 
     const isAdminUser = () => String(tgUser.id) === String(OFFICIAL_ADMIN_ID);
 
-    // XSS Protection Helper
     function escapeHTML(str) {
       if (!str) return '';
       return String(str).replace(/[&<>'"]/g, 
@@ -628,9 +710,10 @@
     function openAdminInbox() {
       detachActiveListeners();
       document.getElementById('btn-back').style.display = 'none';
+      document.getElementById('btn-complete-ticket').style.display = 'none';
       document.getElementById('support-header-title').innerHTML = `<span>Admin Inbox</span>`;
       document.getElementById('support-header-sub').innerText = "সকল ব্যবহারকারীর বার্তা";
-      document.getElementById('support-header-img').src = ADMIN_AVATAR;
+      document.getElementById('support-header-img').src = OFFICIAL_LOGO;
 
       document.getElementById('admin-search-bar').style.display = 'block';
       document.getElementById('admin-inbox-view').style.display = 'flex';
@@ -657,7 +740,7 @@
               uid: uid,
               userName: lastMsg.name || `User (${uid})`,
               userPhoto: lastMsg.photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${uid}`,
-              lastText: lastMsg.text || '',
+              lastText: lastMsg.text || (lastMsg.type === 'rating_request' ? 'রেটিং অনুরোধ পাঠানো হয়েছে' : ''),
               time: lastMsg.time || '',
               unreadCount: unreadCount,
               timestamp: lastMsg.timestamp || 0
@@ -714,8 +797,9 @@
       activeChatTargetUserId = targetUid;
 
       document.getElementById('btn-back').style.display = 'block';
+      document.getElementById('btn-complete-ticket').style.display = 'inline-flex';
       document.getElementById('support-header-title').innerHTML = `<span>${escapeHTML(userName)}</span> <i class="fas fa-info-circle" style="font-size:0.8rem; color:var(--text-muted);"></i>`;
-      document.getElementById('support-header-sub').innerText = `ID: ${targetUid} (ক্লিক করে নিয়ন্ত্রণ করুন)`;
+      document.getElementById('support-header-sub').innerText = `ID: ${targetUid} (প্রোফাইল দেখতে ট্যাপ করুন)`;
       document.getElementById('support-header-img').src = userPhoto;
 
       document.getElementById('admin-search-bar').style.display = 'none';
@@ -733,14 +817,15 @@
       detachActiveListeners();
       activeChatTargetUserId = myId;
       document.getElementById('btn-back').style.display = 'none';
+      document.getElementById('btn-complete-ticket').style.display = 'none';
       
-      // Verified Badge Header
+      // Verified Header
       document.getElementById('support-header-title').innerHTML = `
-        <span>Official Support</span>
-        <i class="fas fa-certificate verified-icon"></i>
+        <span>${OFFICIAL_TITLE}</span>
+        ${VERIFIED_BADGE_SVG}
       `;
       document.getElementById('support-header-sub').innerText = "অনলাইন সাপোর্ট টিম";
-      document.getElementById('support-header-img').src = ADMIN_AVATAR;
+      document.getElementById('support-header-img').src = OFFICIAL_LOGO;
 
       document.getElementById('admin-inbox-view').style.display = 'none';
       document.getElementById('chat-messages').style.display = 'flex';
@@ -775,27 +860,56 @@
         const body = document.getElementById('chat-messages');
         body.innerHTML = `
           <div class="msg-row admin">
-            <img src="${ADMIN_AVATAR}" class="msg-avatar" alt="Admin">
+            <img src="${OFFICIAL_LOGO}" class="msg-avatar" alt="Admin">
             <div class="msg-bubble">
-              হ্যালো! আমাদের অফিসিয়াল সাপোর্ট সেবায় স্বাগতম। আপনি কোনো সমস্যার সম্মুখীন হলে বিস্তারিত লিখে জানান।
-              <div class="msg-time">Official Support</div>
+              হ্যালো! <b>${OFFICIAL_TITLE}</b> এ আপনাকে স্বাগতম। আপনি কোনো সমস্যার সম্মুখীন হলে বিস্তারিত লিখে জানান।
+              <div class="msg-time">${OFFICIAL_TITLE}</div>
             </div>
           </div>`;
 
         chatMessageHistory = [];
         if (snap.exists()) {
           snap.forEach(c => {
+            const key = c.key;
             const m = c.val();
             chatMessageHistory.push(m);
             const isMsgFromAdmin = m.sender === 'admin';
-            const avatar = isMsgFromAdmin ? ADMIN_AVATAR : (m.photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${uid}`);
+            const avatar = isMsgFromAdmin ? OFFICIAL_LOGO : (m.photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${uid}`);
             const checkMark = m.seen ? '<i class="fas fa-check-double tick-blue"></i>' : '<i class="fas fa-check"></i>';
+
+            // Check if this message is a Rating / Review Request
+            let contentHTML = escapeHTML(m.text);
+            if (m.type === 'rating_request') {
+              const currentRating = m.rating || 0;
+              const hasRated = !!m.rated;
+
+              contentHTML = `
+                <div>${escapeHTML(m.text)}</div>
+                <div class="rating-card">
+                  <div style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">আমাদের সার্ভিস রেটিং দিন:</div>
+                  <div class="rating-stars">
+                    ${[1,2,3,4,5].map(star => `
+                      <i class="fas fa-star rating-star-btn ${star <= currentRating ? 'active' : ''}" 
+                         onclick="rateSupport('${key}', ${star})" 
+                         title="${star} Star"></i>
+                    `).join('')}
+                  </div>
+                  ${hasRated ? `
+                    <div class="rating-status-text">
+                      <i class="fas fa-check-circle"></i> আপনি ${currentRating} স্টার দিয়েছেন! ধন্যবাদ।
+                    </div>
+                  ` : `
+                    <div style="font-size:0.7rem; color:#8e9bb2;">স্টারের ওপর ক্লিক করে রেট করুন</div>
+                  `}
+                </div>
+              `;
+            }
 
             body.innerHTML += `
               <div class="msg-row ${isMsgFromAdmin ? 'admin' : 'user'}">
                 ${isMsgFromAdmin ? `<img src="${escapeHTML(avatar)}" class="msg-avatar">` : ''}
                 <div class="msg-bubble">
-                  ${escapeHTML(m.text)}
+                  ${contentHTML}
                   <div class="msg-time">
                     ${escapeHTML(m.time || '')} ${!isMsgFromAdmin ? checkMark : ''}
                   </div>
@@ -808,7 +922,51 @@
       });
     }
 
-    // ================= USER META & RESTRICTIONS =================
+    // ================= SUPPORT COMPLETE & RATING SYSTEM =================
+    async function completeSupportTicket() {
+      if (!confirm("আপনি কি এই সাপোর্ট সেশনটি সমাপ্ত করে ব্যবহারকারীর কাছে রেটিং ও মূল্যায়ন বার্তা পাঠাতে চান?")) return;
+
+      triggerHaptic('medium');
+      const now = new Date();
+      const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      await db.ref('support_chats/' + activeChatTargetUserId).push({
+        sender: 'admin',
+        type: 'rating_request',
+        userId: OFFICIAL_ADMIN_ID,
+        name: OFFICIAL_TITLE,
+        photo: OFFICIAL_LOGO,
+        text: 'আমাদের সাথে যোগাযোগ করার জন্য ধন্যবাদ! আপনার সমস্যার সমাধান কি সফলভাবে হয়েছে? আমাদের সাপোর্ট সেবার অভিজ্ঞতা কেমন ছিল, দয়া করে নিচে রেটিং দিয়ে জানান:',
+        rating: 0,
+        rated: false,
+        time: timeString,
+        seen: false,
+        timestamp: Date.now()
+      });
+
+      toast('সাপোর্ট সমাপ্ত হয়েছে এবং রেটিং বার্তা পাঠানো হয়েছে');
+    }
+
+    async function rateSupport(messageKey, stars) {
+      triggerHaptic('light');
+      const chatUid = activeChatTargetUserId;
+
+      // Update message with rating
+      await db.ref(`support_chats/${chatUid}/${messageKey}`).update({
+        rating: stars,
+        rated: true
+      });
+
+      // Also record in User's Meta
+      await db.ref(`users_meta/${chatUid}`).update({
+        lastSupportRating: stars,
+        lastRatedAt: Date.now()
+      });
+
+      toast(`ধন্যবাদ! আপনি ${stars} স্টার রেটিং দিয়েছেন।`);
+    }
+
+    // ================= USER ACCESS CONTROL & MODAL =================
     function listenUserMeta(uid) {
       currentUserMetaRef = db.ref('users_meta/' + uid);
       currentUserMetaRef.on('value', snap => {
@@ -818,7 +976,7 @@
     }
 
     function checkAccessControl() {
-      if (isAdminUser()) return; // Admin has no restrictions
+      if (isAdminUser()) return;
 
       const banner = document.getElementById('user-status-banner');
       const inputBar = document.getElementById('support-input-bar');
@@ -834,7 +992,7 @@
       if (activeTargetUserMeta.mutedUntil && activeTargetUserMeta.mutedUntil > now) {
         const remainingMinutes = Math.ceil((activeTargetUserMeta.mutedUntil - now) / (1000 * 60));
         banner.style.display = 'block';
-        banner.innerText = `⚠️ অতিরিক্ত স্প্যাম বা নিয়ম লঙ্ঘনের কারণে আপনি আরও ${remainingMinutes} মিনিট মেসেজ পাঠাতে পারবেন না।`;
+        banner.innerText = `⚠️ সাময়িক নিষেধাজ্ঞার কারণে আপনি আরও ${remainingMinutes} মিনিট বার্তা পাঠাতে পারবেন না।`;
         inputBar.style.display = 'none';
         return;
       }
@@ -843,7 +1001,6 @@
       inputBar.style.display = 'flex';
     }
 
-    // ================= ADMIN PROFILE & CONTROL MODAL =================
     function openUserProfileModal() {
       const modal = document.getElementById('admin-user-modal');
       const meta = activeTargetUserMeta || {};
@@ -920,7 +1077,7 @@
         if (data && data.isTyping) {
           const isMeAdmin = isAdminUser();
           if ((isMeAdmin && data.sender === 'user') || (!isMeAdmin && data.sender === 'admin')) {
-            document.getElementById('typing-user').innerText = data.sender === 'admin' ? "অফিসিয়াল সাপোর্ট" : "ব্যবহারকারী";
+            document.getElementById('typing-user').innerText = data.sender === 'admin' ? OFFICIAL_TITLE : "ব্যবহারকারী";
             typingBox.style.display = 'flex';
             return;
           }
@@ -938,7 +1095,6 @@
       const isCurrentAdmin = isAdminUser();
       const targetChat = activeChatTargetUserId;
 
-      // Check Limits for Normal Users
       if (!isCurrentAdmin) {
         if (activeTargetUserMeta?.isBanned) return toast("আপনার অ্যাকাউন্টটি ব্লক করা!");
         if (activeTargetUserMeta?.mutedUntil && activeTargetUserMeta.mutedUntil > Date.now()) return toast("আপনি সাময়িকভাবে মিউট আছেন!");
@@ -957,19 +1113,17 @@
       const now = new Date();
       const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-      // Push User/Admin Message
       await db.ref('support_chats/' + targetChat).push({
         sender: isCurrentAdmin ? 'admin' : 'user',
         userId: tgUser.id,
-        name: tgUser.first_name || 'User',
-        photo: isCurrentAdmin ? ADMIN_AVATAR : userAvatarUrl,
+        name: isCurrentAdmin ? OFFICIAL_TITLE : (tgUser.first_name || 'User'),
+        photo: isCurrentAdmin ? OFFICIAL_LOGO : userAvatarUrl,
         text: text,
         time: timeString,
         seen: isCurrentAdmin ? true : false,
         timestamp: Date.now()
       });
 
-      // Update User Meta Profile Information
       if (!isCurrentAdmin) {
         db.ref('users_meta/' + targetChat).update({
           name: tgUser.first_name || 'User',
@@ -977,38 +1131,35 @@
           lastActive: Date.now()
         });
 
-        // Trigger Auto-Reply System (Triggers once after 1st user message)
+        // Trigger Auto-Reply
         handleAutoReplySystem(targetChat);
       }
 
-      // Reset typing status
       db.ref('typing/' + targetChat).set({ isTyping: false });
       input.value = '';
       input.focus();
     }
 
-    // ================= AUTO REPLY SYSTEM =================
     async function handleAutoReplySystem(userUid) {
       const metaSnap = await db.ref('users_meta/' + userUid).once('value');
       const meta = metaSnap.val() || {};
 
-      // Send auto-reply only once per ticket session
       if (!meta.autoReplySent) {
         setTimeout(async () => {
           const autoTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
           await db.ref('support_chats/' + userUid).push({
             sender: 'admin',
             userId: OFFICIAL_ADMIN_ID,
-            name: 'Official Support',
-            photo: ADMIN_AVATAR,
-            text: 'আপনার অভিযোগ/বার্তা আমরা সফলভাবে গ্রহণ করেছি। কিছুক্ষণের মধ্যে আমাদের টিম এটি যাচাই করে আপনাকে যথাযথ সমাধান ও সময় জানিয়ে দেবে। ধৈর্য ধরে অপেক্ষা করার জন্য ধন্যবাদ।',
+            name: OFFICIAL_TITLE,
+            photo: OFFICIAL_LOGO,
+            text: 'আপনার অভিযোগ/বার্তা আমরা সফলভাবে গ্রহণ করেছি। কিছুক্ষণের মধ্যে আমাদের টিম এটি যাচাই করে আপনাকে যথাযথ সমাধান জানিয়ে দেবে। সাথে থাকার জন্য ধন্যবাদ।',
             time: autoTime,
             seen: false,
             timestamp: Date.now()
           });
 
           db.ref('users_meta/' + userUid).update({ autoReplySent: true });
-        }, 1500); // 1.5 seconds natural delay
+        }, 1500);
       }
     }
 
