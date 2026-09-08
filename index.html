@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Official Telegram Support</title>
+  <title>Official Support Desk</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   
@@ -26,7 +26,8 @@
       --chat-admin: #1e2c3a;
       --chat-border: rgba(255, 255, 255, 0.08);
       --online: #00b894;
-      --unread: #ff7675;
+      --danger: #eb4d4b;
+      --warning: #f0932b;
     }
     
     * { 
@@ -86,6 +87,7 @@
       gap: 12px; 
       flex: 1; 
       overflow: hidden;
+      cursor: pointer;
     }
 
     .tg-avatar-wrap {
@@ -120,16 +122,21 @@
       font-size: 0.95rem; 
       font-weight: 700; 
       color: #fff;
-      text-overflow: ellipsis;
-      overflow: hidden;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
+    
+    /* Verified Badge */
+    .verified-icon {
+      color: var(--tg-blue);
+      font-size: 0.9rem;
+    }
+
     .user-text-info p { 
       font-size: 0.72rem; 
       color: var(--tg-blue); 
       font-weight: 600; 
-      display: flex;
-      align-items: center;
-      gap: 5px;
     }
 
     /* SEARCH BAR (For Admin) */
@@ -189,7 +196,7 @@
       flex-shrink: 0;
     }
     .inbox-meta { flex: 1; overflow: hidden; }
-    .inbox-meta h4 { font-size: 0.9rem; font-weight: 700; color: #fff; }
+    .inbox-meta h4 { font-size: 0.9rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 6px; }
     .inbox-meta p { 
       font-size: 0.74rem; 
       color: var(--text-muted); 
@@ -199,7 +206,7 @@
       margin-top: 2px;
     }
     .unread-pill {
-      background: var(--unread);
+      background: var(--danger);
       color: #fff;
       font-size: 0.68rem;
       font-weight: 800;
@@ -290,31 +297,6 @@
     .typing-dots span:nth-child(3) { animation-delay: .4s; }
     @keyframes blink { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
 
-    /* QUICK REPLIES */
-    .quick-chips-wrapper {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding: 8px 14px;
-      background: var(--tg-surface);
-      border-top: 1px solid var(--chat-border);
-      scrollbar-width: none;
-    }
-    .quick-chips-wrapper::-webkit-scrollbar { display: none; }
-    .quick-chip {
-      background: rgba(255,255,255,0.06);
-      border: 1px solid var(--chat-border);
-      padding: 5px 12px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--tg-blue);
-      white-space: nowrap;
-      cursor: pointer;
-      transition: .2s;
-    }
-    .quick-chip:active { background: var(--tg-blue); color: #fff; }
-
     /* BOTTOM INPUT */
     .tg-bottom-bar {
       background: var(--tg-surface);
@@ -353,6 +335,99 @@
     }
     .tg-send-btn:active { transform: scale(0.92); }
 
+    /* NOTICE BANNER (MUTED / BLOCKED) */
+    #user-status-banner {
+      display: none;
+      padding: 10px 16px;
+      background: #2c1214;
+      color: #ff7675;
+      font-size: 0.8rem;
+      text-align: center;
+      font-weight: 600;
+      border-top: 1px solid rgba(255, 118, 117, 0.2);
+    }
+
+    /* MODAL FOR USER PROFILE & ADMIN CONTROLS */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(5px);
+      z-index: 999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-box {
+      background: var(--tg-surface);
+      border: 1px solid var(--chat-border);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 380px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      animation: popIn .2s ease;
+    }
+    @keyframes popIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .modal-profile {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .modal-profile img {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      border: 2px solid var(--tg-blue);
+      object-fit: cover;
+    }
+    .modal-section {
+      background: rgba(255,255,255,0.04);
+      padding: 12px;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .modal-section label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .btn-group {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+    .btn-action {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid var(--chat-border);
+      color: #fff;
+      padding: 7px 4px;
+      border-radius: 8px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+    }
+    .btn-action:hover { background: rgba(255,255,255,0.15); }
+    .btn-danger { background: var(--danger) !important; color: #fff; }
+    .btn-success { background: var(--online) !important; color: #fff; }
+    .btn-warning { background: var(--warning) !important; color: #fff; }
+
     /* TOAST */
     .toast {
       position: fixed;
@@ -382,13 +457,16 @@
     <!-- Top Bar -->
     <div class="tg-top-bar">
       <button id="btn-back" class="tg-back-btn" onclick="handleSupportBack()"><i class="fas fa-arrow-left"></i></button>
-      <div class="tg-chat-user">
+      <div class="tg-chat-user" onclick="handleHeaderClick()">
         <div class="tg-avatar-wrap">
           <img id="support-header-img" src="https://telegram.org/img/t_logo.png" alt="Avatar">
           <div class="online-badge"></div>
         </div>
         <div class="user-text-info">
-          <h4 id="support-header-title">Official Support</h4>
+          <h4 id="support-header-title">
+            <span>Official Support</span>
+            <i class="fas fa-certificate verified-icon"></i>
+          </h4>
           <p id="support-header-sub">অনলাইন সাপোর্ট টিম</p>
         </div>
       </div>
@@ -419,12 +497,8 @@
       <div class="typing-dots"><span>.</span><span>.</span><span>.</span></div>
     </div>
 
-    <!-- Quick Chips for Users -->
-    <div id="quick-chips" class="quick-chips-wrapper">
-      <div class="quick-chip" onclick="quickSend('আমার রিডিম কোড কাজ করছে না')">রিডিম সমস্যা</div>
-      <div class="quick-chip" onclick="quickSend('বিজ্ঞাপন আসছে না বা লোড হচ্ছে না')">বিজ্ঞাপন সমস্যা</div>
-      <div class="quick-chip" onclick="quickSend('অ্যাকাউন্টে কোনো টেকনিক্যাল সমস্যা রয়েছে')">অন্যান্য সহায়তা</div>
-    </div>
+    <!-- User Notice / Block Banner -->
+    <div id="user-status-banner">আপনার অ্যাকাউন্টটি সাময়িকভাবে বার্তা প্রেরণের জন্য নিষিদ্ধ করা হয়েছে।</div>
 
     <!-- Bottom Input -->
     <div class="tg-bottom-bar" id="support-input-bar">
@@ -432,6 +506,47 @@
       <button class="tg-send-btn" onclick="sendSupportMessage()">
         <i class="fas fa-paper-plane"></i>
       </button>
+    </div>
+  </div>
+
+  <!-- User Profile & Moderation Modal (Admin Only) -->
+  <div id="admin-user-modal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <span style="font-weight:700; font-size:0.9rem;">ব্যবহারকারী প্রোফাইল ও নিয়ন্ত্রণ</span>
+        <button style="background:none; border:none; color:#fff; font-size:1.1rem; cursor:pointer;" onclick="closeModal()"><i class="fas fa-times"></i></button>
+      </div>
+      
+      <div class="modal-profile">
+        <img id="modal-user-avatar" src="" alt="User">
+        <h4 id="modal-user-name">User Name</h4>
+        <span id="modal-user-id" style="font-size:0.75rem; color:var(--text-muted);">Telegram ID: -</span>
+        <span id="modal-user-status" style="font-size:0.75rem; font-weight:700; color:var(--online);">Status: Active</span>
+      </div>
+
+      <!-- Action: Temporary Mute -->
+      <div class="modal-section">
+        <label>বার্তা পাঠানো বন্ধ করুন (Mute):</label>
+        <div class="btn-group">
+          <button class="btn-action" onclick="setModerationStatus('mute', 2)">২ ঘন্টা</button>
+          <button class="btn-action" onclick="setModerationStatus('mute', 24)">১ দিন</button>
+          <button class="btn-action" onclick="setModerationStatus('mute', 168)">৭ দিন</button>
+        </div>
+      </div>
+
+      <!-- Action: Message Limit & Ban -->
+      <div class="modal-section">
+        <label>ব্যবহারকারীর মেসেজ লিমিট নির্ধারণ (০ = আনলিমিটেড):</label>
+        <div style="display:flex; gap:8px;">
+          <input type="number" id="modal-msg-limit" style="width:70px; background:#0e1621; border:1px solid var(--chat-border); color:#fff; padding:6px 10px; border-radius:8px; outline:none; font-size:0.8rem;" placeholder="0">
+          <button class="btn-action btn-success" style="flex:1;" onclick="updateMessageLimit()">লিমিট সেট করুন</button>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:8px;">
+        <button class="btn-action btn-danger" style="flex:1; padding:9px;" onclick="setModerationStatus('ban')">সম্পূর্ণ ব্যান / ব্লক</button>
+        <button class="btn-action btn-success" style="flex:1; padding:9px;" onclick="setModerationStatus('unban')">আনব্যান করুন</button>
+      </div>
     </div>
   </div>
 
@@ -458,16 +573,28 @@
     let tgUser = tg?.initDataUnsafe?.user || { id: '123456', first_name: 'Guest User', photo_url: '' };
     const userAvatarUrl = tgUser.photo_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${tgUser.id}`;
     let activeChatTargetUserId = tgUser.id;
+    let activeTargetUserMeta = null;
     let chatMessageHistory = [];
     let allInboxThreads = [];
     let typingTimer = null;
 
+    // Active Firebase Listeners References to prevent Memory Leaks
+    let currentChatRef = null;
+    let currentTypingRef = null;
+    let currentUserMetaRef = null;
+
     const isAdminUser = () => String(tgUser.id) === String(OFFICIAL_ADMIN_ID);
 
+    // XSS Protection Helper
+    function escapeHTML(str) {
+      if (!str) return '';
+      return String(str).replace(/[&<>'"]/g, 
+        tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+      );
+    }
+
     function triggerHaptic(type = 'light') {
-      if (tg?.HapticFeedback) {
-        tg.HapticFeedback.impactOccurred(type);
-      }
+      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred(type);
     }
 
     function toast(msg) {
@@ -477,14 +604,8 @@
       setTimeout(() => t.classList.remove('show'), 2800);
     }
 
-    function quickSend(txt) {
-      document.getElementById('chat-text-input').value = txt;
-      sendSupportMessage();
-    }
-
     function initSupportDesk() {
       if (isAdminUser()) {
-        document.getElementById('quick-chips').style.display = 'none';
         openAdminInbox();
       } else {
         document.getElementById('admin-search-bar').style.display = 'none';
@@ -497,10 +618,17 @@
       if (isAdminUser()) openAdminInbox();
     }
 
+    function handleHeaderClick() {
+      if (isAdminUser() && activeChatTargetUserId !== tgUser.id) {
+        openUserProfileModal();
+      }
+    }
+
     // ================= ADMIN INBOX =================
     function openAdminInbox() {
+      detachActiveListeners();
       document.getElementById('btn-back').style.display = 'none';
-      document.getElementById('support-header-title').innerText = "Admin Inbox";
+      document.getElementById('support-header-title').innerHTML = `<span>Admin Inbox</span>`;
       document.getElementById('support-header-sub').innerText = "সকল ব্যবহারকারীর বার্তা";
       document.getElementById('support-header-img').src = ADMIN_AVATAR;
 
@@ -509,6 +637,7 @@
       document.getElementById('chat-messages').style.display = 'none';
       document.getElementById('support-input-bar').style.display = 'none';
       document.getElementById('typing-box').style.display = 'none';
+      document.getElementById('user-status-banner').style.display = 'none';
 
       db.ref('support_chats').on('value', snap => {
         allInboxThreads = [];
@@ -555,10 +684,10 @@
         item.onclick = () => openAdminChatThread(t.uid, t.userName, t.userPhoto);
         item.innerHTML = `
           <div class="inbox-left">
-            <img src="${t.userPhoto}">
+            <img src="${escapeHTML(t.userPhoto)}">
             <div class="inbox-meta">
-              <h4>${t.userName}</h4>
-              <p>${t.lastText}</p>
+              <h4>${escapeHTML(t.userName)}</h4>
+              <p>${escapeHTML(t.lastText)}</p>
             </div>
           </div>
           <div style="display:flex; align-items:center;">
@@ -581,10 +710,12 @@
     // ================= CHAT THREAD =================
     function openAdminChatThread(targetUid, userName, userPhoto) {
       triggerHaptic('light');
+      detachActiveListeners();
       activeChatTargetUserId = targetUid;
+
       document.getElementById('btn-back').style.display = 'block';
-      document.getElementById('support-header-title').innerText = userName;
-      document.getElementById('support-header-sub').innerText = `ID: ${targetUid}`;
+      document.getElementById('support-header-title').innerHTML = `<span>${escapeHTML(userName)}</span> <i class="fas fa-info-circle" style="font-size:0.8rem; color:var(--text-muted);"></i>`;
+      document.getElementById('support-header-sub').innerText = `ID: ${targetUid} (ক্লিক করে নিয়ন্ত্রণ করুন)`;
       document.getElementById('support-header-img').src = userPhoto;
 
       document.getElementById('admin-search-bar').style.display = 'none';
@@ -595,12 +726,19 @@
       markMessagesAsSeen(targetUid);
       loadThreadMessages(targetUid);
       listenTypingStatus(targetUid);
+      listenUserMeta(targetUid);
     }
 
     function openUserDirectChat(myId) {
+      detachActiveListeners();
       activeChatTargetUserId = myId;
       document.getElementById('btn-back').style.display = 'none';
-      document.getElementById('support-header-title').innerText = "Official Support";
+      
+      // Verified Badge Header
+      document.getElementById('support-header-title').innerHTML = `
+        <span>Official Support</span>
+        <i class="fas fa-certificate verified-icon"></i>
+      `;
       document.getElementById('support-header-sub').innerText = "অনলাইন সাপোর্ট টিম";
       document.getElementById('support-header-img').src = ADMIN_AVATAR;
 
@@ -610,6 +748,13 @@
       
       loadThreadMessages(myId);
       listenTypingStatus(myId);
+      listenUserMeta(myId);
+    }
+
+    function detachActiveListeners() {
+      if (currentChatRef) currentChatRef.off();
+      if (currentTypingRef) currentTypingRef.off();
+      if (currentUserMetaRef) currentUserMetaRef.off();
     }
 
     function markMessagesAsSeen(uid) {
@@ -625,13 +770,14 @@
     }
 
     function loadThreadMessages(uid) {
-      db.ref('support_chats/' + uid).on('value', snap => {
+      currentChatRef = db.ref('support_chats/' + uid);
+      currentChatRef.on('value', snap => {
         const body = document.getElementById('chat-messages');
         body.innerHTML = `
           <div class="msg-row admin">
             <img src="${ADMIN_AVATAR}" class="msg-avatar" alt="Admin">
             <div class="msg-bubble">
-              হ্যালো! আমাদের সাপোর্ট সেবায় স্বাগতম। আপনি কোনো সমস্যার সম্মুখীন হলে জানান।
+              হ্যালো! আমাদের অফিসিয়াল সাপোর্ট সেবায় স্বাগতম। আপনি কোনো সমস্যার সম্মুখীন হলে বিস্তারিত লিখে জানান।
               <div class="msg-time">Official Support</div>
             </div>
           </div>`;
@@ -643,24 +789,112 @@
             chatMessageHistory.push(m);
             const isMsgFromAdmin = m.sender === 'admin';
             const avatar = isMsgFromAdmin ? ADMIN_AVATAR : (m.photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${uid}`);
-
             const checkMark = m.seen ? '<i class="fas fa-check-double tick-blue"></i>' : '<i class="fas fa-check"></i>';
 
             body.innerHTML += `
               <div class="msg-row ${isMsgFromAdmin ? 'admin' : 'user'}">
-                ${isMsgFromAdmin ? `<img src="${avatar}" class="msg-avatar">` : ''}
+                ${isMsgFromAdmin ? `<img src="${escapeHTML(avatar)}" class="msg-avatar">` : ''}
                 <div class="msg-bubble">
-                  ${m.text}
+                  ${escapeHTML(m.text)}
                   <div class="msg-time">
-                    ${m.time || ''} ${!isMsgFromAdmin ? checkMark : ''}
+                    ${escapeHTML(m.time || '')} ${!isMsgFromAdmin ? checkMark : ''}
                   </div>
                 </div>
-                ${!isMsgFromAdmin ? `<img src="${avatar}" class="msg-avatar">` : ''}
+                ${!isMsgFromAdmin ? `<img src="${escapeHTML(avatar)}" class="msg-avatar">` : ''}
               </div>`;
           });
           body.scrollTop = body.scrollHeight;
         }
       });
+    }
+
+    // ================= USER META & RESTRICTIONS =================
+    function listenUserMeta(uid) {
+      currentUserMetaRef = db.ref('users_meta/' + uid);
+      currentUserMetaRef.on('value', snap => {
+        activeTargetUserMeta = snap.val() || {};
+        checkAccessControl();
+      });
+    }
+
+    function checkAccessControl() {
+      if (isAdminUser()) return; // Admin has no restrictions
+
+      const banner = document.getElementById('user-status-banner');
+      const inputBar = document.getElementById('support-input-bar');
+      const now = Date.now();
+
+      if (activeTargetUserMeta.isBanned) {
+        banner.style.display = 'block';
+        banner.innerText = '⚠️ আপনার অ্যাকাউন্টটি স্থায়ীভাবে ব্লক করা হয়েছে।';
+        inputBar.style.display = 'none';
+        return;
+      }
+
+      if (activeTargetUserMeta.mutedUntil && activeTargetUserMeta.mutedUntil > now) {
+        const remainingMinutes = Math.ceil((activeTargetUserMeta.mutedUntil - now) / (1000 * 60));
+        banner.style.display = 'block';
+        banner.innerText = `⚠️ অতিরিক্ত স্প্যাম বা নিয়ম লঙ্ঘনের কারণে আপনি আরও ${remainingMinutes} মিনিট মেসেজ পাঠাতে পারবেন না।`;
+        inputBar.style.display = 'none';
+        return;
+      }
+
+      banner.style.display = 'none';
+      inputBar.style.display = 'flex';
+    }
+
+    // ================= ADMIN PROFILE & CONTROL MODAL =================
+    function openUserProfileModal() {
+      const modal = document.getElementById('admin-user-modal');
+      const meta = activeTargetUserMeta || {};
+      
+      document.getElementById('modal-user-avatar').src = meta.photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${activeChatTargetUserId}`;
+      document.getElementById('modal-user-name').innerText = meta.name || 'User ' + activeChatTargetUserId;
+      document.getElementById('modal-user-id').innerText = 'Telegram ID: ' + activeChatTargetUserId;
+      document.getElementById('modal-msg-limit').value = meta.customLimit || 0;
+
+      const statusSpan = document.getElementById('modal-user-status');
+      if (meta.isBanned) {
+        statusSpan.innerText = 'Status: Banned (স্থায়ী ব্লক)';
+        statusSpan.style.color = 'var(--danger)';
+      } else if (meta.mutedUntil && meta.mutedUntil > Date.now()) {
+        statusSpan.innerText = 'Status: Muted (সাময়িক বন্ধ)';
+        statusSpan.style.color = 'var(--warning)';
+      } else {
+        statusSpan.innerText = 'Status: Active (সক্রিয়)';
+        statusSpan.style.color = 'var(--online)';
+      }
+
+      modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('admin-user-modal').style.display = 'none';
+    }
+
+    function setModerationStatus(type, hours = 0) {
+      triggerHaptic('medium');
+      const metaRef = db.ref('users_meta/' + activeChatTargetUserId);
+
+      if (type === 'ban') {
+        metaRef.update({ isBanned: true, mutedUntil: null });
+        toast('ইউজার সম্পূর্ণ ব্যান করা হয়েছে');
+      } else if (type === 'unban') {
+        metaRef.update({ isBanned: false, mutedUntil: null });
+        toast('ইউজার সচল করা হয়েছে');
+      } else if (type === 'mute') {
+        const muteDuration = Date.now() + (hours * 60 * 60 * 1000);
+        metaRef.update({ mutedUntil: muteDuration, isBanned: false });
+        toast(`${hours} ঘণ্টার জন্য মিউট করা হয়েছে`);
+      }
+      closeModal();
+    }
+
+    function updateMessageLimit() {
+      const val = parseInt(document.getElementById('modal-msg-limit').value) || 0;
+      db.ref('users_meta/' + activeChatTargetUserId).update({ customLimit: val });
+      toast(val > 0 ? `লিমিট ${val} টি মেসেজ সেট হয়েছে` : 'আনলিমিটেড করা হয়েছে');
+      closeModal();
     }
 
     // ================= TYPING INDICATOR =================
@@ -679,13 +913,14 @@
     }
 
     function listenTypingStatus(uid) {
-      db.ref('typing/' + uid).on('value', snap => {
+      currentTypingRef = db.ref('typing/' + uid);
+      currentTypingRef.on('value', snap => {
         const data = snap.val();
         const typingBox = document.getElementById('typing-box');
         if (data && data.isTyping) {
           const isMeAdmin = isAdminUser();
           if ((isMeAdmin && data.sender === 'user') || (!isMeAdmin && data.sender === 'admin')) {
-            document.getElementById('typing-user').innerText = data.sender === 'admin' ? "অ্যাডমিন" : "ব্যবহারকারী";
+            document.getElementById('typing-user').innerText = data.sender === 'admin' ? "অফিসিয়াল সাপোর্ট" : "ব্যবহারকারী";
             typingBox.style.display = 'flex';
             return;
           }
@@ -694,7 +929,7 @@
       });
     }
 
-    // ================= SEND MESSAGE =================
+    // ================= SEND MESSAGE & SMART AUTO-REPLY =================
     async function sendSupportMessage() {
       const input = document.getElementById('chat-text-input');
       const text = input.value.trim();
@@ -703,13 +938,17 @@
       const isCurrentAdmin = isAdminUser();
       const targetChat = activeChatTargetUserId;
 
-      // Anti-Spam (Only for Normal Users)
+      // Check Limits for Normal Users
       if (!isCurrentAdmin) {
-        const userMsgs = chatMessageHistory.filter(m => m.sender === 'user');
-        if (userMsgs.length >= 5) return toast("আপনি সর্বোচ্চ ৫টি মেসেজ পাঠিয়ে ফেলেছেন!");
-        if (chatMessageHistory.length > 0) {
-          const lastMsg = chatMessageHistory[chatMessageHistory.length - 1];
-          if (lastMsg.sender === 'user') return toast("এডমিনের উত্তরের জন্য অপেক্ষা করুন");
+        if (activeTargetUserMeta?.isBanned) return toast("আপনার অ্যাকাউন্টটি ব্লক করা!");
+        if (activeTargetUserMeta?.mutedUntil && activeTargetUserMeta.mutedUntil > Date.now()) return toast("আপনি সাময়িকভাবে মিউট আছেন!");
+
+        const customLimit = activeTargetUserMeta?.customLimit || 0;
+        if (customLimit > 0) {
+          const myMsgCount = chatMessageHistory.filter(m => m.sender === 'user').length;
+          if (myMsgCount >= customLimit) {
+            return toast(`আপনি সর্বোচ্চ ${customLimit}টি মেসেজের লিমিট শেষ করেছেন!`);
+          }
         }
       }
 
@@ -718,6 +957,7 @@
       const now = new Date();
       const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
+      // Push User/Admin Message
       await db.ref('support_chats/' + targetChat).push({
         sender: isCurrentAdmin ? 'admin' : 'user',
         userId: tgUser.id,
@@ -729,11 +969,47 @@
         timestamp: Date.now()
       });
 
-      // Clear typing
-      db.ref('typing/' + targetChat).set({ isTyping: false });
+      // Update User Meta Profile Information
+      if (!isCurrentAdmin) {
+        db.ref('users_meta/' + targetChat).update({
+          name: tgUser.first_name || 'User',
+          photo: userAvatarUrl,
+          lastActive: Date.now()
+        });
 
+        // Trigger Auto-Reply System (Triggers once after 1st user message)
+        handleAutoReplySystem(targetChat);
+      }
+
+      // Reset typing status
+      db.ref('typing/' + targetChat).set({ isTyping: false });
       input.value = '';
       input.focus();
+    }
+
+    // ================= AUTO REPLY SYSTEM =================
+    async function handleAutoReplySystem(userUid) {
+      const metaSnap = await db.ref('users_meta/' + userUid).once('value');
+      const meta = metaSnap.val() || {};
+
+      // Send auto-reply only once per ticket session
+      if (!meta.autoReplySent) {
+        setTimeout(async () => {
+          const autoTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          await db.ref('support_chats/' + userUid).push({
+            sender: 'admin',
+            userId: OFFICIAL_ADMIN_ID,
+            name: 'Official Support',
+            photo: ADMIN_AVATAR,
+            text: 'আপনার অভিযোগ/বার্তা আমরা সফলভাবে গ্রহণ করেছি। কিছুক্ষণের মধ্যে আমাদের টিম এটি যাচাই করে আপনাকে যথাযথ সমাধান ও সময় জানিয়ে দেবে। ধৈর্য ধরে অপেক্ষা করার জন্য ধন্যবাদ।',
+            time: autoTime,
+            seen: false,
+            timestamp: Date.now()
+          });
+
+          db.ref('users_meta/' + userUid).update({ autoReplySent: true });
+        }, 1500); // 1.5 seconds natural delay
+      }
     }
 
     window.onload = () => {
