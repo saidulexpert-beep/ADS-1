@@ -16,7 +16,7 @@
     :root {
       --primary: #6C5CE7;
       --tg-blue: #2AABEE;
-      --tg-blue-dark: #229ed9;
+      --tg-blue-hover: #229ed9;
       --tg-bg: #0e1621;
       --tg-surface: #17212b;
       --tg-surface-card: #182236;
@@ -130,7 +130,7 @@
       gap: 6px;
     }
 
-    /* AUTHENTIC STATIC TELEGRAM VERIFIED BADGE (NO ROTATION) */
+    /* AUTHENTIC STATIC TELEGRAM VERIFIED BADGE */
     .tg-verified-svg {
       width: 18px;
       height: 18px;
@@ -145,7 +145,13 @@
       font-weight: 600; 
     }
 
-    /* ADMIN COMPLETE SUPPORT BUTTON */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ADMIN BUTTONS */
     .btn-complete-ticket {
       display: none;
       background: linear-gradient(135deg, #00b894, #00cec9);
@@ -163,6 +169,19 @@
       flex-shrink: 0;
     }
     .btn-complete-ticket:active { transform: scale(0.95); }
+
+    .btn-manage-links {
+      display: none;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid var(--chat-border);
+      color: #fff;
+      padding: 7px 10px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      align-items: center;
+      gap: 5px;
+    }
 
     /* SEARCH BAR (For Admin) */
     .search-box {
@@ -272,8 +291,8 @@
     }
 
     .msg-bubble {
-      max-width: 82%;
-      padding: 10px 14px;
+      max-width: 86%;
+      padding: 11px 14px;
       border-radius: 16px;
       font-size: 0.86rem;
       line-height: 1.45;
@@ -297,7 +316,7 @@
       font-size: 0.65rem;
       color: rgba(255,255,255,0.5);
       text-align: right;
-      margin-top: 4px;
+      margin-top: 5px;
       display: flex;
       align-items: center;
       justify-content: flex-end;
@@ -305,60 +324,91 @@
     }
     .tick-blue { color: #54a0ff; font-weight: 700; }
 
-    /* INTERACTIVE & STATIC RATING STYLING */
-    .rating-card {
-      margin-top: 8px;
-      background: rgba(0, 0, 0, 0.35);
-      border: 1px dashed rgba(255, 255, 255, 0.2);
+    /* RATING CARD */
+    .rating-box-wrap {
+      margin-top: 10px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px dashed rgba(255, 255, 255, 0.25);
       border-radius: 14px;
-      padding: 10px;
+      padding: 12px;
       text-align: center;
     }
-    .rating-stars {
+    .rating-stars-row {
       display: flex;
       justify-content: center;
-      gap: 8px;
-      margin: 8px 0 4px 0;
+      gap: 10px;
+      margin: 10px 0 4px 0;
     }
     .rating-star-btn {
-      font-size: 1.5rem;
-      color: #576574;
+      font-size: 1.65rem;
+      color: #636e72;
       cursor: pointer;
       transition: transform 0.15s ease, color 0.15s ease;
     }
     .rating-star-btn:hover {
       color: var(--star-active);
-      transform: scale(1.15);
+      transform: scale(1.2);
     }
 
-    /* RATED STATIC BADGE (After rating is submitted) */
-    .rating-submitted-view {
+    /* OFFICIAL COMMUNITY & SOCIAL HUB CARD */
+    .community-hub-card {
       margin-top: 8px;
-      padding: 8px 12px;
-      background: rgba(0,0,0,0.28);
-      border-radius: 12px;
+      background: linear-gradient(145deg, rgba(23, 33, 43, 0.95), rgba(14, 22, 33, 0.95));
+      border: 1px solid rgba(42, 171, 238, 0.3);
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    }
+    .community-hub-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .community-hub-desc {
+      font-size: 0.8rem;
+      color: #dfe6e9;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+    .community-links-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .community-link-btn {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      gap: 8px;
+      padding: 9px 12px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: all .2s ease;
     }
-    .static-stars {
+    .community-link-btn:hover, .community-link-btn:active {
+      background: rgba(42, 171, 238, 0.18);
+      border-color: var(--tg-blue);
+      transform: translateY(-1px);
+    }
+    .community-link-left {
       display: flex;
-      gap: 3px;
+      align-items: center;
+      gap: 10px;
     }
-    .static-stars i.filled {
-      color: var(--star-active);
-      font-size: 0.95rem;
-    }
-    .static-stars i.unfilled {
-      color: #4b5563;
-      font-size: 0.95rem;
-    }
-    .rating-msg-tag {
-      font-size: 0.72rem;
-      color: #00b894;
-      font-weight: 700;
+    .community-link-left i {
+      font-size: 1.15rem;
+      width: 22px;
+      text-align: center;
     }
 
     /* TYPING INDICATOR */
@@ -411,7 +461,6 @@
       width: 40px;
       height: 40px;
       min-width: 40px;
-      max-width: 40px;
       border-radius: 50%;
       border: none;
       display: flex;
@@ -423,12 +472,9 @@
       transition: transform .15s, background .2s;
       flex-shrink: 0;
     }
-    .tg-send-btn i {
-      margin-left: 2px; /* optical center */
-    }
+    .tg-send-btn i { margin-left: 2px; }
     .tg-send-btn:active { transform: scale(0.92); }
 
-    /* NOTICE BANNER */
     #user-status-banner {
       display: none;
       padding: 10px 16px;
@@ -440,12 +486,12 @@
       border-top: 1px solid rgba(255, 118, 117, 0.2);
     }
 
-    /* MODAL FOR USER PROFILE & ADMIN CONTROLS */
+    /* MODAL SYSTEM */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.7);
-      backdrop-filter: blur(5px);
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(6px);
       z-index: 999;
       display: none;
       align-items: center;
@@ -457,16 +503,14 @@
       border: 1px solid var(--chat-border);
       border-radius: 20px;
       width: 100%;
-      max-width: 380px;
+      max-width: 400px;
+      max-height: 85vh;
+      overflow-y: auto;
       padding: 20px;
       display: flex;
       flex-direction: column;
       gap: 15px;
-      animation: popIn .2s ease;
-    }
-    @keyframes popIn {
-      from { transform: scale(0.9); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
     .modal-header {
       display: flex;
@@ -520,6 +564,26 @@
     .btn-danger { background: var(--danger) !important; color: #fff; }
     .btn-success { background: var(--online) !important; color: #fff; }
 
+    /* LINKS MANAGEMENT LIST */
+    .links-list-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--chat-border);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 0.8rem;
+    }
+    .btn-del-link {
+      background: none;
+      border: none;
+      color: var(--danger);
+      font-size: 0.95rem;
+      cursor: pointer;
+      padding: 4px;
+    }
+
     /* TOAST */
     .toast {
       position: fixed;
@@ -558,7 +622,6 @@
         <div class="user-text-info">
           <h4 id="support-header-title">
             <span>𝐆𝐌𝐀𝐈𝐋 𝐇𝐔𝐁 ˢᵘᵖᵖᵒʳᵗ</span>
-            <!-- Static Official Telegram Verified Badge (No Spin) -->
             <svg class="tg-verified-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M10.29 2.3c.75-.4 1.67-.4 2.42 0l1.58.84c.32.17.68.26 1.04.26h1.79c.85 0 1.63.45 2.05 1.18l.89 1.55c.18.31.44.57.75.75l1.55.89c.73.42 1.18 1.2 1.18 2.05v1.79c0 .36.09.72.26 1.04l.84 1.58c.4.75.4 1.67 0 2.42l-.84 1.58c-.17.32-.26.68-.26 1.04v1.79c0 .85-.45 1.63-1.18 2.05l-1.55.89c-.31.18-.57.44-.75.75l-.89 1.55c-.42.73-1.2 1.18-2.05 1.18h-1.79c-.36 0-.72.09-1.04.26l-1.58.84c-.75.4-1.67.4-2.42 0l-1.58-.84a2.44 2.44 0 0 0-1.04-.26h-1.79c-.85 0-1.63-.45-2.05-1.18l-.89-1.55a2.44 2.44 0 0 0-.75-.75l-1.55-.89c-.73-.42-1.18-1.2-1.18-2.05v-1.79c0-.36-.09-.72-.26-1.04l-.84-1.58a2.44 2.44 0 0 1 0-2.42l.84-1.58c.17-.32.26-.68.26-1.04V6.18c0-.85.45-1.63 1.18-2.05l1.55-.89c.31-.18.57-.44.75-.75l.89-1.55c.42-.73 1.2-1.18 2.05-1.18h1.79c.36 0 .72-.09 1.04-.26l1.58-.84z" fill="#2AABEE"/>
               <path d="M9.3 12.2l1.9 1.9 4.3-4.3" stroke="#ffffff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
@@ -568,10 +631,17 @@
         </div>
       </div>
 
-      <!-- Admin Support Complete Action -->
-      <button id="btn-complete-ticket" class="btn-complete-ticket" onclick="completeSupportTicket()">
-        <i class="fas fa-check-circle"></i> সমাধান সম্পন্ন
-      </button>
+      <div class="header-actions">
+        <!-- Admin Social Links Manage Button -->
+        <button id="btn-manage-links" class="btn-manage-links" onclick="openLinksManageModal()">
+          <i class="fas fa-link"></i> সোশ্যাল লিংক
+        </button>
+
+        <!-- Admin Support Complete Action -->
+        <button id="btn-complete-ticket" class="btn-complete-ticket" onclick="completeSupportTicket()">
+          <i class="fas fa-check-circle"></i> সমাধান সম্পন্ন
+        </button>
+      </div>
     </div>
 
     <!-- Admin Search Input -->
@@ -602,7 +672,7 @@
     <!-- User Notice / Block Banner -->
     <div id="user-status-banner">আপনার অ্যাকাউন্টটি সাময়িকভাবে বার্তা প্রেরণের জন্য নিষিদ্ধ করা হয়েছে।</div>
 
-    <!-- Bottom Input Bar (Clean & Natural) -->
+    <!-- Bottom Input Bar -->
     <div class="tg-bottom-bar" id="support-input-bar">
       <input type="text" id="chat-text-input" class="tg-input" placeholder="মেসেজ লিখুন..." oninput="handleTypingEvent()" onkeydown="if(event.key==='Enter') sendSupportMessage()">
       <button class="tg-send-btn" onclick="sendSupportMessage()" title="Send">
@@ -611,12 +681,12 @@
     </div>
   </div>
 
-  <!-- User Profile & Moderation Modal (Admin Only) -->
+  <!-- Modal 1: User Profile & Moderation (Admin Only) -->
   <div id="admin-user-modal" class="modal-overlay">
     <div class="modal-box">
       <div class="modal-header">
         <span style="font-weight:700; font-size:0.9rem;">ব্যবহারকারী প্রোফাইল ও নিয়ন্ত্রণ</span>
-        <button style="background:none; border:none; color:#fff; font-size:1.1rem; cursor:pointer;" onclick="closeModal()"><i class="fas fa-times"></i></button>
+        <button style="background:none; border:none; color:#fff; font-size:1.1rem; cursor:pointer;" onclick="closeModal('admin-user-modal')"><i class="fas fa-times"></i></button>
       </div>
       
       <div class="modal-profile">
@@ -626,7 +696,6 @@
         <span id="modal-user-status" style="font-size:0.75rem; font-weight:700; color:var(--online);">Status: Active</span>
       </div>
 
-      <!-- Action: Temporary Mute -->
       <div class="modal-section">
         <label>বার্তা পাঠানো সাময়িক বন্ধ করুন (Mute):</label>
         <div class="btn-group">
@@ -636,7 +705,6 @@
         </div>
       </div>
 
-      <!-- Action: Message Limit & Ban -->
       <div class="modal-section">
         <label>মেসেজ লিমিট নির্ধারণ (০ = আনলিমিটেড):</label>
         <div style="display:flex; gap:8px;">
@@ -648,6 +716,47 @@
       <div style="display:flex; gap:8px;">
         <button class="btn-action btn-danger" style="flex:1; padding:9px;" onclick="setModerationStatus('ban')">সম্পূর্ণ ব্যান / ব্লক</button>
         <button class="btn-action btn-success" style="flex:1; padding:9px;" onclick="setModerationStatus('unban')">আনব্যান করুন</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Manage Official Social Links (Admin Only) -->
+  <div id="admin-links-modal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <span style="font-weight:700; font-size:0.9rem;">অফিসিয়াল সোশ্যাল লিংক ব্যবস্থাপনা</span>
+        <button style="background:none; border:none; color:#fff; font-size:1.1rem; cursor:pointer;" onclick="closeModal('admin-links-modal')"><i class="fas fa-times"></i></button>
+      </div>
+
+      <!-- Add New Link Form -->
+      <div class="modal-section">
+        <label>নতুন লিংক যুক্ত করুন:</label>
+        <input type="text" id="new-link-title" placeholder="নাম (যেমন: অফিসিয়াল টেলিগ্রাম চ্যানেল)" style="background:#0e1621; border:1px solid var(--chat-border); color:#fff; padding:8px 10px; border-radius:8px; outline:none; font-size:0.8rem;">
+        
+        <div style="display:flex; gap:8px;">
+          <select id="new-link-icon" style="background:#0e1621; border:1px solid var(--chat-border); color:#fff; padding:8px 10px; border-radius:8px; outline:none; font-size:0.8rem; flex:1;">
+            <option value="fab fa-telegram">টেলিগ্রাম (Telegram)</option>
+            <option value="fab fa-youtube">ইউটিউব (YouTube)</option>
+            <option value="fab fa-tiktok">টিকটক (TikTok)</option>
+            <option value="fab fa-facebook">ফেসবুক (Facebook)</option>
+            <option value="fas fa-globe">ওয়েবসাইট (Website)</option>
+            <option value="fab fa-whatsapp">হোয়াটসঅ্যাপ (WhatsApp)</option>
+          </select>
+        </div>
+
+        <input type="url" id="new-link-url" placeholder="URL লিংক (https://...)" style="background:#0e1621; border:1px solid var(--chat-border); color:#fff; padding:8px 10px; border-radius:8px; outline:none; font-size:0.8rem;">
+        
+        <button class="btn-action btn-success" style="padding:8px;" onclick="addNewSocialLink()">
+          <i class="fas fa-plus-circle"></i> লিংক যুক্ত করুন
+        </button>
+      </div>
+
+      <!-- Current Links List -->
+      <div class="modal-section">
+        <label>বর্তমান সক্রিয় লিংকসমূহ:</label>
+        <div id="admin-links-container" style="display:flex; flex-direction:column; gap:6px;">
+          <!-- Loaded Dynamically -->
+        </div>
       </div>
     </div>
   </div>
@@ -681,15 +790,18 @@
 
     let tgUser = tg?.initDataUnsafe?.user || { id: '123456', first_name: 'Guest User', photo_url: '' };
     const userAvatarUrl = tgUser.photo_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${tgUser.id}`;
+    
     let activeChatTargetUserId = tgUser.id;
     let activeTargetUserMeta = null;
     let chatMessageHistory = [];
     let allInboxThreads = [];
     let typingTimer = null;
+    let activeCommunityLinks = [];
 
     let currentChatRef = null;
     let currentTypingRef = null;
     let currentUserMetaRef = null;
+    let currentInboxRef = null;
 
     const isAdminUser = () => String(tgUser.id) === String(OFFICIAL_ADMIN_ID);
 
@@ -712,6 +824,7 @@
     }
 
     function initSupportDesk() {
+      listenCommunityLinks();
       if (isAdminUser()) {
         openAdminInbox();
       } else {
@@ -731,13 +844,93 @@
       }
     }
 
+    // ================= REALTIME OFFICIAL COMMUNITY LINKS =================
+    function listenCommunityLinks() {
+      db.ref('community_links').on('value', snap => {
+        activeCommunityLinks = [];
+        if (snap.exists()) {
+          snap.forEach(c => {
+            activeCommunityLinks.push({ key: c.key, ...c.val() });
+          });
+        } else {
+          // Default Seeding if empty
+          const defaults = [
+            { title: "অফিসিয়াল টেলিগ্রাম চ্যানেল", icon: "fab fa-telegram", url: "https://t.me/" },
+            { title: "অফিসিয়াল ইউটিউব চ্যানেল", icon: "fab fa-youtube", url: "https://youtube.com/" },
+            { title: "অফিসিয়াল টিকটক প্রোফাইল", icon: "fab fa-tiktok", url: "https://tiktok.com/" }
+          ];
+          defaults.forEach(d => db.ref('community_links').push(d));
+        }
+        renderAdminLinksManagerList();
+      });
+    }
+
+    function openLinksManageModal() {
+      renderAdminLinksManagerList();
+      document.getElementById('admin-links-modal').style.display = 'flex';
+    }
+
+    function renderAdminLinksManagerList() {
+      const container = document.getElementById('admin-links-container');
+      if (!container) return;
+      container.innerHTML = '';
+      if (!activeCommunityLinks.length) {
+        container.innerHTML = `<div style="font-size:0.75rem; color:var(--text-muted);">কোনো লিংক যুক্ত নেই।</div>`;
+        return;
+      }
+
+      activeCommunityLinks.forEach(item => {
+        const row = document.createElement('div');
+        row.className = 'links-list-item';
+        row.innerHTML = `
+          <div style="display:flex; align-items:center; gap:8px; overflow:hidden;">
+            <i class="${escapeHTML(item.icon)}" style="color:var(--tg-blue);"></i>
+            <div style="overflow:hidden;">
+              <div style="font-weight:600; white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">${escapeHTML(item.title)}</div>
+              <div style="font-size:0.68rem; color:var(--text-muted); white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">${escapeHTML(item.url)}</div>
+            </div>
+          </div>
+          <button class="btn-del-link" onclick="deleteSocialLink('${item.key}')" title="Delete"><i class="fas fa-trash-alt"></i></button>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    async function addNewSocialLink() {
+      const title = document.getElementById('new-link-title').value.trim();
+      const icon = document.getElementById('new-link-icon').value;
+      const url = document.getElementById('new-link-url').value.trim();
+
+      if (!title || !url) return toast('দয়া করে শিরোনাম এবং লিংক প্রবেশ করান');
+
+      await db.ref('community_links').push({ title, icon, url });
+      document.getElementById('new-link-title').value = '';
+      document.getElementById('new-link-url').value = '';
+      toast('নতুন সোশ্যাল লিংক যুক্ত হয়েছে');
+    }
+
+    async function deleteSocialLink(key) {
+      if (!confirm('আপনি কি সত্যিই এই লিংকটি মুছে ফেলতে চান?')) return;
+      await db.ref(`community_links/${key}`).remove();
+      toast('লিংক মুছে ফেলা হয়েছে');
+    }
+
+    function openExternalLink(url) {
+      if (tg?.openLink) {
+        tg.openLink(url);
+      } else {
+        window.open(url, '_blank');
+      }
+    }
+
     // ================= ADMIN INBOX =================
     function openAdminInbox() {
       detachActiveListeners();
       document.getElementById('btn-back').style.display = 'none';
       document.getElementById('btn-complete-ticket').style.display = 'none';
+      document.getElementById('btn-manage-links').style.display = 'inline-flex';
       document.getElementById('support-header-title').innerHTML = `<span>Admin Inbox</span>`;
-      document.getElementById('support-header-sub').innerText = "সকল ব্যবহারকারীর বার্তা";
+      document.getElementById('support-header-sub').innerText = "সকল ব্যবহারকারীর ইনবক্স";
       document.getElementById('support-header-img').src = OFFICIAL_LOGO;
 
       document.getElementById('admin-search-bar').style.display = 'block';
@@ -747,7 +940,8 @@
       document.getElementById('typing-box').style.display = 'none';
       document.getElementById('user-status-banner').style.display = 'none';
 
-      db.ref('support_chats').on('value', snap => {
+      currentInboxRef = db.ref('support_chats');
+      currentInboxRef.on('value', snap => {
         allInboxThreads = [];
         if (snap.exists()) {
           const chats = snap.val();
@@ -765,7 +959,7 @@
               uid: uid,
               userName: lastMsg.name || `User (${uid})`,
               userPhoto: lastMsg.photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${uid}`,
-              lastText: lastMsg.text || (lastMsg.type === 'rating_request' ? 'রেটিং অনুরোধ পাঠানো হয়েছে' : ''),
+              lastText: lastMsg.text || (lastMsg.type === 'community_card' ? 'অফিসিয়াল কমিউনিটি কার্ড' : ''),
               time: lastMsg.time || '',
               unreadCount: unreadCount,
               timestamp: lastMsg.timestamp || 0
@@ -823,6 +1017,7 @@
 
       document.getElementById('btn-back').style.display = 'block';
       document.getElementById('btn-complete-ticket').style.display = 'inline-flex';
+      document.getElementById('btn-manage-links').style.display = 'none';
       document.getElementById('support-header-title').innerHTML = `<span>${escapeHTML(userName)}</span> <i class="fas fa-info-circle" style="font-size:0.8rem; color:var(--text-muted);"></i>`;
       document.getElementById('support-header-sub').innerText = `ID: ${targetUid} (ক্লিক করে প্রোফাইল দেখুন)`;
       document.getElementById('support-header-img').src = userPhoto;
@@ -843,8 +1038,8 @@
       activeChatTargetUserId = myId;
       document.getElementById('btn-back').style.display = 'none';
       document.getElementById('btn-complete-ticket').style.display = 'none';
+      document.getElementById('btn-manage-links').style.display = 'none';
       
-      // Verified Header
       document.getElementById('support-header-title').innerHTML = `
         <span>${OFFICIAL_TITLE}</span>
         ${VERIFIED_BADGE_SVG}
@@ -865,6 +1060,7 @@
       if (currentChatRef) currentChatRef.off();
       if (currentTypingRef) currentTypingRef.off();
       if (currentUserMetaRef) currentUserMetaRef.off();
+      if (currentInboxRef) currentInboxRef.off();
     }
 
     function markMessagesAsSeen(uid) {
@@ -904,50 +1100,65 @@
 
             let contentHTML = escapeHTML(m.text);
 
-            // Handle Rating Message
+            // ================= 1. RATING REQUEST CARD =================
             if (m.type === 'rating_request') {
-              const currentRating = m.rating || 0;
-              const hasRated = !!m.rated;
-              const isCurrentAdmin = isAdminUser();
-
-              if (hasRated) {
-                // If already rated: hide interactive buttons, show clean static stars
+              if (!isAdminUser()) {
                 contentHTML = `
                   <div>${escapeHTML(m.text)}</div>
-                  <div class="rating-submitted-view">
-                    <div class="static-stars">
+                  <div class="rating-box-wrap">
+                    <div style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">নিচের স্টারে টাচ করে রেটিং দিন:</div>
+                    <div class="rating-stars-row">
                       ${[1, 2, 3, 4, 5].map(s => `
-                        <i class="fas fa-star ${s <= currentRating ? 'filled' : 'unfilled'}"></i>
+                        <i class="fas fa-star rating-star-btn" onclick="rateSupport('${key}', ${s})" title="${s} Star"></i>
                       `).join('')}
                     </div>
-                    <span class="rating-msg-tag">রেটিং সম্পন্ন (${currentRating}/৫) ⭐</span>
                   </div>
                 `;
               } else {
-                // If not rated yet:
-                if (!isCurrentAdmin) {
-                  // ONLY User can see interactive clickable stars
-                  contentHTML = `
-                    <div>${escapeHTML(m.text)}</div>
-                    <div class="rating-card">
-                      <div style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">নিচে স্টার চাপ দিয়ে রেট করুন:</div>
-                      <div class="rating-stars">
-                        ${[1, 2, 3, 4, 5].map(star => `
-                          <i class="fas fa-star rating-star-btn" onclick="rateSupport('${key}', ${star})" title="${star} Star"></i>
-                        `).join('')}
-                      </div>
-                    </div>
-                  `;
-                } else {
-                  // Admin sees waiting status
-                  contentHTML = `
-                    <div>${escapeHTML(m.text)}</div>
-                    <div style="margin-top:6px; font-size:0.75rem; color:var(--text-muted); font-style:italic;">
-                      <i class="fas fa-clock"></i> ব্যবহারকারীর রেটিংয়ের অপেক্ষায় রয়েছে...
-                    </div>
-                  `;
-                }
+                contentHTML = `
+                  <div>${escapeHTML(m.text)}</div>
+                  <div style="margin-top:6px; font-size:0.72rem; color:var(--text-muted); font-style:italic;">
+                    <i class="fas fa-clock"></i> ব্যবহারকারীর রেটিংয়ের অপেক্ষায়...
+                  </div>
+                `;
               }
+            }
+
+            // ================= 2. POST-RATING THANK YOU & COMMUNITY HUB =================
+            if (m.type === 'community_card') {
+              const starsGiven = m.starsGiven || 5;
+              const linksHTML = activeCommunityLinks.map(link => `
+                <a href="javascript:void(0)" onclick="openExternalLink('${encodeURI(link.url)}')" class="community-link-btn">
+                  <div class="community-link-left">
+                    <i class="${escapeHTML(link.icon)}" style="color:var(--tg-blue);"></i>
+                    <span>${escapeHTML(link.title)}</span>
+                  </div>
+                  <i class="fas fa-external-link-alt" style="font-size:0.75rem; opacity:0.6;"></i>
+                </a>
+              `).join('');
+
+              contentHTML = `
+                <div class="community-hub-card">
+                  <div class="community-hub-title">
+                    <span>${OFFICIAL_TITLE}</span>
+                    ${VERIFIED_BADGE_SVG}
+                  </div>
+
+                  <div style="display:flex; align-items:center; gap:4px; margin-bottom:8px;">
+                    ${[1,2,3,4,5].map(st => `<i class="fas fa-star" style="font-size:0.9rem; color:${st <= starsGiven ? 'var(--star-active)' : '#4b5563'};"></i>`).join('')}
+                    <span style="font-size:0.75rem; color:var(--online); font-weight:700; margin-left:6px;">রেটিং গ্রহণ করা হয়েছে (${starsGiven}/৫)</span>
+                  </div>
+
+                  <p class="community-hub-desc">
+                    আপনাকে অসংখ্য ধন্যবাদ আমাদেরকে রেটিং দিয়ে আপনার অভিজ্ঞতা জানানোর জন্য! 
+                    আমাদের সকল অফিসিয়াল চ্যানেলে জয়েন করে সবসময় আমাদের সাথেই থাকুন:
+                  </p>
+
+                  <div class="community-links-grid">
+                    ${linksHTML || '<div style="font-size:0.75rem; color:var(--text-muted);">শীঘ্রই অফিশিয়াল চ্যানেল লিংক আসছে...</div>'}
+                  </div>
+                </div>
+              `;
             }
 
             body.innerHTML += `
@@ -967,9 +1178,9 @@
       });
     }
 
-    // ================= SUPPORT COMPLETE & RATING SYSTEM =================
+    // ================= TICKET RESOLUTION & RATING =================
     async function completeSupportTicket() {
-      if (!confirm("আপনি কি এই সাপোর্ট সেশনটি সমাপ্ত করে ব্যবহারকারীর কাছে রেটিং ও মূল্যায়ন বার্তা পাঠাতে চান?")) return;
+      if (!confirm("আপনি কি এই সাপোর্ট সেশনটি সম্পন্ন করে ব্যবহারকারীর কাছে রেটিং অনুরোধ পাঠাতে চান?")) return;
 
       triggerHaptic('medium');
       const now = new Date();
@@ -992,26 +1203,38 @@
       toast('রেটিং অনুরোধ পাঠানো হয়েছে');
     }
 
-    // Rate Support - Only Users
+    // When User Rates -> Remove rating message and send Official Community Hub
     async function rateSupport(messageKey, stars) {
-      if (isAdminUser()) return; // Admin cannot rate
-
+      if (isAdminUser()) return;
       triggerHaptic('medium');
-      const chatUid = activeChatTargetUserId;
 
-      // Update message (rated: true hides buttons and turns it to static stars)
-      await db.ref(`support_chats/${chatUid}/${messageKey}`).update({
-        rating: stars,
-        rated: true
+      const chatUid = activeChatTargetUserId;
+      const now = new Date();
+      const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      // 1. Delete/Remove the previous rating request message
+      await db.ref(`support_chats/${chatUid}/${messageKey}`).remove();
+
+      // 2. Automatically spawn the Official Community Hub card
+      await db.ref(`support_chats/${chatUid}`).push({
+        sender: 'admin',
+        type: 'community_card',
+        userId: OFFICIAL_ADMIN_ID,
+        name: OFFICIAL_TITLE,
+        photo: OFFICIAL_LOGO,
+        starsGiven: stars,
+        time: timeString,
+        seen: true,
+        timestamp: Date.now()
       });
 
-      // Save to user metadata
+      // 3. Save to user metadata
       await db.ref(`users_meta/${chatUid}`).update({
         lastSupportRating: stars,
         lastRatedAt: Date.now()
       });
 
-      toast(`ধন্যবাদ! আপনার ${stars} স্টার রেটিং গ্রহণ করা হয়েছে।`);
+      toast(`ধন্যবাদ! আপনার ${stars} স্টার রেটিং সম্পন্ন হয়েছে।`);
     }
 
     // ================= USER ACCESS CONTROL & MODAL =================
@@ -1073,8 +1296,8 @@
       modal.style.display = 'flex';
     }
 
-    function closeModal() {
-      document.getElementById('admin-user-modal').style.display = 'none';
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
     }
 
     function setModerationStatus(type, hours = 0) {
@@ -1092,14 +1315,14 @@
         metaRef.update({ mutedUntil: muteDuration, isBanned: false });
         toast(`${hours} ঘণ্টার জন্য মিউট করা হয়েছে`);
       }
-      closeModal();
+      closeModal('admin-user-modal');
     }
 
     function updateMessageLimit() {
       const val = parseInt(document.getElementById('modal-msg-limit').value) || 0;
       db.ref('users_meta/' + activeChatTargetUserId).update({ customLimit: val });
       toast(val > 0 ? `লিমিট ${val} টি মেসেজ সেট হয়েছে` : 'আনলিমিটেড করা হয়েছে');
-      closeModal();
+      closeModal('admin-user-modal');
     }
 
     // ================= TYPING INDICATOR =================
@@ -1179,7 +1402,6 @@
           lastActive: Date.now()
         });
 
-        // Trigger Auto-Reply
         handleAutoReplySystem(targetChat);
       }
 
