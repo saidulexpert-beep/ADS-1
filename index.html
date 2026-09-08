@@ -68,6 +68,7 @@
       border-bottom: 1px solid var(--chat-border);
       box-shadow: 0 4px 15px rgba(0,0,0,0.3);
       z-index: 10;
+      flex-shrink: 0;
     }
 
     .tg-back-btn { 
@@ -129,19 +130,13 @@
       gap: 6px;
     }
 
-    /* CONTINUOUS ROTATING VERIFIED BADGE */
-    @keyframes spinVerified {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
+    /* AUTHENTIC STATIC TELEGRAM VERIFIED BADGE (NO ROTATION) */
     .tg-verified-svg {
-      width: 19px;
-      height: 19px;
+      width: 18px;
+      height: 18px;
       display: inline-block;
       vertical-align: middle;
       flex-shrink: 0;
-      animation: spinVerified 6s linear infinite;
     }
 
     .user-text-info p { 
@@ -150,13 +145,13 @@
       font-weight: 600; 
     }
 
-    /* ADMIN COMPLETE SUPPORT BUTTON IN HEADER */
+    /* ADMIN COMPLETE SUPPORT BUTTON */
     .btn-complete-ticket {
       display: none;
       background: linear-gradient(135deg, #00b894, #00cec9);
       color: #fff;
       border: none;
-      padding: 7px 11px;
+      padding: 7px 12px;
       border-radius: 12px;
       font-size: 0.72rem;
       font-weight: 700;
@@ -165,6 +160,7 @@
       gap: 5px;
       box-shadow: 0 3px 10px rgba(0, 184, 148, 0.35);
       transition: transform 0.2s;
+      flex-shrink: 0;
     }
     .btn-complete-ticket:active { transform: scale(0.95); }
 
@@ -174,6 +170,7 @@
       background: var(--tg-surface);
       border-bottom: 1px solid var(--chat-border);
       display: none;
+      flex-shrink: 0;
     }
     .search-box input {
       width: 100%;
@@ -276,7 +273,7 @@
 
     .msg-bubble {
       max-width: 82%;
-      padding: 11px 14px;
+      padding: 10px 14px;
       border-radius: 16px;
       font-size: 0.86rem;
       line-height: 1.45;
@@ -308,40 +305,60 @@
     }
     .tick-blue { color: #54a0ff; font-weight: 700; }
 
-    /* RATING CARD STYLING */
+    /* INTERACTIVE & STATIC RATING STYLING */
     .rating-card {
       margin-top: 8px;
       background: rgba(0, 0, 0, 0.35);
       border: 1px dashed rgba(255, 255, 255, 0.2);
       border-radius: 14px;
-      padding: 12px;
+      padding: 10px;
       text-align: center;
     }
     .rating-stars {
       display: flex;
       justify-content: center;
-      gap: 9px;
-      margin: 10px 0 6px 0;
+      gap: 8px;
+      margin: 8px 0 4px 0;
     }
     .rating-star-btn {
-      font-size: 1.6rem;
-      color: #4b5563;
+      font-size: 1.5rem;
+      color: #576574;
       cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    .rating-star-btn.active {
-      color: var(--star-active);
-      text-shadow: 0 0 10px rgba(241, 196, 15, 0.6);
-      transform: scale(1.18);
+      transition: transform 0.15s ease, color 0.15s ease;
     }
     .rating-star-btn:hover {
       color: var(--star-active);
+      transform: scale(1.15);
     }
-    .rating-status-text {
-      font-size: 0.76rem;
+
+    /* RATED STATIC BADGE (After rating is submitted) */
+    .rating-submitted-view {
+      margin-top: 8px;
+      padding: 8px 12px;
+      background: rgba(0,0,0,0.28);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      gap: 8px;
+    }
+    .static-stars {
+      display: flex;
+      gap: 3px;
+    }
+    .static-stars i.filled {
+      color: var(--star-active);
+      font-size: 0.95rem;
+    }
+    .static-stars i.unfilled {
+      color: #4b5563;
+      font-size: 0.95rem;
+    }
+    .rating-msg-tag {
+      font-size: 0.72rem;
+      color: #00b894;
       font-weight: 700;
-      color: #2ed573;
-      margin-top: 5px;
     }
 
     /* TYPING INDICATOR */
@@ -354,6 +371,7 @@
       background: var(--tg-surface);
       align-items: center;
       gap: 6px;
+      flex-shrink: 0;
     }
     .typing-dots span {
       animation: blink 1.2s infinite;
@@ -363,45 +381,54 @@
     .typing-dots span:nth-child(3) { animation-delay: .4s; }
     @keyframes blink { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
 
-    /* BOTTOM INPUT */
+    /* NORMAL TELEGRAM-LIKE BOTTOM INPUT BAR */
     .tg-bottom-bar {
       background: var(--tg-surface);
-      padding: 10px 14px;
+      padding: 8px 12px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       border-top: 1px solid var(--chat-border);
+      flex-shrink: 0;
     }
     .tg-input {
       flex: 1;
-      padding: 11px 16px;
-      border-radius: 24px;
+      min-width: 0;
+      padding: 10px 16px;
+      border-radius: 22px;
       border: 1px solid rgba(255,255,255,0.12);
       outline: none;
-      font-size: 0.86rem;
+      font-size: 0.88rem;
       background: #0e1621;
       color: #fff;
+      transition: border-color .2s;
     }
     .tg-input:focus { border-color: var(--tg-blue); }
 
     .tg-send-btn {
       background: var(--tg-blue);
       color: #fff;
-      width: 42px;
-      height: 42px;
-      min-width: 42px;
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+      max-width: 40px;
       border-radius: 50%;
       border: none;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      font-size: 1rem;
       box-shadow: 0 4px 12px rgba(42, 171, 238, 0.3);
-      transition: transform .2s;
+      transition: transform .15s, background .2s;
+      flex-shrink: 0;
+    }
+    .tg-send-btn i {
+      margin-left: 2px; /* optical center */
     }
     .tg-send-btn:active { transform: scale(0.92); }
 
-    /* NOTICE BANNER (MUTED / BLOCKED) */
+    /* NOTICE BANNER */
     #user-status-banner {
       display: none;
       padding: 10px 16px;
@@ -531,7 +558,7 @@
         <div class="user-text-info">
           <h4 id="support-header-title">
             <span>𝐆𝐌𝐀𝐈𝐋 𝐇𝐔𝐁 ˢᵘᵖᵖᵒʳᵗ</span>
-            <!-- Authentic Telegram 8-pointed star rotating verified badge -->
+            <!-- Static Official Telegram Verified Badge (No Spin) -->
             <svg class="tg-verified-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M10.29 2.3c.75-.4 1.67-.4 2.42 0l1.58.84c.32.17.68.26 1.04.26h1.79c.85 0 1.63.45 2.05 1.18l.89 1.55c.18.31.44.57.75.75l1.55.89c.73.42 1.18 1.2 1.18 2.05v1.79c0 .36.09.72.26 1.04l.84 1.58c.4.75.4 1.67 0 2.42l-.84 1.58c-.17.32-.26.68-.26 1.04v1.79c0 .85-.45 1.63-1.18 2.05l-1.55.89c-.31.18-.57.44-.75.75l-.89 1.55c-.42.73-1.2 1.18-2.05 1.18h-1.79c-.36 0-.72.09-1.04.26l-1.58.84c-.75.4-1.67.4-2.42 0l-1.58-.84a2.44 2.44 0 0 0-1.04-.26h-1.79c-.85 0-1.63-.45-2.05-1.18l-.89-1.55a2.44 2.44 0 0 0-.75-.75l-1.55-.89c-.73-.42-1.18-1.2-1.18-2.05v-1.79c0-.36-.09-.72-.26-1.04l-.84-1.58a2.44 2.44 0 0 1 0-2.42l.84-1.58c.17-.32.26-.68.26-1.04V6.18c0-.85.45-1.63 1.18-2.05l1.55-.89c.31-.18.57-.44.75-.75l.89-1.55c.42-.73 1.2-1.18 2.05-1.18h1.79c.36 0 .72-.09 1.04-.26l1.58-.84z" fill="#2AABEE"/>
               <path d="M9.3 12.2l1.9 1.9 4.3-4.3" stroke="#ffffff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
@@ -560,7 +587,7 @@
       <div class="msg-row admin">
         <img src="https://i.postimg.cc/vmSBzy63/file-00000000eb4c81faa545e57c85285455.png" class="msg-avatar" alt="Admin">
         <div class="msg-bubble">
-          হ্যালো! <b>𝐆𝐌𝐀𝐈𝐋 𝐇𝐔𝐁 ˢᵘᵖᵖᵒʳᵗ</b> এ আপনাকে স্বাগতম। আপনার সমস্যা বা অভিযোগ বিস্তারিত লিখুন।
+          হ্যালো! <b>𝐆𝐌𝐀𝐈𝐋 𝐇𝐔𝐁 ˢᵘᵖᵖᵒʳᵗ</b> এ আপনাকে স্বাগতম। আপনার সমস্যা বা অভিযোগ বিস্তারিত লিখে জানান।
           <div class="msg-time">Official Support</div>
         </div>
       </div>
@@ -575,10 +602,10 @@
     <!-- User Notice / Block Banner -->
     <div id="user-status-banner">আপনার অ্যাকাউন্টটি সাময়িকভাবে বার্তা প্রেরণের জন্য নিষিদ্ধ করা হয়েছে।</div>
 
-    <!-- Bottom Input -->
+    <!-- Bottom Input Bar (Clean & Natural) -->
     <div class="tg-bottom-bar" id="support-input-bar">
       <input type="text" id="chat-text-input" class="tg-input" placeholder="মেসেজ লিখুন..." oninput="handleTypingEvent()" onkeydown="if(event.key==='Enter') sendSupportMessage()">
-      <button class="tg-send-btn" onclick="sendSupportMessage()">
+      <button class="tg-send-btn" onclick="sendSupportMessage()" title="Send">
         <i class="fas fa-paper-plane"></i>
       </button>
     </div>
@@ -627,7 +654,6 @@
 
   <script>
     const OFFICIAL_ADMIN_ID = "7358825471";
-    // Official Logo provided by user
     const OFFICIAL_LOGO = "https://i.postimg.cc/vmSBzy63/file-00000000eb4c81faa545e57c85285455.png";
     const OFFICIAL_TITLE = "𝐆𝐌𝐀𝐈𝐋 𝐇𝐔𝐁 ˢᵘᵖᵖᵒʳᵗ";
 
@@ -661,7 +687,6 @@
     let allInboxThreads = [];
     let typingTimer = null;
 
-    // Listeners for cleanup
     let currentChatRef = null;
     let currentTypingRef = null;
     let currentUserMetaRef = null;
@@ -799,7 +824,7 @@
       document.getElementById('btn-back').style.display = 'block';
       document.getElementById('btn-complete-ticket').style.display = 'inline-flex';
       document.getElementById('support-header-title').innerHTML = `<span>${escapeHTML(userName)}</span> <i class="fas fa-info-circle" style="font-size:0.8rem; color:var(--text-muted);"></i>`;
-      document.getElementById('support-header-sub').innerText = `ID: ${targetUid} (প্রোফাইল দেখতে ট্যাপ করুন)`;
+      document.getElementById('support-header-sub').innerText = `ID: ${targetUid} (ক্লিক করে প্রোফাইল দেখুন)`;
       document.getElementById('support-header-img').src = userPhoto;
 
       document.getElementById('admin-search-bar').style.display = 'none';
@@ -862,7 +887,7 @@
           <div class="msg-row admin">
             <img src="${OFFICIAL_LOGO}" class="msg-avatar" alt="Admin">
             <div class="msg-bubble">
-              হ্যালো! <b>${OFFICIAL_TITLE}</b> এ আপনাকে স্বাগতম। আপনি কোনো সমস্যার সম্মুখীন হলে বিস্তারিত লিখে জানান।
+              হ্যালো! <b>${OFFICIAL_TITLE}</b> এ আপনাকে স্বাগতম। আপনার সমস্যা বা অভিযোগ বিস্তারিত লিখে জানান।
               <div class="msg-time">${OFFICIAL_TITLE}</div>
             </div>
           </div>`;
@@ -877,32 +902,52 @@
             const avatar = isMsgFromAdmin ? OFFICIAL_LOGO : (m.photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${uid}`);
             const checkMark = m.seen ? '<i class="fas fa-check-double tick-blue"></i>' : '<i class="fas fa-check"></i>';
 
-            // Check if this message is a Rating / Review Request
             let contentHTML = escapeHTML(m.text);
+
+            // Handle Rating Message
             if (m.type === 'rating_request') {
               const currentRating = m.rating || 0;
               const hasRated = !!m.rated;
+              const isCurrentAdmin = isAdminUser();
 
-              contentHTML = `
-                <div>${escapeHTML(m.text)}</div>
-                <div class="rating-card">
-                  <div style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">আমাদের সার্ভিস রেটিং দিন:</div>
-                  <div class="rating-stars">
-                    ${[1,2,3,4,5].map(star => `
-                      <i class="fas fa-star rating-star-btn ${star <= currentRating ? 'active' : ''}" 
-                         onclick="rateSupport('${key}', ${star})" 
-                         title="${star} Star"></i>
-                    `).join('')}
-                  </div>
-                  ${hasRated ? `
-                    <div class="rating-status-text">
-                      <i class="fas fa-check-circle"></i> আপনি ${currentRating} স্টার দিয়েছেন! ধন্যবাদ।
+              if (hasRated) {
+                // If already rated: hide interactive buttons, show clean static stars
+                contentHTML = `
+                  <div>${escapeHTML(m.text)}</div>
+                  <div class="rating-submitted-view">
+                    <div class="static-stars">
+                      ${[1, 2, 3, 4, 5].map(s => `
+                        <i class="fas fa-star ${s <= currentRating ? 'filled' : 'unfilled'}"></i>
+                      `).join('')}
                     </div>
-                  ` : `
-                    <div style="font-size:0.7rem; color:#8e9bb2;">স্টারের ওপর ক্লিক করে রেট করুন</div>
-                  `}
-                </div>
-              `;
+                    <span class="rating-msg-tag">রেটিং সম্পন্ন (${currentRating}/৫) ⭐</span>
+                  </div>
+                `;
+              } else {
+                // If not rated yet:
+                if (!isCurrentAdmin) {
+                  // ONLY User can see interactive clickable stars
+                  contentHTML = `
+                    <div>${escapeHTML(m.text)}</div>
+                    <div class="rating-card">
+                      <div style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">নিচে স্টার চাপ দিয়ে রেট করুন:</div>
+                      <div class="rating-stars">
+                        ${[1, 2, 3, 4, 5].map(star => `
+                          <i class="fas fa-star rating-star-btn" onclick="rateSupport('${key}', ${star})" title="${star} Star"></i>
+                        `).join('')}
+                      </div>
+                    </div>
+                  `;
+                } else {
+                  // Admin sees waiting status
+                  contentHTML = `
+                    <div>${escapeHTML(m.text)}</div>
+                    <div style="margin-top:6px; font-size:0.75rem; color:var(--text-muted); font-style:italic;">
+                      <i class="fas fa-clock"></i> ব্যবহারকারীর রেটিংয়ের অপেক্ষায় রয়েছে...
+                    </div>
+                  `;
+                }
+              }
             }
 
             body.innerHTML += `
@@ -944,26 +989,29 @@
         timestamp: Date.now()
       });
 
-      toast('সাপোর্ট সমাপ্ত হয়েছে এবং রেটিং বার্তা পাঠানো হয়েছে');
+      toast('রেটিং অনুরোধ পাঠানো হয়েছে');
     }
 
+    // Rate Support - Only Users
     async function rateSupport(messageKey, stars) {
-      triggerHaptic('light');
+      if (isAdminUser()) return; // Admin cannot rate
+
+      triggerHaptic('medium');
       const chatUid = activeChatTargetUserId;
 
-      // Update message with rating
+      // Update message (rated: true hides buttons and turns it to static stars)
       await db.ref(`support_chats/${chatUid}/${messageKey}`).update({
         rating: stars,
         rated: true
       });
 
-      // Also record in User's Meta
+      // Save to user metadata
       await db.ref(`users_meta/${chatUid}`).update({
         lastSupportRating: stars,
         lastRatedAt: Date.now()
       });
 
-      toast(`ধন্যবাদ! আপনি ${stars} স্টার রেটিং দিয়েছেন।`);
+      toast(`ধন্যবাদ! আপনার ${stars} স্টার রেটিং গ্রহণ করা হয়েছে।`);
     }
 
     // ================= USER ACCESS CONTROL & MODAL =================
