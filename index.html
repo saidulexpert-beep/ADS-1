@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Earn & Redeem Pro</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <title>Official Support Desk</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   
   <!-- Firebase SDKs -->
@@ -12,479 +12,157 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-  <!-- Adsgram SDK -->
-  <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
-
-  <!-- Monetag SDKs -->
-  <script src="//libtl.com/sdk.js" data-zone="11737228" data-sdk="show_11737228"></script>
-  <script src="//libtl.com/sdk.js" data-zone="11595952" data-sdk="show_11595952"></script>
-
   <style>
     :root {
       --primary: #6C5CE7;
-      --primary-dark: #4834d4;
-      --secondary: #a29bfe;
-      --bg: #080c16;
-      --surface: #121826;
-      --surface-card: #182236;
-      --text: #ffffff;
-      --text-muted: #8e9bb2;
-      --success: #00b894;
-      --accent: #fd79a8;
       --tg-blue: #2AABEE;
       --tg-bg: #0e1621;
+      --tg-surface: #17212b;
+      --tg-surface-card: #182236;
+      --text: #ffffff;
+      --text-muted: #8e9bb2;
       --chat-my: #2b5278;
       --chat-admin: #182533;
+      --chat-border: rgba(255, 255, 255, 0.08);
     }
     
-    * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background: var(--bg); color: var(--text); padding-bottom: 95px; min-height: 100vh; overflow-x: hidden; }
-    #app { max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; display: none; }
-
-    .page-section { display: none; animation: fadeIn .28s cubic-bezier(0.4, 0, 0.2, 1); }
-    .page-section.active { display: block; }
-    @keyframes fadeIn { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
-
-    /* ================= ULTRA-MODERN ANIMATED LOADER ================= */
-    .loader-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 99999;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
-      background: radial-gradient(circle at 50% 35%, #18243f 0%, #060911 100%);
-      padding: 45px 22px;
-      overflow: hidden;
-    }
-    .loader-bg-particles {
-      position: absolute;
-      width: 320px;
-      height: 320px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(108, 92, 231, 0.35) 0%, rgba(0, 184, 148, 0.1) 70%, transparent 100%);
-      filter: blur(60px);
-      z-index: 1;
-      animation: pulseGlow 4s ease-in-out infinite alternate;
-    }
-    @keyframes pulseGlow {
-      0% { transform: scale(0.85) translate(-15px, -10px); opacity: 0.7; }
-      100% { transform: scale(1.15) translate(15px, 15px); opacity: 1; }
+    * { 
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box; 
+      font-family: 'Poppins', sans-serif; 
+      -webkit-tap-highlight-color: transparent; 
     }
 
-    .loader-center {
-      position: relative;
-      z-index: 2;
-      text-align: center;
-      margin-top: auto;
-      margin-bottom: auto;
-      width: 100%;
-      max-width: 340px;
-    }
-    .orbital-spinner {
-      position: relative;
-      width: 110px;
-      height: 110px;
-      margin: 0 auto 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .orbital-ring {
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      border: 3px solid transparent;
-      border-top-color: var(--primary);
-      border-bottom-color: var(--success);
-      animation: spinRing 1.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
-    }
-    .orbital-ring-inner {
-      position: absolute;
-      inset: 12px;
-      border-radius: 50%;
-      border: 2px dashed rgba(162, 155, 254, 0.7);
-      animation: spinRingRev 3s linear infinite;
-    }
-    .orbital-spinner i {
-      font-size: 2.2rem;
-      color: #fff;
-      filter: drop-shadow(0 0 16px rgba(108, 92, 231, 0.9));
-      animation: iconPulse 2s ease-in-out infinite;
-    }
-    @keyframes spinRing { to { transform: rotate(360deg); } }
-    @keyframes spinRingRev { to { transform: rotate(-360deg); } }
-    @keyframes iconPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
-
-    .loader-title {
-      font-size: 1.65rem;
-      font-weight: 900;
-      letter-spacing: 0.5px;
-      margin-bottom: 6px;
-      background: linear-gradient(135deg, #ffffff 30%, #a29bfe 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .loader-pill-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 6px 16px;
-      border-radius: 30px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--secondary);
-      backdrop-filter: blur(10px);
-    }
-    .loader-stats-bar {
-      position: relative;
-      z-index: 2;
-      width: 100%;
-      max-width: 400px;
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 8px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 22px;
-      padding: 14px 10px;
-      backdrop-filter: blur(16px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    }
-    .loader-stat-col { text-align: center; }
-    .loader-stat-col h4 { font-size: 0.96rem; font-weight: 800; color: #fff; }
-    .loader-stat-col p { font-size: 0.65rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-top: 2px; }
-
-    /* ================= MAIN APP HEADER ================= */
-    .header {
-      background: linear-gradient(145deg, #162035, #0d1424);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-      padding: 22px 18px;
-      border-radius: 0 0 26px 26px;
-    }
-    .top-bar { display: flex; justify-content: space-between; align-items: center; }
-    .user-pill {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: rgba(255, 255, 255, 0.05);
-      padding: 5px 16px 5px 5px;
-      border-radius: 50px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    .user-pill img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
-    .user-info h3 { font-size: 0.92rem; font-weight: 700; color: #fff; }
-    .user-info p { font-size: 0.7rem; color: var(--text-muted); font-weight: 600; }
-    .support-btn {
-      background: linear-gradient(135deg, #2AABEE, #229ED9);
-      color: #fff;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      border: none;
-      font-size: 1.25rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 18px rgba(42, 171, 238, 0.35);
-      transition: transform .2s;
-    }
-    .support-btn:active { transform: scale(0.92); }
-
-    /* ================= HERO REDEEM CARD ================= */
-    .hero-redeem-card {
-      background: var(--surface);
-      margin: 18px 18px 10px;
-      border-radius: 24px;
-      padding: 22px;
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      box-shadow: 0 12px 35px rgba(0,0,0,0.4);
-    }
-    .sec-title { font-size: 1rem; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; color: #fff; }
-    
-    .progress-container {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 20px;
-      height: 12px;
-      width: 100%;
-      overflow: hidden;
-      margin: 8px 0;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    .progress-fill {
-      background: linear-gradient(90deg, var(--primary), var(--success));
-      height: 100%;
-      width: 0%;
-      transition: width .5s ease;
-      border-radius: 20px;
-      box-shadow: 0 0 12px rgba(0, 184, 148, 0.5);
-    }
-    .progress-label { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; color: var(--text-muted); }
-
-    .input-box {
-      width: 100%;
-      padding: 13px 14px;
-      border: 1.5px solid rgba(255,255,255,0.12);
-      border-radius: 14px;
-      font-size: 0.92rem;
-      background: rgba(0,0,0,0.35);
-      color: #fff;
-      outline: none;
-      font-weight: 600;
-      margin-bottom: 10px;
-      transition: .2s;
-    }
-    .input-box:focus { border-color: var(--primary); }
-
-    .btn-act {
-      width: 100%;
-      padding: 13px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: #fff;
-      border: none;
-      font-weight: 700;
-      font-size: 0.9rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      box-shadow: 0 6px 18px rgba(108, 92, 231, 0.35);
-      transition: .2s;
-    }
-    .btn-act:disabled {
-      background: #252f42 !important;
-      color: #64748b !important;
-      box-shadow: none;
-      cursor: not-allowed;
-      filter: grayscale(1);
-    }
-    .btn-act:active { transform: scale(0.98); }
-
-    /* 5-Character Secret Key Slots */
-    .key-slots-container { display: flex; justify-content: center; gap: 8px; margin: 15px 0 10px; }
-    .key-digit-box {
-      width: 46px;
-      height: 52px;
-      border-radius: 14px;
-      background: rgba(0,0,0,0.4);
-      border: 2px dashed rgba(255,255,255,0.18);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.3rem;
-      font-weight: 900;
-      color: var(--secondary);
-      text-transform: uppercase;
-    }
-    .key-digit-box.unlocked {
-      border: 2px solid var(--success);
-      background: rgba(0, 184, 148, 0.15);
-      color: var(--success);
-      animation: popDigit 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    @keyframes popDigit { 0% { transform: scale(0.5); opacity:0; } 100% { transform: scale(1); opacity:1; } }
-
-    .copy-key-box {
-      margin-top: 12px;
-      background: rgba(255,255,255,0.03);
-      border: 1.5px dashed rgba(108,92,231,0.4);
-      border-radius: 14px;
-      padding: 10px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .btn-copy {
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 10px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      cursor: pointer;
-    }
-    .btn-copy:disabled { background: #334155; color:#64748b; cursor: not-allowed; }
-
-    /* REDEEM CARD */
-    .code-reveal-box {
-      background: linear-gradient(135deg, #1e2b48, #131b2e);
-      border: 1.5px solid rgba(108, 92, 231, 0.4);
-      color: #fff;
-      padding: 16px;
-      border-radius: 18px;
-      margin-top: 14px;
-      text-align: center;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-    }
-    .code-reveal-box h4 {
-      font-size: 0.95rem;
-      color: var(--secondary);
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-    .code-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(0,0,0,0.35);
-      border-radius: 12px;
-      padding: 10px 16px;
-      border: 1px dashed rgba(255,255,255,0.25);
-    }
-    .code-row h3 { font-size: 1.35rem; font-weight: 900; letter-spacing: 2px; color: #fff; }
-    .btn-copy-code {
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      width: 38px;
-      height: 38px;
-      border-radius: 10px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-      transition: .2s;
-    }
-    .btn-copy-code:active { transform: scale(0.9); }
-
-    .claimed-badge {
-      background: rgba(0, 184, 148, 0.12);
-      border: 1.5px solid var(--success);
-      color: var(--success);
-      padding: 14px;
-      border-radius: 14px;
-      text-align: center;
-      font-weight: 700;
-      font-size: 0.88rem;
-      margin-top: 12px;
-      display: none;
+    body { 
+      background: var(--tg-bg); 
+      color: var(--text); 
+      min-height: 100vh; 
+      overflow: hidden; 
     }
 
-    /* ================= AD CARDS ================= */
-    .sec-head { font-size: 1rem; font-weight: 800; margin: 20px 20px 12px; display: flex; align-items: center; gap: 8px; color: #fff; }
-    .ad-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 0 18px; }
-    .ad-card {
-      position: relative;
-      padding: 2px;
-      border-radius: 20px;
-      background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02));
-      border: 1px solid rgba(255,255,255,0.08);
-      cursor: pointer;
-      height: 125px;
-      transition: transform 0.2s;
-    }
-    .ad-card:active { transform: scale(0.97); }
-    .ad-inner {
-      border-radius: 18px;
-      padding: 12px 10px;
-      text-align: center;
-      background: var(--surface-card);
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 6px;
-    }
-    .ad-inner i { font-size: 1.7rem; margin-bottom: 2px; }
-    .ad-inner h4 { font-size: 0.88rem; font-weight: 800; color: #fff; }
-    .ad-inner .reward-pill {
-      font-size: 0.72rem;
-      font-weight: 800;
-      color: #fff;
-      background: rgba(255,255,255,0.08);
-      padding: 4px 10px;
-      border-radius: 20px;
-      display: inline-flex;
-      gap: 5px;
-      align-items: center;
-    }
-    .ad-inner .progress-pill { font-size: 0.7rem; color: var(--text-muted); }
-    .slot-1 i { color: #ff9f43; }
-    .slot-2 i { color: #54a0ff; }
-    .slot-3 i { color: #1dd1a1; }
-    .slot-4 i { color: #ff6b6b; }
-    .ad-card.completed { opacity: 0.4; filter: grayscale(1); pointer-events: none; }
-
-    /* ================= LEADERBOARD ================= */
-    .stat-counters-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; padding: 15px 18px 10px; }
-    .stat-box { background: var(--surface); border-radius: 16px; padding: 12px 8px; text-align: center; border: 1px solid rgba(255,255,255,0.06); }
-    .stat-box h4 { font-size: 1.05rem; font-weight: 900; color: var(--secondary); }
-    .stat-box p { font-size: 0.65rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; }
-
-    .leader-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: var(--surface);
-      padding: 12px 16px;
-      border-radius: 16px;
-      margin: 0 18px 10px;
-      border: 1px solid rgba(255,255,255,0.05);
-    }
-    .leader-left { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 0.88rem; color: #fff; }
-    .leader-left img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; }
-    .active-tag { font-size: 0.68rem; padding: 3px 8px; border-radius: 20px; background: rgba(0,184,148,0.15); color: var(--success); font-weight: 700; }
-
-    /* ================= MORE BOTS ================= */
-    .bot-grid { display: grid; grid-template-columns: 1fr; gap: 12px; padding: 0 18px 30px; }
-    .bot-card {
-      background: var(--surface);
-      border-radius: 18px;
-      padding: 14px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-    .bot-meta { display: flex; align-items: center; gap: 12px; }
-    .bot-meta img { width: 44px; height: 44px; border-radius: 12px; object-fit: cover; }
-    .bot-meta h4 { font-size: 0.9rem; font-weight: 700; color: #fff; }
-    .bot-meta p { font-size: 0.72rem; color: var(--text-muted); }
-    .bot-open-btn {
-      padding: 7px 16px;
-      border-radius: 20px;
-      background: linear-gradient(135deg, #0984e3, #74b9ff);
-      color: #fff;
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 0.78rem;
-    }
-
-    /* ================= DUAL SUPPORT CHAT ================= */
-    #page-support {
-      position: fixed;
-      inset: 0;
-      background: var(--tg-bg);
-      z-index: 999999;
-      display: none;
-      flex-direction: column;
+    #app { 
+      max-width: 480px; 
+      margin: 0 auto; 
+      height: 100vh; 
       height: 100dvh;
+      display: flex; 
+      flex-direction: column; 
+      background: var(--tg-bg);
+      position: relative;
     }
-    #page-support.active { display: flex; }
+
+    /* ================= HEADER ================= */
     .tg-top-bar {
-      background: #17212b;
+      background: var(--tg-surface);
       color: #fff;
       padding: 12px 16px;
       display: flex;
       align-items: center;
       gap: 12px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
+      border-bottom: 1px solid var(--chat-border);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+      z-index: 10;
     }
-    .tg-back-btn { background: none; border: none; color: #fff; font-size: 1.25rem; cursor: pointer; padding: 4px 6px; }
-    .tg-chat-user { display: flex; align-items: center; gap: 10px; flex: 1; }
-    .tg-chat-user img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--tg-blue); }
-    .tg-chat-user h4 { font-size: 0.92rem; font-weight: 700; }
-    .tg-chat-user p { font-size: 0.7rem; color: var(--tg-blue); font-weight: 600; }
 
+    .tg-back-btn { 
+      background: none; 
+      border: none; 
+      color: #fff; 
+      font-size: 1.25rem; 
+      cursor: pointer; 
+      padding: 6px; 
+      display: none;
+    }
+
+    .tg-chat-user { 
+      display: flex; 
+      align-items: center; 
+      gap: 12px; 
+      flex: 1; 
+    }
+
+    .tg-chat-user img { 
+      width: 42px; 
+      height: 42px; 
+      border-radius: 50%; 
+      object-fit: cover; 
+      border: 1.5px solid var(--tg-blue); 
+    }
+
+    .tg-chat-user h4 { 
+      font-size: 0.95rem; 
+      font-weight: 700; 
+      color: #fff;
+    }
+
+    .tg-chat-user p { 
+      font-size: 0.72rem; 
+      color: var(--tg-blue); 
+      font-weight: 600; 
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* ================= ADMIN INBOX VIEW ================= */
+    #admin-inbox-view {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px;
+      gap: 10px;
+    }
+
+    .inbox-card {
+      background: var(--tg-surface-card);
+      border-radius: 16px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid var(--chat-border);
+      cursor: pointer;
+      transition: background .2s, transform .2s;
+    }
+
+    .inbox-card:active { 
+      background: #22304d; 
+      transform: scale(0.98); 
+    }
+
+    .inbox-left { 
+      display: flex; 
+      align-items: center; 
+      gap: 12px; 
+    }
+
+    .inbox-left img { 
+      width: 44px; 
+      height: 44px; 
+      border-radius: 50%; 
+      object-fit: cover; 
+      border: 1.5px solid var(--primary);
+    }
+
+    .inbox-meta h4 { 
+      font-size: 0.9rem; 
+      font-weight: 700; 
+      color: #fff; 
+    }
+
+    .inbox-meta p { 
+      font-size: 0.74rem; 
+      color: var(--text-muted); 
+      max-width: 220px; 
+      white-space: nowrap; 
+      overflow: hidden; 
+      text-overflow: ellipsis; 
+      margin-top: 2px;
+    }
+
+    /* ================= CHAT BODY ================= */
     .tg-chat-body {
       flex: 1;
       padding: 16px;
@@ -492,6 +170,7 @@
       display: flex;
       flex-direction: column;
       gap: 14px;
+      background: radial-gradient(circle at 50% 30%, #15202e 0%, #0e1621 100%);
     }
     
     .msg-row {
@@ -500,18 +179,21 @@
       gap: 8px;
       width: 100%;
     }
+
     .msg-row.admin { justify-content: flex-start; }
     .msg-row.user { justify-content: flex-end; }
+
     .msg-avatar {
-      width: 34px;
-      height: 34px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       object-fit: cover;
       flex-shrink: 0;
       border: 1px solid rgba(255,255,255,0.15);
     }
+
     .msg-bubble {
-      max-width: 75%;
+      max-width: 78%;
       padding: 10px 14px;
       border-radius: 16px;
       font-size: 0.85rem;
@@ -519,16 +201,20 @@
       color: #fff;
       position: relative;
       word-break: break-word;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
+
     .msg-row.admin .msg-bubble {
       background: var(--chat-admin);
       border-bottom-left-radius: 4px;
-      border: 1px solid rgba(255,255,255,0.06);
+      border: 1px solid var(--chat-border);
     }
+
     .msg-row.user .msg-bubble {
       background: var(--chat-my);
       border-bottom-right-radius: 4px;
     }
+
     .msg-time {
       font-size: 0.65rem;
       color: rgba(255,255,255,0.5);
@@ -540,25 +226,30 @@
       gap: 4px;
     }
 
+    /* ================= INPUT FOOTER ================= */
     .tg-bottom-bar {
-      background: #17212b;
-      padding: 10px 14px;
+      background: var(--tg-surface);
+      padding: 12px 14px;
       display: flex;
       align-items: center;
       gap: 10px;
-      border-top: 1px solid rgba(255,255,255,0.08);
+      border-top: 1px solid var(--chat-border);
     }
+
     .tg-input {
       flex: 1;
       padding: 11px 16px;
       border-radius: 24px;
       border: 1px solid rgba(255,255,255,0.12);
       outline: none;
-      font-size: 0.85rem;
+      font-size: 0.86rem;
       background: #0e1621;
       color: #fff;
+      transition: border-color .2s;
     }
+
     .tg-input:focus { border-color: var(--tg-blue); }
+
     .tg-send-btn {
       background: var(--tg-blue);
       color: #fff;
@@ -572,294 +263,76 @@
       justify-content: center;
       cursor: pointer;
       box-shadow: 0 4px 12px rgba(42, 171, 238, 0.3);
+      transition: transform .2s;
     }
 
-    #admin-inbox-view {
-      display: none;
-      flex-direction: column;
-      flex: 1;
-      overflow-y: auto;
-      padding: 14px;
-      gap: 8px;
-    }
-    .inbox-card {
-      background: var(--surface-card);
-      border-radius: 16px;
-      padding: 12px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border: 1px solid rgba(255,255,255,0.06);
-      cursor: pointer;
-    }
-    .inbox-card:active { background: #22304d; }
-    .inbox-left { display: flex; align-items: center; gap: 12px; }
-    .inbox-left img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; }
-    .inbox-meta h4 { font-size: 0.88rem; font-weight: 700; color: #fff; }
-    .inbox-meta p { font-size: 0.72rem; color: var(--text-muted); max-width: 190px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .tg-send-btn:active { transform: scale(0.92); }
 
-    /* ================= BOTTOM NAVIGATION ================= */
-    .nav {
-      position: fixed;
-      bottom: 15px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90%;
-      max-width: 420px;
-      background: rgba(18, 24, 38, 0.94);
-      backdrop-filter: blur(14px);
-      display: flex;
-      justify-content: space-around;
-      padding: 12px;
-      border-radius: 26px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-      border: 1px solid rgba(255,255,255,0.08);
-      z-index: 100;
-    }
-    .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      color: rgba(255,255,255,0.4);
-      font-size: 1.15rem;
-      cursor: pointer;
-      transition: .2s;
-    }
-    .nav-item span { font-size: 0.65rem; font-weight: 600; }
-    .nav-item.active { color: var(--secondary); transform: translateY(-2px); }
-
+    /* ================= TOAST ================= */
     .toast {
       position: fixed;
-      top: 25px;
+      top: 20px;
       left: 50%;
       transform: translateX(-50%);
       background: #1e293b;
       color: #fff;
       padding: 9px 20px;
       border-radius: 30px;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       opacity: 0;
       transition: .3s;
-      z-index: 9999999;
+      z-index: 999999;
       font-weight: 600;
       border: 1px solid rgba(255,255,255,0.15);
       box-shadow: 0 10px 25px rgba(0,0,0,0.5);
       pointer-events: none;
     }
-    .toast.show { opacity: 1; top: 36px; }
+    .toast.show { opacity: 1; top: 30px; }
   </style>
 </head>
 <body>
 
-  <!-- LOADER -->
-  <div id="loader" class="loader-overlay">
-    <div class="loader-bg-particles"></div>
-    
-    <div style="width: 100%; text-align: center; position: relative; z-index: 2;">
-      <span style="font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: var(--secondary); font-weight: 800;">Secure Cloud Architecture</span>
-    </div>
-
-    <div class="loader-center">
-      <div class="orbital-spinner">
-        <div class="orbital-ring"></div>
-        <div class="orbital-ring-inner"></div>
-        <i class="fas fa-cube"></i>
-      </div>
-      <div class="loader-title">Earn & Redeem Pro</div>
-      <div class="loader-pill-status">
-        <i class="fas fa-circle-notch fa-spin"></i> <span id="ldr-status-text">সিস্টেম প্রস্তুত হচ্ছে...</span>
-      </div>
-    </div>
-
-    <!-- Live Stats -->
-    <div class="loader-stats-bar">
-      <div class="loader-stat-col">
-        <h4 id="ldr-members">1,450</h4>
-        <p>Total Member</p>
-      </div>
-      <div class="loader-stat-col">
-        <h4 id="ldr-active" style="color:var(--success);">420</h4>
-        <p>Total Active</p>
-      </div>
-      <div class="loader-stat-col">
-        <h4 id="ldr-earned" style="color:#fbc531;">24,800</h4>
-        <p>Total Earn</p>
-      </div>
-    </div>
-  </div>
-
   <div id="toast" class="toast">Alert</div>
 
   <div id="app">
-    <!-- Header -->
-    <div class="header">
-      <div class="top-bar">
-        <div class="user-pill">
-          <img id="u-img" src="https://api.dicebear.com/7.x/bottts/svg?seed=user">
-          <div class="user-info">
-            <h3 id="u-name">User</h3>
-            <p id="u-id">ID: ...</p>
-          </div>
-        </div>
-        <button class="support-btn" onclick="openFullSupport()"><i class="fab fa-telegram-plane"></i></button>
-      </div>
-    </div>
-
-    <!-- TAB 1: HOME -->
-    <div id="page-home" class="page-section active">
-      <div class="hero-redeem-card">
-        <div class="sec-title"><i class="fas fa-gift" style="color:var(--secondary);"></i> Daily Redeem System</div>
-        
-        <div class="progress-label">
-          <span>দৈনিক বিজ্ঞাপন টাস্ক</span>
-          <span id="progress-percent">0%</span>
-        </div>
-        <div class="progress-container">
-          <div id="progress-bar-fill" class="progress-fill"></div>
-        </div>
-
-        <!-- 1. Unlock Telegram PIN -->
-        <div id="unlock-container" style="margin-top: 14px;">
-          <button id="btn-unlock-tg" class="btn-act" onclick="triggerChannelUnlock()">
-            <i class="fab fa-telegram-plane"></i> আনলক করুন (টেলিগ্রাম চ্যানেল)
-          </button>
-          
-          <div id="pin-input-group" style="display:none; margin-top:12px;">
-            <input type="text" id="entered-key" class="input-box" placeholder="টেলিগ্রাম চ্যানেলে পাওয়া PIN দিন">
-            <button id="btn-verify-pin" class="btn-act" style="background:var(--success);" onclick="verifyKeyPin()">
-              <i class="fas fa-shield-check"></i> PIN যাচাই করুন
-            </button>
-          </div>
-        </div>
-
-        <div id="verified-state" style="display:none; margin-top:10px; text-align:center; color:var(--success); font-weight:700; font-size:.88rem;">
-          <i class="fas fa-circle-check"></i> চ্যানেল সাবস্ক্রাইব ও PIN ভেরিফাইড!
-        </div>
-
-        <!-- 2. Redeem Code Area -->
-        <div id="redeem-action-wrapper" style="margin-top: 14px;">
-          <button id="btn-claim-redeem" class="btn-act" disabled onclick="openRedeemAnimation()">
-            <i class="fas fa-lock"></i> Get Redeem Code (Lock)
-          </button>
-
-          <div id="redeem-code-box" style="display:none; margin-top:14px;">
-            <div class="code-reveal-box">
-              <h4>আজকের রিডিম কোড 👇</h4>
-              <div class="code-row">
-                <h3 id="revealed-code">PRO2026</h3>
-                <button class="btn-copy-code" onclick="copyRedeemCode()"><i class="fas fa-copy"></i></button>
-              </div>
-            </div>
-            <a id="bot-redeem-link" href="#" target="_blank" class="btn-act" style="margin-top:10px; text-decoration:none; background:linear-gradient(135deg,#ff7675,#e17055);">
-              <i class="fas fa-robot"></i> এই বটে গিয়ে রিডিম কোড Claim করুন
-            </a>
-          </div>
-        </div>
-
-        <div id="redeem-claimed-box" class="claimed-badge">
-          <i class="fas fa-check-double"></i> আজকের রিডিম কোড গ্রহণ করা হয়েছে! রাত ১২টার পর আবার রিসেট হবে।
-        </div>
-
-        <!-- 3. Secret Key Progression -->
-        <div style="margin-top:20px; text-align:center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 14px;">
-          <small style="color:var(--text-muted); font-weight:600; font-size:0.75rem;">আপনার ৫ ডিজিটের সিক্রেট Key আনলক স্ট্যাটাস:</small>
-          <div class="key-slots-container">
-            <div class="key-digit-box" id="digit-0">-</div>
-            <div class="key-digit-box" id="digit-1">-</div>
-            <div class="key-digit-box" id="digit-2">-</div>
-            <div class="key-digit-box" id="digit-3">-</div>
-            <div class="key-digit-box" id="digit-4">-</div>
-          </div>
-        </div>
-
-        <div class="copy-key-box">
-          <span id="key-copy-status" style="font-size:0.75rem; font-weight:700; color:var(--secondary);">৫টি ডিজিট আনলক হলে কপি করুন</span>
-          <button class="btn-copy" id="btn-copy-key" disabled onclick="copyRedeemKey()"><i class="fas fa-copy"></i> কপি</button>
-        </div>
-      </div>
-
-      <!-- Ads Section -->
-      <div class="sec-head"><i class="fas fa-play-circle" style="color:var(--secondary);"></i> Daily Watch Ads (<span id="total-watched-txt">0/40</span>)</div>
-      <div id="ad-area" class="ad-grid"></div>
-    </div>
-
-    <!-- TAB 2: LEADERBOARD -->
-    <div id="page-leaderboard" class="page-section">
-      <div class="stat-counters-row">
-        <div class="stat-box"><h4 id="cnt-members">0</h4><p>Total Member</p></div>
-        <div class="stat-box"><h4 id="cnt-active" style="color:var(--success);">0</h4><p>Total Active</p></div>
-        <div class="stat-box"><h4 id="cnt-earned" style="color:#fbc531;">0</h4><p>Total Earn</p></div>
-      </div>
-
-      <div class="sec-head"><i class="fas fa-ranking-star" style="color:#e11d48;"></i> Active Users Ranking</div>
-      <div id="leaderboard-list"></div>
-    </div>
-
-    <!-- TAB 3: MORE BOTS -->
-    <div id="page-bots" class="page-section">
-      <div class="sec-head"><i class="fas fa-cubes" style="color:var(--secondary);"></i> Our Telegram Bots</div>
-      <div id="bots-list" class="bot-grid"></div>
-    </div>
-  </div>
-
-  <!-- SUPPORT CHAT -->
-  <div id="page-support">
+    <!-- Top Bar -->
     <div class="tg-top-bar">
-      <button class="tg-back-btn" onclick="handleSupportBack()"><i class="fas fa-arrow-left"></i></button>
+      <button id="btn-back" class="tg-back-btn" onclick="handleSupportBack()"><i class="fas fa-arrow-left"></i></button>
       <div class="tg-chat-user">
-        <img id="support-header-img" src="https://telegram.org/img/t_logo.png" alt="Chat User">
+        <img id="support-header-img" src="https://telegram.org/img/t_logo.png" alt="Avatar">
         <div>
-          <h4 id="support-header-title">Official Admin Support</h4>
-          <p id="support-header-sub"><i class="fas fa-circle" style="font-size:0.5rem;"></i> অনলাইন সার্ভিস</p>
+          <h4 id="support-header-title">Official Support</h4>
+          <p id="support-header-sub"><i class="fas fa-circle" style="font-size: 0.45rem;"></i> অনলাইন সার্ভিস</p>
         </div>
       </div>
     </div>
 
+    <!-- Admin Inbox List View (Only for Admin) -->
     <div id="admin-inbox-view"></div>
 
+    <!-- Chat Messages View -->
     <div class="tg-chat-body" id="chat-messages">
       <div class="msg-row admin">
         <img src="https://telegram.org/img/t_logo.png" class="msg-avatar" alt="Admin">
         <div class="msg-bubble">
-          হ্যালো! Earn & Redeem অফিসিয়াল সাপোর্টে স্বাগতম। আপনার যেকোনো সমস্যার কথা জানান।
+          হ্যালো! অফিসিয়াল সাপোর্টে স্বাগতম। আপনার যেকোনো প্রশ্ন বা সমস্যার কথা জানান।
           <div class="msg-time">Official Support</div>
         </div>
       </div>
     </div>
 
+    <!-- Input Bar -->
     <div class="tg-bottom-bar" id="support-input-bar">
-      <input type="text" id="chat-text-input" class="tg-input" placeholder="মেসেজ লিখুন...">
+      <input type="text" id="chat-text-input" class="tg-input" placeholder="মেসেজ লিখুন..." onkeydown="if(event.key==='Enter') sendSupportMessage()">
       <button class="tg-send-btn" onclick="sendSupportMessage()">
         <i class="fas fa-paper-plane"></i>
       </button>
     </div>
   </div>
 
-  <!-- Bottom Navigation -->
-  <div class="nav">
-    <div class="nav-item active" onclick="switchTab('home', this)">
-      <i class="fas fa-home"></i><span>Home</span>
-    </div>
-    <div class="nav-item" onclick="switchTab('leaderboard', this)">
-      <i class="fas fa-users"></i><span>Leaderboard</span>
-    </div>
-    <div class="nav-item" onclick="switchTab('bots', this)">
-      <i class="fas fa-robot"></i><span>More Bots</span>
-    </div>
-  </div>
-
   <script>
     const OFFICIAL_ADMIN_ID = "7358825471";
     const ADMIN_AVATAR = "https://telegram.org/img/t_logo.png";
-
-    // অ্যাড স্লটগুলো ফাইলে স্ট্যাটিক্যালি ফিক্সড করা হয়েছে (Firebase থেকে কনট্রোল বাদ দেওয়া হলো)
-    const STATIC_AD_SLOTS = [
-      { network: 'adsgram', id: 'task-46607' }, // Slot 1: Task Ad
-      { network: 'adsgram', id: 'int-46608' },  // Slot 2: Interstitial Ad
-      { network: 'monetag', id: '11737228' },   // Slot 3: Monetag Zone 1
-      { network: 'monetag', id: '11595952' }    // Slot 4: Monetag Zone 2
-    ];
 
     // Firebase Config
     const firebaseConfig = {
@@ -873,65 +346,26 @@
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
+
     const tg = window.Telegram?.WebApp;
     if (tg) { try { tg.ready(); tg.expand(); } catch(e){} }
 
-    let appState = {
-      user: { dailyAds: {}, singleKey: '', isVerified: false, lastActive: '', redeemClaimed: false },
-      config: {
-        dailyAdLimit: 10,
-        redeemPin: "7788",
-        redeemCode: "REDEEM-PRO-2026",
-        keyChannelLink: "https://t.me",
-        botLink: "https://t.me",
-        botToken: "",
-        channelId: "",
-        adminId: OFFICIAL_ADMIN_ID,
-        stats: { members: 1450, active: 420, earn: 24800 },
-        adSlots: STATIC_AD_SLOTS,
-        moreBots: {}
-      }
-    };
-
-    let isBooted = false;
     let tgUser = tg?.initDataUnsafe?.user || { id: '123456', first_name: 'Guest User', photo_url: '' };
     const userAvatarUrl = tgUser.photo_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${tgUser.id}`;
     let activeChatTargetUserId = tgUser.id;
+    let chatMessageHistory = [];
+
+    const isAdminUser = () => String(tgUser.id) === String(OFFICIAL_ADMIN_ID);
 
     function toast(msg) {
       const t = document.getElementById('toast');
-      t.innerText = msg; t.classList.add('show');
+      t.innerText = msg; 
+      t.classList.add('show');
       setTimeout(() => t.classList.remove('show'), 2800);
     }
 
-    function todayStr() {
-      const d = new Date();
-      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-    }
-
-    function switchTab(tabId, el) {
-      document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-
-      const page = document.getElementById('page-' + tabId);
-      if (page) page.classList.add('active');
-
-      if (el) el.classList.add('active');
-      else {
-        const mapping = { home:0, leaderboard:1, bots:2 };
-        if (mapping[tabId] !== undefined) document.querySelectorAll('.nav-item')[mapping[tabId]].classList.add('active');
-      }
-
-      if (tabId === 'leaderboard') startLiveCounters();
-      if (tabId === 'bots') renderBots();
-      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
-    }
-
-    // ================= SUPPORT SYSTEM =================
-    const isAdminUser = () => String(tgUser.id) === String(OFFICIAL_ADMIN_ID);
-
-    function openFullSupport() {
-      document.getElementById('page-support').classList.add('active');
+    // ================= ADMIN & USER SUPPORT LOGIC =================
+    function initSupportDesk() {
       if (isAdminUser()) {
         openAdminInbox();
       } else {
@@ -940,14 +374,13 @@
     }
 
     function handleSupportBack() {
-      if (isAdminUser() && document.getElementById('chat-messages').style.display !== 'none') {
+      if (isAdminUser()) {
         openAdminInbox();
-      } else {
-        document.getElementById('page-support').classList.remove('active');
       }
     }
 
     function openAdminInbox() {
+      document.getElementById('btn-back').style.display = 'none';
       document.getElementById('support-header-title').innerText = "Admin Support Inbox";
       document.getElementById('support-header-sub').innerText = "ব্যবহারকারীদের মেসেজ তালিকা";
       document.getElementById('support-header-img').src = ADMIN_AVATAR;
@@ -983,7 +416,7 @@
                 <p>${lastMsg.text || 'মেসেজ নেই'}</p>
               </div>
             </div>
-            <span style="font-size:0.7rem; color:var(--tg-blue); font-weight:700;"><i class="fas fa-chevron-right"></i></span>
+            <span style="font-size:0.75rem; color:var(--tg-blue); font-weight:700;"><i class="fas fa-chevron-right"></i></span>
           `;
           container.appendChild(item);
         });
@@ -992,6 +425,7 @@
 
     function openAdminChatThread(targetUid, userName, userPhoto) {
       activeChatTargetUserId = targetUid;
+      document.getElementById('btn-back').style.display = 'block';
       document.getElementById('support-header-title').innerText = userName;
       document.getElementById('support-header-sub').innerText = `ID: ${targetUid}`;
       document.getElementById('support-header-img').src = userPhoto;
@@ -1004,7 +438,8 @@
 
     function openUserDirectChat(myId) {
       activeChatTargetUserId = myId;
-      document.getElementById('support-header-title').innerText = "Official Admin Support";
+      document.getElementById('btn-back').style.display = 'none';
+      document.getElementById('support-header-title').innerText = "Official Support";
       document.getElementById('support-header-sub').innerText = "অনলাইন কাস্টমার সার্ভিস";
       document.getElementById('support-header-img').src = ADMIN_AVATAR;
 
@@ -1014,7 +449,6 @@
       loadThreadMessages(myId);
     }
 
-    let chatMessageHistory = [];
     function loadThreadMessages(uid) {
       db.ref('support_chats/' + uid).on('value', snap => {
         const body = document.getElementById('chat-messages');
@@ -1086,456 +520,8 @@
       toast("মেসেজ পাঠানো হয়েছে!");
     }
 
-    // ================= UNLOCK & PIN =================
-    function triggerChannelUnlock() {
-      const url = appState.config.keyChannelLink || 'https://t.me';
-      if (tg?.openTelegramLink && url.includes('t.me/')) tg.openTelegramLink(url);
-      else window.open(url, '_blank');
-
-      document.getElementById('pin-input-group').style.display = 'block';
-      toast("চ্যানেল থেকে PIN সংগ্রহ করে লিখুন");
-    }
-
-    async function checkTelegramChannelJoined(userId) {
-      const token = appState.config.botToken;
-      const channel = appState.config.channelId;
-      if (!token || !channel) return true;
-
-      try {
-        const cleanChan = channel.startsWith('@') || channel.startsWith('-') ? channel : '@' + channel;
-        const res = await fetch(`https://api.telegram.org/bot${token}/getChatMember?chat_id=${encodeURIComponent(cleanChan)}&user_id=${userId}`);
-        const data = await res.json();
-        if (data.ok) {
-          const status = data.result.status;
-          return ['member', 'administrator', 'creator'].includes(status);
-        }
-        return false;
-      } catch (err) {
-        console.error("TG Membership Check Error:", err);
-        return false;
-      }
-    }
-
-    async function verifyKeyPin() {
-      const entered = document.getElementById('entered-key').value.trim();
-      const actualPin = String(appState.config.redeemPin || '7788').trim();
-
-      if (!entered) return toast("দয়া করে PIN লিখুন");
-      if (entered !== actualPin) return toast("ভুল PIN! চ্যানেলে গিয়ে সঠিক PIN সংগ্রহ করুন");
-
-      toast("টেলিগ্রাম চ্যানেল জয়েনিং চেক হচ্ছে...");
-      const isJoined = await checkTelegramChannelJoined(tgUser.id);
-      if (!isJoined) {
-        return toast("আপনি টেলিগ্রাম চ্যানেলে জয়েন করেননি! আগে জয়েন করুন");
-      }
-
-      await db.ref('users/' + appState.user.id).update({ isVerified: true });
-      appState.user.isVerified = true;
-      toast("PIN ও চ্যানেল ভেরিফিকেশন সফল হয়েছে!");
-      updateRedeemUI();
-    }
-
-    function copyRedeemKey() {
-      const k = appState.user.singleKey;
-      if (!k || k.length < 5) return toast("কী এখনো সম্পূর্ণ আনলক হয়নি!");
-      navigator.clipboard.writeText(k);
-      toast("Secret Key কপি হয়েছে: " + k);
-    }
-
-    function copyRedeemCode() {
-      const code = appState.config.redeemCode || 'PRO2026';
-      navigator.clipboard.writeText(code);
-      toast("রিডিম কোড কপি হয়েছে: " + code);
-    }
-
-    // ================= PROGRESS & REDEEM LOGIC =================
-    function updateRedeemUI() {
-      const limit = Number(appState.config.dailyAdLimit || 10);
-      const totalRequired = limit * 4;
-
-      let watchedTotal = 0;
-      let maxWatchedInAnySlot = 0;
-      for (let i = 0; i < 4; i++) {
-        const done = (appState.user.dailyAds && appState.user.dailyAds[i]) ? appState.user.dailyAds[i] : 0;
-        watchedTotal += done;
-        if (done > maxWatchedInAnySlot) maxWatchedInAnySlot = done;
-      }
-
-      let percent = Math.min(100, Math.floor((watchedTotal / totalRequired) * 100));
-      document.getElementById('progress-percent').innerText = `${percent}%`;
-      document.getElementById('progress-bar-fill').style.width = `${percent}%`;
-
-      const digitsUnlockedCount = Math.min(5, Math.floor(maxWatchedInAnySlot / 2));
-      const myKey = String(appState.user.singleKey || "4HIBQ");
-
-      for (let i = 0; i < 5; i++) {
-        const elDigit = document.getElementById(`digit-${i}`);
-        if (i < digitsUnlockedCount && myKey[i]) {
-          elDigit.innerText = myKey[i];
-          elDigit.classList.add('unlocked');
-        } else {
-          elDigit.innerText = "-";
-          elDigit.classList.remove('unlocked');
-        }
-      }
-
-      const copyBtn = document.getElementById('btn-copy-key');
-      const copyStatus = document.getElementById('key-copy-status');
-      if (digitsUnlockedCount >= 5) {
-        copyBtn.disabled = false;
-        copyStatus.innerText = "Key সম্পূর্ণ আনলক হয়েছে!";
-      } else {
-        copyBtn.disabled = true;
-        copyStatus.innerText = `${digitsUnlockedCount}/5 ডিজিট আনলক হয়েছে`;
-      }
-
-      if (appState.user.isVerified) {
-        document.getElementById('unlock-container').style.display = 'none';
-        document.getElementById('verified-state').style.display = 'block';
-      } else {
-        document.getElementById('unlock-container').style.display = 'block';
-        document.getElementById('verified-state').style.display = 'none';
-      }
-
-      const wrapper = document.getElementById('redeem-action-wrapper');
-      const claimedBadge = document.getElementById('redeem-claimed-box');
-      if (appState.user.redeemClaimed) {
-        wrapper.style.display = 'none';
-        claimedBadge.style.display = 'block';
-        return;
-      } else {
-        wrapper.style.display = 'block';
-        claimedBadge.style.display = 'none';
-      }
-
-      const btnClaim = document.getElementById('btn-claim-redeem');
-      if (percent >= 100 && appState.user.isVerified) {
-        btnClaim.disabled = false;
-        btnClaim.innerHTML = '<i class="fas fa-gift"></i> Get Redeem Code (Unlocked)';
-        btnClaim.style.background = 'linear-gradient(135deg, #00b894, #00cec9)';
-      } else {
-        btnClaim.disabled = true;
-        btnClaim.innerHTML = `<i class="fas fa-lock"></i> Get Redeem Code (${percent}%)`;
-        btnClaim.style.background = '#252f42';
-      }
-    }
-
-    async function openRedeemAnimation() {
-      const box = document.getElementById('redeem-code-box');
-      box.style.display = 'block';
-      document.getElementById('revealed-code').innerText = appState.config.redeemCode || 'PRO2026';
-      document.getElementById('bot-redeem-link').href = appState.config.botLink || 'https://t.me';
-      
-      await db.ref('users/' + appState.user.id).update({ redeemClaimed: true });
-      appState.user.redeemClaimed = true;
-      document.getElementById('btn-claim-redeem').style.display = 'none';
-      toast("অভিনন্দন! রিডিম কোড প্রস্তুত");
-    }
-
-    // Render Static Ads
-    function renderAds() {
-      const el = document.getElementById('ad-area'); 
-      el.innerHTML = '';
-      const slots = STATIC_AD_SLOTS;
-      const limit = Number(appState.config.dailyAdLimit || 10);
-
-      let totalWatched = 0;
-      for (let i = 0; i < 4; i++) {
-        const slot = slots[i];
-        const done = (appState.user.dailyAds && appState.user.dailyAds[i]) ? appState.user.dailyAds[i] : 0;
-        totalWatched += done;
-        const isMax = done >= limit;
-        const extraClass = (i===0?'slot-1':i===1?'slot-2':i===2?'slot-3':'slot-4');
-        const icon = (i===0?'fa-play':i===1?'fa-circle-play':i===2?'fa-bolt':'fa-gem');
-
-        el.innerHTML += `
-          <div class="ad-card ${extraClass} ${isMax ? 'completed' : ''}" onclick="${isMax ? '' : 'watchAd('+i+')'}">
-            <div class="ad-inner">
-              <i class="fas ${icon}"></i> 
-              <h4>Ad Slot ${i+1}</h4>
-              <div class="reward-pill"><i class="fas fa-coins"></i> Watch</div>
-              <div class="progress-pill">${isMax ? 'Completed' : `${done}/${limit} Watched`}</div>
-            </div>
-          </div>`;
-      }
-      document.getElementById('total-watched-txt').innerText = `${totalWatched}/${limit * 4}`;
-      updateRedeemUI();
-    }
-
-    async function allocateSecretKeyForUser(userId) {
-      if (appState.user.singleKey && appState.user.singleKey.length === 5) {
-        return appState.user.singleKey;
-      }
-
-      const poolRef = db.ref('secret_keys_pool');
-      const snap = await poolRef.once('value');
-      let allocatedKey = null;
-
-      if (snap.exists()) {
-        const keysObj = snap.val();
-        for (let key in keysObj) {
-          if (keysObj[key].status === 'available') {
-            allocatedKey = key;
-            break;
-          }
-        }
-      }
-
-      if (!allocatedKey) {
-        const chars = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
-        allocatedKey = "";
-        for (let i = 0; i < 5; i++) allocatedKey += chars.charAt(Math.floor(Math.random() * chars.length));
-      }
-
-      await poolRef.child(allocatedKey).set({
-        status: 'used',
-        assignedTo: userId,
-        assignedAt: Date.now()
-      });
-
-      return allocatedKey;
-    }
-
-    // Watch Ad Processor
-    let slotLocks = {};
-    async function watchAd(i) {
-      if (slotLocks[i]) return; 
-      slotLocks[i] = true;
-      const slot = STATIC_AD_SLOTS[i];
-      const limit = Number(appState.config.dailyAdLimit || 10);
-      const done = (appState.user.dailyAds && appState.user.dailyAds[i]) ? appState.user.dailyAds[i] : 0;
-
-      if (done >= limit) {
-        slotLocks[i] = false;
-        return toast("এই স্লটের দৈনিক অ্যাড লিমিট শেষ!");
-      }
-
-      try {
-        toast('বিজ্ঞাপন লোড হচ্ছে...');
-        let success = false;
-        
-        if (slot.network === 'monetag') {
-          const fnName = 'show_' + slot.id;
-          if (typeof window[fnName] === 'function') {
-            await window[fnName]();
-            success = true;
-          } else {
-            throw new Error("Monetag অ্যাড লোড হয়নি। অন্য স্লট চেষ্টা করুন।");
-          }
-        } else if (slot.network === 'adsgram') {
-          if (typeof window.Adsgram === 'undefined') throw new Error("Adsgram স্ক্রিপ্ট প্রস্তুত নয়");
-          
-          const adCtrl = window.Adsgram.init({ blockId: String(slot.id) });
-          
-          try {
-            let res = await adCtrl.show();
-            if (res && res.done === true) {
-              success = true;
-            } else {
-              throw new Error("বিজ্ঞাপনটি সম্পূর্ণ দেখা হয়নি");
-            }
-          } catch (adsgramErr) {
-            console.warn("Adsgram Exception:", adsgramErr);
-            const errStr = String(adsgramErr?.description || adsgramErr?.message || adsgramErr);
-            if (errStr.toLowerCase().includes("no ads") || errStr.toLowerCase().includes("not available")) {
-              throw new Error("এই মুহূর্তে এই স্লটে বিজ্ঞাপন নেই। Monetag স্লটগুলো দেখতে পারেন।");
-            } else {
-              throw new Error(errStr || "বিজ্ঞাপন লোড হতে সমস্যা হয়েছে");
-            }
-          }
-        }
-
-        if (success) {
-          let newAds = appState.user.dailyAds || {};
-          newAds[i] = (newAds[i] || 0) + 1;
-          let updates = { dailyAds: newAds };
-
-          if (!appState.user.singleKey) {
-            const newKey = await allocateSecretKeyForUser(appState.user.id);
-            updates.singleKey = newKey;
-            appState.user.singleKey = newKey;
-          }
-
-          await db.ref('users/' + appState.user.id).update(updates);
-          toast(`Ad ${newAds[i]}/${limit} সম্পন্ন হয়েছে!`);
-        }
-      } catch(e) { 
-        toast(e.message || 'বিজ্ঞাপন দেখা সম্পন্ন হয়নি!'); 
-      } finally { 
-        slotLocks[i] = false; 
-      }
-    }
-
-    // Leaderboard
-    function animateValue(id, start, end, duration) {
-      const obj = document.getElementById(id);
-      if (!obj) return;
-      let startTimestamp = null;
-      const step = (timestamp) => {
-        if (!startTimestamp) startTimestamp = timestamp;
-        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-        obj.innerText = Math.floor(progress * (end - start) + start).toLocaleString();
-        if (progress < 1) window.requestAnimationFrame(step);
-      };
-      window.requestAnimationFrame(step);
-    }
-
-    let baseMembers = 1450, baseActive = 420, baseEarn = 24800;
-    let counterInterval = null;
-
-    function startLiveCounters() {
-      const s = appState.config.stats || {};
-      baseMembers = s.members || baseMembers;
-      baseActive = s.active || baseActive;
-      baseEarn = s.earn || baseEarn;
-
-      animateValue("cnt-members", 0, baseMembers, 800);
-      animateValue("cnt-active", 0, baseActive, 800);
-      animateValue("cnt-earned", 0, baseEarn, 800);
-
-      const list = document.getElementById('leaderboard-list');
-      const dummyUsers = ['Tanvir_BD', 'Sakib_King', 'Hasan_99', 'Shohel_Rider', 'Rashedul', 'Akash_Pro', 'Mehedi_YT'];
-      let html = '';
-      dummyUsers.forEach((u, i) => {
-        html += `
-          <div class="leader-row">
-            <div class="leader-left">
-              <span style="color:#64748b; width:18px;">#${i+1}</span>
-              <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${u}">
-              <span>${u}</span>
-            </div>
-            <div class="active-tag"><i class="fas fa-circle" style="font-size:.45rem;"></i> Active</div>
-          </div>`;
-      });
-      list.innerHTML = html;
-
-      if (!counterInterval) {
-        counterInterval = setInterval(() => {
-          baseMembers += Math.floor(Math.random() * 3) + 1;
-          baseActive += 1;
-          baseEarn += 50;
-
-          const elM = document.getElementById('cnt-members');
-          const elA = document.getElementById('cnt-active');
-          const elE = document.getElementById('cnt-earned');
-
-          if (elM) elM.innerText = baseMembers.toLocaleString();
-          if (elA) elA.innerText = baseActive.toLocaleString();
-          if (elE) elE.innerText = baseEarn.toLocaleString();
-        }, 5000);
-      }
-    }
-
-    function renderBots() {
-      const el = document.getElementById('bots-list'); 
-      el.innerHTML = '';
-      const bots = appState.config.moreBots || {};
-      const keys = Object.keys(bots);
-      if (keys.length === 0) {
-        el.innerHTML = `<div style="text-align:center; color:var(--text-muted); font-size:0.85rem; padding:20px;">নতুন বট শীঘ্রই যোগ করা হবে!</div>`;
-        return;
-      }
-      keys.forEach(k => {
-        const b = bots[k];
-        el.innerHTML += `
-          <div class="bot-card">
-            <div class="bot-meta">
-              <img src="${b.icon || 'https://via.placeholder.com/60'}">
-              <div><h4>${b.name}</h4><p>${b.desc}</p></div>
-            </div>
-            <a href="${b.link}" target="_blank" class="bot-open-btn">Open</a>
-          </div>`;
-      });
-    }
-
-    // Initialization
-    window.onload = async () => {
-      document.getElementById('u-name').innerText = tgUser.first_name || 'User';
-      document.getElementById('u-id').innerText = 'ID: ' + tgUser.id;
-      document.getElementById('u-img').src = userAvatarUrl;
-
-      const fallbackTimer = setTimeout(() => {
-        if (!isBooted) {
-          document.getElementById('loader').style.display = 'none';
-          document.getElementById('app').style.display = 'block';
-          isBooted = true;
-        }
-      }, 3500);
-
-      try {
-        // Firebase Config Listener (অ্যাড স্লট ছাড়া অন্যান্য কনফিগ লোড)
-        db.ref('config').on('value', snap => {
-          if (snap.exists()) {
-            const data = snap.val();
-            // adSlots ফিল্ড বাদ দিয়ে বাকি কনফিগ মার্চ করা হলো
-            delete data.adSlots;
-            appState.config = Object.assign({}, appState.config, data);
-            
-            if (appState.config.stats) {
-              const elM = document.getElementById('ldr-members');
-              const elA = document.getElementById('ldr-active');
-              const elE = document.getElementById('ldr-earned');
-              if (elM) elM.innerText = (appState.config.stats.members || 1450).toLocaleString();
-              if (elA) elA.innerText = (appState.config.stats.active || 420).toLocaleString();
-              if (elE) elE.innerText = (appState.config.stats.earn || 24800).toLocaleString();
-            }
-            renderAds();
-          }
-        });
-
-        // User Sync
-        const userRef = db.ref('users/' + tgUser.id);
-        const today = todayStr();
-        const snap = await userRef.once('value');
-
-        if (!snap.exists()) {
-          appState.user = { 
-            id: tgUser.id,
-            name: tgUser.first_name,
-            photo: userAvatarUrl,
-            dailyAds: {},
-            singleKey: '',
-            isVerified: false,
-            lastActive: today,
-            redeemClaimed: false
-          };
-          await userRef.set(appState.user);
-        } else {
-          appState.user = snap.val();
-          
-          if (appState.user.lastActive !== today) {
-            await userRef.update({
-              dailyAds: {},
-              isVerified: false,
-              redeemClaimed: false,
-              lastActive: today
-            });
-            appState.user.dailyAds = {};
-            appState.user.isVerified = false;
-            appState.user.redeemClaimed = false;
-            appState.user.lastActive = today;
-          }
-        }
-
-        userRef.on('value', live => {
-          if (live.exists()) {
-            appState.user = live.val();
-            renderAds();
-            if (!isBooted) {
-              clearTimeout(fallbackTimer);
-              isBooted = true;
-              setTimeout(() => {
-                document.getElementById('loader').style.display = 'none';
-                document.getElementById('app').style.display = 'block';
-              }, 600);
-            }
-          }
-        });
-      } catch(e) {
-        clearTimeout(fallbackTimer);
-        document.getElementById('loader').style.display = 'none';
-        document.getElementById('app').style.display = 'block';
-      }
+    window.onload = () => {
+      initSupportDesk();
     };
   </script>
 </body>
