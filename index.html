@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Official Support Desk</title>
+  <title>Official Telegram Support</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   
@@ -16,14 +16,17 @@
     :root {
       --primary: #6C5CE7;
       --tg-blue: #2AABEE;
+      --tg-blue-dark: #229ed9;
       --tg-bg: #0e1621;
       --tg-surface: #17212b;
       --tg-surface-card: #182236;
       --text: #ffffff;
       --text-muted: #8e9bb2;
       --chat-my: #2b5278;
-      --chat-admin: #182533;
+      --chat-admin: #1e2c3a;
       --chat-border: rgba(255, 255, 255, 0.08);
+      --online: #00b894;
+      --unread: #ff7675;
     }
     
     * { 
@@ -52,7 +55,7 @@
       position: relative;
     }
 
-    /* ================= HEADER ================= */
+    /* TOP HEADER */
     .tg-top-bar {
       background: var(--tg-surface);
       color: #fff;
@@ -61,7 +64,7 @@
       align-items: center;
       gap: 12px;
       border-bottom: 1px solid var(--chat-border);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
       z-index: 10;
     }
 
@@ -73,30 +76,54 @@
       cursor: pointer; 
       padding: 6px; 
       display: none;
+      transition: transform .2s;
     }
+    .tg-back-btn:active { transform: scale(0.9); }
 
     .tg-chat-user { 
       display: flex; 
       align-items: center; 
       gap: 12px; 
       flex: 1; 
+      overflow: hidden;
     }
 
-    .tg-chat-user img { 
-      width: 42px; 
-      height: 42px; 
+    .tg-avatar-wrap {
+      position: relative;
+      flex-shrink: 0;
+    }
+    .tg-avatar-wrap img { 
+      width: 44px; 
+      height: 44px; 
       border-radius: 50%; 
       object-fit: cover; 
-      border: 1.5px solid var(--tg-blue); 
+      border: 2px solid var(--tg-blue); 
+      display: block;
+    }
+    .online-badge {
+      width: 11px;
+      height: 11px;
+      background: var(--online);
+      border: 2px solid var(--tg-surface);
+      border-radius: 50%;
+      position: absolute;
+      bottom: 0;
+      right: 0;
     }
 
-    .tg-chat-user h4 { 
+    .user-text-info {
+      flex: 1;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .user-text-info h4 { 
       font-size: 0.95rem; 
       font-weight: 700; 
       color: #fff;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
-
-    .tg-chat-user p { 
+    .user-text-info p { 
       font-size: 0.72rem; 
       color: var(--tg-blue); 
       font-weight: 600; 
@@ -105,7 +132,25 @@
       gap: 5px;
     }
 
-    /* ================= ADMIN INBOX VIEW ================= */
+    /* SEARCH BAR (For Admin) */
+    .search-box {
+      padding: 10px 14px;
+      background: var(--tg-surface);
+      border-bottom: 1px solid var(--chat-border);
+      display: none;
+    }
+    .search-box input {
+      width: 100%;
+      padding: 9px 14px;
+      border-radius: 12px;
+      background: #0e1621;
+      border: 1px solid var(--chat-border);
+      color: #fff;
+      outline: none;
+      font-size: 0.85rem;
+    }
+
+    /* ADMIN INBOX VIEW */
     #admin-inbox-view {
       display: none;
       flex-direction: column;
@@ -124,53 +169,54 @@
       justify-content: space-between;
       border: 1px solid var(--chat-border);
       cursor: pointer;
-      transition: background .2s, transform .2s;
+      transition: all .2s;
     }
-
-    .inbox-card:active { 
-      background: #22304d; 
-      transform: scale(0.98); 
-    }
+    .inbox-card:active { background: #22304d; transform: scale(0.98); }
 
     .inbox-left { 
       display: flex; 
       align-items: center; 
       gap: 12px; 
+      flex: 1;
+      overflow: hidden;
     }
-
     .inbox-left img { 
       width: 44px; 
       height: 44px; 
       border-radius: 50%; 
       object-fit: cover; 
       border: 1.5px solid var(--primary);
+      flex-shrink: 0;
     }
-
-    .inbox-meta h4 { 
-      font-size: 0.9rem; 
-      font-weight: 700; 
-      color: #fff; 
-    }
-
+    .inbox-meta { flex: 1; overflow: hidden; }
+    .inbox-meta h4 { font-size: 0.9rem; font-weight: 700; color: #fff; }
     .inbox-meta p { 
       font-size: 0.74rem; 
       color: var(--text-muted); 
-      max-width: 220px; 
       white-space: nowrap; 
       overflow: hidden; 
       text-overflow: ellipsis; 
       margin-top: 2px;
     }
+    .unread-pill {
+      background: var(--unread);
+      color: #fff;
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 20px;
+      margin-left: 8px;
+    }
 
-    /* ================= CHAT BODY ================= */
+    /* CHAT BODY */
     .tg-chat-body {
       flex: 1;
       padding: 16px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      background: radial-gradient(circle at 50% 30%, #15202e 0%, #0e1621 100%);
+      gap: 12px;
+      background: radial-gradient(circle at 50% 20%, #172435 0%, #0a1017 100%);
     }
     
     .msg-row {
@@ -179,7 +225,6 @@
       gap: 8px;
       width: 100%;
     }
-
     .msg-row.admin { justify-content: flex-start; }
     .msg-row.user { justify-content: flex-end; }
 
@@ -196,12 +241,12 @@
       max-width: 78%;
       padding: 10px 14px;
       border-radius: 16px;
-      font-size: 0.85rem;
+      font-size: 0.86rem;
       line-height: 1.45;
       color: #fff;
       position: relative;
       word-break: break-word;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
     }
 
     .msg-row.admin .msg-bubble {
@@ -209,7 +254,6 @@
       border-bottom-left-radius: 4px;
       border: 1px solid var(--chat-border);
     }
-
     .msg-row.user .msg-bubble {
       background: var(--chat-my);
       border-bottom-right-radius: 4px;
@@ -225,17 +269,61 @@
       justify-content: flex-end;
       gap: 4px;
     }
+    .tick-blue { color: #54a0ff; font-weight: 700; }
 
-    /* ================= INPUT FOOTER ================= */
+    /* TYPING INDICATOR */
+    .typing-bar {
+      padding: 4px 16px;
+      font-size: 0.72rem;
+      color: var(--tg-blue);
+      font-weight: 600;
+      display: none;
+      background: var(--tg-surface);
+      align-items: center;
+      gap: 6px;
+    }
+    .typing-dots span {
+      animation: blink 1.2s infinite;
+      display: inline-block;
+    }
+    .typing-dots span:nth-child(2) { animation-delay: .2s; }
+    .typing-dots span:nth-child(3) { animation-delay: .4s; }
+    @keyframes blink { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
+
+    /* QUICK REPLIES */
+    .quick-chips-wrapper {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 8px 14px;
+      background: var(--tg-surface);
+      border-top: 1px solid var(--chat-border);
+      scrollbar-width: none;
+    }
+    .quick-chips-wrapper::-webkit-scrollbar { display: none; }
+    .quick-chip {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--chat-border);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--tg-blue);
+      white-space: nowrap;
+      cursor: pointer;
+      transition: .2s;
+    }
+    .quick-chip:active { background: var(--tg-blue); color: #fff; }
+
+    /* BOTTOM INPUT */
     .tg-bottom-bar {
       background: var(--tg-surface);
-      padding: 12px 14px;
+      padding: 10px 14px;
       display: flex;
       align-items: center;
       gap: 10px;
       border-top: 1px solid var(--chat-border);
     }
-
     .tg-input {
       flex: 1;
       padding: 11px 16px;
@@ -245,9 +333,7 @@
       font-size: 0.86rem;
       background: #0e1621;
       color: #fff;
-      transition: border-color .2s;
     }
-
     .tg-input:focus { border-color: var(--tg-blue); }
 
     .tg-send-btn {
@@ -265,10 +351,9 @@
       box-shadow: 0 4px 12px rgba(42, 171, 238, 0.3);
       transition: transform .2s;
     }
-
     .tg-send-btn:active { transform: scale(0.92); }
 
-    /* ================= TOAST ================= */
+    /* TOAST */
     .toast {
       position: fixed;
       top: 20px;
@@ -284,7 +369,6 @@
       z-index: 999999;
       font-weight: 600;
       border: 1px solid rgba(255,255,255,0.15);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
       pointer-events: none;
     }
     .toast.show { opacity: 1; top: 30px; }
@@ -299,31 +383,52 @@
     <div class="tg-top-bar">
       <button id="btn-back" class="tg-back-btn" onclick="handleSupportBack()"><i class="fas fa-arrow-left"></i></button>
       <div class="tg-chat-user">
-        <img id="support-header-img" src="https://telegram.org/img/t_logo.png" alt="Avatar">
-        <div>
+        <div class="tg-avatar-wrap">
+          <img id="support-header-img" src="https://telegram.org/img/t_logo.png" alt="Avatar">
+          <div class="online-badge"></div>
+        </div>
+        <div class="user-text-info">
           <h4 id="support-header-title">Official Support</h4>
-          <p id="support-header-sub"><i class="fas fa-circle" style="font-size: 0.45rem;"></i> অনলাইন সার্ভিস</p>
+          <p id="support-header-sub">অনলাইন সাপোর্ট টিম</p>
         </div>
       </div>
     </div>
 
-    <!-- Admin Inbox List View (Only for Admin) -->
+    <!-- Admin Search Input -->
+    <div id="admin-search-bar" class="search-box">
+      <input type="text" id="admin-search-input" placeholder="ব্যবহারকারীর নাম বা আইডি দিয়ে খুঁজুন..." oninput="filterInbox()">
+    </div>
+
+    <!-- Admin Inbox View -->
     <div id="admin-inbox-view"></div>
 
-    <!-- Chat Messages View -->
+    <!-- Messages Area -->
     <div class="tg-chat-body" id="chat-messages">
       <div class="msg-row admin">
         <img src="https://telegram.org/img/t_logo.png" class="msg-avatar" alt="Admin">
         <div class="msg-bubble">
-          হ্যালো! অফিসিয়াল সাপোর্টে স্বাগতম। আপনার যেকোনো প্রশ্ন বা সমস্যার কথা জানান।
+          হ্যালো! আমাদের সাপোর্ট সেবায় স্বাগতম। আপনি কোনো সমস্যার সম্মুখীন হলে বিস্তারিত লিখে জানান।
           <div class="msg-time">Official Support</div>
         </div>
       </div>
     </div>
 
-    <!-- Input Bar -->
+    <!-- Typing Indicator -->
+    <div id="typing-box" class="typing-bar">
+      <i class="fas fa-pencil-alt"></i> <span id="typing-user">এডমিন</span> লিখছেন
+      <div class="typing-dots"><span>.</span><span>.</span><span>.</span></div>
+    </div>
+
+    <!-- Quick Chips for Users -->
+    <div id="quick-chips" class="quick-chips-wrapper">
+      <div class="quick-chip" onclick="quickSend('আমার রিডিম কোড কাজ করছে না')">রিডিম সমস্যা</div>
+      <div class="quick-chip" onclick="quickSend('বিজ্ঞাপন আসছে না বা লোড হচ্ছে না')">বিজ্ঞাপন সমস্যা</div>
+      <div class="quick-chip" onclick="quickSend('অ্যাকাউন্টে কোনো টেকনিক্যাল সমস্যা রয়েছে')">অন্যান্য সহায়তা</div>
+    </div>
+
+    <!-- Bottom Input -->
     <div class="tg-bottom-bar" id="support-input-bar">
-      <input type="text" id="chat-text-input" class="tg-input" placeholder="মেসেজ লিখুন..." onkeydown="if(event.key==='Enter') sendSupportMessage()">
+      <input type="text" id="chat-text-input" class="tg-input" placeholder="মেসেজ লিখুন..." oninput="handleTypingEvent()" onkeydown="if(event.key==='Enter') sendSupportMessage()">
       <button class="tg-send-btn" onclick="sendSupportMessage()">
         <i class="fas fa-paper-plane"></i>
       </button>
@@ -354,8 +459,16 @@
     const userAvatarUrl = tgUser.photo_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${tgUser.id}`;
     let activeChatTargetUserId = tgUser.id;
     let chatMessageHistory = [];
+    let allInboxThreads = [];
+    let typingTimer = null;
 
     const isAdminUser = () => String(tgUser.id) === String(OFFICIAL_ADMIN_ID);
+
+    function triggerHaptic(type = 'light') {
+      if (tg?.HapticFeedback) {
+        tg.HapticFeedback.impactOccurred(type);
+      }
+    }
 
     function toast(msg) {
       const t = document.getElementById('toast');
@@ -364,89 +477,151 @@
       setTimeout(() => t.classList.remove('show'), 2800);
     }
 
-    // ================= ADMIN & USER SUPPORT LOGIC =================
+    function quickSend(txt) {
+      document.getElementById('chat-text-input').value = txt;
+      sendSupportMessage();
+    }
+
     function initSupportDesk() {
       if (isAdminUser()) {
+        document.getElementById('quick-chips').style.display = 'none';
         openAdminInbox();
       } else {
+        document.getElementById('admin-search-bar').style.display = 'none';
         openUserDirectChat(tgUser.id);
       }
     }
 
     function handleSupportBack() {
-      if (isAdminUser()) {
-        openAdminInbox();
-      }
+      triggerHaptic('medium');
+      if (isAdminUser()) openAdminInbox();
     }
 
+    // ================= ADMIN INBOX =================
     function openAdminInbox() {
       document.getElementById('btn-back').style.display = 'none';
-      document.getElementById('support-header-title').innerText = "Admin Support Inbox";
-      document.getElementById('support-header-sub').innerText = "ব্যবহারকারীদের মেসেজ তালিকা";
+      document.getElementById('support-header-title').innerText = "Admin Inbox";
+      document.getElementById('support-header-sub').innerText = "সকল ব্যবহারকারীর বার্তা";
       document.getElementById('support-header-img').src = ADMIN_AVATAR;
 
+      document.getElementById('admin-search-bar').style.display = 'block';
       document.getElementById('admin-inbox-view').style.display = 'flex';
       document.getElementById('chat-messages').style.display = 'none';
       document.getElementById('support-input-bar').style.display = 'none';
+      document.getElementById('typing-box').style.display = 'none';
 
       db.ref('support_chats').on('value', snap => {
-        const container = document.getElementById('admin-inbox-view');
-        container.innerHTML = '';
-        if (!snap.exists()) {
-          container.innerHTML = `<div style="text-align:center; padding:40px; color:var(--text-muted); font-size:0.9rem;">কোনো মেসেজ পাওয়া যায়নি!</div>`;
-          return;
+        allInboxThreads = [];
+        if (snap.exists()) {
+          const chats = snap.val();
+          Object.keys(chats).forEach(uid => {
+            const thread = chats[uid];
+            const msgKeys = Object.keys(thread);
+            const lastMsg = thread[msgKeys[msgKeys.length - 1]];
+            
+            let unreadCount = 0;
+            msgKeys.forEach(k => {
+              if (thread[k].sender === 'user' && !thread[k].seen) unreadCount++;
+            });
+
+            allInboxThreads.push({
+              uid: uid,
+              userName: lastMsg.name || `User (${uid})`,
+              userPhoto: lastMsg.photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${uid}`,
+              lastText: lastMsg.text || '',
+              time: lastMsg.time || '',
+              unreadCount: unreadCount,
+              timestamp: lastMsg.timestamp || 0
+            });
+          });
+
+          allInboxThreads.sort((a, b) => b.timestamp - a.timestamp);
         }
-
-        const chats = snap.val();
-        Object.keys(chats).forEach(uid => {
-          const thread = chats[uid];
-          const msgKeys = Object.keys(thread);
-          const lastMsg = thread[msgKeys[msgKeys.length - 1]];
-          const userName = lastMsg.name || `User (${uid})`;
-          const userPhoto = lastMsg.photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${uid}`;
-
-          const item = document.createElement('div');
-          item.className = 'inbox-card';
-          item.onclick = () => openAdminChatThread(uid, userName, userPhoto);
-          item.innerHTML = `
-            <div class="inbox-left">
-              <img src="${userPhoto}">
-              <div class="inbox-meta">
-                <h4>${userName}</h4>
-                <p>${lastMsg.text || 'মেসেজ নেই'}</p>
-              </div>
-            </div>
-            <span style="font-size:0.75rem; color:var(--tg-blue); font-weight:700;"><i class="fas fa-chevron-right"></i></span>
-          `;
-          container.appendChild(item);
-        });
+        renderInboxList(allInboxThreads);
       });
     }
 
+    function renderInboxList(threads) {
+      const container = document.getElementById('admin-inbox-view');
+      container.innerHTML = '';
+      if (!threads.length) {
+        container.innerHTML = `<div style="text-align:center; padding:40px; color:var(--text-muted); font-size:0.9rem;">কোনো কথোপকথন নেই!</div>`;
+        return;
+      }
+
+      threads.forEach(t => {
+        const item = document.createElement('div');
+        item.className = 'inbox-card';
+        item.onclick = () => openAdminChatThread(t.uid, t.userName, t.userPhoto);
+        item.innerHTML = `
+          <div class="inbox-left">
+            <img src="${t.userPhoto}">
+            <div class="inbox-meta">
+              <h4>${t.userName}</h4>
+              <p>${t.lastText}</p>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center;">
+            ${t.unreadCount > 0 ? `<span class="unread-pill">${t.unreadCount}</span>` : ''}
+            <span style="font-size:0.75rem; color:var(--tg-blue); font-weight:700; margin-left:8px;"><i class="fas fa-chevron-right"></i></span>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function filterInbox() {
+      const q = document.getElementById('admin-search-input').value.toLowerCase().trim();
+      const filtered = allInboxThreads.filter(t => 
+        t.userName.toLowerCase().includes(q) || t.uid.includes(q)
+      );
+      renderInboxList(filtered);
+    }
+
+    // ================= CHAT THREAD =================
     function openAdminChatThread(targetUid, userName, userPhoto) {
+      triggerHaptic('light');
       activeChatTargetUserId = targetUid;
       document.getElementById('btn-back').style.display = 'block';
       document.getElementById('support-header-title').innerText = userName;
       document.getElementById('support-header-sub').innerText = `ID: ${targetUid}`;
       document.getElementById('support-header-img').src = userPhoto;
 
+      document.getElementById('admin-search-bar').style.display = 'none';
       document.getElementById('admin-inbox-view').style.display = 'none';
       document.getElementById('chat-messages').style.display = 'flex';
       document.getElementById('support-input-bar').style.display = 'flex';
+      
+      markMessagesAsSeen(targetUid);
       loadThreadMessages(targetUid);
+      listenTypingStatus(targetUid);
     }
 
     function openUserDirectChat(myId) {
       activeChatTargetUserId = myId;
       document.getElementById('btn-back').style.display = 'none';
       document.getElementById('support-header-title').innerText = "Official Support";
-      document.getElementById('support-header-sub').innerText = "অনলাইন কাস্টমার সার্ভিস";
+      document.getElementById('support-header-sub').innerText = "অনলাইন সাপোর্ট টিম";
       document.getElementById('support-header-img').src = ADMIN_AVATAR;
 
       document.getElementById('admin-inbox-view').style.display = 'none';
       document.getElementById('chat-messages').style.display = 'flex';
       document.getElementById('support-input-bar').style.display = 'flex';
+      
       loadThreadMessages(myId);
+      listenTypingStatus(myId);
+    }
+
+    function markMessagesAsSeen(uid) {
+      db.ref('support_chats/' + uid).once('value', snap => {
+        if (snap.exists()) {
+          snap.forEach(c => {
+            if (c.val().sender === 'user' && !c.val().seen) {
+              c.ref.update({ seen: true });
+            }
+          });
+        }
+      });
     }
 
     function loadThreadMessages(uid) {
@@ -456,7 +631,7 @@
           <div class="msg-row admin">
             <img src="${ADMIN_AVATAR}" class="msg-avatar" alt="Admin">
             <div class="msg-bubble">
-              হ্যালো! Earn & Redeem অফিসিয়াল সাপোর্টে স্বাগতম। আপনার সমস্যার কথা জানান।
+              হ্যালো! আমাদের সাপোর্ট সেবায় স্বাগতম। আপনি কোনো সমস্যার সম্মুখীন হলে জানান।
               <div class="msg-time">Official Support</div>
             </div>
           </div>`;
@@ -469,13 +644,15 @@
             const isMsgFromAdmin = m.sender === 'admin';
             const avatar = isMsgFromAdmin ? ADMIN_AVATAR : (m.photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${uid}`);
 
+            const checkMark = m.seen ? '<i class="fas fa-check-double tick-blue"></i>' : '<i class="fas fa-check"></i>';
+
             body.innerHTML += `
               <div class="msg-row ${isMsgFromAdmin ? 'admin' : 'user'}">
                 ${isMsgFromAdmin ? `<img src="${avatar}" class="msg-avatar">` : ''}
                 <div class="msg-bubble">
                   ${m.text}
                   <div class="msg-time">
-                    ${m.time || ''} ${!isMsgFromAdmin ? '<i class="fas fa-check-double" style="font-size:0.6rem; color:#74b9ff;"></i>' : ''}
+                    ${m.time || ''} ${!isMsgFromAdmin ? checkMark : ''}
                   </div>
                 </div>
                 ${!isMsgFromAdmin ? `<img src="${avatar}" class="msg-avatar">` : ''}
@@ -486,14 +663,47 @@
       });
     }
 
+    // ================= TYPING INDICATOR =================
+    function handleTypingEvent() {
+      const role = isAdminUser() ? 'admin' : 'user';
+      db.ref('typing/' + activeChatTargetUserId).set({
+        sender: role,
+        isTyping: true,
+        timestamp: Date.now()
+      });
+
+      clearTimeout(typingTimer);
+      typingTimer = setTimeout(() => {
+        db.ref('typing/' + activeChatTargetUserId).set({ isTyping: false });
+      }, 2000);
+    }
+
+    function listenTypingStatus(uid) {
+      db.ref('typing/' + uid).on('value', snap => {
+        const data = snap.val();
+        const typingBox = document.getElementById('typing-box');
+        if (data && data.isTyping) {
+          const isMeAdmin = isAdminUser();
+          if ((isMeAdmin && data.sender === 'user') || (!isMeAdmin && data.sender === 'admin')) {
+            document.getElementById('typing-user').innerText = data.sender === 'admin' ? "অ্যাডমিন" : "ব্যবহারকারী";
+            typingBox.style.display = 'flex';
+            return;
+          }
+        }
+        typingBox.style.display = 'none';
+      });
+    }
+
+    // ================= SEND MESSAGE =================
     async function sendSupportMessage() {
       const input = document.getElementById('chat-text-input');
       const text = input.value.trim();
-      if (!text) return toast("মেসেজ লিখুন");
+      if (!text) return;
 
       const isCurrentAdmin = isAdminUser();
       const targetChat = activeChatTargetUserId;
 
+      // Anti-Spam (Only for Normal Users)
       if (!isCurrentAdmin) {
         const userMsgs = chatMessageHistory.filter(m => m.sender === 'user');
         if (userMsgs.length >= 5) return toast("আপনি সর্বোচ্চ ৫টি মেসেজ পাঠিয়ে ফেলেছেন!");
@@ -502,6 +712,8 @@
           if (lastMsg.sender === 'user') return toast("এডমিনের উত্তরের জন্য অপেক্ষা করুন");
         }
       }
+
+      triggerHaptic('light');
 
       const now = new Date();
       const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -513,11 +725,15 @@
         photo: isCurrentAdmin ? ADMIN_AVATAR : userAvatarUrl,
         text: text,
         time: timeString,
+        seen: isCurrentAdmin ? true : false,
         timestamp: Date.now()
       });
 
+      // Clear typing
+      db.ref('typing/' + targetChat).set({ isTyping: false });
+
       input.value = '';
-      toast("মেসেজ পাঠানো হয়েছে!");
+      input.focus();
     }
 
     window.onload = () => {
