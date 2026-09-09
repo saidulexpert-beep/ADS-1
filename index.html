@@ -2,777 +2,436 @@
 <html lang="bn">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>𝐆𝐌𝐀𝐈𝐋 𝐇𝐔𝐁 ˢᵘᵖᵖᵒʳᵗ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Control Panel - Earn & Redeem Pro</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <style>
     :root {
-      --primary: #6C5CE7;
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --bg: #0b1120;
+      --surface: #151f32;
+      --surface-card: #1c2a44;
+      --surface-light: #263859;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --border: rgba(255, 255, 255, 0.08);
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
       --tg-blue: #2AABEE;
-      --tg-blue-hover: #229ed9;
       --tg-bg: #0e1621;
-      --tg-surface: #17212b;
-      --tg-surface-card: #182236;
-      --text: #ffffff;
-      --text-muted: #8e9bb2;
       --chat-my: #2b5278;
-      --chat-admin: #1e2c3a;
-      --chat-border: rgba(255, 255, 255, 0.08);
-      --online: #00b894;
-      --danger: #eb4d4b;
-      --warning: #f0932b;
-      --star-active: #f1c40f;
+      --chat-admin: #182533;
     }
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; }
+    body { background: var(--bg); color: var(--text); padding-bottom: 60px; }
+
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 25px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    header h2 { font-size: 1.2rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 10px; }
+    header h2 i { color: #818cf8; }
+
+    .container { max-width: 1120px; margin: 25px auto; padding: 0 20px; display: grid; gap: 24px; }
     
-    * { 
-      margin: 0; 
-      padding: 0; 
-      box-sizing: border-box; 
-      font-family: 'Poppins', sans-serif; 
-      -webkit-tap-highlight-color: transparent; 
+    .card {
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     }
-
-    body { 
-      background: var(--tg-bg); 
-      color: var(--text); 
-      min-height: 100vh; 
-      overflow: hidden; 
-    }
-
-    #app { 
-      max-width: 480px; 
-      margin: 0 auto; 
-      height: 100vh; 
-      height: 100dvh;
-      display: flex; 
-      flex-direction: column; 
-      background: var(--tg-bg);
-      position: relative;
-    }
-
-    /* TOP HEADER */
-    .tg-top-bar {
-      background: var(--tg-surface);
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 800;
       color: #fff;
-      padding: 10px 14px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      border-bottom: 1px solid var(--chat-border);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      z-index: 10;
-      flex-shrink: 0;
-    }
-
-    .tg-back-btn { 
-      background: none; 
-      border: none; 
-      color: #fff; 
-      font-size: 1.25rem; 
-      cursor: pointer; 
-      padding: 6px; 
-      display: none;
-      transition: transform .2s;
-    }
-    .tg-back-btn:active { transform: scale(0.9); }
-
-    .tg-chat-user { 
-      display: flex; 
-      align-items: center; 
-      gap: 12px; 
-      flex: 1; 
-      overflow: hidden;
-      cursor: pointer;
-    }
-
-    .tg-avatar-wrap {
-      position: relative;
-      flex-shrink: 0;
-    }
-    .tg-avatar-wrap img { 
-      width: 44px; 
-      height: 44px; 
-      border-radius: 50%; 
-      object-fit: cover; 
-      border: 2px solid var(--tg-blue); 
-      display: block;
-      background: #111;
-    }
-    .online-badge {
-      width: 11px;
-      height: 11px;
-      background: var(--online);
-      border: 2px solid var(--tg-surface);
-      border-radius: 50%;
-      position: absolute;
-      bottom: 0;
-      right: 0;
-    }
-
-    .user-text-info {
-      flex: 1;
-      overflow: hidden;
-      white-space: nowrap;
-    }
-    .user-text-info h4 { 
-      font-size: 0.95rem; 
-      font-weight: 700; 
-      color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    /* AUTHENTIC STATIC TELEGRAM VERIFIED BADGE */
-    .tg-verified-svg {
-      width: 18px;
-      height: 18px;
-      display: inline-block;
-      vertical-align: middle;
-      flex-shrink: 0;
-    }
-
-    .user-text-info p { 
-      font-size: 0.72rem; 
-      color: var(--tg-blue); 
-      font-weight: 600; 
-    }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    /* ADMIN BUTTONS */
-    .btn-complete-ticket {
-      display: none;
-      background: linear-gradient(135deg, #00b894, #00cec9);
-      color: #fff;
-      border: none;
-      padding: 7px 12px;
-      border-radius: 12px;
-      font-size: 0.72rem;
-      font-weight: 700;
-      cursor: pointer;
-      align-items: center;
-      gap: 5px;
-      box-shadow: 0 3px 10px rgba(0, 184, 148, 0.35);
-      transition: transform 0.2s;
-      flex-shrink: 0;
-    }
-    .btn-complete-ticket:active { transform: scale(0.95); }
-
-    .btn-manage-links {
-      display: none;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid var(--chat-border);
-      color: #fff;
-      padding: 7px 10px;
-      border-radius: 12px;
-      font-size: 0.75rem;
-      cursor: pointer;
-      align-items: center;
-      gap: 5px;
-    }
-
-    /* SEARCH BAR (For Admin) */
-    .search-box {
-      padding: 10px 14px;
-      background: var(--tg-surface);
-      border-bottom: 1px solid var(--chat-border);
-      display: none;
-      flex-shrink: 0;
-    }
-    .search-box input {
-      width: 100%;
-      padding: 9px 14px;
-      border-radius: 12px;
-      background: #0e1621;
-      border: 1px solid var(--chat-border);
-      color: #fff;
-      outline: none;
-      font-size: 0.85rem;
-    }
-
-    /* ADMIN INBOX VIEW */
-    #admin-inbox-view {
-      display: none;
-      flex-direction: column;
-      flex: 1;
-      overflow-y: auto;
-      padding: 14px;
-      gap: 10px;
-    }
-
-    .inbox-card {
-      background: var(--tg-surface-card);
-      border-radius: 16px;
-      padding: 12px 14px;
+      margin-bottom: 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border: 1px solid var(--chat-border);
-      cursor: pointer;
-      transition: all .2s;
     }
-    .inbox-card:active { background: #22304d; transform: scale(0.98); }
+    .card-title-left { display: flex; align-items: center; gap: 10px; }
 
-    .inbox-left { 
-      display: flex; 
-      align-items: center; 
-      gap: 12px; 
-      flex: 1;
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 0.8rem; font-weight: 600; color: var(--muted); }
+    .form-control {
+      padding: 12px 14px;
+      background: #0b1120;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #fff;
+      outline: none;
+      transition: 0.2s;
+    }
+    .form-control:focus { border-color: var(--primary); }
+
+    .btn {
+      padding: 11px 18px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: 0.2s;
+    }
+    .btn-primary { background: linear-gradient(135deg, var(--primary), #6366f1); color: #fff; }
+    .btn-primary:hover { opacity: 0.9; }
+    .btn-danger { background: var(--danger); color: #fff; }
+    .btn-success { background: var(--success); color: #fff; }
+
+    /* Stats Quick Cards */
+    .stats-badge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    .stat-pill {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      padding: 14px;
+      border-radius: 16px;
+      text-align: center;
+    }
+    .stat-pill h3 { font-size: 1.4rem; font-weight: 900; }
+    .stat-pill p { font-size: 0.72rem; color: var(--muted); font-weight: 700; text-transform: uppercase; margin-top: 2px; }
+
+    /* Secret Keys Pool List */
+    .key-tag-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      max-height: 160px;
+      overflow-y: auto;
+      padding: 10px;
+      background: #0b1120;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+    }
+    .key-tag {
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 5px 10px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .key-tag.available { background: rgba(16, 185, 129, 0.15); color: var(--success); border: 1px solid var(--success); }
+    .key-tag.used { background: rgba(148, 163, 184, 0.1); color: var(--muted); border: 1px solid rgba(255,255,255,0.1); }
+
+    /* Support Chat Layout */
+    .chat-layout {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      height: 520px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
       overflow: hidden;
     }
-    .inbox-left img { 
-      width: 44px; 
-      height: 44px; 
-      border-radius: 50%; 
-      object-fit: cover; 
-      border: 1.5px solid var(--primary);
-      flex-shrink: 0;
+    .user-list {
+      background: #0b1120;
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
     }
-    .inbox-meta { flex: 1; overflow: hidden; }
-    .inbox-meta h4 { font-size: 0.9rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 6px; }
-    .inbox-meta p { 
-      font-size: 0.74rem; 
-      color: var(--text-muted); 
-      white-space: nowrap; 
-      overflow: hidden; 
-      text-overflow: ellipsis; 
-      margin-top: 2px;
+    .user-item {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: 0.2s;
     }
-    .unread-pill {
-      background: var(--danger);
-      color: #fff;
-      font-size: 0.68rem;
-      font-weight: 800;
-      padding: 3px 8px;
-      border-radius: 20px;
-      margin-left: 8px;
-    }
+    .user-item:hover, .user-item.active { background: var(--surface-light); }
+    .user-item img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+    .user-item h5 { font-size: 0.85rem; font-weight: 700; color: #fff; }
+    .user-item p { font-size: 0.7rem; color: var(--muted); max-width: 170px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    /* CHAT BODY */
-    .tg-chat-body {
+    .chat-window { display: flex; flex-direction: column; background: var(--tg-bg); }
+    .chat-header-bar {
+      background: #17212b;
+      padding: 12px 16px;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.88rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border);
+    }
+    .chat-body {
       flex: 1;
       padding: 16px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
       gap: 12px;
-      background: radial-gradient(circle at 50% 20%, #172435 0%, #0a1017 100%);
     }
-    
-    .msg-row {
-      display: flex;
-      align-items: flex-end;
-      gap: 8px;
-      width: 100%;
-    }
-    .msg-row.admin { justify-content: flex-start; }
-    .msg-row.user { justify-content: flex-end; }
-
-    .msg-avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      object-fit: cover;
-      flex-shrink: 0;
-      border: 1px solid rgba(255,255,255,0.15);
-      background: #111;
-    }
-
-    .msg-bubble {
-      max-width: 86%;
-      padding: 11px 14px;
-      border-radius: 16px;
-      font-size: 0.86rem;
-      line-height: 1.45;
-      color: #fff;
-      position: relative;
-      word-break: break-word;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-    }
-
-    .msg-row.admin .msg-bubble {
-      background: var(--chat-admin);
-      border-bottom-left-radius: 4px;
-      border: 1px solid var(--chat-border);
-    }
-    .msg-row.user .msg-bubble {
-      background: var(--chat-my);
-      border-bottom-right-radius: 4px;
-    }
-
-    .msg-time {
-      font-size: 0.65rem;
-      color: rgba(255,255,255,0.5);
-      text-align: right;
-      margin-top: 5px;
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 4px;
-    }
-    .tick-blue { color: #54a0ff; font-weight: 700; }
-
-    /* RATING CARD */
-    .rating-box-wrap {
-      margin-top: 10px;
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px dashed rgba(255, 255, 255, 0.25);
+    .chat-bubble-row { display: flex; align-items: flex-end; gap: 8px; width: 100%; }
+    .chat-bubble-row.admin { justify-content: flex-end; }
+    .chat-bubble-row.user { justify-content: flex-start; }
+    .chat-bubble {
+      max-width: 72%;
+      padding: 9px 13px;
       border-radius: 14px;
-      padding: 12px;
-      text-align: center;
-    }
-    .rating-stars-row {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin: 10px 0 4px 0;
-    }
-    .rating-star-btn {
-      font-size: 1.65rem;
-      color: #636e72;
-      cursor: pointer;
-      transition: transform 0.15s ease, color 0.15s ease;
-    }
-    .rating-star-btn:hover {
-      color: var(--star-active);
-      transform: scale(1.2);
-    }
-
-    /* OFFICIAL COMMUNITY & SOCIAL HUB CARD */
-    .community-hub-card {
-      margin-top: 8px;
-      background: linear-gradient(145deg, rgba(23, 33, 43, 0.95), rgba(14, 22, 33, 0.95));
-      border: 1px solid rgba(42, 171, 238, 0.3);
-      border-radius: 16px;
-      padding: 14px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-    }
-    .community-hub-title {
       font-size: 0.85rem;
-      font-weight: 700;
       color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 8px;
-      padding-bottom: 6px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
+      word-break: break-word;
     }
-    .community-hub-desc {
-      font-size: 0.8rem;
-      color: #dfe6e9;
-      line-height: 1.5;
-      margin-bottom: 12px;
-    }
-    .community-links-grid {
+    .chat-bubble-row.admin .chat-bubble { background: var(--chat-my); border-bottom-right-radius: 2px; }
+    .chat-bubble-row.user .chat-bubble { background: var(--chat-admin); border-bottom-left-radius: 2px; border: 1px solid var(--border); }
+    .chat-time { font-size: 0.6rem; color: rgba(255,255,255,0.5); text-align: right; margin-top: 3px; }
+    .chat-footer {
       display: flex;
-      flex-direction: column;
+      padding: 10px 14px;
+      background: #17212b;
       gap: 8px;
-    }
-    .community-link-btn {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 9px 12px;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: #fff;
-      text-decoration: none;
-      font-size: 0.82rem;
-      font-weight: 600;
-      transition: all .2s ease;
-    }
-    .community-link-btn:hover, .community-link-btn:active {
-      background: rgba(42, 171, 238, 0.18);
-      border-color: var(--tg-blue);
-      transform: translateY(-1px);
-    }
-    .community-link-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .community-link-left i {
-      font-size: 1.15rem;
-      width: 22px;
-      text-align: center;
+      border-top: 1px solid var(--border);
     }
 
-    /* TYPING INDICATOR */
-    .typing-bar {
-      padding: 4px 16px;
-      font-size: 0.72rem;
-      color: var(--tg-blue);
-      font-weight: 600;
-      display: none;
-      background: var(--tg-surface);
-      align-items: center;
-      gap: 6px;
-      flex-shrink: 0;
-    }
-    .typing-dots span {
-      animation: blink 1.2s infinite;
-      display: inline-block;
-    }
-    .typing-dots span:nth-child(2) { animation-delay: .2s; }
-    .typing-dots span:nth-child(3) { animation-delay: .4s; }
-    @keyframes blink { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
+    /* Live User Progress Table */
+    .user-table-wrap { overflow-x: auto; margin-top: 10px; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.82rem; }
+    th, td { padding: 12px 14px; border-bottom: 1px solid var(--border); }
+    th { color: var(--muted); font-weight: 700; }
+    .badge { padding: 4px 8px; border-radius: 20px; font-weight: 700; font-size: 0.68rem; display: inline-block; }
+    .badge-success { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+    .badge-danger { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+    .badge-warning { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
 
-    /* NORMAL TELEGRAM-LIKE BOTTOM INPUT BAR */
-    .tg-bottom-bar {
-      background: var(--tg-surface);
-      padding: 8px 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      border-top: 1px solid var(--chat-border);
-      flex-shrink: 0;
-    }
-    .tg-input {
-      flex: 1;
-      min-width: 0;
-      padding: 10px 16px;
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,0.12);
-      outline: none;
-      font-size: 0.88rem;
-      background: #0e1621;
-      color: #fff;
-      transition: border-color .2s;
-    }
-    .tg-input:focus { border-color: var(--tg-blue); }
-
-    .tg-send-btn {
-      background: var(--tg-blue);
-      color: #fff;
-      width: 40px;
-      height: 40px;
-      min-width: 40px;
-      border-radius: 50%;
-      border: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 1rem;
-      box-shadow: 0 4px 12px rgba(42, 171, 238, 0.3);
-      transition: transform .15s, background .2s;
-      flex-shrink: 0;
-    }
-    .tg-send-btn i { margin-left: 2px; }
-    .tg-send-btn:active { transform: scale(0.92); }
-
-    #user-status-banner {
-      display: none;
-      padding: 10px 16px;
-      background: #2c1214;
-      color: #ff7675;
-      font-size: 0.8rem;
-      text-align: center;
-      font-weight: 600;
-      border-top: 1px solid rgba(255, 118, 117, 0.2);
-    }
-
-    /* MODAL SYSTEM */
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.75);
-      backdrop-filter: blur(6px);
-      z-index: 999;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-    .modal-box {
-      background: var(--tg-surface);
-      border: 1px solid var(--chat-border);
-      border-radius: 20px;
-      width: 100%;
-      max-width: 400px;
-      max-height: 85vh;
-      overflow-y: auto;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-    .modal-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .modal-profile {
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-    }
-    .modal-profile img {
-      width: 68px;
-      height: 68px;
-      border-radius: 50%;
-      border: 2px solid var(--tg-blue);
-      object-fit: cover;
-    }
-    .modal-section {
-      background: rgba(255,255,255,0.04);
-      padding: 12px;
-      border-radius: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .modal-section label {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-    .btn-group {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
-    }
-    .btn-action {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid var(--chat-border);
-      color: #fff;
-      padding: 7px 4px;
-      border-radius: 8px;
-      font-size: 0.72rem;
-      font-weight: 600;
-      cursor: pointer;
-      text-align: center;
-    }
-    .btn-action:hover { background: rgba(255,255,255,0.15); }
-    .btn-danger { background: var(--danger) !important; color: #fff; }
-    .btn-success { background: var(--online) !important; color: #fff; }
-
-    /* LINKS MANAGEMENT LIST */
-    .links-list-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid var(--chat-border);
-      border-radius: 10px;
-      padding: 8px 12px;
-      font-size: 0.8rem;
-    }
-    .btn-del-link {
-      background: none;
-      border: none;
-      color: var(--danger);
-      font-size: 0.95rem;
-      cursor: pointer;
-      padding: 4px;
-    }
-
-    /* TOAST */
     .toast {
       position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #1e293b;
-      color: #fff;
-      padding: 9px 20px;
-      border-radius: 30px;
-      font-size: 0.82rem;
+      bottom: 25px;
+      right: 25px;
+      background: #fff;
+      color: #0f172a;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 700;
       opacity: 0;
-      transition: .3s;
-      z-index: 999999;
-      font-weight: 600;
-      border: 1px solid rgba(255,255,255,0.15);
+      transition: 0.3s;
+      z-index: 10000;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
       pointer-events: none;
     }
-    .toast.show { opacity: 1; top: 30px; }
+    .toast.show { opacity: 1; }
   </style>
 </head>
 <body>
 
-  <div id="toast" class="toast">Alert</div>
+  <header>
+    <h2><i class="fas fa-sliders-h"></i> Earn & Redeem Pro — Control Panel</h2>
+    <button class="btn btn-primary" onclick="saveAllConfig()"><i class="fas fa-save"></i> Save All Settings</button>
+  </header>
 
-  <div id="app">
-    <!-- Top Bar -->
-    <div class="tg-top-bar">
-      <button id="btn-back" class="tg-back-btn" onclick="handleSupportBack()"><i class="fas fa-arrow-left"></i></button>
-      
-      <div class="tg-chat-user" onclick="handleHeaderClick()">
-        <div class="tg-avatar-wrap">
-          <img id="support-header-img" src="https://i.postimg.cc/vmSBzy63/file-00000000eb4c81faa545e57c85285455.png" alt="Avatar">
-          <div class="online-badge"></div>
-        </div>
-        <div class="user-text-info">
-          <h4 id="support-header-title">
-            <span>𝐆𝐌𝐀𝐈𝐋 𝐇𝐔𝐁 ˢᵘᵖᵖᵒʳᵗ</span>
-            <svg class="tg-verified-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M10.29 2.3c.75-.4 1.67-.4 2.42 0l1.58.84c.32.17.68.26 1.04.26h1.79c.85 0 1.63.45 2.05 1.18l.89 1.55c.18.31.44.57.75.75l1.55.89c.73.42 1.18 1.2 1.18 2.05v1.79c0 .36.09.72.26 1.04l.84 1.58c.4.75.4 1.67 0 2.42l-.84 1.58c-.17.32-.26.68-.26 1.04v1.79c0 .85-.45 1.63-1.18 2.05l-1.55.89c-.31.18-.57.44-.75.75l-.89 1.55c-.42.73-1.2 1.18-2.05 1.18h-1.79c-.36 0-.72.09-1.04.26l-1.58.84c-.75.4-1.67.4-2.42 0l-1.58-.84a2.44 2.44 0 0 0-1.04-.26h-1.79c-.85 0-1.63-.45-2.05-1.18l-.89-1.55a2.44 2.44 0 0 0-.75-.75l-1.55-.89c-.73-.42-1.18-1.2-1.18-2.05v-1.79c0-.36-.09-.72-.26-1.04l-.84-1.58a2.44 2.44 0 0 1 0-2.42l.84-1.58c.17-.32.26-.68.26-1.04V6.18c0-.85.45-1.63 1.18-2.05l1.55-.89c.31-.18.57-.44.75-.75l.89-1.55c.42-.73 1.2-1.18 2.05-1.18h1.79c.36 0 .72-.09 1.04-.26l1.58-.84z" fill="#2AABEE"/>
-              <path d="M9.3 12.2l1.9 1.9 4.3-4.3" stroke="#ffffff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </h4>
-          <p id="support-header-sub">অনলাইন সাপোর্ট টিম</p>
-        </div>
+  <div id="toast" class="toast">সেটিংস সেভ হয়েছে!</div>
+
+  <div class="container">
+
+    <!-- 1. REDEEM, PIN & TELEGRAM API CONFIGURATION -->
+    <div class="card">
+      <div class="card-title">
+        <div class="card-title-left"><i class="fas fa-key" style="color:#a855f7;"></i> Redeem, PIN & Telegram API Settings</div>
       </div>
-
-      <div class="header-actions">
-        <!-- Admin Social Links Manage Button -->
-        <button id="btn-manage-links" class="btn-manage-links" onclick="openLinksManageModal()">
-          <i class="fas fa-link"></i> সোশ্যাল লিংক
-        </button>
-
-        <!-- Admin Support Complete Action -->
-        <button id="btn-complete-ticket" class="btn-complete-ticket" onclick="completeSupportTicket()">
-          <i class="fas fa-check-circle"></i> সমাধান সম্পন্ন
-        </button>
-      </div>
-    </div>
-
-    <!-- Admin Search Input -->
-    <div id="admin-search-bar" class="search-box">
-      <input type="text" id="admin-search-input" placeholder="ব্যবহারকারীর নাম বা আইডি দিয়ে খুঁজুন..." oninput="filterInbox()">
-    </div>
-
-    <!-- Admin Inbox View -->
-    <div id="admin-inbox-view"></div>
-
-    <!-- Messages Area -->
-    <div class="tg-chat-body" id="chat-messages">
-      <div class="msg-row admin">
-        <img src="https://i.postimg.cc/vmSBzy63/file-00000000eb4c81faa545e57c85285455.png" class="msg-avatar" alt="Admin">
-        <div class="msg-bubble">
-          হ্যালো! <b>𝐆𝐌𝐀𝐈𝐋 𝐇𝐔𝐁 ˢᵘᵖᵖᵒʳᵗ</b> এ আপনাকে স্বাগতম। আপনার সমস্যা বা অভিযোগ বিস্তারিত লিখে জানান।
-          <div class="msg-time">Official Support</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Unlock Secret PIN (চ্যানেলে দেওয়া পিন)</label>
+          <input type="text" id="cfg-pin" class="form-control" placeholder="যেমন: 7788">
+        </div>
+        <div class="form-group">
+          <label>Final Redeem Code (বিজ্ঞাপন সম্পন্ন কোড)</label>
+          <input type="text" id="cfg-code" class="form-control" placeholder="যেমন: PRO2026">
+        </div>
+        <div class="form-group">
+          <label>Telegram Channel Link (ইউজারকে যে চ্যানেলে পাঠাবে)</label>
+          <input type="text" id="cfg-chan" class="form-control" placeholder="https://t.me/your_channel">
+        </div>
+        <div class="form-group">
+          <label>Redeem Bot Link (কোড সাবমিটের টেলিগ্রাম বট)</label>
+          <input type="text" id="cfg-bot" class="form-control" placeholder="https://t.me/your_claim_bot">
+        </div>
+        <div class="form-group">
+          <label>Admin Telegram User ID (ডিফল্ট: 7358825471)</label>
+          <input type="text" id="cfg-adminid" class="form-control" placeholder="7358825471">
+        </div>
+        <div class="form-group">
+          <label>Telegram Bot Token (চ্যানেল সাবস্ক্রিপশন চেক করার জন্য)</label>
+          <input type="text" id="cfg-bottoken" class="form-control" placeholder="123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11">
+        </div>
+        <div class="form-group">
+          <label>Channel Username/ID (যেমন: @mychannel অথবা -100xxxx)</label>
+          <input type="text" id="cfg-channelid" class="form-control" placeholder="@mychannel">
         </div>
       </div>
     </div>
 
-    <!-- Typing Indicator -->
-    <div id="typing-box" class="typing-bar">
-      <i class="fas fa-pencil-alt"></i> <span id="typing-user">এডমিন</span> লিখছেন
-      <div class="typing-dots"><span>.</span><span>.</span><span>.</span></div>
-    </div>
-
-    <!-- User Notice / Block Banner -->
-    <div id="user-status-banner">আপনার অ্যাকাউন্টটি সাময়িকভাবে বার্তা প্রেরণের জন্য নিষিদ্ধ করা হয়েছে।</div>
-
-    <!-- Bottom Input Bar -->
-    <div class="tg-bottom-bar" id="support-input-bar">
-      <input type="text" id="chat-text-input" class="tg-input" placeholder="মেসেজ লিখুন..." oninput="handleTypingEvent()" onkeydown="if(event.key==='Enter') sendSupportMessage()">
-      <button class="tg-send-btn" onclick="sendSupportMessage()" title="Send">
-        <i class="fas fa-paper-plane"></i>
-      </button>
-    </div>
-  </div>
-
-  <!-- Modal 1: User Profile & Moderation (Admin Only) -->
-  <div id="admin-user-modal" class="modal-overlay">
-    <div class="modal-box">
-      <div class="modal-header">
-        <span style="font-weight:700; font-size:0.9rem;">ব্যবহারকারী প্রোফাইল ও নিয়ন্ত্রণ</span>
-        <button style="background:none; border:none; color:#fff; font-size:1.1rem; cursor:pointer;" onclick="closeModal('admin-user-modal')"><i class="fas fa-times"></i></button>
+    <!-- 2. ALPHANUMERIC SECRET KEYS POOL & STOCK MANAGEMENT -->
+    <div class="card">
+      <div class="card-title">
+        <div class="card-title-left"><i class="fas fa-vault" style="color:#ec4899;"></i> 5-Character Secret Keys Pool & Stock</div>
       </div>
       
-      <div class="modal-profile">
-        <img id="modal-user-avatar" src="" alt="User">
-        <h4 id="modal-user-name">User Name</h4>
-        <span id="modal-user-id" style="font-size:0.75rem; color:var(--text-muted);">Telegram ID: -</span>
-        <span id="modal-user-status" style="font-size:0.75rem; font-weight:700; color:var(--online);">Status: Active</span>
-      </div>
-
-      <div class="modal-section">
-        <label>বার্তা পাঠানো সাময়িক বন্ধ করুন (Mute):</label>
-        <div class="btn-group">
-          <button class="btn-action" onclick="setModerationStatus('mute', 2)">২ ঘন্টা</button>
-          <button class="btn-action" onclick="setModerationStatus('mute', 24)">১ দিন</button>
-          <button class="btn-action" onclick="setModerationStatus('mute', 168)">৭ দিন</button>
+      <!-- Key Stock Status Counters -->
+      <div class="stats-badge-grid">
+        <div class="stat-pill">
+          <h3 id="stock-total" style="color:#818cf8;">0</h3>
+          <p>Total Keys Pool</p>
+        </div>
+        <div class="stat-pill">
+          <h3 id="stock-used" style="color:var(--warning);">0</h3>
+          <p>Used Keys</p>
+        </div>
+        <div class="stat-pill">
+          <h3 id="stock-remaining" style="color:var(--success);">0</h3>
+          <p>Remaining Stock</p>
         </div>
       </div>
 
-      <div class="modal-section">
-        <label>মেসেজ লিমিট নির্ধারণ (০ = আনলিমিটেড):</label>
-        <div style="display:flex; gap:8px;">
-          <input type="number" id="modal-msg-limit" style="width:70px; background:#0e1621; border:1px solid var(--chat-border); color:#fff; padding:6px 10px; border-radius:8px; outline:none; font-size:0.8rem;" placeholder="0">
-          <button class="btn-action btn-success" style="flex:1;" onclick="updateMessageLimit()">লিমিট সেট করুন</button>
-        </div>
+      <!-- Add Keys Form -->
+      <div class="form-group" style="margin-bottom:12px;">
+        <label>নতুন Secret Key যুক্ত করুন (কমা বা নতুন লাইনে একাধিক দিতে পারেন, যেমন: 4HIBQ, 9ZX7K, A3B9M)</label>
+        <textarea id="bulk-keys-input" class="form-control" rows="2" placeholder="4HIBQ, 9ZX7K, B82PM, 7K2LA..."></textarea>
+      </div>
+      <div style="display:flex; gap:10px; margin-bottom: 16px;">
+        <button class="btn btn-primary" onclick="addSecretKeysToPool()"><i class="fas fa-plus-circle"></i> Add Keys to Stock</button>
+        <button class="btn btn-danger" style="background:#475569;" onclick="recalculateKeyStock()"><i class="fas fa-sync-alt"></i> Sync Stats</button>
       </div>
 
-      <div style="display:flex; gap:8px;">
-        <button class="btn-action btn-danger" style="flex:1; padding:9px;" onclick="setModerationStatus('ban')">সম্পূর্ণ ব্যান / ব্লক</button>
-        <button class="btn-action btn-success" style="flex:1; padding:9px;" onclick="setModerationStatus('unban')">আনব্যান করুন</button>
+      <!-- Pool Preview -->
+      <label style="font-size:0.8rem; font-weight:600; color:var(--muted); margin-bottom:6px; display:block;">রিসেন্ট কি স্ট্যাটাস (Green = Available, Grey = Used):</label>
+      <div class="key-tag-container" id="key-pool-tags">
+        <span style="font-size:0.75rem; color:var(--muted);">লোড হচ্ছে...</span>
       </div>
     </div>
-  </div>
 
-  <!-- Modal 2: Manage Official Social Links (Admin Only) -->
-  <div id="admin-links-modal" class="modal-overlay">
-    <div class="modal-box">
-      <div class="modal-header">
-        <span style="font-weight:700; font-size:0.9rem;">অফিসিয়াল সোশ্যাল লিংক ব্যবস্থাপনা</span>
-        <button style="background:none; border:none; color:#fff; font-size:1.1rem; cursor:pointer;" onclick="closeModal('admin-links-modal')"><i class="fas fa-times"></i></button>
+    <!-- 3. 4 AD SLOTS SETUP -->
+    <div class="card">
+      <div class="card-title">
+        <div class="card-title-left"><i class="fas fa-rectangle-ad" style="color:#00cec9;"></i> Daily Watch Ads Configuration</div>
       </div>
+      <div class="form-group" style="margin-bottom:16px; max-width:260px;">
+        <label>Daily Ad Limit (প্রতিটি স্লটে দৈনিক লিমিট)</label>
+        <input type="number" id="cfg-adlimit" class="form-control" value="10">
+      </div>
+      <div class="form-grid" id="ad-slots-container"></div>
+    </div>
 
-      <!-- Add New Link Form -->
-      <div class="modal-section">
-        <label>নতুন লিংক যুক্ত করুন:</label>
-        <input type="text" id="new-link-title" placeholder="নাম (যেমন: অফিসিয়াল টেলিগ্রাম চ্যানেল)" style="background:#0e1621; border:1px solid var(--chat-border); color:#fff; padding:8px 10px; border-radius:8px; outline:none; font-size:0.8rem;">
-        
-        <div style="display:flex; gap:8px;">
-          <select id="new-link-icon" style="background:#0e1621; border:1px solid var(--chat-border); color:#fff; padding:8px 10px; border-radius:8px; outline:none; font-size:0.8rem; flex:1;">
-            <option value="fab fa-telegram">টেলিগ্রাম (Telegram)</option>
-            <option value="fab fa-youtube">ইউটিউব (YouTube)</option>
-            <option value="fab fa-tiktok">টিকটক (TikTok)</option>
-            <option value="fab fa-facebook">ফেসবুক (Facebook)</option>
-            <option value="fas fa-globe">ওয়েবসাইট (Website)</option>
-            <option value="fab fa-whatsapp">হোয়াটসঅ্যাপ (WhatsApp)</option>
-          </select>
+    <!-- 4. REALISTIC COUNTER STATS (LOADER + LEADERBOARD) -->
+    <div class="card">
+      <div class="card-title">
+        <div class="card-title-left"><i class="fas fa-chart-line" style="color:var(--success);"></i> Live Animated Counters (লোডার ও লিডারবোর্ড)</div>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Total Members</label>
+          <input type="number" id="cnt-members" class="form-control">
         </div>
-
-        <input type="url" id="new-link-url" placeholder="URL লিংক (https://...)" style="background:#0e1621; border:1px solid var(--chat-border); color:#fff; padding:8px 10px; border-radius:8px; outline:none; font-size:0.8rem;">
-        
-        <button class="btn-action btn-success" style="padding:8px;" onclick="addNewSocialLink()">
-          <i class="fas fa-plus-circle"></i> লিংক যুক্ত করুন
-        </button>
-      </div>
-
-      <!-- Current Links List -->
-      <div class="modal-section">
-        <label>বর্তমান সক্রিয় লিংকসমূহ:</label>
-        <div id="admin-links-container" style="display:flex; flex-direction:column; gap:6px;">
-          <!-- Loaded Dynamically -->
+        <div class="form-group">
+          <label>Total Active Users</label>
+          <input type="number" id="cnt-active" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Total Earn (Points/Coins)</label>
+          <input type="number" id="cnt-earn" class="form-control">
         </div>
       </div>
     </div>
+
+    <!-- 5. LIVE USER MONITOR & TASK MANAGEMENT -->
+    <div class="card">
+      <div class="card-title">
+        <div class="card-title-left"><i class="fas fa-users-gear" style="color:#38bdf8;"></i> Live User Monitor & Reset Management</div>
+      </div>
+      <div class="user-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>User Details</th>
+              <th>Secret Key</th>
+              <th>PIN Verified</th>
+              <th>Redeem Status</th>
+              <th>Ads Watched</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="user-monitor-body">
+            <tr><td colspan="6" style="text-align:center; color:var(--muted);">লোড হচ্ছে...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 6. MORE BOTS MANAGEMENT -->
+    <div class="card">
+      <div class="card-title">
+        <div class="card-title-left"><i class="fas fa-robot" style="color:#f59e0b;"></i> Telegram Bots Showcase Manager</div>
+      </div>
+      <div class="form-grid" style="margin-bottom:12px;">
+        <input type="text" id="new-bot-name" class="form-control" placeholder="Bot Name">
+        <input type="text" id="new-bot-desc" class="form-control" placeholder="Description">
+        <input type="text" id="new-bot-link" class="form-control" placeholder="Bot Link (https://t.me/...)">
+        <input type="text" id="new-bot-icon" class="form-control" placeholder="Icon URL">
+      </div>
+      <button class="btn btn-primary" onclick="addNewBot()"><i class="fas fa-plus"></i> Add New Bot</button>
+      <div id="bots-manager-list" style="margin-top:15px;"></div>
+    </div>
+
+    <!-- 7. OFFICIAL TELEGRAM SUPPORT DESK (ADMIN ID 7358825471) -->
+    <div class="card">
+      <div class="card-title">
+        <div class="card-title-left"><i class="fab fa-telegram" style="color:var(--tg-blue);"></i> Official Telegram Support Desk</div>
+      </div>
+      <div class="chat-layout">
+        <div class="user-list" id="chat-users-list"></div>
+        <div class="chat-window">
+          <div class="chat-header-bar">
+            <span id="selected-user-label">ইনবক্স থেকে ইউজার সিলেক্ট করুন</span>
+            <button class="btn btn-danger" style="padding:4px 10px; font-size:0.75rem;" onclick="clearUserChatHistory()">Clear Chat History</button>
+          </div>
+          <div class="chat-body" id="admin-chat-body">
+            <div style="text-align:center; color:#777; margin-top:140px; font-size:0.85rem;">বাম পাশ থেকে যেকোনো ইউজারের ওপর ক্লিক করে চ্যাট শুরু করুন</div>
+          </div>
+          <div class="chat-footer">
+            <input type="text" id="admin-reply-input" class="form-control" placeholder="অফিসিয়াল এডমিন রিপ্লাই লিখুন..." style="flex:1;">
+            <button class="btn btn-primary" onclick="sendAdminReply()"><i class="fas fa-paper-plane"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <script>
+    // Official Admin ID & Telegram Logo
     const OFFICIAL_ADMIN_ID = "7358825471";
-    const OFFICIAL_LOGO = "https://i.postimg.cc/vmSBzy63/file-00000000eb4c81faa545e57c85285455.png";
-    const OFFICIAL_TITLE = "𝐆𝐌𝐀𝐈𝐋 𝐇𝐔𝐁 ˢᵘᵖᵖᵒʳᵗ";
+    const ADMIN_AVATAR = "https://telegram.org/img/t_logo.png";
 
-    const VERIFIED_BADGE_SVG = `
-      <svg class="tg-verified-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M10.29 2.3c.75-.4 1.67-.4 2.42 0l1.58.84c.32.17.68.26 1.04.26h1.79c.85 0 1.63.45 2.05 1.18l.89 1.55c.18.31.44.57.75.75l1.55.89c.73.42 1.18 1.2 1.18 2.05v1.79c0 .36.09.72.26 1.04l.84 1.58c.4.75.4 1.67 0 2.42l-.84 1.58c-.17.32-.26.68-.26 1.04v1.79c0 .85-.45 1.63-1.18 2.05l-1.55.89c-.31.18-.57.44-.75.75l-.89 1.55c-.42.73-1.2 1.18-2.05 1.18h-1.79c-.36 0-.72.09-1.04.26l-1.58.84c-.75.4-1.67.4-2.42 0l-1.58-.84a2.44 2.44 0 0 0-1.04-.26h-1.79c-.85 0-1.63-.45-2.05-1.18l-.89-1.55a2.44 2.44 0 0 0-.75-.75l-1.55-.89c-.73-.42-1.18-1.2-1.18-2.05v-1.79c0-.36-.09-.72-.26-1.04l-.84-1.58a2.44 2.44 0 0 1 0-2.42l.84-1.58c.17-.32.26-.68.26-1.04V6.18c0-.85.45-1.63 1.18-2.05l1.55-.89c.31-.18.57-.44.75-.75l.89-1.55c.42-.73 1.2-1.18 2.05-1.18h1.79c.36 0 .72-.09 1.04-.26l1.58-.84z" fill="#2AABEE"/>
-        <path d="M9.3 12.2l1.9 1.9 4.3-4.3" stroke="#ffffff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>`;
-
-    // Firebase Config
+    // Firebase Config (Matching User App)
     const firebaseConfig = {
       apiKey: "AIzaSyAsENiikJ5YQ1F8UHrixdJVEINAhO4PG30",
       authDomain: "bot2-3d8bc.firebaseapp.com",
@@ -785,657 +444,377 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    const tg = window.Telegram?.WebApp;
-    if (tg) { try { tg.ready(); tg.expand(); } catch(e){} }
-
-    let tgUser = tg?.initDataUnsafe?.user || { id: '123456', first_name: 'Guest User', photo_url: '' };
-    const userAvatarUrl = tgUser.photo_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${tgUser.id}`;
-    
-    let activeChatTargetUserId = tgUser.id;
-    let activeTargetUserMeta = null;
-    let chatMessageHistory = [];
-    let allInboxThreads = [];
-    let typingTimer = null;
-    let activeCommunityLinks = [];
-
-    let currentChatRef = null;
-    let currentTypingRef = null;
-    let currentUserMetaRef = null;
-    let currentInboxRef = null;
-
-    const isAdminUser = () => String(tgUser.id) === String(OFFICIAL_ADMIN_ID);
-
-    function escapeHTML(str) {
-      if (!str) return '';
-      return String(str).replace(/[&<>'"]/g, 
-        tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
-      );
-    }
-
-    function triggerHaptic(type = 'light') {
-      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred(type);
-    }
+    let currentConfig = {};
+    let selectedUserId = null;
 
     function toast(msg) {
       const t = document.getElementById('toast');
-      t.innerText = msg; 
-      t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 2800);
+      t.innerText = msg; t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2400);
     }
 
-    function initSupportDesk() {
-      listenCommunityLinks();
-      if (isAdminUser()) {
-        openAdminInbox();
-      } else {
-        document.getElementById('admin-search-bar').style.display = 'none';
-        openUserDirectChat(tgUser.id);
-      }
-    }
+    const defaultAdSlots = [
+      { network: 'adsgram', id: '46350' },
+      { network: 'adsgram', id: '46351' },
+      { network: 'monetag', id: '11737228' },
+      { network: 'monetag', id: '11595952' }
+    ];
 
-    function handleSupportBack() {
-      triggerHaptic('medium');
-      if (isAdminUser()) openAdminInbox();
-    }
-
-    function handleHeaderClick() {
-      if (isAdminUser() && activeChatTargetUserId !== tgUser.id) {
-        openUserProfileModal();
-      }
-    }
-
-    // ================= REALTIME OFFICIAL COMMUNITY LINKS =================
-    function listenCommunityLinks() {
-      db.ref('community_links').on('value', snap => {
-        activeCommunityLinks = [];
+    window.onload = () => {
+      // 1. Load Realtime Configurations
+      db.ref('config').on('value', snap => {
         if (snap.exists()) {
-          snap.forEach(c => {
-            activeCommunityLinks.push({ key: c.key, ...c.val() });
-          });
+          currentConfig = snap.val();
+          populateConfigUI(currentConfig);
         } else {
-          // Default Seeding if empty
-          const defaults = [
-            { title: "অফিসিয়াল টেলিগ্রাম চ্যানেল", icon: "fab fa-telegram", url: "https://t.me/" },
-            { title: "অফিসিয়াল ইউটিউব চ্যানেল", icon: "fab fa-youtube", url: "https://youtube.com/" },
-            { title: "অফিসিয়াল টিকটক প্রোফাইল", icon: "fab fa-tiktok", url: "https://tiktok.com/" }
-          ];
-          defaults.forEach(d => db.ref('community_links').push(d));
+          populateConfigUI({ adSlots: defaultAdSlots });
         }
-        renderAdminLinksManagerList();
       });
+
+      // 2. Load Secret Keys Pool and Stats
+      db.ref('secret_keys_pool').on('value', snap => {
+        renderSecretKeysPool(snap.val() || {});
+      });
+
+      // 3. Load Support Chats
+      db.ref('support_chats').on('value', snap => {
+        renderSupportUsers(snap.val() || {});
+      });
+
+      // 4. Monitor Users Live Progress
+      db.ref('users').on('value', snap => {
+        renderUsersMonitor(snap.val() || {});
+      });
+    };
+
+    function populateConfigUI(c) {
+      document.getElementById('cfg-pin').value = c.redeemPin || '7788';
+      document.getElementById('cfg-code').value = c.redeemCode || 'PRO2026';
+      document.getElementById('cfg-chan').value = c.keyChannelLink || 'https://t.me';
+      document.getElementById('cfg-bot').value = c.botLink || 'https://t.me';
+      document.getElementById('cfg-adminid').value = c.adminId || OFFICIAL_ADMIN_ID;
+      document.getElementById('cfg-bottoken').value = c.botToken || '';
+      document.getElementById('cfg-channelid').value = c.channelId || '';
+
+      const s = c.stats || {};
+      document.getElementById('cnt-members').value = s.members || 1450;
+      document.getElementById('cnt-active').value = s.active || 420;
+      document.getElementById('cnt-earn').value = s.earn || 24800;
+
+      document.getElementById('cfg-adlimit').value = c.dailyAdLimit || 10;
+
+      renderAdSlotsInputs(c.adSlots || defaultAdSlots);
+      renderBotsManager(c.moreBots || {});
     }
 
-    function openLinksManageModal() {
-      renderAdminLinksManagerList();
-      document.getElementById('admin-links-modal').style.display = 'flex';
-    }
-
-    function renderAdminLinksManagerList() {
-      const container = document.getElementById('admin-links-container');
-      if (!container) return;
+    function renderAdSlotsInputs(slots) {
+      const container = document.getElementById('ad-slots-container');
       container.innerHTML = '';
-      if (!activeCommunityLinks.length) {
-        container.innerHTML = `<div style="font-size:0.75rem; color:var(--text-muted);">কোনো লিংক যুক্ত নেই।</div>`;
-        return;
-      }
-
-      activeCommunityLinks.forEach(item => {
-        const row = document.createElement('div');
-        row.className = 'links-list-item';
-        row.innerHTML = `
-          <div style="display:flex; align-items:center; gap:8px; overflow:hidden;">
-            <i class="${escapeHTML(item.icon)}" style="color:var(--tg-blue);"></i>
-            <div style="overflow:hidden;">
-              <div style="font-weight:600; white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">${escapeHTML(item.title)}</div>
-              <div style="font-size:0.68rem; color:var(--text-muted); white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">${escapeHTML(item.url)}</div>
+      for (let i = 0; i < 4; i++) {
+        const slot = slots[i] || defaultAdSlots[i];
+        container.innerHTML += `
+          <div style="background:#0b1120; padding:14px; border-radius:14px; border:1px solid var(--border);">
+            <strong style="font-size:0.85rem; display:block; margin-bottom:8px; color:#818cf8;">Ad Slot ${i+1}</strong>
+            <div class="form-group" style="margin-bottom:8px;">
+              <label>Network</label>
+              <select id="slot-net-${i}" class="form-control">
+                <option value="adsgram" ${slot.network === 'adsgram' ? 'selected' : ''}>Adsgram</option>
+                <option value="monetag" ${slot.network === 'monetag' ? 'selected' : ''}>Monetag</option>
+                <option value="none" ${slot.network === 'none' ? 'selected' : ''}>Disabled</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Zone / Block ID</label>
+              <input type="text" id="slot-id-${i}" class="form-control" placeholder="ID e.g. 46350" value="${slot.id || ''}">
             </div>
           </div>
-          <button class="btn-del-link" onclick="deleteSocialLink('${item.key}')" title="Delete"><i class="fas fa-trash-alt"></i></button>
         `;
-        container.appendChild(row);
-      });
+      }
     }
 
-    async function addNewSocialLink() {
-      const title = document.getElementById('new-link-title').value.trim();
-      const icon = document.getElementById('new-link-icon').value;
-      const url = document.getElementById('new-link-url').value.trim();
+    async function saveAllConfig() {
+      const adSlots = [];
+      for (let i = 0; i < 4; i++) {
+        adSlots.push({
+          network: document.getElementById(`slot-net-${i}`).value,
+          id: document.getElementById(`slot-id-${i}`).value.trim()
+        });
+      }
 
-      if (!title || !url) return toast('দয়া করে শিরোনাম এবং লিংক প্রবেশ করান');
+      const updated = {
+        redeemPin: document.getElementById('cfg-pin').value.trim(),
+        redeemCode: document.getElementById('cfg-code').value.trim(),
+        keyChannelLink: document.getElementById('cfg-chan').value.trim(),
+        botLink: document.getElementById('cfg-bot').value.trim(),
+        adminId: document.getElementById('cfg-adminid').value.trim() || OFFICIAL_ADMIN_ID,
+        botToken: document.getElementById('cfg-bottoken').value.trim(),
+        channelId: document.getElementById('cfg-channelid').value.trim(),
+        dailyAdLimit: Number(document.getElementById('cfg-adlimit').value) || 10,
+        stats: {
+          members: Number(document.getElementById('cnt-members').value) || 1450,
+          active: Number(document.getElementById('cnt-active').value) || 420,
+          earn: Number(document.getElementById('cnt-earn').value) || 24800
+        },
+        adSlots: adSlots,
+        moreBots: currentConfig.moreBots || {}
+      };
 
-      await db.ref('community_links').push({ title, icon, url });
-      document.getElementById('new-link-title').value = '';
-      document.getElementById('new-link-url').value = '';
-      toast('নতুন সোশ্যাল লিংক যুক্ত হয়েছে');
+      await db.ref('config').update(updated);
+      toast("সকল সেটিংস সফলভাবে সেভ হয়েছে!");
     }
 
-    async function deleteSocialLink(key) {
-      if (!confirm('আপনি কি সত্যিই এই লিংকটি মুছে ফেলতে চান?')) return;
-      await db.ref(`community_links/${key}`).remove();
-      toast('লিংক মুছে ফেলা হয়েছে');
-    }
+    // ================= SECRET KEYS POOL MANAGEMENT =================
+    function renderSecretKeysPool(keysObj) {
+      const container = document.getElementById('key-pool-tags');
+      container.innerHTML = '';
 
-    function openExternalLink(url) {
-      if (tg?.openLink) {
-        tg.openLink(url);
+      let total = 0, used = 0, remaining = 0;
+      const keys = Object.keys(keysObj);
+      total = keys.length;
+
+      if (total === 0) {
+        container.innerHTML = `<span style="font-size:0.75rem; color:var(--muted);">স্টকে কোনো কী নেই! উপরে নতুন কী যুক্ত করুন।</span>`;
       } else {
-        window.open(url, '_blank');
+        keys.forEach(k => {
+          const item = keysObj[k];
+          const isUsed = item.status === 'used';
+          if (isUsed) used++; else remaining++;
+
+          container.innerHTML += `
+            <span class="key-tag ${isUsed ? 'used' : 'available'}">
+              <i class="fas ${isUsed ? 'fa-user-check' : 'fa-check'}"></i> ${k}
+            </span>
+          `;
+        });
       }
-    }
 
-    // ================= ADMIN INBOX =================
-    function openAdminInbox() {
-      detachActiveListeners();
-      document.getElementById('btn-back').style.display = 'none';
-      document.getElementById('btn-complete-ticket').style.display = 'none';
-      document.getElementById('btn-manage-links').style.display = 'inline-flex';
-      document.getElementById('support-header-title').innerHTML = `<span>Admin Inbox</span>`;
-      document.getElementById('support-header-sub').innerText = "সকল ব্যবহারকারীর ইনবক্স";
-      document.getElementById('support-header-img').src = OFFICIAL_LOGO;
+      document.getElementById('stock-total').innerText = total;
+      document.getElementById('stock-used').innerText = used;
+      document.getElementById('stock-remaining').innerText = remaining;
 
-      document.getElementById('admin-search-bar').style.display = 'block';
-      document.getElementById('admin-inbox-view').style.display = 'flex';
-      document.getElementById('chat-messages').style.display = 'none';
-      document.getElementById('support-input-bar').style.display = 'none';
-      document.getElementById('typing-box').style.display = 'none';
-      document.getElementById('user-status-banner').style.display = 'none';
-
-      currentInboxRef = db.ref('support_chats');
-      currentInboxRef.on('value', snap => {
-        allInboxThreads = [];
-        if (snap.exists()) {
-          const chats = snap.val();
-          Object.keys(chats).forEach(uid => {
-            const thread = chats[uid];
-            const msgKeys = Object.keys(thread);
-            const lastMsg = thread[msgKeys[msgKeys.length - 1]];
-            
-            let unreadCount = 0;
-            msgKeys.forEach(k => {
-              if (thread[k].sender === 'user' && !thread[k].seen) unreadCount++;
-            });
-
-            allInboxThreads.push({
-              uid: uid,
-              userName: lastMsg.name || `User (${uid})`,
-              userPhoto: lastMsg.photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${uid}`,
-              lastText: lastMsg.text || (lastMsg.type === 'community_card' ? 'অফিসিয়াল কমিউনিটি কার্ড' : ''),
-              time: lastMsg.time || '',
-              unreadCount: unreadCount,
-              timestamp: lastMsg.timestamp || 0
-            });
-          });
-
-          allInboxThreads.sort((a, b) => b.timestamp - a.timestamp);
-        }
-        renderInboxList(allInboxThreads);
+      // Sync stats in keys_stats node
+      db.ref('keys_stats').update({
+        totalKeys: total,
+        usedKeys: used,
+        remainingKeys: remaining,
+        lastUpdated: Date.now()
       });
     }
 
-    function renderInboxList(threads) {
-      const container = document.getElementById('admin-inbox-view');
-      container.innerHTML = '';
-      if (!threads.length) {
-        container.innerHTML = `<div style="text-align:center; padding:40px; color:var(--text-muted); font-size:0.9rem;">কোনো কথোপকথন নেই!</div>`;
+    async function addSecretKeysToPool() {
+      const raw = document.getElementById('bulk-keys-input').value.trim();
+      if (!raw) return toast("অন্তত একটি Secret Key লিখুন!");
+
+      const keysArray = raw.split(/[\n,]+/).map(k => k.trim().toUpperCase()).filter(k => k.length > 0);
+      if (keysArray.length === 0) return toast("সঠিক ফরম্যাটে কী দিন!");
+
+      const updates = {};
+      keysArray.forEach(key => {
+        updates[`secret_keys_pool/${key}`] = {
+          status: 'available',
+          addedAt: Date.now()
+        };
+      });
+
+      await db.ref().update(updates);
+      document.getElementById('bulk-keys-input').value = '';
+      toast(`${keysArray.length} টি নতুন Secret Key যুক্ত হয়েছে!`);
+    }
+
+    async function recalculateKeyStock() {
+      const snap = await db.ref('secret_keys_pool').once('value');
+      renderSecretKeysPool(snap.val() || {});
+      toast("স্টক হিসাব সিঙ্ক সম্পন্ন!");
+    }
+
+    // ================= LIVE USER MONITOR =================
+    function renderUsersMonitor(users) {
+      const tbody = document.getElementById('user-monitor-body');
+      tbody.innerHTML = '';
+      const uids = Object.keys(users);
+
+      if (uids.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--muted);">কোনো ইউজার পাওয়া যায়নি</td></tr>';
         return;
       }
 
-      threads.forEach(t => {
-        const item = document.createElement('div');
-        item.className = 'inbox-card';
-        item.onclick = () => openAdminChatThread(t.uid, t.userName, t.userPhoto);
-        item.innerHTML = `
-          <div class="inbox-left">
-            <img src="${escapeHTML(t.userPhoto)}">
-            <div class="inbox-meta">
-              <h4>${escapeHTML(t.userName)}</h4>
-              <p>${escapeHTML(t.lastText)}</p>
-            </div>
-          </div>
-          <div style="display:flex; align-items:center;">
-            ${t.unreadCount > 0 ? `<span class="unread-pill">${t.unreadCount}</span>` : ''}
-            <span style="font-size:0.75rem; color:var(--tg-blue); font-weight:700; margin-left:8px;"><i class="fas fa-chevron-right"></i></span>
-          </div>
+      uids.slice(0, 60).forEach(uid => {
+        const u = users[uid];
+        let totalAds = 0;
+        if (u.dailyAds) {
+          Object.values(u.dailyAds).forEach(v => totalAds += Number(v || 0));
+        }
+
+        const userImg = u.photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${uid}`;
+
+        tbody.innerHTML += `
+          <tr>
+            <td>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <img src="${userImg}" style="width:30px; height:30px; border-radius:50%;">
+                <div>
+                  <strong>${u.name || 'User'}</strong><br>
+                  <small style="color:var(--muted);">${uid}</small>
+                </div>
+              </div>
+            </td>
+            <td><code style="color:#a855f7; font-weight:800; font-size:0.9rem;">${u.singleKey || 'N/A'}</code></td>
+            <td>${u.isVerified ? '<span class="badge badge-success"><i class="fas fa-check"></i> Verified</span>' : '<span class="badge badge-danger">Not Yet</span>'}</td>
+            <td>${u.redeemClaimed ? '<span class="badge badge-success">Claimed</span>' : '<span class="badge badge-warning">Unclaimed</span>'}</td>
+            <td><strong>${totalAds}</strong> Ads</td>
+            <td>
+              <div style="display:flex; gap:6px;">
+                <button class="btn btn-danger" style="padding:4px 8px; font-size:0.7rem;" onclick="resetUserAds('${uid}')">Reset Ads</button>
+                <button class="btn btn-primary" style="padding:4px 8px; font-size:0.7rem; background:#475569;" onclick="resetUserVerification('${uid}')">Reset PIN</button>
+              </div>
+            </td>
+          </tr>
         `;
-        container.appendChild(item);
       });
     }
 
-    function filterInbox() {
-      const q = document.getElementById('admin-search-input').value.toLowerCase().trim();
-      const filtered = allInboxThreads.filter(t => 
-        t.userName.toLowerCase().includes(q) || t.uid.includes(q)
-      );
-      renderInboxList(filtered);
+    async function resetUserAds(uid) {
+      if (confirm(`আপনি কি এই ইউজারের (${uid}) আজকের অ্যাড ওয়াচ রিসেট করতে চান?`)) {
+        await db.ref(`users/${uid}`).update({ dailyAds: {} });
+        toast("ইউজারের অ্যাড রিসেট সম্পন্ন!");
+      }
     }
 
-    // ================= CHAT THREAD =================
-    function openAdminChatThread(targetUid, userName, userPhoto) {
-      triggerHaptic('light');
-      detachActiveListeners();
-      activeChatTargetUserId = targetUid;
-
-      document.getElementById('btn-back').style.display = 'block';
-      document.getElementById('btn-complete-ticket').style.display = 'inline-flex';
-      document.getElementById('btn-manage-links').style.display = 'none';
-      document.getElementById('support-header-title').innerHTML = `<span>${escapeHTML(userName)}</span> <i class="fas fa-info-circle" style="font-size:0.8rem; color:var(--text-muted);"></i>`;
-      document.getElementById('support-header-sub').innerText = `ID: ${targetUid} (ক্লিক করে প্রোফাইল দেখুন)`;
-      document.getElementById('support-header-img').src = userPhoto;
-
-      document.getElementById('admin-search-bar').style.display = 'none';
-      document.getElementById('admin-inbox-view').style.display = 'none';
-      document.getElementById('chat-messages').style.display = 'flex';
-      document.getElementById('support-input-bar').style.display = 'flex';
-      
-      markMessagesAsSeen(targetUid);
-      loadThreadMessages(targetUid);
-      listenTypingStatus(targetUid);
-      listenUserMeta(targetUid);
+    async function resetUserVerification(uid) {
+      if (confirm(`ইউজারের PIN ভেরিফিকেশন ও রিডিম স্ট্যাটাস রিসেট করতে চান?`)) {
+        await db.ref(`users/${uid}`).update({ isVerified: false, redeemClaimed: false });
+        toast("ইউজারের ভেরিফিকেশন রিসেট সম্পন্ন!");
+      }
     }
 
-    function openUserDirectChat(myId) {
-      detachActiveListeners();
-      activeChatTargetUserId = myId;
-      document.getElementById('btn-back').style.display = 'none';
-      document.getElementById('btn-complete-ticket').style.display = 'none';
-      document.getElementById('btn-manage-links').style.display = 'none';
-      
-      document.getElementById('support-header-title').innerHTML = `
-        <span>${OFFICIAL_TITLE}</span>
-        ${VERIFIED_BADGE_SVG}
+    // ================= MORE BOTS MANAGER =================
+    async function addNewBot() {
+      const name = document.getElementById('new-bot-name').value.trim();
+      const desc = document.getElementById('new-bot-desc').value.trim();
+      const link = document.getElementById('new-bot-link').value.trim();
+      const icon = document.getElementById('new-bot-icon').value.trim();
+
+      if (!name || !link) return toast("বটের নাম ও লিংক দিন!");
+
+      await db.ref('config/moreBots').push({ name, desc, link, icon: icon || 'https://via.placeholder.com/60' });
+      document.getElementById('new-bot-name').value = '';
+      document.getElementById('new-bot-desc').value = '';
+      document.getElementById('new-bot-link').value = '';
+      document.getElementById('new-bot-icon').value = '';
+      toast("নতুন বট যোগ হয়েছে!");
+    }
+
+    function renderBotsManager(bots) {
+      const el = document.getElementById('bots-manager-list');
+      el.innerHTML = '';
+      Object.keys(bots).forEach(k => {
+        const b = bots[k];
+        el.innerHTML += `
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:#0b1120; border-radius:10px; margin-bottom:8px; border:1px solid var(--border);">
+            <div><strong style="color:#fff;">${b.name}</strong><p style="font-size:0.75rem; color:var(--muted);">${b.desc || ''}</p></div>
+            <button class="btn btn-danger" style="padding:6px 12px; font-size:0.75rem;" onclick="deleteBot('${k}')">মুছুন</button>
+          </div>
+        `;
+      });
+    }
+
+    async function deleteBot(id) {
+      await db.ref(`config/moreBots/${id}`).remove();
+      toast("বট ডিলিট করা হয়েছে!");
+    }
+
+    // ================= OFFICIAL SUPPORT HELPDESK =================
+    function renderSupportUsers(chats) {
+      const list = document.getElementById('chat-users-list');
+      list.innerHTML = '';
+      const userIds = Object.keys(chats);
+
+      if (userIds.length === 0) {
+        list.innerHTML = '<div style="padding:15px; font-size:0.8rem; color:var(--muted); text-align:center;">কোনো মেসেজ নেই</div>';
+        return;
+      }
+
+      userIds.forEach(uid => {
+        const userChat = chats[uid];
+        const lastKey = Object.keys(userChat).pop();
+        const lastMsg = userChat[lastKey];
+        const userPhoto = lastMsg.photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${uid}`;
+
+        list.innerHTML += `
+          <div class="user-item ${selectedUserId === uid ? 'active' : ''}" onclick="openUserChat('${uid}', '${lastMsg.name || uid}', '${userPhoto}')">
+            <img src="${userPhoto}">
+            <div>
+              <h5>${lastMsg.name || 'User: ' + uid}</h5>
+              <p>${lastMsg.text ? lastMsg.text.substring(0, 22) + '...' : ''}</p>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function openUserChat(uid, userName, userPhoto) {
+      selectedUserId = uid;
+      document.getElementById('selected-user-label').innerHTML = `
+        <span style="color:var(--tg-blue);"><i class="fas fa-comments"></i> Chatting with:</span> ${userName || uid} (${uid})
       `;
-      document.getElementById('support-header-sub').innerText = "অনলাইন সাপোর্ট টিম";
-      document.getElementById('support-header-img').src = OFFICIAL_LOGO;
-
-      document.getElementById('admin-inbox-view').style.display = 'none';
-      document.getElementById('chat-messages').style.display = 'flex';
-      document.getElementById('support-input-bar').style.display = 'flex';
+      const chatBody = document.getElementById('admin-chat-body');
       
-      loadThreadMessages(myId);
-      listenTypingStatus(myId);
-      listenUserMeta(myId);
-    }
-
-    function detachActiveListeners() {
-      if (currentChatRef) currentChatRef.off();
-      if (currentTypingRef) currentTypingRef.off();
-      if (currentUserMetaRef) currentUserMetaRef.off();
-      if (currentInboxRef) currentInboxRef.off();
-    }
-
-    function markMessagesAsSeen(uid) {
-      db.ref('support_chats/' + uid).once('value', snap => {
+      db.ref('support_chats/' + uid).on('value', snap => {
+        chatBody.innerHTML = '';
         if (snap.exists()) {
           snap.forEach(c => {
-            if (c.val().sender === 'user' && !c.val().seen) {
-              c.ref.update({ seen: true });
-            }
-          });
-        }
-      });
-    }
-
-    function loadThreadMessages(uid) {
-      currentChatRef = db.ref('support_chats/' + uid);
-      currentChatRef.on('value', snap => {
-        const body = document.getElementById('chat-messages');
-        body.innerHTML = `
-          <div class="msg-row admin">
-            <img src="${OFFICIAL_LOGO}" class="msg-avatar" alt="Admin">
-            <div class="msg-bubble">
-              হ্যালো! <b>${OFFICIAL_TITLE}</b> এ আপনাকে স্বাগতম। আপনার সমস্যা বা অভিযোগ বিস্তারিত লিখে জানান।
-              <div class="msg-time">${OFFICIAL_TITLE}</div>
-            </div>
-          </div>`;
-
-        chatMessageHistory = [];
-        if (snap.exists()) {
-          snap.forEach(c => {
-            const key = c.key;
             const m = c.val();
-            chatMessageHistory.push(m);
-            const isMsgFromAdmin = m.sender === 'admin';
-            const avatar = isMsgFromAdmin ? OFFICIAL_LOGO : (m.photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${uid}`);
-            const checkMark = m.seen ? '<i class="fas fa-check-double tick-blue"></i>' : '<i class="fas fa-check"></i>';
+            const isAdmin = m.sender === 'admin';
+            const avatar = isAdmin ? ADMIN_AVATAR : (m.photo || userPhoto);
 
-            let contentHTML = escapeHTML(m.text);
-
-            // ================= 1. RATING REQUEST CARD =================
-            if (m.type === 'rating_request') {
-              if (!isAdminUser()) {
-                contentHTML = `
-                  <div>${escapeHTML(m.text)}</div>
-                  <div class="rating-box-wrap">
-                    <div style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">নিচের স্টারে টাচ করে রেটিং দিন:</div>
-                    <div class="rating-stars-row">
-                      ${[1, 2, 3, 4, 5].map(s => `
-                        <i class="fas fa-star rating-star-btn" onclick="rateSupport('${key}', ${s})" title="${s} Star"></i>
-                      `).join('')}
-                    </div>
-                  </div>
-                `;
-              } else {
-                contentHTML = `
-                  <div>${escapeHTML(m.text)}</div>
-                  <div style="margin-top:6px; font-size:0.72rem; color:var(--text-muted); font-style:italic;">
-                    <i class="fas fa-clock"></i> ব্যবহারকারীর রেটিংয়ের অপেক্ষায়...
-                  </div>
-                `;
-              }
-            }
-
-            // ================= 2. POST-RATING THANK YOU & COMMUNITY HUB =================
-            if (m.type === 'community_card') {
-              const starsGiven = m.starsGiven || 5;
-              const linksHTML = activeCommunityLinks.map(link => `
-                <a href="javascript:void(0)" onclick="openExternalLink('${encodeURI(link.url)}')" class="community-link-btn">
-                  <div class="community-link-left">
-                    <i class="${escapeHTML(link.icon)}" style="color:var(--tg-blue);"></i>
-                    <span>${escapeHTML(link.title)}</span>
-                  </div>
-                  <i class="fas fa-external-link-alt" style="font-size:0.75rem; opacity:0.6;"></i>
-                </a>
-              `).join('');
-
-              contentHTML = `
-                <div class="community-hub-card">
-                  <div class="community-hub-title">
-                    <span>${OFFICIAL_TITLE}</span>
-                    ${VERIFIED_BADGE_SVG}
-                  </div>
-
-                  <div style="display:flex; align-items:center; gap:4px; margin-bottom:8px;">
-                    ${[1,2,3,4,5].map(st => `<i class="fas fa-star" style="font-size:0.9rem; color:${st <= starsGiven ? 'var(--star-active)' : '#4b5563'};"></i>`).join('')}
-                    <span style="font-size:0.75rem; color:var(--online); font-weight:700; margin-left:6px;">রেটিং গ্রহণ করা হয়েছে (${starsGiven}/৫)</span>
-                  </div>
-
-                  <p class="community-hub-desc">
-                    আপনাকে অসংখ্য ধন্যবাদ আমাদেরকে রেটিং দিয়ে আপনার অভিজ্ঞতা জানানোর জন্য! 
-                    আমাদের সকল অফিসিয়াল চ্যানেলে জয়েন করে সবসময় আমাদের সাথেই থাকুন:
-                  </p>
-
-                  <div class="community-links-grid">
-                    ${linksHTML || '<div style="font-size:0.75rem; color:var(--text-muted);">শীঘ্রই অফিশিয়াল চ্যানেল লিংক আসছে...</div>'}
-                  </div>
+            chatBody.innerHTML += `
+              <div class="chat-bubble-row ${isAdmin ? 'admin' : 'user'}">
+                ${!isAdmin ? `<img src="${avatar}" style="width:28px; height:28px; border-radius:50%;">` : ''}
+                <div class="chat-bubble">
+                  <small style="font-size:0.65rem; font-weight:700; display:block; color:${isAdmin ? '#74b9ff' : 'var(--tg-blue)'};">${m.name || (isAdmin ? 'Official Admin' : 'User')}</small>
+                  ${m.text}
+                  <div class="chat-time">${m.time || ''}</div>
                 </div>
-              `;
-            }
-
-            body.innerHTML += `
-              <div class="msg-row ${isMsgFromAdmin ? 'admin' : 'user'}">
-                ${isMsgFromAdmin ? `<img src="${escapeHTML(avatar)}" class="msg-avatar">` : ''}
-                <div class="msg-bubble">
-                  ${contentHTML}
-                  <div class="msg-time">
-                    ${escapeHTML(m.time || '')} ${!isMsgFromAdmin ? checkMark : ''}
-                  </div>
-                </div>
-                ${!isMsgFromAdmin ? `<img src="${escapeHTML(avatar)}" class="msg-avatar">` : ''}
-              </div>`;
+                ${isAdmin ? `<img src="${avatar}" style="width:28px; height:28px; border-radius:50%;">` : ''}
+              </div>
+            `;
           });
-          body.scrollTop = body.scrollHeight;
+          chatBody.scrollTop = chatBody.scrollHeight;
         }
       });
     }
 
-    // ================= TICKET RESOLUTION & RATING =================
-    async function completeSupportTicket() {
-      if (!confirm("আপনি কি এই সাপোর্ট সেশনটি সম্পন্ন করে ব্যবহারকারীর কাছে রেটিং অনুরোধ পাঠাতে চান?")) return;
-
-      triggerHaptic('medium');
-      const now = new Date();
-      const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-      await db.ref('support_chats/' + activeChatTargetUserId).push({
-        sender: 'admin',
-        type: 'rating_request',
-        userId: OFFICIAL_ADMIN_ID,
-        name: OFFICIAL_TITLE,
-        photo: OFFICIAL_LOGO,
-        text: 'আমাদের সাথে যোগাযোগ করার জন্য ধন্যবাদ! আপনার সমস্যার সমাধান কি সফলভাবে হয়েছে? আমাদের সাপোর্ট সেবার অভিজ্ঞতা কেমন ছিল, দয়া করে নিচে রেটিং দিয়ে জানান:',
-        rating: 0,
-        rated: false,
-        time: timeString,
-        seen: false,
-        timestamp: Date.now()
-      });
-
-      toast('রেটিং অনুরোধ পাঠানো হয়েছে');
-    }
-
-    // When User Rates -> Remove rating message and send Official Community Hub
-    async function rateSupport(messageKey, stars) {
-      if (isAdminUser()) return;
-      triggerHaptic('medium');
-
-      const chatUid = activeChatTargetUserId;
-      const now = new Date();
-      const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-      // 1. Delete/Remove the previous rating request message
-      await db.ref(`support_chats/${chatUid}/${messageKey}`).remove();
-
-      // 2. Automatically spawn the Official Community Hub card
-      await db.ref(`support_chats/${chatUid}`).push({
-        sender: 'admin',
-        type: 'community_card',
-        userId: OFFICIAL_ADMIN_ID,
-        name: OFFICIAL_TITLE,
-        photo: OFFICIAL_LOGO,
-        starsGiven: stars,
-        time: timeString,
-        seen: true,
-        timestamp: Date.now()
-      });
-
-      // 3. Save to user metadata
-      await db.ref(`users_meta/${chatUid}`).update({
-        lastSupportRating: stars,
-        lastRatedAt: Date.now()
-      });
-
-      toast(`ধন্যবাদ! আপনার ${stars} স্টার রেটিং সম্পন্ন হয়েছে।`);
-    }
-
-    // ================= USER ACCESS CONTROL & MODAL =================
-    function listenUserMeta(uid) {
-      currentUserMetaRef = db.ref('users_meta/' + uid);
-      currentUserMetaRef.on('value', snap => {
-        activeTargetUserMeta = snap.val() || {};
-        checkAccessControl();
-      });
-    }
-
-    function checkAccessControl() {
-      if (isAdminUser()) return;
-
-      const banner = document.getElementById('user-status-banner');
-      const inputBar = document.getElementById('support-input-bar');
-      const now = Date.now();
-
-      if (activeTargetUserMeta.isBanned) {
-        banner.style.display = 'block';
-        banner.innerText = '⚠️ আপনার অ্যাকাউন্টটি স্থায়ীভাবে ব্লক করা হয়েছে।';
-        inputBar.style.display = 'none';
-        return;
-      }
-
-      if (activeTargetUserMeta.mutedUntil && activeTargetUserMeta.mutedUntil > now) {
-        const remainingMinutes = Math.ceil((activeTargetUserMeta.mutedUntil - now) / (1000 * 60));
-        banner.style.display = 'block';
-        banner.innerText = `⚠️ সাময়িক নিষেধাজ্ঞার কারণে আপনি আরও ${remainingMinutes} মিনিট বার্তা পাঠাতে পারবেন না।`;
-        inputBar.style.display = 'none';
-        return;
-      }
-
-      banner.style.display = 'none';
-      inputBar.style.display = 'flex';
-    }
-
-    function openUserProfileModal() {
-      const modal = document.getElementById('admin-user-modal');
-      const meta = activeTargetUserMeta || {};
-      
-      document.getElementById('modal-user-avatar').src = meta.photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${activeChatTargetUserId}`;
-      document.getElementById('modal-user-name').innerText = meta.name || 'User ' + activeChatTargetUserId;
-      document.getElementById('modal-user-id').innerText = 'Telegram ID: ' + activeChatTargetUserId;
-      document.getElementById('modal-msg-limit').value = meta.customLimit || 0;
-
-      const statusSpan = document.getElementById('modal-user-status');
-      if (meta.isBanned) {
-        statusSpan.innerText = 'Status: Banned (স্থায়ী ব্লক)';
-        statusSpan.style.color = 'var(--danger)';
-      } else if (meta.mutedUntil && meta.mutedUntil > Date.now()) {
-        statusSpan.innerText = 'Status: Muted (সাময়িক বন্ধ)';
-        statusSpan.style.color = 'var(--warning)';
-      } else {
-        statusSpan.innerText = 'Status: Active (সক্রিয়)';
-        statusSpan.style.color = 'var(--online)';
-      }
-
-      modal.style.display = 'flex';
-    }
-
-    function closeModal(modalId) {
-      document.getElementById(modalId).style.display = 'none';
-    }
-
-    function setModerationStatus(type, hours = 0) {
-      triggerHaptic('medium');
-      const metaRef = db.ref('users_meta/' + activeChatTargetUserId);
-
-      if (type === 'ban') {
-        metaRef.update({ isBanned: true, mutedUntil: null });
-        toast('ইউজার সম্পূর্ণ ব্যান করা হয়েছে');
-      } else if (type === 'unban') {
-        metaRef.update({ isBanned: false, mutedUntil: null });
-        toast('ইউজার সচল করা হয়েছে');
-      } else if (type === 'mute') {
-        const muteDuration = Date.now() + (hours * 60 * 60 * 1000);
-        metaRef.update({ mutedUntil: muteDuration, isBanned: false });
-        toast(`${hours} ঘণ্টার জন্য মিউট করা হয়েছে`);
-      }
-      closeModal('admin-user-modal');
-    }
-
-    function updateMessageLimit() {
-      const val = parseInt(document.getElementById('modal-msg-limit').value) || 0;
-      db.ref('users_meta/' + activeChatTargetUserId).update({ customLimit: val });
-      toast(val > 0 ? `লিমিট ${val} টি মেসেজ সেট হয়েছে` : 'আনলিমিটেড করা হয়েছে');
-      closeModal('admin-user-modal');
-    }
-
-    // ================= TYPING INDICATOR =================
-    function handleTypingEvent() {
-      const role = isAdminUser() ? 'admin' : 'user';
-      db.ref('typing/' + activeChatTargetUserId).set({
-        sender: role,
-        isTyping: true,
-        timestamp: Date.now()
-      });
-
-      clearTimeout(typingTimer);
-      typingTimer = setTimeout(() => {
-        db.ref('typing/' + activeChatTargetUserId).set({ isTyping: false });
-      }, 2000);
-    }
-
-    function listenTypingStatus(uid) {
-      currentTypingRef = db.ref('typing/' + uid);
-      currentTypingRef.on('value', snap => {
-        const data = snap.val();
-        const typingBox = document.getElementById('typing-box');
-        if (data && data.isTyping) {
-          const isMeAdmin = isAdminUser();
-          if ((isMeAdmin && data.sender === 'user') || (!isMeAdmin && data.sender === 'admin')) {
-            document.getElementById('typing-user').innerText = data.sender === 'admin' ? OFFICIAL_TITLE : "ব্যবহারকারী";
-            typingBox.style.display = 'flex';
-            return;
-          }
-        }
-        typingBox.style.display = 'none';
-      });
-    }
-
-    // ================= SEND MESSAGE & SMART AUTO-REPLY =================
-    async function sendSupportMessage() {
-      const input = document.getElementById('chat-text-input');
+    async function sendAdminReply() {
+      if (!selectedUserId) return toast("প্রথমে বাম পাশ থেকে ইউজার সিলেক্ট করুন!");
+      const input = document.getElementById('admin-reply-input');
       const text = input.value.trim();
       if (!text) return;
 
-      const isCurrentAdmin = isAdminUser();
-      const targetChat = activeChatTargetUserId;
-
-      if (!isCurrentAdmin) {
-        if (activeTargetUserMeta?.isBanned) return toast("আপনার অ্যাকাউন্টটি ব্লক করা!");
-        if (activeTargetUserMeta?.mutedUntil && activeTargetUserMeta.mutedUntil > Date.now()) return toast("আপনি সাময়িকভাবে মিউট আছেন!");
-
-        const customLimit = activeTargetUserMeta?.customLimit || 0;
-        if (customLimit > 0) {
-          const myMsgCount = chatMessageHistory.filter(m => m.sender === 'user').length;
-          if (myMsgCount >= customLimit) {
-            return toast(`আপনি সর্বোচ্চ ${customLimit}টি মেসেজের লিমিট শেষ করেছেন!`);
-          }
-        }
-      }
-
-      triggerHaptic('light');
-
       const now = new Date();
-      const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-      await db.ref('support_chats/' + targetChat).push({
-        sender: isCurrentAdmin ? 'admin' : 'user',
-        userId: tgUser.id,
-        name: isCurrentAdmin ? OFFICIAL_TITLE : (tgUser.first_name || 'User'),
-        photo: isCurrentAdmin ? OFFICIAL_LOGO : userAvatarUrl,
+      await db.ref('support_chats/' + selectedUserId).push({
+        sender: 'admin',
+        userId: OFFICIAL_ADMIN_ID,
+        name: 'Official Admin',
+        photo: ADMIN_AVATAR,
         text: text,
-        time: timeString,
-        seen: isCurrentAdmin ? true : false,
+        time: timeStr,
         timestamp: Date.now()
       });
 
-      if (!isCurrentAdmin) {
-        db.ref('users_meta/' + targetChat).update({
-          name: tgUser.first_name || 'User',
-          photo: userAvatarUrl,
-          lastActive: Date.now()
-        });
-
-        handleAutoReplySystem(targetChat);
-      }
-
-      db.ref('typing/' + targetChat).set({ isTyping: false });
       input.value = '';
-      input.focus();
+      toast("রিপ্লাই পাঠানো হয়েছে!");
     }
 
-    async function handleAutoReplySystem(userUid) {
-      const metaSnap = await db.ref('users_meta/' + userUid).once('value');
-      const meta = metaSnap.val() || {};
-
-      if (!meta.autoReplySent) {
-        setTimeout(async () => {
-          const autoTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-          await db.ref('support_chats/' + userUid).push({
-            sender: 'admin',
-            userId: OFFICIAL_ADMIN_ID,
-            name: OFFICIAL_TITLE,
-            photo: OFFICIAL_LOGO,
-            text: 'আপনার অভিযোগ/বার্তা আমরা সফলভাবে গ্রহণ করেছি। কিছুক্ষণের মধ্যে আমাদের টিম এটি যাচাই করে আপনাকে যথাযথ সমাধান জানিয়ে দেবে। সাথে থাকার জন্য ধন্যবাদ।',
-            time: autoTime,
-            seen: false,
-            timestamp: Date.now()
-          });
-
-          db.ref('users_meta/' + userUid).update({ autoReplySent: true });
-        }, 1500);
+    async function clearUserChatHistory() {
+      if (!selectedUserId) return toast("প্রথমে ইউজার সিলেক্ট করুন!");
+      if (confirm("এই ইউজারের সমস্ত চ্যাট হিস্ট্রি মুছে ফেলতে চান?")) {
+        await db.ref('support_chats/' + selectedUserId).remove();
+        document.getElementById('admin-chat-body').innerHTML = '<div style="text-align:center; color:#777; margin-top:140px;">চ্যাট হিস্ট্রি মুছে দেওয়া হয়েছে।</div>';
+        toast("চ্যাট হিস্ট্রি মুছে দেওয়া হয়েছে!");
       }
     }
-
-    window.onload = () => {
-      initSupportDesk();
-    };
   </script>
 </body>
 </html>
