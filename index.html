@@ -1,1559 +1,1392 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Earn & Redeem Pro</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-  
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ElectricianBD - 24/7 Technician & Marketplace</title>
 
-  <!-- Adsgram SDK -->
-  <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Hind+Siliguri:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <script src="https://unpkg.com/lucide@latest"></script>
 
-  <!-- Monetag SDKs -->
-  <script src="//libtl.com/sdk.js" data-zone="11737228" data-sdk="show_11737228"></script>
-  <script src="//libtl.com/sdk.js" data-zone="11595952" data-sdk="show_11595952"></script>
+    <!-- Support Chat Firebase Realtime Database SDKs (Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
 
-  <style>
-    :root {
-      --primary: #6C5CE7;
-      --primary-dark: #4834d4;
-      --secondary: #a29bfe;
-      --bg: #080c16;
-      --surface: #121826;
-      --surface-card: #182236;
-      --text: #ffffff;
-      --text-muted: #8e9bb2;
-      --success: #00b894;
-      --accent: #fd79a8;
-      --tg-blue: #2AABEE;
-      --tg-bg: #0e1621;
-      --chat-my: #2b5278;
-      --chat-admin: #182533;
-    }
-    
-    * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background: var(--bg); color: var(--text); padding-bottom: 95px; min-height: 100vh; overflow-x: hidden; }
-    #app { max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; display: none; }
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', 'Hind Siliguri', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        input, textarea, select, .selectable-text {
+            -webkit-user-select: text;
+            user-select: text;
+        }
+        .main-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            color: #ffffff;
+            padding: 10px 16px;
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.15);
+        }
+        .wallet-pill {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(8px);
+            border-radius: 9999px;
+            padding: 5px 12px;
+            transition: all 0.2s ease;
+        }
+        .wallet-pill:active {
+            transform: scale(0.95);
+            background: rgba(255, 255, 255, 0.25);
+        }
+        .category-chip {
+            background: #ffffff;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 8px 12px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        .category-chip.active {
+            background: #2563eb;
+            color: #ffffff;
+            border-color: #2563eb;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        }
+        .service-card {
+            background: #ffffff;
+            border-radius: 20px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            transition: all 0.2s ease;
+        }
+        .service-card:hover {
+            border-color: #93c5fd;
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.08);
+        }
+        .btn-action-primary {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: white;
+            font-weight: 700;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .btn-action-primary:active { transform: scale(0.97); }
 
-    .page-section { display: none; animation: fadeIn .28s cubic-bezier(0.4, 0, 0.2, 1); }
-    .page-section.active { display: block; }
-    @keyframes fadeIn { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
+        .btn-warning-action {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            font-weight: 700;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .btn-warning-action:active { transform: scale(0.97); }
 
-    /* ================= ULTRA-MODERN ANIMATED LOADER ================= */
-    .loader-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 99999;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
-      background: radial-gradient(circle at 50% 35%, #18243f 0%, #060911 100%);
-      padding: 45px 22px;
-      overflow: hidden;
-    }
-    .loader-bg-particles {
-      position: absolute;
-      width: 320px;
-      height: 320px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(108, 92, 231, 0.35) 0%, rgba(0, 184, 148, 0.1) 70%, transparent 100%);
-      filter: blur(60px);
-      z-index: 1;
-      animation: pulseGlow 4s ease-in-out infinite alternate;
-    }
-    @keyframes pulseGlow {
-      0% { transform: scale(0.85) translate(-15px, -10px); opacity: 0.7; }
-      100% { transform: scale(1.15) translate(15px, 15px); opacity: 1; }
-    }
+        /* FLOATING BOTTOM NAVIGATION */
+        .bottom-nav-container {
+            position: fixed;
+            bottom: 12px;
+            left: 12px;
+            right: 12px;
+            max-width: 440px;
+            margin: 0 auto;
+            z-index: 50;
+        }
+        .bottom-nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            border-radius: 24px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 64px;
+            padding: 4px 6px;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-size: 0.68rem;
+            font-weight: 700;
+            transition: all 0.2s;
+            cursor: pointer;
+            flex: 1;
+        }
+        .nav-item.active {
+            color: #2563eb;
+        }
+        .nav-item.active .nav-icon-wrapper {
+            background: #eff6ff;
+            color: #2563eb;
+            transform: translateY(-2px);
+            border-radius: 14px;
+            padding: 4px 12px;
+        }
+        .nav-icon-wrapper {
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .sub-page { display: none; }
+        .sub-page.active { display: block; animation: fadeIn 0.25s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-    .loader-center {
-      position: relative;
-      z-index: 2;
-      text-align: center;
-      margin-top: auto;
-      margin-bottom: auto;
-      width: 100%;
-      max-width: 340px;
-    }
-    .orbital-spinner {
-      position: relative;
-      width: 110px;
-      height: 110px;
-      margin: 0 auto 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .orbital-ring {
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      border: 3px solid transparent;
-      border-top-color: var(--primary);
-      border-bottom-color: var(--success);
-      animation: spinRing 1.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
-    }
-    .orbital-ring-inner {
-      position: absolute;
-      inset: 12px;
-      border-radius: 50%;
-      border: 2px dashed rgba(162, 155, 254, 0.7);
-      animation: spinRingRev 3s linear infinite;
-    }
-    .orbital-spinner i {
-      font-size: 2.2rem;
-      color: #fff;
-      filter: drop-shadow(0 0 16px rgba(108, 92, 231, 0.9));
-      animation: iconPulse 2s ease-in-out infinite;
-    }
-    @keyframes spinRing { to { transform: rotate(360deg); } }
-    @keyframes spinRingRev { to { transform: rotate(-360deg); } }
-    @keyframes iconPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        .input-field {
+            background-color: #f8fafc;
+            border: 1.5px solid #cbd5e1;
+            color: #1e293b;
+            transition: all 0.2s;
+        }
+        .input-field:focus {
+            border-color: #2563eb;
+            background-color: #ffffff;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
 
-    .loader-title {
-      font-size: 1.65rem;
-      font-weight: 900;
-      letter-spacing: 0.5px;
-      margin-bottom: 6px;
-      background: linear-gradient(135deg, #ffffff 30%, #a29bfe 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .loader-pill-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 6px 16px;
-      border-radius: 30px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--secondary);
-      backdrop-filter: blur(10px);
-    }
-    .loader-stats-bar {
-      position: relative;
-      z-index: 2;
-      width: 100%;
-      max-width: 400px;
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 8px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 22px;
-      padding: 14px 10px;
-      backdrop-filter: blur(16px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    }
-    .loader-stat-col { text-align: center; }
-    .loader-stat-col h4 { font-size: 0.96rem; font-weight: 800; color: #fff; }
-    .loader-stat-col p { font-size: 0.65rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-top: 2px; }
+        .toast-container {
+            position: fixed;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 90%;
+            max-width: 380px;
+            pointer-events: none;
+        }
+        .toast-item {
+            background: #0f172a;
+            color: #ffffff;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+            opacity: 0;
+            transform: translateY(-20px) scale(0.95);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: auto;
+            border-left: 4px solid #3b82f6;
+        }
+        .toast-item.show { opacity: 1; transform: translateY(0) scale(1); }
+        .toast-item.toast-success { border-left-color: #10b981; }
+        .toast-item.toast-error { border-left-color: #ef4444; }
+        .toast-item.toast-info { border-left-color: #f59e0b; }
 
-    /* ================= MAIN APP HEADER ================= */
-    .header {
-      background: linear-gradient(145deg, #162035, #0d1424);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-      padding: 22px 18px;
-      border-radius: 0 0 26px 26px;
-    }
-    .top-bar { display: flex; justify-content: space-between; align-items: center; }
-    .user-pill {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: rgba(255, 255, 255, 0.05);
-      padding: 5px 16px 5px 5px;
-      border-radius: 50px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    .user-pill img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
-    .user-info h3 { font-size: 0.92rem; font-weight: 700; color: #fff; }
-    .user-info p { font-size: 0.7rem; color: var(--text-muted); font-weight: 600; }
-    .support-btn {
-      background: linear-gradient(135deg, #2AABEE, #229ED9);
-      color: #fff;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      border: none;
-      font-size: 1.25rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 18px rgba(42, 171, 238, 0.35);
-      transition: transform .2s;
-    }
-    .support-btn:active { transform: scale(0.92); }
+        /* FLOATING TELEGRAM BUTTON */
+        .floating-telegram-btn {
+            position: fixed;
+            bottom: 84px;
+            right: 18px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2AABEE 0%, #229ed9 100%);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            box-shadow: 0 8px 25px rgba(42, 171, 238, 0.4);
+            z-index: 60;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .floating-telegram-btn:active { transform: scale(0.92); }
 
-    /* ================= HERO REDEEM CARD ================= */
-    .hero-redeem-card {
-      background: var(--surface);
-      margin: 18px 18px 10px;
-      border-radius: 24px;
-      padding: 22px;
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      box-shadow: 0 12px 35px rgba(0,0,0,0.4);
-    }
-    .sec-title { font-size: 1rem; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; color: #fff; }
-    
-    .progress-container {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 20px;
-      height: 12px;
-      width: 100%;
-      overflow: hidden;
-      margin: 8px 0;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    .progress-fill {
-      background: linear-gradient(90deg, var(--primary), var(--success));
-      height: 100%;
-      width: 0%;
-      transition: width .5s ease;
-      border-radius: 20px;
-      box-shadow: 0 0 12px rgba(0, 184, 148, 0.5);
-    }
-    .progress-label { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; color: var(--text-muted); }
-
-    .input-box {
-      width: 100%;
-      padding: 13px 14px;
-      border: 1.5px solid rgba(255,255,255,0.12);
-      border-radius: 14px;
-      font-size: 0.92rem;
-      background: rgba(0,0,0,0.35);
-      color: #fff;
-      outline: none;
-      font-weight: 600;
-      margin-bottom: 10px;
-      transition: .2s;
-    }
-    .input-box:focus { border-color: var(--primary); }
-
-    .btn-act {
-      width: 100%;
-      padding: 13px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: #fff;
-      border: none;
-      font-weight: 700;
-      font-size: 0.9rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      box-shadow: 0 6px 18px rgba(108, 92, 231, 0.35);
-      transition: .2s;
-    }
-    .btn-act:disabled {
-      background: #252f42 !important;
-      color: #64748b !important;
-      box-shadow: none;
-      cursor: not-allowed;
-      filter: grayscale(1);
-    }
-    .btn-act:active { transform: scale(0.98); }
-
-    /* 5-Character Secret Key Slots */
-    .key-slots-container { display: flex; justify-content: center; gap: 8px; margin: 15px 0 10px; }
-    .key-digit-box {
-      width: 46px;
-      height: 52px;
-      border-radius: 14px;
-      background: rgba(0,0,0,0.4);
-      border: 2px dashed rgba(255,255,255,0.18);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.3rem;
-      font-weight: 900;
-      color: var(--secondary);
-      text-transform: uppercase;
-    }
-    .key-digit-box.unlocked {
-      border: 2px solid var(--success);
-      background: rgba(0, 184, 148, 0.15);
-      color: var(--success);
-      animation: popDigit 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    @keyframes popDigit { 0% { transform: scale(0.5); opacity:0; } 100% { transform: scale(1); opacity:1; } }
-
-    .copy-key-box {
-      margin-top: 12px;
-      background: rgba(255,255,255,0.03);
-      border: 1.5px dashed rgba(108,92,231,0.4);
-      border-radius: 14px;
-      padding: 10px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .btn-copy {
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 10px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      cursor: pointer;
-    }
-    .btn-copy:disabled { background: #334155; color:#64748b; cursor: not-allowed; }
-
-    /* REFINED REDEEM CARD */
-    .code-reveal-box {
-      background: linear-gradient(135deg, #1e2b48, #131b2e);
-      border: 1.5px solid rgba(108, 92, 231, 0.4);
-      color: #fff;
-      padding: 16px;
-      border-radius: 18px;
-      margin-top: 14px;
-      text-align: center;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-    }
-    .code-reveal-box h4 {
-      font-size: 0.95rem;
-      color: var(--secondary);
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-    .code-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(0,0,0,0.35);
-      border-radius: 12px;
-      padding: 10px 16px;
-      border: 1px dashed rgba(255,255,255,0.25);
-    }
-    .code-row h3 { font-size: 1.35rem; font-weight: 900; letter-spacing: 2px; color: #fff; }
-    .btn-copy-code {
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      width: 38px;
-      height: 38px;
-      border-radius: 10px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-      transition: .2s;
-    }
-    .btn-copy-code:active { transform: scale(0.9); }
-
-    .claimed-badge {
-      background: rgba(0, 184, 148, 0.12);
-      border: 1.5px solid var(--success);
-      color: var(--success);
-      padding: 14px;
-      border-radius: 14px;
-      text-align: center;
-      font-weight: 700;
-      font-size: 0.88rem;
-      margin-top: 12px;
-      display: none;
-    }
-
-    /* ================= AD CARDS ================= */
-    .sec-head { font-size: 1rem; font-weight: 800; margin: 20px 20px 12px; display: flex; align-items: center; gap: 8px; color: #fff; }
-    .ad-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 0 18px; }
-    .ad-card {
-      position: relative;
-      padding: 2px;
-      border-radius: 20px;
-      background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02));
-      border: 1px solid rgba(255,255,255,0.08);
-      cursor: pointer;
-      height: 125px;
-      transition: transform 0.2s;
-    }
-    .ad-card:active { transform: scale(0.97); }
-    .ad-inner {
-      border-radius: 18px;
-      padding: 12px 10px;
-      text-align: center;
-      background: var(--surface-card);
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 6px;
-    }
-    .ad-inner i { font-size: 1.7rem; margin-bottom: 2px; }
-    .ad-inner h4 { font-size: 0.88rem; font-weight: 800; color: #fff; }
-    .ad-inner .reward-pill {
-      font-size: 0.72rem;
-      font-weight: 800;
-      color: #fff;
-      background: rgba(255,255,255,0.08);
-      padding: 4px 10px;
-      border-radius: 20px;
-      display: inline-flex;
-      gap: 5px;
-      align-items: center;
-    }
-    .ad-inner .progress-pill { font-size: 0.7rem; color: var(--text-muted); }
-    .slot-1 i { color: #ff9f43; }
-    .slot-2 i { color: #54a0ff; }
-    .slot-3 i { color: #1dd1a1; }
-    .slot-4 i { color: #ff6b6b; }
-    .ad-card.completed { opacity: 0.4; filter: grayscale(1); pointer-events: none; }
-
-    /* ================= LEADERBOARD ================= */
-    .stat-counters-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; padding: 15px 18px 10px; }
-    .stat-box { background: var(--surface); border-radius: 16px; padding: 12px 8px; text-align: center; border: 1px solid rgba(255,255,255,0.06); }
-    .stat-box h4 { font-size: 1.05rem; font-weight: 900; color: var(--secondary); }
-    .stat-box p { font-size: 0.65rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; }
-
-    .leader-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: var(--surface);
-      padding: 12px 16px;
-      border-radius: 16px;
-      margin: 0 18px 10px;
-      border: 1px solid rgba(255,255,255,0.05);
-    }
-    .leader-left { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 0.88rem; color: #fff; }
-    .leader-left img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; }
-    .active-tag { font-size: 0.68rem; padding: 3px 8px; border-radius: 20px; background: rgba(0,184,148,0.15); color: var(--success); font-weight: 700; }
-
-    /* ================= MORE BOTS ================= */
-    .bot-grid { display: grid; grid-template-columns: 1fr; gap: 12px; padding: 0 18px 30px; }
-    .bot-card {
-      background: var(--surface);
-      border-radius: 18px;
-      padding: 14px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-    .bot-meta { display: flex; align-items: center; gap: 12px; }
-    .bot-meta img { width: 44px; height: 44px; border-radius: 12px; object-fit: cover; }
-    .bot-meta h4 { font-size: 0.9rem; font-weight: 700; color: #fff; }
-    .bot-meta p { font-size: 0.72rem; color: var(--text-muted); }
-    .bot-open-btn {
-      padding: 7px 16px;
-      border-radius: 20px;
-      background: linear-gradient(135deg, #0984e3, #74b9ff);
-      color: #fff;
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 0.78rem;
-    }
-
-    /* ================= DUAL SUPPORT CHAT (USER & ADMIN VIEWS) ================= */
-    #page-support {
-      position: fixed;
-      inset: 0;
-      background: var(--tg-bg);
-      z-index: 999999;
-      display: none;
-      flex-direction: column;
-      height: 100dvh;
-    }
-    #page-support.active { display: flex; }
-    .tg-top-bar {
-      background: #17212b;
-      color: #fff;
-      padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
-    .tg-back-btn { background: none; border: none; color: #fff; font-size: 1.25rem; cursor: pointer; padding: 4px 6px; }
-    .tg-chat-user { display: flex; align-items: center; gap: 10px; flex: 1; }
-    .tg-chat-user img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--tg-blue); }
-    .tg-chat-user h4 { font-size: 0.92rem; font-weight: 700; }
-    .tg-chat-user p { font-size: 0.7rem; color: var(--tg-blue); font-weight: 600; }
-
-    .tg-chat-body {
-      flex: 1;
-      padding: 16px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-    
-    /* Message Row with Dynamic Profile Avatar */
-    .msg-row {
-      display: flex;
-      align-items: flex-end;
-      gap: 8px;
-      width: 100%;
-    }
-    .msg-row.admin { justify-content: flex-start; }
-    .msg-row.user { justify-content: flex-end; }
-    .msg-avatar {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      object-fit: cover;
-      flex-shrink: 0;
-      border: 1px solid rgba(255,255,255,0.15);
-    }
-    .msg-bubble {
-      max-width: 75%;
-      padding: 10px 14px;
-      border-radius: 16px;
-      font-size: 0.85rem;
-      line-height: 1.45;
-      color: #fff;
-      position: relative;
-      word-break: break-word;
-    }
-    .msg-row.admin .msg-bubble {
-      background: var(--chat-admin);
-      border-bottom-left-radius: 4px;
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-    .msg-row.user .msg-bubble {
-      background: var(--chat-my);
-      border-bottom-right-radius: 4px;
-    }
-    .msg-time {
-      font-size: 0.65rem;
-      color: rgba(255,255,255,0.5);
-      text-align: right;
-      margin-top: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 4px;
-    }
-
-    .tg-bottom-bar {
-      background: #17212b;
-      padding: 10px 14px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      border-top: 1px solid rgba(255,255,255,0.08);
-    }
-    .tg-input {
-      flex: 1;
-      padding: 11px 16px;
-      border-radius: 24px;
-      border: 1px solid rgba(255,255,255,0.12);
-      outline: none;
-      font-size: 0.85rem;
-      background: #0e1621;
-      color: #fff;
-    }
-    .tg-input:focus { border-color: var(--tg-blue); }
-    .tg-send-btn {
-      background: var(--tg-blue);
-      color: #fff;
-      width: 42px;
-      height: 42px;
-      min-width: 42px;
-      border-radius: 50%;
-      border: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(42, 171, 238, 0.3);
-    }
-
-    /* Admin Inbox Container */
-    #admin-inbox-view {
-      display: none;
-      flex-direction: column;
-      flex: 1;
-      overflow-y: auto;
-      padding: 14px;
-      gap: 8px;
-    }
-    .inbox-card {
-      background: var(--surface-card);
-      border-radius: 16px;
-      padding: 12px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border: 1px solid rgba(255,255,255,0.06);
-      cursor: pointer;
-    }
-    .inbox-card:active { background: #22304d; }
-    .inbox-left { display: flex; align-items: center; gap: 12px; }
-    .inbox-left img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; }
-    .inbox-meta h4 { font-size: 0.88rem; font-weight: 700; color: #fff; }
-    .inbox-meta p { font-size: 0.72rem; color: var(--text-muted); max-width: 190px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-    /* ================= BOTTOM NAVIGATION ================= */
-    .nav {
-      position: fixed;
-      bottom: 15px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90%;
-      max-width: 420px;
-      background: rgba(18, 24, 38, 0.94);
-      backdrop-filter: blur(14px);
-      display: flex;
-      justify-content: space-around;
-      padding: 12px;
-      border-radius: 26px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-      border: 1px solid rgba(255,255,255,0.08);
-      z-index: 100;
-    }
-    .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      color: rgba(255,255,255,0.4);
-      font-size: 1.15rem;
-      cursor: pointer;
-      transition: .2s;
-    }
-    .nav-item span { font-size: 0.65rem; font-weight: 600; }
-    .nav-item.active { color: var(--secondary); transform: translateY(-2px); }
-
-    .toast {
-      position: fixed;
-      top: 25px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #1e293b;
-      color: #fff;
-      padding: 9px 20px;
-      border-radius: 30px;
-      font-size: 0.8rem;
-      opacity: 0;
-      transition: .3s;
-      z-index: 9999999;
-      font-weight: 600;
-      border: 1px solid rgba(255,255,255,0.15);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-      pointer-events: none;
-    }
-    .toast.show { opacity: 1; top: 36px; }
-  </style>
+        /* SUPPORT CHAT MODAL */
+        #support-modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 120;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        #support-chat-wrapper {
+            width: 100%;
+            max-width: 480px;
+            height: 100vh;
+            height: 100dvh;
+            background: #0e1621;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+        }
+        .tg-top-bar {
+            background: #17212b;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .tg-chat-body {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: radial-gradient(circle at 50% 20%, #172435 0%, #0a1017 100%);
+        }
+        .msg-row { display: flex; align-items: flex-end; gap: 8px; width: 100%; }
+        .msg-row.admin { justify-content: flex-start; }
+        .msg-row.user { justify-content: flex-end; }
+        .msg-bubble {
+            max-width: 86%;
+            padding: 10px 14px;
+            border-radius: 16px;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            color: #fff;
+        }
+        .msg-row.admin .msg-bubble { background: #1e2c3a; border-bottom-left-radius: 4px; }
+        .msg-row.user .msg-bubble { background: #2b5278; border-bottom-right-radius: 4px; }
+        .tg-bottom-bar {
+            background: #17212b;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+    </style>
 </head>
-<body>
+<body class="max-w-md mx-auto relative bg-[#f8fafc] min-h-screen text-[#0f172a]">
 
-  <!-- ================= ULTRA-MODERN ANIMATED LOADER ================= -->
-  <div id="loader" class="loader-overlay">
-    <div class="loader-bg-particles"></div>
-    
-    <div style="width: 100%; text-align: center; position: relative; z-index: 2;">
-      <span style="font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: var(--secondary); font-weight: 800;">Secure Cloud Architecture</span>
+    <!-- TOAST CONTAINER -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- FLOATING LIVE SUPPORT CHAT BUTTON -->
+    <div id="floating-support-btn" class="floating-telegram-btn" onclick="openSupportModal()" title="২৪/৭ হেল্পলাইন">
+        <i class="fab fa-telegram-plane"></i>
     </div>
 
-    <div class="loader-center">
-      <div class="orbital-spinner">
-        <div class="orbital-ring"></div>
-        <div class="orbital-ring-inner"></div>
-        <i class="fas fa-cube"></i>
-      </div>
-      <div class="loader-title">Earn & Redeem Pro</div>
-      <div class="loader-pill-status">
-        <i class="fas fa-circle-notch fa-spin"></i> <span id="ldr-status-text">সিস্টেম প্রস্তুত হচ্ছে...</span>
-      </div>
-    </div>
-
-    <!-- Live Stats Row -->
-    <div class="loader-stats-bar">
-      <div class="loader-stat-col">
-        <h4 id="ldr-members">1,450</h4>
-        <p>Total Member</p>
-      </div>
-      <div class="loader-stat-col">
-        <h4 id="ldr-active" style="color:var(--success);">420</h4>
-        <p>Total Active</p>
-      </div>
-      <div class="loader-stat-col">
-        <h4 id="ldr-earned" style="color:#fbc531;">24,800</h4>
-        <p>Total Earn</p>
-      </div>
-    </div>
-  </div>
-
-  <div id="toast" class="toast">Alert</div>
-
-  <div id="app">
-    <!-- Top Header -->
-    <div class="header">
-      <div class="top-bar">
-        <div class="user-pill">
-          <img id="u-img" src="https://api.dicebear.com/7.x/bottts/svg?seed=user">
-          <div class="user-info">
-            <h3 id="u-name">User</h3>
-            <p id="u-id">ID: ...</p>
-          </div>
-        </div>
-        <button class="support-btn" onclick="openFullSupport()"><i class="fab fa-telegram-plane"></i></button>
-      </div>
-    </div>
-
-    <!-- ================= TAB 1: HOME ================= -->
-    <div id="page-home" class="page-section active">
-      
-      <!-- HERO REDEEM SECTION -->
-      <div class="hero-redeem-card">
-        <div class="sec-title"><i class="fas fa-gift" style="color:var(--secondary);"></i> Daily Redeem System</div>
-        
-        <!-- Progress Bar -->
-        <div class="progress-label">
-          <span>দৈনিক বিজ্ঞাপন টাস্ক</span>
-          <span id="progress-percent">0%</span>
-        </div>
-        <div class="progress-container">
-          <div id="progress-bar-fill" class="progress-fill"></div>
-        </div>
-
-        <!-- 1. UNLOCK TELEGRAM PIN -->
-        <div id="unlock-container" style="margin-top: 14px;">
-          <button id="btn-unlock-tg" class="btn-act" onclick="triggerChannelUnlock()">
-            <i class="fab fa-telegram-plane"></i> আনলক করুন (টেলিগ্রাম চ্যানেল)
-          </button>
-          
-          <div id="pin-input-group" style="display:none; margin-top:12px;">
-            <input type="text" id="entered-key" class="input-box" placeholder="টেলিগ্রাম চ্যানেলে পাওয়া PIN দিন">
-            <button id="btn-verify-pin" class="btn-act" style="background:var(--success);" onclick="verifyKeyPin()">
-              <i class="fas fa-shield-check"></i> PIN যাচাই করুন
-            </button>
-          </div>
-        </div>
-
-        <!-- Verified Indicator -->
-        <div id="verified-state" style="display:none; margin-top:10px; text-align:center; color:var(--success); font-weight:700; font-size:.88rem;">
-          <i class="fas fa-circle-check"></i> চ্যানেল সাবস্ক্রাইব ও PIN ভেরিফাইড!
-        </div>
-
-        <!-- 2. REDEEM CODE CONTAINER -->
-        <div id="redeem-action-wrapper" style="margin-top: 14px;">
-          <button id="btn-claim-redeem" class="btn-act" disabled onclick="openRedeemAnimation()">
-            <i class="fas fa-lock"></i> Get Redeem Code (Lock)
-          </button>
-
-          <!-- Code Revealed Modal Card (Updated UI as requested) -->
-          <div id="redeem-code-box" style="display:none; margin-top:14px;">
-            <div class="code-reveal-box">
-              <h4>আজকের রিডিম কোড 👇</h4>
-              <div class="code-row">
-                <h3 id="revealed-code">PRO2026</h3>
-                <button class="btn-copy-code" onclick="copyRedeemCode()"><i class="fas fa-copy"></i></button>
-              </div>
-            </div>
-            <a id="bot-redeem-link" href="#" target="_blank" class="btn-act" style="margin-top:10px; text-decoration:none; background:linear-gradient(135deg,#ff7675,#e17055);">
-              <i class="fas fa-robot"></i> এই বটে গিয়ে রিডিম কোড Claim করুন
-            </a>
-          </div>
-        </div>
-
-        <div id="redeem-claimed-box" class="claimed-badge">
-          <i class="fas fa-check-double"></i> আজকের রিডিম কোড গ্রহণ করা হয়েছে! রাত ১২টার পর আবার রিসেট হবে।
-        </div>
-
-        <!-- 3. 5-CHARACTER ALPHANUMERIC SECRET KEY PROGRESSION -->
-        <div style="margin-top:20px; text-align:center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 14px;">
-          <small style="color:var(--text-muted); font-weight:600; font-size:0.75rem;">আপনার ৫ ডিজিটের সিক্রেট Key আনলক স্ট্যাটাস:</small>
-          <div class="key-slots-container">
-            <div class="key-digit-box" id="digit-0">-</div>
-            <div class="key-digit-box" id="digit-1">-</div>
-            <div class="key-digit-box" id="digit-2">-</div>
-            <div class="key-digit-box" id="digit-3">-</div>
-            <div class="key-digit-box" id="digit-4">-</div>
-          </div>
-        </div>
-
-        <div class="copy-key-box">
-          <span id="key-copy-status" style="font-size:0.75rem; font-weight:700; color:var(--secondary);">৫টি ডিজিট আনলক হলে কপি করুন</span>
-          <button class="btn-copy" id="btn-copy-key" disabled onclick="copyRedeemKey()"><i class="fas fa-copy"></i> কপি</button>
-        </div>
-
-      </div>
-
-      <!-- 3D Daily Watch Ads -->
-      <div class="sec-head"><i class="fas fa-play-circle" style="color:var(--secondary);"></i> Daily Watch Ads (<span id="total-watched-txt">0/40</span>)</div>
-      <div id="ad-area" class="ad-grid"></div>
-    </div>
-
-    <!-- ================= TAB 2: LEADERBOARD ================= -->
-    <div id="page-leaderboard" class="page-section">
-      <div class="stat-counters-row">
-        <div class="stat-box"><h4 id="cnt-members">0</h4><p>Total Member</p></div>
-        <div class="stat-box"><h4 id="cnt-active" style="color:var(--success);">0</h4><p>Total Active</p></div>
-        <div class="stat-box"><h4 id="cnt-earned" style="color:#fbc531;">0</h4><p>Total Earn</p></div>
-      </div>
-
-      <div class="sec-head"><i class="fas fa-ranking-star" style="color:#e11d48;"></i> Active Users Ranking</div>
-      <div id="leaderboard-list"></div>
-    </div>
-
-    <!-- ================= TAB 3: MORE BOTS ================= -->
-    <div id="page-bots" class="page-section">
-      <div class="sec-head"><i class="fas fa-cubes" style="color:var(--secondary);"></i> Our Telegram Bots</div>
-      <div id="bots-list" class="bot-grid"></div>
-    </div>
-  </div>
-
-  <!-- ================= PROFESSIONAL DUAL SUPPORT CHAT ================= -->
-  <div id="page-support">
-    <div class="tg-top-bar">
-      <button class="tg-back-btn" onclick="handleSupportBack()"><i class="fas fa-arrow-left"></i></button>
-      <div class="tg-chat-user">
-        <img id="support-header-img" src="https://telegram.org/img/t_logo.png" alt="Chat User">
-        <div>
-          <h4 id="support-header-title">Official Admin Support</h4>
-          <p id="support-header-sub"><i class="fas fa-circle" style="font-size:0.5rem;"></i> অনলাইন সার্ভিস</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Admin Inbox List (Visible only to Admin 7358825471) -->
-    <div id="admin-inbox-view"></div>
-
-    <!-- Chat Messages Thread -->
-    <div class="tg-chat-body" id="chat-messages">
-      <div class="msg-row admin">
-        <img src="https://telegram.org/img/t_logo.png" class="msg-avatar" alt="Admin">
-        <div class="msg-bubble">
-          হ্যালো! Earn & Redeem অফিসিয়াল সাপোর্টে স্বাগতম। আপনার যেকোনো সমস্যার কথা জানান।
-          <div class="msg-time">Official Support</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Input Bar -->
-    <div class="tg-bottom-bar" id="support-input-bar">
-      <input type="text" id="chat-text-input" class="tg-input" placeholder="মেসেজ লিখুন...">
-      <button class="tg-send-btn" onclick="sendSupportMessage()">
-        <i class="fas fa-paper-plane"></i>
-      </button>
-    </div>
-  </div>
-
-  <!-- Bottom Navigation -->
-  <div class="nav">
-    <div class="nav-item active" onclick="switchTab('home', this)">
-      <i class="fas fa-home"></i><span>Home</span>
-    </div>
-    <div class="nav-item" onclick="switchTab('leaderboard', this)">
-      <i class="fas fa-users"></i><span>Leaderboard</span>
-    </div>
-    <div class="nav-item" onclick="switchTab('bots', this)">
-      <i class="fas fa-robot"></i><span>More Bots</span>
-    </div>
-  </div>
-
-  <script>
-    // Official Admin ID
-    const OFFICIAL_ADMIN_ID = "7358825471";
-    const ADMIN_AVATAR = "https://telegram.org/img/t_logo.png";
-
-    // Firebase Config
-    const firebaseConfig = {
-      apiKey: "AIzaSyAsENiikJ5YQ1F8UHrixdJVEINAhO4PG30",
-      authDomain: "bot2-3d8bc.firebaseapp.com",
-      databaseURL: "https://bot2-3d8bc-default-rtdb.firebaseio.com",
-      projectId: "bot2-3d8bc",
-      storageBucket: "bot2-3d8bc.firebasestorage.app",
-      messagingSenderId: "77444577377",
-      appId: "1:77444577377:web:05a9910049d166878d5220"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-    const tg = window.Telegram?.WebApp;
-    if (tg) { try { tg.ready(); tg.expand(); } catch(e){} }
-
-    let appState = {
-      user: { dailyAds: {}, singleKey: '', isVerified: false, lastActive: '', redeemClaimed: false },
-      config: {
-        dailyAdLimit: 10,
-        redeemPin: "7788",
-        redeemCode: "REDEEM-PRO-2026",
-        keyChannelLink: "https://t.me",
-        botLink: "https://t.me",
-        botToken: "",
-        channelId: "",
-        adminId: OFFICIAL_ADMIN_ID,
-        stats: { members: 1450, active: 420, earn: 24800 },
-        customAdScript: "",
-        adSlots: [
-          { network: 'adsgram', id: '46350' },
-          { network: 'adsgram', id: '46351' },
-          { network: 'monetag', id: '11737228' },
-          { network: 'monetag', id: '11595952' }
-        ],
-        moreBots: {}
-      }
-    };
-
-    let isBooted = false;
-    let tgUser = tg?.initDataUnsafe?.user || { id: '123456', first_name: 'Guest User', photo_url: '' };
-    const userAvatarUrl = tgUser.photo_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${tgUser.id}`;
-    let activeChatTargetUserId = tgUser.id; // For Admin replying to specific user
-
-    function toast(msg) {
-      const t = document.getElementById('toast');
-      t.innerText = msg; t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 2600);
-    }
-
-    // Local Midnight string (YYYY-MM-DD)
-    function todayStr() {
-      const d = new Date();
-      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-    }
-
-    function switchTab(tabId, el) {
-      document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-
-      const page = document.getElementById('page-' + tabId);
-      if (page) page.classList.add('active');
-
-      if (el) el.classList.add('active');
-      else {
-        const mapping = { home:0, leaderboard:1, bots:2 };
-        if (mapping[tabId] !== undefined) document.querySelectorAll('.nav-item')[mapping[tabId]].classList.add('active');
-      }
-
-      if (tabId === 'leaderboard') startLiveCounters();
-      if (tabId === 'bots') renderBots();
-      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
-    }
-
-    // ================= DUAL SUPPORT SYSTEM (ADMIN & USER) =================
-    const isAdminUser = () => String(tgUser.id) === String(OFFICIAL_ADMIN_ID);
-
-    function openFullSupport() {
-      document.getElementById('page-support').classList.add('active');
-      if (isAdminUser()) {
-        openAdminInbox();
-      } else {
-        openUserDirectChat(tgUser.id);
-      }
-    }
-
-    function handleSupportBack() {
-      if (isAdminUser() && document.getElementById('chat-messages').style.display !== 'none') {
-        openAdminInbox(); // Return to inbox list
-      } else {
-        document.getElementById('page-support').classList.remove('active');
-      }
-    }
-
-    // 1. Admin Inbox: Lists all users who sent messages
-    function openAdminInbox() {
-      document.getElementById('support-header-title').innerText = "Admin Support Inbox";
-      document.getElementById('support-header-sub').innerText = "ব্যবহারকারীদের মেসেজ তালিকা";
-      document.getElementById('support-header-img').src = ADMIN_AVATAR;
-
-      document.getElementById('admin-inbox-view').style.display = 'flex';
-      document.getElementById('chat-messages').style.display = 'none';
-      document.getElementById('support-input-bar').style.display = 'none';
-
-      db.ref('support_chats').on('value', snap => {
-        const container = document.getElementById('admin-inbox-view');
-        container.innerHTML = '';
-        if (!snap.exists()) {
-          container.innerHTML = `<div style="text-align:center; padding:40px; color:var(--text-muted); font-size:0.9rem;">কোনো মেসেজ পাওয়া যায়নি!</div>`;
-          return;
-        }
-
-        const chats = snap.val();
-        Object.keys(chats).forEach(uid => {
-          const thread = chats[uid];
-          const msgKeys = Object.keys(thread);
-          const lastMsg = thread[msgKeys[msgKeys.length - 1]];
-          const userName = lastMsg.name || `User (${uid})`;
-          const userPhoto = lastMsg.photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${uid}`;
-
-          const item = document.createElement('div');
-          item.className = 'inbox-card';
-          item.onclick = () => openAdminChatThread(uid, userName, userPhoto);
-          item.innerHTML = `
-            <div class="inbox-left">
-              <img src="${userPhoto}">
-              <div class="inbox-meta">
-                <h4>${userName}</h4>
-                <p>${lastMsg.text || 'মেসেজ নেই'}</p>
-              </div>
-            </div>
-            <span style="font-size:0.7rem; color:var(--tg-blue); font-weight:700;"><i class="fas fa-chevron-right"></i></span>
-          `;
-          container.appendChild(item);
-        });
-      });
-    }
-
-    // 2. Open Chat Thread
-    function openAdminChatThread(targetUid, userName, userPhoto) {
-      activeChatTargetUserId = targetUid;
-      document.getElementById('support-header-title').innerText = userName;
-      document.getElementById('support-header-sub').innerText = `ID: ${targetUid}`;
-      document.getElementById('support-header-img').src = userPhoto;
-
-      document.getElementById('admin-inbox-view').style.display = 'none';
-      document.getElementById('chat-messages').style.display = 'flex';
-      document.getElementById('support-input-bar').style.display = 'flex';
-      loadThreadMessages(targetUid);
-    }
-
-    function openUserDirectChat(myId) {
-      activeChatTargetUserId = myId;
-      document.getElementById('support-header-title').innerText = "Official Admin Support";
-      document.getElementById('support-header-sub').innerText = "অনলাইন কাস্টমার সার্ভিস";
-      document.getElementById('support-header-img').src = ADMIN_AVATAR;
-
-      document.getElementById('admin-inbox-view').style.display = 'none';
-      document.getElementById('chat-messages').style.display = 'flex';
-      document.getElementById('support-input-bar').style.display = 'flex';
-      loadThreadMessages(myId);
-    }
-
-    let chatMessageHistory = [];
-    function loadThreadMessages(uid) {
-      db.ref('support_chats/' + uid).on('value', snap => {
-        const body = document.getElementById('chat-messages');
-        body.innerHTML = `
-          <div class="msg-row admin">
-            <img src="${ADMIN_AVATAR}" class="msg-avatar" alt="Admin">
-            <div class="msg-bubble">
-              হ্যালো! Earn & Redeem অফিসিয়াল সাপোর্টে স্বাগতম। আপনার সমস্যার কথা জানান।
-              <div class="msg-time">Official Support</div>
-            </div>
-          </div>`;
-
-        chatMessageHistory = [];
-        if (snap.exists()) {
-          snap.forEach(c => {
-            const m = c.val();
-            chatMessageHistory.push(m);
-            const isMsgFromAdmin = m.sender === 'admin';
-            const avatar = isMsgFromAdmin ? ADMIN_AVATAR : (m.photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${uid}`);
-
-            body.innerHTML += `
-              <div class="msg-row ${isMsgFromAdmin ? 'admin' : 'user'}">
-                ${isMsgFromAdmin ? `<img src="${avatar}" class="msg-avatar">` : ''}
-                <div class="msg-bubble">
-                  ${m.text}
-                  <div class="msg-time">
-                    ${m.time || ''} ${!isMsgFromAdmin ? '<i class="fas fa-check-double" style="font-size:0.6rem; color:#74b9ff;"></i>' : ''}
-                  </div>
+    <!-- LIVE SUPPORT DESK MODAL -->
+    <div id="support-modal-overlay">
+        <div id="support-chat-wrapper">
+            <div class="tg-top-bar">
+                <button onclick="closeSupportModal()" class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center text-white">
+                    <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                </button>
+                <div class="flex items-center gap-2.5 flex-1">
+                    <div class="w-9 h-9 rounded-full bg-amber-500 flex items-center justify-center font-bold text-white">
+                        <i data-lucide="wrench" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-sm leading-tight">ElectricianBD হেল্পডেস্ক</h4>
+                        <p class="text-[11px] text-emerald-400 font-semibold">অনলাইন সাপোর্ট টিম (২৪/৭)</p>
+                    </div>
                 </div>
-                ${!isMsgFromAdmin ? `<img src="${avatar}" class="msg-avatar">` : ''}
-              </div>`;
-          });
-          body.scrollTop = body.scrollHeight;
-        }
-      });
-    }
-
-    async function sendSupportMessage() {
-      const input = document.getElementById('chat-text-input');
-      const text = input.value.trim();
-      if (!text) return toast("মেসেজ লিখুন");
-
-      const isCurrentAdmin = isAdminUser();
-      const targetChat = activeChatTargetUserId;
-
-      if (!isCurrentAdmin) {
-        const userMsgs = chatMessageHistory.filter(m => m.sender === 'user');
-        if (userMsgs.length >= 5) return toast("আপনি সর্বোচ্চ ৫টি মেসেজ পাঠিয়ে ফেলেছেন!");
-        if (chatMessageHistory.length > 0) {
-          const lastMsg = chatMessageHistory[chatMessageHistory.length - 1];
-          if (lastMsg.sender === 'user') return toast("এডমিনের উত্তরের জন্য অপেক্ষা করুন");
-        }
-      }
-
-      const now = new Date();
-      const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-      await db.ref('support_chats/' + targetChat).push({
-        sender: isCurrentAdmin ? 'admin' : 'user',
-        userId: tgUser.id,
-        name: tgUser.first_name || 'User',
-        photo: isCurrentAdmin ? ADMIN_AVATAR : userAvatarUrl,
-        text: text,
-        time: timeString,
-        timestamp: Date.now()
-      });
-
-      input.value = '';
-      toast("মেসেজ পাঠানো হয়েছে!");
-    }
-
-    // ================= UNLOCK & PIN VERIFY =================
-    function triggerChannelUnlock() {
-      const url = appState.config.keyChannelLink || 'https://t.me';
-      if (tg?.openTelegramLink && url.includes('t.me/')) tg.openTelegramLink(url);
-      else window.open(url, '_blank');
-
-      document.getElementById('pin-input-group').style.display = 'block';
-      toast("চ্যানেল থেকে PIN সংগ্রহ করে লিখুন");
-    }
-
-    async function checkTelegramChannelJoined(userId) {
-      const token = appState.config.botToken;
-      const channel = appState.config.channelId;
-      if (!token || !channel) return true;
-
-      try {
-        const cleanChan = channel.startsWith('@') || channel.startsWith('-') ? channel : '@' + channel;
-        const res = await fetch(`https://api.telegram.org/bot${token}/getChatMember?chat_id=${encodeURIComponent(cleanChan)}&user_id=${userId}`);
-        const data = await res.json();
-        if (data.ok) {
-          const status = data.result.status;
-          return ['member', 'administrator', 'creator'].includes(status);
-        }
-        return false;
-      } catch (err) {
-        console.error("TG Membership Check Error:", err);
-        return false;
-      }
-    }
-
-    async function verifyKeyPin() {
-      const entered = document.getElementById('entered-key').value.trim();
-      const actualPin = String(appState.config.redeemPin || '7788').trim();
-
-      if (!entered) return toast("দয়া করে PIN লিখুন");
-      if (entered !== actualPin) return toast("ভুল PIN! চ্যানেলে গিয়ে সঠিক PIN সংগ্রহ করুন");
-
-      toast("টেলিগ্রাম চ্যানেল জয়েনিং চেক হচ্ছে...");
-      const isJoined = await checkTelegramChannelJoined(tgUser.id);
-      if (!isJoined) {
-        return toast("আপনি টেলিগ্রাম চ্যানেলে জয়েন করেননি! আগে জয়েন করুন");
-      }
-
-      await db.ref('users/' + appState.user.id).update({ isVerified: true });
-      appState.user.isVerified = true;
-      toast("PIN ও চ্যানেল ভেরিফিকেশন সফল হয়েছে!");
-      updateRedeemUI();
-    }
-
-    function copyRedeemKey() {
-      const k = appState.user.singleKey;
-      if (!k || k.length < 5) return toast("কী এখনো সম্পূর্ণ আনলক হয়নি!");
-      navigator.clipboard.writeText(k);
-      toast("Secret Key কপি হয়েছে: " + k);
-    }
-
-    function copyRedeemCode() {
-      const code = appState.config.redeemCode || 'PRO2026';
-      navigator.clipboard.writeText(code);
-      toast("রিডিম কোড কপি হয়েছে: " + code);
-    }
-
-    // ================= PROGRESS & REDEEM LOGIC =================
-    function updateRedeemUI() {
-      const limit = Number(appState.config.dailyAdLimit || 10);
-      const totalRequired = limit * 4;
-
-      let watchedTotal = 0;
-      let maxWatchedInAnySlot = 0;
-      for (let i = 0; i < 4; i++) {
-        const done = (appState.user.dailyAds && appState.user.dailyAds[i]) ? appState.user.dailyAds[i] : 0;
-        watchedTotal += done;
-        if (done > maxWatchedInAnySlot) maxWatchedInAnySlot = done;
-      }
-
-      let percent = Math.min(100, Math.floor((watchedTotal / totalRequired) * 100));
-      document.getElementById('progress-percent').innerText = `${percent}%`;
-      document.getElementById('progress-bar-fill').style.width = `${percent}%`;
-
-      // 5-Character Secret Key (e.g. 4HIBQ)
-      const digitsUnlockedCount = Math.min(5, Math.floor(maxWatchedInAnySlot / 2));
-      const myKey = String(appState.user.singleKey || "4HIBQ");
-
-      for (let i = 0; i < 5; i++) {
-        const elDigit = document.getElementById(`digit-${i}`);
-        if (i < digitsUnlockedCount && myKey[i]) {
-          elDigit.innerText = myKey[i];
-          elDigit.classList.add('unlocked');
-        } else {
-          elDigit.innerText = "-";
-          elDigit.classList.remove('unlocked');
-        }
-      }
-
-      const copyBtn = document.getElementById('btn-copy-key');
-      const copyStatus = document.getElementById('key-copy-status');
-      if (digitsUnlockedCount >= 5) {
-        copyBtn.disabled = false;
-        copyStatus.innerText = "Key সম্পূর্ণ আনলক হয়েছে!";
-      } else {
-        copyBtn.disabled = true;
-        copyStatus.innerText = `${digitsUnlockedCount}/5 ডিজিট আনলক হয়েছে`;
-      }
-
-      // Verified State UI
-      if (appState.user.isVerified) {
-        document.getElementById('unlock-container').style.display = 'none';
-        document.getElementById('verified-state').style.display = 'block';
-      } else {
-        document.getElementById('unlock-container').style.display = 'block';
-        document.getElementById('verified-state').style.display = 'none';
-      }
-
-      // Check if Redeem already claimed today
-      const wrapper = document.getElementById('redeem-action-wrapper');
-      const claimedBadge = document.getElementById('redeem-claimed-box');
-      if (appState.user.redeemClaimed) {
-        wrapper.style.display = 'none';
-        claimedBadge.style.display = 'block';
-        return;
-      } else {
-        wrapper.style.display = 'block';
-        claimedBadge.style.display = 'none';
-      }
-
-      // Redeem Button Activation
-      const btnClaim = document.getElementById('btn-claim-redeem');
-      if (percent >= 100 && appState.user.isVerified) {
-        btnClaim.disabled = false;
-        btnClaim.innerHTML = '<i class="fas fa-gift"></i> Get Redeem Code (Unlocked)';
-        btnClaim.style.background = 'linear-gradient(135deg, #00b894, #00cec9)';
-      } else {
-        btnClaim.disabled = true;
-        btnClaim.innerHTML = `<i class="fas fa-lock"></i> Get Redeem Code (${percent}%)`;
-        btnClaim.style.background = '#252f42';
-      }
-    }
-
-    async function openRedeemAnimation() {
-      const box = document.getElementById('redeem-code-box');
-      box.style.display = 'block';
-      document.getElementById('revealed-code').innerText = appState.config.redeemCode || 'PRO2026';
-      document.getElementById('bot-redeem-link').href = appState.config.botLink || 'https://t.me';
-      
-      await db.ref('users/' + appState.user.id).update({ redeemClaimed: true });
-      appState.user.redeemClaimed = true;
-      document.getElementById('btn-claim-redeem').style.display = 'none';
-      toast("অভিনন্দন! রিডিম কোড প্রস্তুত");
-    }
-
-    // Render Ad Cards
-    function renderAds() {
-      const el = document.getElementById('ad-area'); 
-      el.innerHTML = '';
-      const slots = appState.config.adSlots || [];
-      const limit = Number(appState.config.dailyAdLimit || 10);
-
-      let totalWatched = 0;
-      for (let i = 0; i < 4; i++) {
-        const slot = slots[i];
-        const done = (appState.user.dailyAds && appState.user.dailyAds[i]) ? appState.user.dailyAds[i] : 0;
-        totalWatched += done;
-        const isMax = done >= limit;
-        const configured = slot && slot.network && slot.network !== 'none';
-        const cardClass = !configured ? 'completed' : (isMax ? 'completed' : '');
-        const extraClass = (i===0?'slot-1':i===1?'slot-2':i===2?'slot-3':'slot-4');
-        const icon = (i===0?'fa-play':i===1?'fa-circle-play':i===2?'fa-bolt':'fa-gem');
-
-        el.innerHTML += `
-          <div class="ad-card ${extraClass} ${cardClass}" onclick="${(!configured||isMax)?'':'watchAd('+i+')'}">
-            <div class="ad-inner">
-              <i class="fas ${icon}"></i> 
-              <h4>Ad Slot ${i+1}</h4>
-              <div class="reward-pill"><i class="fas fa-coins"></i> Watch</div>
-              <div class="progress-pill">${isMax ? 'Completed' : `${done}/${limit} Watched`}</div>
             </div>
-          </div>`;
-      }
-      document.getElementById('total-watched-txt').innerText = `${totalWatched}/${limit * 4}`;
-      updateRedeemUI();
-    }
 
-    // Allocate Secret Key (One User Gets Only One Key Lifetime)
-    async function allocateSecretKeyForUser(userId) {
-      if (appState.user.singleKey && appState.user.singleKey.length === 5) {
-        return appState.user.singleKey;
-      }
-
-      const poolRef = db.ref('secret_keys_pool');
-      const snap = await poolRef.once('value');
-      let allocatedKey = null;
-
-      if (snap.exists()) {
-        const keysObj = snap.val();
-        for (let key in keysObj) {
-          if (keysObj[key].status === 'available') {
-            allocatedKey = key;
-            break;
-          }
-        }
-      }
-
-      if (!allocatedKey) {
-        const chars = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
-        allocatedKey = "";
-        for (let i = 0; i < 5; i++) allocatedKey += chars.charAt(Math.floor(Math.random() * chars.length));
-      }
-
-      await poolRef.child(allocatedKey).set({
-        status: 'used',
-        assignedTo: userId,
-        assignedAt: Date.now()
-      });
-
-      // Update Key Stats in Firebase
-      const statsSnap = await poolRef.once('value');
-      let used = 0, remaining = 0;
-      if (statsSnap.exists()) {
-        const obj = statsSnap.val();
-        for (let k in obj) {
-          if (obj[k].status === 'used') used++;
-          else remaining++;
-        }
-      }
-      await db.ref('keys_stats').set({ usedKeys: used, remainingKeys: remaining, lastUpdated: Date.now() });
-
-      return allocatedKey;
-    }
-
-    // Watch Ad Processor
-    let slotLocks = {};
-    async function watchAd(i) {
-      if (slotLocks[i]) return; 
-      slotLocks[i] = true;
-      const slot = appState.config.adSlots[i];
-      const limit = Number(appState.config.dailyAdLimit || 10);
-      const done = (appState.user.dailyAds && appState.user.dailyAds[i]) ? appState.user.dailyAds[i] : 0;
-
-      if (done >= limit) {
-        slotLocks[i] = false;
-        return toast("এই স্লটের দৈনিক অ্যাড লিমিট শেষ!");
-      }
-
-      try {
-        toast('বিজ্ঞাপন লোড হচ্ছে... সম্পূর্ণ দেখুন');
-        let success = false;
-        
-        if (slot.network === 'monetag') {
-          const fnName = 'show_' + slot.id;
-          if (typeof window[fnName] === 'function') {
-            await window[fnName]();
-            success = true;
-          } else {
-            throw new Error("Monetag অ্যাড লোড হয়নি। পুনরায় চেষ্টা করুন।");
-          }
-        } else if (slot.network === 'adsgram') {
-          if (typeof window.Adsgram === 'undefined') throw new Error("Adsgram স্ক্রিপ্ট প্রস্তুত নয়");
-          const adCtrl = window.Adsgram.init({ blockId: slot.id ? String(slot.id) : '46350' });
-          let res = await adCtrl.show();
-          if (res && res.done === true) {
-            success = true;
-          } else {
-            throw new Error("বিজ্ঞাপনটি সম্পূর্ণ দেখা হয়নি");
-          }
-        }
-
-        if (success) {
-          let newAds = appState.user.dailyAds || {};
-          newAds[i] = (newAds[i] || 0) + 1;
-          let updates = { dailyAds: newAds };
-
-          if (!appState.user.singleKey) {
-            const newKey = await allocateSecretKeyForUser(appState.user.id);
-            updates.singleKey = newKey;
-            appState.user.singleKey = newKey;
-          }
-
-          await db.ref('users/' + appState.user.id).update(updates);
-          toast(`Ad ${newAds[i]}/${limit} সম্পন্ন হয়েছে!`);
-        }
-      } catch(e) { 
-        toast(e.message || 'বিজ্ঞাপন দেখা সম্পন্ন হয়নি!'); 
-      } finally { 
-        slotLocks[i] = false; 
-      }
-    }
-
-    // Leaderboard Live Counters
-    function animateValue(id, start, end, duration) {
-      const obj = document.getElementById(id);
-      if (!obj) return;
-      let startTimestamp = null;
-      const step = (timestamp) => {
-        if (!startTimestamp) startTimestamp = timestamp;
-        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-        obj.innerText = Math.floor(progress * (end - start) + start).toLocaleString();
-        if (progress < 1) window.requestAnimationFrame(step);
-      };
-      window.requestAnimationFrame(step);
-    }
-
-    let baseMembers = 1450, baseActive = 420, baseEarn = 24800;
-    let counterInterval = null;
-
-    function startLiveCounters() {
-      const s = appState.config.stats || {};
-      baseMembers = s.members || baseMembers;
-      baseActive = s.active || baseActive;
-      baseEarn = s.earn || baseEarn;
-
-      animateValue("cnt-members", 0, baseMembers, 800);
-      animateValue("cnt-active", 0, baseActive, 800);
-      animateValue("cnt-earned", 0, baseEarn, 800);
-
-      const list = document.getElementById('leaderboard-list');
-      const dummyUsers = ['Tanvir_BD', 'Sakib_King', 'Hasan_99', 'Shohel_Rider', 'Rashedul', 'Akash_Pro', 'Mehedi_YT'];
-      let html = '';
-      dummyUsers.forEach((u, i) => {
-        html += `
-          <div class="leader-row">
-            <div class="leader-left">
-              <span style="color:#64748b; width:18px;">#${i+1}</span>
-              <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${u}">
-              <span>${u}</span>
+            <div class="tg-chat-body" id="chat-messages">
+                <div class="msg-row admin">
+                    <div class="msg-bubble">
+                        স্বাগতম <b>ElectricianBD</b> সাপোর্টে! এসি, ফ্রিজ বা যেকোনো টেকনিক্যাল সমস্যা অথবা মার্কেটপ্লেস সংক্রান্ত তথ্যের জন্য বার্তা পাঠান।
+                    </div>
+                </div>
             </div>
-            <div class="active-tag"><i class="fas fa-circle" style="font-size:.45rem;"></i> Active</div>
-          </div>`;
-      });
-      list.innerHTML = html;
 
-      if (!counterInterval) {
-        counterInterval = setInterval(() => {
-          baseMembers += Math.floor(Math.random() * 3) + 1;
-          baseActive += 1;
-          baseEarn += 50;
-
-          const elM = document.getElementById('cnt-members');
-          const elA = document.getElementById('cnt-active');
-          const elE = document.getElementById('cnt-earned');
-
-          if (elM) elM.innerText = baseMembers.toLocaleString();
-          if (elA) elA.innerText = baseActive.toLocaleString();
-          if (elE) elE.innerText = baseEarn.toLocaleString();
-        }, 5000);
-      }
-    }
-
-    function renderBots() {
-      const el = document.getElementById('bots-list'); 
-      el.innerHTML = '';
-      const bots = appState.config.moreBots || {};
-      const keys = Object.keys(bots);
-      if (keys.length === 0) {
-        el.innerHTML = `<div style="text-align:center; color:var(--text-muted); font-size:0.85rem; padding:20px;">নতুন বট শীঘ্রই যোগ করা হবে!</div>`;
-        return;
-      }
-      keys.forEach(k => {
-        const b = bots[k];
-        el.innerHTML += `
-          <div class="bot-card">
-            <div class="bot-meta">
-              <img src="${b.icon || 'https://via.placeholder.com/60'}">
-              <div><h4>${b.name}</h4><p>${b.desc}</p></div>
+            <div class="tg-bottom-bar">
+                <input type="text" id="chat-text-input" placeholder="আপনার সমস্যা লিখে জানান..." class="flex-1 bg-[#0e1621] text-white border border-white/10 rounded-full px-4 py-2.5 text-xs outline-none focus:border-blue-500">
+                <button onclick="sendSupportMessage()" class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center">
+                    <i class="fas fa-paper-plane text-sm"></i>
+                </button>
             </div>
-            <a href="${b.link}" target="_blank" class="bot-open-btn">Open</a>
-          </div>`;
-      });
-    }
+        </div>
+    </div>
 
-    // ================= APP INITIALIZATION & MIDNIGHT RESET =================
-    window.onload = async () => {
-      document.getElementById('u-name').innerText = tgUser.first_name || 'User';
-      document.getElementById('u-id').innerText = 'ID: ' + tgUser.id;
-      document.getElementById('u-img').src = userAvatarUrl;
+    <!-- INTRO LOADER -->
+    <div id="loader" class="fixed inset-0 flex flex-col items-center justify-center z-[100] p-6 select-none bg-slate-950 text-white">
+        <div class="relative flex items-center justify-center mb-6">
+            <div class="w-20 h-20 rounded-full border-4 border-amber-500/20 border-t-amber-400 border-r-blue-500 animate-spin"></div>
+            <div class="absolute inset-0 flex items-center justify-center">
+                <i data-lucide="zap" class="w-8 h-8 text-amber-400 animate-bounce"></i>
+            </div>
+        </div>
+        <div class="text-center space-y-1">
+            <h1 class="font-black text-2xl tracking-wider text-white">ElectricianBD</h1>
+            <p class="text-xs text-amber-300 font-bold">24/7 Technician Service & Marketplace</p>
+            <p class="text-[11px] text-slate-400 pt-2">অনুগ্রহ করে অপেক্ষা করুন...</p>
+        </div>
+    </div>
 
-      const fallbackTimer = setTimeout(() => {
-        if (!isBooted) {
-          document.getElementById('loader').style.display = 'none';
-          document.getElementById('app').style.display = 'block';
-          isBooted = true;
+    <!-- MAIN APP WRAPPER -->
+    <div id="app-container" class="min-h-screen flex flex-col">
+
+        <!-- HEADER -->
+        <header class="main-header flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center font-black shadow-md">
+                    <i data-lucide="wrench" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <span class="text-base font-black tracking-tight text-white leading-tight block">ElectricianBD</span>
+                    <span class="text-[9.5px] text-amber-300 font-bold uppercase tracking-wider block">২৪/৭ হোম সার্ভিস ও মার্কেট</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <!-- WALLET PILL -->
+                <div onclick="navigateTo('pay-page')" class="wallet-pill flex items-center gap-1.5 cursor-pointer" title="ডিপোজিট করুন">
+                    <i data-lucide="wallet" class="w-3.5 h-3.5 text-amber-300"></i>
+                    <span id="header-coin-balance" class="font-black text-xs text-white">৳0.00</span>
+                    <span class="bg-amber-400 text-slate-950 text-[9px] font-black px-1.5 py-0.5 rounded-full">+</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- 100 TK DEPOSIT MANDATORY NOTICE BANNER -->
+        <div id="deposit-alert-banner" class="bg-gradient-to-r from-amber-600 to-red-600 text-white p-2.5 px-4 text-xs font-bold flex items-center justify-between shadow-sm">
+            <div class="flex items-center gap-2">
+                <i data-lucide="shield-alert" class="w-4 h-4 text-amber-200 flex-shrink-0"></i>
+                <span class="leading-tight">যেকোনো সার্ভিস অর্ডার করতে ওয়ালেটে ১০০ টাকা ডিপোজিট থাকা আবশ্যক!</span>
+            </div>
+            <button onclick="navigateTo('pay-page')" class="bg-white text-slate-900 px-2.5 py-1 rounded-lg text-[10px] font-black shrink-0 hover:bg-slate-100 shadow">
+                ডিপোজিট
+            </button>
+        </div>
+
+        <!-- MAIN CONTENT ROUTER -->
+        <main class="flex-grow pb-24">
+
+            <!-- 1. HOME PAGE -->
+            <div id="home-page" class="p-4 space-y-4 sub-page active">
+                <!-- HERO BANNER -->
+                <div class="bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-white p-5 rounded-3xl relative overflow-hidden shadow-xl border border-blue-800/40">
+                    <div class="relative z-10 space-y-2">
+                        <span class="px-2.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 text-[10px] font-black uppercase tracking-wider inline-flex items-center gap-1 border border-amber-400/30">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span> ২৪ ঘণ্টা ইমার্জেন্সি সাপোর্ট
+                        </span>
+                        <h2 class="text-xl font-black leading-tight text-white">দক্ষ টেকনিশিয়ান খুঁজছেন?</h2>
+                        <p class="text-xs text-slate-300">এসি, ফ্রিজ, বাসা-বাড়ির বিদ্যুৎ সমস্যা বা যেকোনো মেরামতের জন্য অভিজ্ঞ টেকনিশিয়ান পান দ্রুততম সময়ে।</p>
+                        <div class="pt-2 flex gap-2">
+                            <button onclick="navigateTo('services-page')" class="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs rounded-xl flex items-center gap-1.5 shadow-md active:scale-95 transition">
+                                <i data-lucide="calendar" class="w-4 h-4"></i> সার্ভিস বুক করুন
+                            </button>
+                            <button onclick="openEmergencyCall()" class="px-3 py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-xl flex items-center gap-1.5 border border-white/20">
+                                <i data-lucide="phone-call" class="w-4 h-4 text-emerald-400"></i> কল করুন
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QUICK SERVICES GRID -->
+                <div>
+                    <div class="flex justify-between items-center mb-2.5 px-1">
+                        <h3 class="text-xs font-black uppercase text-slate-700 tracking-wider flex items-center gap-1.5">
+                            <i data-lucide="grid" class="w-4 h-4 text-blue-600"></i> জরুরি সার্ভিসসমূহ
+                        </h3>
+                        <span onclick="navigateTo('services-page')" class="text-xs font-bold text-blue-600 cursor-pointer">সব দেখুন &rarr;</span>
+                    </div>
+                    <div class="grid grid-cols-4 gap-2 text-center" id="home-quick-services">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- HOW IT WORKS & 100 TK RULE -->
+                <div class="bg-blue-50/80 p-4 rounded-2xl border border-blue-200 text-xs text-blue-950 space-y-2">
+                    <h4 class="font-extrabold flex items-center gap-1.5 text-blue-900">
+                        <i data-lucide="info" class="w-4 h-4 text-blue-600"></i> বুকিংয়ের নিয়মাবলী:
+                    </h4>
+                    <p>• বুকিং নিশ্চিত করার জন্য অ্যাকাউন্টে <b>সর্বনিম্ন ১০০ টাকা ব্যালেন্স</b> থাকতে হবে।</p>
+                    <p>• এই ১০০ টাকা আপনার সার্ভিস বিলের সাথে অগ্রিম সমন্বয় (Deduct) করা হবে।</p>
+                    <p>• টেকনিশিয়ান আপনার ঠিকানায় পৌঁছে সমস্যা পর্যবেক্ষণ করে কাজ শুরু করবেন।</p>
+                </div>
+
+                <!-- MARKETPLACE PREVIEW SECTION -->
+                <div>
+                    <div class="flex justify-between items-center mb-2.5 px-1">
+                        <h3 class="text-xs font-black uppercase text-slate-700 tracking-wider flex items-center gap-1.5">
+                            <i data-lucide="shopping-bag" class="w-4 h-4 text-amber-600"></i> পুরাতন জিনিসপত্রের মার্কেট
+                        </h3>
+                        <span onclick="navigateTo('marketplace-page')" class="text-xs font-bold text-amber-600 cursor-pointer">মার্কেটে যান &rarr;</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2.5" id="home-marketplace-preview">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. SERVICES PAGE (AC, Fridge, Electrician, etc.) -->
+            <div id="services-page" class="p-4 space-y-4 sub-page">
+                <div class="flex items-center justify-between border-b pb-2">
+                    <div>
+                        <h2 class="text-base font-extrabold text-slate-900">২৪ ঘণ্টা ইলেকট্রিশিয়ান ও টেকনিশিয়ান সেবা</h2>
+                        <p class="text-[11px] text-slate-500">আপনার সুবিধাজনক সময়ে দক্ষ টেকনিশিয়ান বুক করুন</p>
+                    </div>
+                    <span class="text-[10px] font-black bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-full border border-emerald-300">
+                        24/7 Live
+                    </span>
+                </div>
+
+                <!-- CATEGORY CHIPS -->
+                <div class="flex gap-2 overflow-x-auto pb-1" id="service-category-chips">
+                    <button class="category-chip active" onclick="filterServices('all', this)">সব সেবা</button>
+                    <button class="category-chip" onclick="filterServices('ac', this)">এসি (AC)</button>
+                    <button class="category-chip" onclick="filterServices('fridge', this)">ফ্রিজ (Fridge)</button>
+                    <button class="category-chip" onclick="filterServices('wiring', this)">ওয়্যারিং ও বিদ্যুৎ</button>
+                    <button class="category-chip" onclick="filterServices('appliances', this)">হোম অ্যাপ্লায়েন্স</button>
+                </div>
+
+                <!-- SERVICE ITEMS LIST -->
+                <div id="services-list-container" class="space-y-3">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- 3. MARKETPLACE PAGE (Used Goods Buy/Sell) -->
+            <div id="marketplace-page" class="p-4 space-y-4 sub-page">
+                <div class="bg-gradient-to-r from-amber-500 to-orange-600 p-4 rounded-3xl text-white flex items-center justify-between shadow-lg">
+                    <div>
+                        <h3 class="font-black text-base">পুরাতন ইলেকট্রনিক্স মার্কেটপ্লেস</h3>
+                        <p class="text-xs text-amber-100">পুরাতন এসি, ফ্রিজ, টিভি বা মোটর ক্রয়-বিক্রয় করুন</p>
+                    </div>
+                    <button onclick="openCreateAdModal()" class="px-3 py-2 bg-slate-900 hover:bg-slate-800 text-white font-black text-xs rounded-xl flex items-center gap-1 shadow-md active:scale-95 transition">
+                        <i data-lucide="plus-circle" class="w-4 h-4 text-amber-400"></i> বিজ্ঞাপন দিন
+                    </button>
+                </div>
+
+                <!-- MARKETPLACE FILTER -->
+                <div class="flex gap-2 overflow-x-auto pb-1" id="marketplace-filter-chips">
+                    <button class="category-chip active" onclick="filterMarketplace('all', this)">সব জিনিস</button>
+                    <button class="category-chip" onclick="filterMarketplace('AC', this)">এসি</button>
+                    <button class="category-chip" onclick="filterMarketplace('Fridge', this)">ফ্রিজ</button>
+                    <button class="category-chip" onclick="filterMarketplace('Motor', this)">মোটর/পাম্প</button>
+                    <button class="category-chip" onclick="filterMarketplace('TV', this)">টিভি</button>
+                    <button class="category-chip" onclick="filterMarketplace('Tools', this)">টুলস/যন্ত্রপাতি</button>
+                </div>
+
+                <!-- MARKETPLACE ITEMS LIST -->
+                <div id="marketplace-grid-container" class="grid grid-cols-2 gap-3 min-h-[220px]">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- 4. BOOKINGS / ORDERS PAGE -->
+            <div id="orders-page" class="p-4 space-y-4 sub-page">
+                <div class="flex items-center justify-between border-b pb-2.5">
+                    <h2 class="text-base font-extrabold text-slate-800">আমার বুকিং ও সার্ভিস হিস্ট্রি</h2>
+                    <button onclick="loadUserBookings()" class="text-xs font-bold text-blue-600 flex items-center gap-1">
+                        <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> রিফ্রেশ
+                    </button>
+                </div>
+                <div id="user-bookings-list" class="space-y-3 min-h-[200px]">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- 5. WALLET / DEPOSIT PAGE -->
+            <div id="pay-page" class="p-4 space-y-4 sub-page">
+                <div class="bg-gradient-to-br from-blue-700 via-indigo-800 to-slate-900 p-5 rounded-3xl text-white shadow-xl">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="text-xs text-blue-200 font-bold block">আপনার মোট ওয়ালেট ব্যালেন্স</span>
+                            <span id="deposit-wallet-display" class="text-2xl font-black text-white tracking-tight">৳0.00</span>
+                        </div>
+                        <div class="w-12 h-12 rounded-2xl bg-white/15 flex items-center justify-center">
+                            <i data-lucide="wallet" class="w-6 h-6 text-amber-300"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                    <div class="bg-amber-50 p-3 rounded-2xl border border-amber-200 text-xs text-amber-900 font-medium">
+                        <b>⚠️ জরুরি তথ্য:</b> সার্ভিস অর্ডার করতে ওয়ালেটে সর্বনিম্ন <b>৳১০০</b> থাকা আবশ্যক। আপনি যেকোনো পরিমাণ (মিনিমাম ৳১০০) ডিপোজিট করে ব্যালেন্স রাখতে পারেন।
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1.5">ডিপোজিট পরিমাণ (BDT):</label>
+                        <div class="relative">
+                            <input id="deposit-amount-input" type="number" step="10" value="100" min="100" class="w-full p-3.5 pl-10 rounded-2xl input-field text-xl font-black text-slate-800">
+                            <span class="absolute left-4 top-3.5 text-slate-400 font-black text-lg">৳</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <span class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">দ্রুত নির্বাচন করুন:</span>
+                        <div class="grid grid-cols-4 gap-2">
+                            <button type="button" onclick="setDepositAmount(100)" class="py-2.5 rounded-xl border border-slate-300 font-bold text-xs hover:border-blue-600 hover:text-blue-600 bg-white">৳১০০</button>
+                            <button type="button" onclick="setDepositAmount(300)" class="py-2.5 rounded-xl border border-slate-300 font-bold text-xs hover:border-blue-600 hover:text-blue-600 bg-white">৳৩০০</button>
+                            <button type="button" onclick="setDepositAmount(500)" class="py-2.5 rounded-xl border border-slate-300 font-bold text-xs hover:border-blue-600 hover:text-blue-600 bg-white">৳৫০০</button>
+                            <button type="button" onclick="setDepositAmount(1000)" class="py-2.5 rounded-xl border border-slate-300 font-bold text-xs hover:border-blue-600 hover:text-blue-600 bg-white">৳১০০০</button>
+                        </div>
+                    </div>
+
+                    <button id="btn-initiate-deposit" onclick="initiateInstantDeposit()" class="w-full py-4 rounded-2xl btn-action-primary text-sm flex items-center justify-center gap-2 shadow-lg">
+                        <i data-lucide="credit-card" class="w-4 h-4"></i>
+                        <span>bKash / Nagad / Rocket দিয়ে ডিপোজিট করুন</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 6. PROFILE & SETTINGS -->
+            <div id="profile-page" class="p-4 space-y-4 sub-page">
+                <div class="bg-gradient-to-br from-slate-900 to-blue-950 p-5 rounded-3xl text-white shadow-xl space-y-3">
+                    <div class="flex items-center gap-3.5">
+                        <div class="w-14 h-14 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-black text-xl border border-white/20">
+                            <span id="profile-avatar">U</span>
+                        </div>
+                        <div>
+                            <h3 id="profile-user-name" class="text-base font-extrabold text-white">ব্যবহারকারী</h3>
+                            <span id="profile-user-id" class="text-[11px] font-mono text-blue-300">ID: 000000</span>
+                        </div>
+                    </div>
+                    <div class="pt-2 border-t border-white/10 flex justify-between items-center text-xs">
+                        <span>ওয়ালেট ব্যালেন্স:</span>
+                        <span id="profile-wallet-balance" class="font-black text-amber-300 text-base">৳0.00</span>
+                    </div>
+                </div>
+
+                <div class="bg-white p-2 rounded-2xl border border-slate-200 shadow-sm divide-y divide-slate-100 text-xs font-bold">
+                    <button onclick="navigateTo('pay-page')" class="w-full p-3.5 flex items-center justify-between hover:bg-slate-50 rounded-xl transition">
+                        <div class="flex items-center gap-2.5">
+                            <i data-lucide="wallet" class="w-4 h-4 text-emerald-600"></i>
+                            <span>ব্যালেন্স ডিপোজিট করুন</span>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
+                    </button>
+                    <button onclick="navigateTo('orders-page')" class="w-full p-3.5 flex items-center justify-between hover:bg-slate-50 rounded-xl transition">
+                        <div class="flex items-center gap-2.5">
+                            <i data-lucide="clipboard-list" class="w-4 h-4 text-blue-600"></i>
+                            <span>আমার সার্ভিস বুকিং</span>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
+                    </button>
+                    <button onclick="openSupportModal()" class="w-full p-3.5 flex items-center justify-between hover:bg-slate-50 rounded-xl transition">
+                        <div class="flex items-center gap-2.5">
+                            <i class="fab fa-telegram text-sky-500 text-base"></i>
+                            <span>২৪/৭ লাইভ চ্যাট সাপোর্ট</span>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
+                    </button>
+                    <button onclick="window.location.reload()" class="w-full p-3.5 flex items-center justify-between hover:bg-slate-50 rounded-xl transition text-slate-500">
+                        <div class="flex items-center gap-2.5">
+                            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                            <span>অ্যাপ রিলোড করুন</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- FLOATING BOTTOM NAVIGATION -->
+        <div class="bottom-nav-container">
+            <nav class="bottom-nav">
+                <div class="nav-item active" data-page="home-page" onclick="navigateTo('home-page')">
+                    <div class="nav-icon-wrapper"><i data-lucide="home" class="w-5 h-5"></i></div>
+                    <span>Home</span>
+                </div>
+                <div class="nav-item" data-page="services-page" onclick="navigateTo('services-page')">
+                    <div class="nav-icon-wrapper"><i data-lucide="wrench" class="w-5 h-5"></i></div>
+                    <span>Services</span>
+                </div>
+                <div class="nav-item" data-page="marketplace-page" onclick="navigateTo('marketplace-page')">
+                    <div class="nav-icon-wrapper"><i data-lucide="shopping-bag" class="w-5 h-5"></i></div>
+                    <span>Market</span>
+                </div>
+                <div class="nav-item" data-page="orders-page" onclick="navigateTo('orders-page')">
+                    <div class="nav-icon-wrapper"><i data-lucide="clipboard-check" class="w-5 h-5"></i></div>
+                    <span>Bookings</span>
+                </div>
+                <div class="nav-item" data-page="profile-page" onclick="navigateTo('profile-page')">
+                    <div class="nav-icon-wrapper"><i data-lucide="user" class="w-5 h-5"></i></div>
+                    <span>Profile</span>
+                </div>
+            </nav>
+        </div>
+
+    </div>
+
+    <!-- SERVICE BOOKING MODAL (100 TK DEPOSIT CHECK ENFORCED) -->
+    <div id="service-booking-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[80] p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-3.5 shadow-2xl relative">
+            <div class="flex items-center justify-between border-b pb-2">
+                <div>
+                    <h3 class="font-extrabold text-sm text-slate-900" id="bm-service-title">এসি সার্ভিসিং বুক করুন</h3>
+                    <span class="text-[11px] text-blue-600 font-bold" id="bm-service-rate">আনুমানিক চার্জ: ৳৫০০</span>
+                </div>
+                <button onclick="closeBookingModal()" class="p-1 rounded-full bg-slate-100"><i data-lucide="x" class="w-4 h-4"></i></button>
+            </div>
+
+            <div class="bg-amber-50 p-3 rounded-2xl border border-amber-200 text-xs text-amber-900 font-medium">
+                <span class="font-bold flex items-center gap-1 text-amber-800">
+                    <i data-lucide="alert-circle" class="w-4 h-4 text-amber-600"></i> ১০০ টাকা অগ্রিম বুকিং ফি:
+                </span>
+                বুকিং কনফার্ম করতে ওয়ালেট থেকে <b>৳১০০</b> অগ্রিম নেওয়া হবে। এটি টেকনিশিয়ানের ফাইনাল বিলের সাথে কাটাকাটি হবে।
+            </div>
+
+            <div class="space-y-2 text-xs">
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">আপনার পূর্ণ ঠিকানা (Address): *</label>
+                    <textarea id="bm-address-input" rows="2" placeholder="বাড়ি/রোড নং, এলাকা, থানা..." class="w-full p-2.5 rounded-xl input-field"></textarea>
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">মোবাইল নম্বর: *</label>
+                    <input id="bm-phone-input" type="tel" placeholder="017xxxxxxxx" class="w-full p-2.5 rounded-xl input-field font-mono font-bold">
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">সমস্যার বিস্তারিত বিবরণ (Problem):</label>
+                    <input id="bm-problem-input" type="text" placeholder="যেমন: গ্যাস কমে গেছে, ঠান্ডা হচ্ছে না..." class="w-full p-2.5 rounded-xl input-field">
+                </div>
+            </div>
+
+            <div class="flex gap-2 pt-1">
+                <button onclick="closeBookingModal()" class="w-1/2 py-2.5 bg-slate-100 font-bold rounded-xl text-xs">বাতিল</button>
+                <button id="btn-confirm-booking" onclick="executeServiceBooking()" class="w-1/2 py-2.5 btn-action-primary text-xs flex items-center justify-center gap-1 shadow-md">
+                    <span>বুকিং কনফার্ম (৳১০০)</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- POST AD IN MARKETPLACE MODAL -->
+    <div id="marketplace-create-ad-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[85] p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-3 shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b pb-2">
+                <h3 class="font-extrabold text-sm text-slate-900">পুরাতন জিনিসের বিজ্ঞাপন দিন</h3>
+                <button onclick="closeCreateAdModal()" class="p-1 rounded-full bg-slate-100"><i data-lucide="x" class="w-4 h-4"></i></button>
+            </div>
+
+            <div class="space-y-2 text-xs">
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">পণ্যের নাম/শিরোনাম: *</label>
+                    <input id="ad-title" type="text" placeholder="যেমন: ১.৫ টন ব্যবহৃত ওয়ালটন এসি" class="w-full p-2.5 rounded-xl input-field">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">ক্যাটাগরি:</label>
+                        <select id="ad-category" class="w-full p-2.5 rounded-xl input-field bg-white font-semibold">
+                            <option value="AC">এসি (AC)</option>
+                            <option value="Fridge">ফ্রিজ (Fridge)</option>
+                            <option value="Motor">মোটর/পাম্প</option>
+                            <option value="TV">টিভি (TV)</option>
+                            <option value="Tools">টুলস/যন্ত্রপাতি</option>
+                            <option value="Others">অন্যান্য</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">বিক্রয় মূল্য (BDT): *</label>
+                        <input id="ad-price" type="number" placeholder="যেমন: ১২০০০" class="w-full p-2.5 rounded-xl input-field font-bold">
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">যোগাযোগের মোবাইল/WhatsApp: *</label>
+                    <input id="ad-contact" type="tel" placeholder="018xxxxxxxx" class="w-full p-2.5 rounded-xl input-field font-mono">
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">অবস্থান / এলাকা: *</label>
+                    <input id="ad-location" type="text" placeholder="যেমন: মিরপুর ১০, ঢাকা" class="w-full p-2.5 rounded-xl input-field">
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">পণ্যের ছবি URL (ঐচ্ছিক):</label>
+                    <input id="ad-image" type="url" placeholder="https://..." class="w-full p-2.5 rounded-xl input-field">
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">পণ্যের কন্ডিশন ও বিবরণ:</label>
+                    <textarea id="ad-desc" rows="2" placeholder="কতদিন ব্যবহার করেছেন বা কোনো ত্রুটি আছে কিনা লিখুন..." class="w-full p-2.5 rounded-xl input-field"></textarea>
+                </div>
+            </div>
+
+            <div class="flex gap-2 pt-1">
+                <button onclick="closeCreateAdModal()" class="w-1/2 py-2.5 bg-slate-100 font-bold rounded-xl text-xs">বাতিল</button>
+                <button id="btn-submit-ad" onclick="submitMarketplaceAd()" class="w-1/2 py-2.5 btn-warning-action text-xs flex items-center justify-center gap-1 shadow-md">
+                    <span>পোস্ট করুন</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIEW MARKETPLACE AD MODAL -->
+    <div id="view-ad-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[88] p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-3.5 shadow-2xl relative text-xs">
+            <button onclick="document.getElementById('view-ad-modal').classList.add('hidden')" class="absolute top-4 right-4 p-1 rounded-full bg-slate-100 z-10"><i data-lucide="x" class="w-4 h-4"></i></button>
+            <div class="w-full h-44 rounded-2xl bg-slate-100 overflow-hidden relative">
+                <img id="view-ad-img" src="" class="w-full h-full object-cover" alt="Product">
+                <span id="view-ad-cat" class="absolute top-2 left-2 px-2.5 py-0.5 bg-black/60 text-white rounded-md text-[10px] font-bold">Category</span>
+            </div>
+            <div>
+                <span id="view-ad-price" class="text-lg font-black text-amber-600 block">৳0.00</span>
+                <h3 id="view-ad-title" class="text-sm font-black text-slate-800 mt-0.5">Title</h3>
+                <p id="view-ad-location" class="text-[11px] text-slate-500 mt-0.5 flex items-center gap-1">
+                    <i data-lucide="map-pin" class="w-3.5 h-3.5 text-red-500"></i> Location
+                </p>
+            </div>
+            <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 leading-relaxed text-slate-700" id="view-ad-desc">
+                বিবরণ...
+            </div>
+            <div class="grid grid-cols-2 gap-2 pt-1">
+                <a id="view-ad-call-btn" href="tel:" class="py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl flex items-center justify-center gap-1.5 shadow">
+                    <i data-lucide="phone" class="w-4 h-4"></i> সরাসরি কল
+                </a>
+                <a id="view-ad-wa-btn" href="https://wa.me/" target="_blank" class="py-2.5 bg-[#25D366] hover:bg-[#20ba59] text-white font-bold rounded-xl flex items-center justify-center gap-1.5 shadow">
+                    <i class="fab fa-whatsapp text-sm"></i> হোয়াটসঅ্যাপ
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- JAVASCRIPT & DATABASE LOGIC                                               -->
+    <!-- ========================================================================= -->
+
+    <!-- SUPPORT CHAT SCRIPT -->
+    <script>
+        const OFFICIAL_ADMIN_ID = "7358825471";
+        const supportFirebaseConfig = {
+            apiKey: "AIzaSyAsENiikJ5YQ1F8UHrixdJVEINAhO4PG30",
+            authDomain: "bot2-3d8bc.firebaseapp.com",
+            databaseURL: "https://bot2-3d8bc-default-rtdb.firebaseio.com",
+            projectId: "bot2-3d8bc"
+        };
+        const supportApp = firebase.initializeApp(supportFirebaseConfig, "supportAppInstance");
+        const supportDb = supportApp.database();
+        let supportUserId = "guest_" + Date.now();
+
+        function openSupportModal() {
+            document.getElementById('support-modal-overlay').style.display = 'flex';
+            loadSupportChat();
         }
-      }, 3500);
+        function closeSupportModal() {
+            document.getElementById('support-modal-overlay').style.display = 'none';
+        }
 
-      try {
-        // Firebase Config Listener
-        db.ref('config').on('value', snap => {
-          if (snap.exists()) {
-            appState.config = Object.assign({}, appState.config, snap.val());
-            if (appState.config.stats) {
-              const elM = document.getElementById('ldr-members');
-              const elA = document.getElementById('ldr-active');
-              const elE = document.getElementById('ldr-earned');
-              if (elM) elM.innerText = (appState.config.stats.members || 1450).toLocaleString();
-              if (elA) elA.innerText = (appState.config.stats.active || 420).toLocaleString();
-              if (elE) elE.innerText = (appState.config.stats.earn || 24800).toLocaleString();
-            }
-            renderAds();
-          }
-        });
-
-        // User Sync with Midnight Task Reset
-        const userRef = db.ref('users/' + tgUser.id);
-        const today = todayStr();
-        const snap = await userRef.once('value');
-
-        if (!snap.exists()) {
-          appState.user = { 
-            id: tgUser.id,
-            name: tgUser.first_name,
-            photo: userAvatarUrl,
-            dailyAds: {},
-            singleKey: '',
-            isVerified: false,
-            lastActive: today,
-            redeemClaimed: false
-          };
-          await userRef.set(appState.user);
-        } else {
-          appState.user = snap.val();
-          
-          // রাত ১২টার পর টাস্ক, অ্যাড ও PIN ভেরিফিকেশন স্বয়ংক্রিয় রিসেট
-          if (appState.user.lastActive !== today) {
-            await userRef.update({
-              dailyAds: {},
-              isVerified: false,
-              redeemClaimed: false,
-              lastActive: today
+        function loadSupportChat() {
+            supportDb.ref('electrician_support/' + supportUserId).on('value', snap => {
+                const body = document.getElementById('chat-messages');
+                body.innerHTML = `
+                    <div class="msg-row admin">
+                        <div class="msg-bubble">
+                            স্বাগতম <b>ElectricianBD</b> সাপোর্টে! এসি, ফ্রিজ বা যেকোনো টেকনিক্যাল সমস্যা অথবা মার্কেটপ্লেস সংক্রান্ত তথ্যের জন্য বার্তা পাঠান।
+                        </div>
+                    </div>`;
+                if(snap.exists()){
+                    snap.forEach(c => {
+                        const m = c.val();
+                        const isAdm = m.sender === 'admin';
+                        body.innerHTML += `
+                            <div class="msg-row ${isAdm ? 'admin' : 'user'}">
+                                <div class="msg-bubble">${escapeHTML(m.text)}</div>
+                            </div>
+                        `;
+                    });
+                    body.scrollTop = body.scrollHeight;
+                }
             });
-            appState.user.dailyAds = {};
-            appState.user.isVerified = false;
-            appState.user.redeemClaimed = false;
-            appState.user.lastActive = today;
-          }
         }
 
-        userRef.on('value', live => {
-          if (live.exists()) {
-            appState.user = live.val();
-            renderAds();
-            if (!isBooted) {
-              clearTimeout(fallbackTimer);
-              isBooted = true;
-              setTimeout(() => {
-                document.getElementById('loader').style.display = 'none';
-                document.getElementById('app').style.display = 'block';
-              }, 600);
+        async function sendSupportMessage() {
+            const input = document.getElementById('chat-text-input');
+            const txt = input.value.trim();
+            if(!txt) return;
+            await supportDb.ref('electrician_support/' + supportUserId).push({
+                sender: 'user',
+                text: txt,
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                timestamp: Date.now()
+            });
+            input.value = '';
+        }
+
+        function escapeHTML(str) {
+            return String(str || '').replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
+        }
+    </script>
+
+    <!-- MAIN APP SCRIPT (ES MODULE / FIRESTORE) -->
+    <script type="module">
+        import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { 
+            getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, 
+            query, where, getDocs, orderBy, limit, runTransaction, updateDoc, increment 
+        } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+        const primaryFirebaseConfig = {
+            apiKey: "AIzaSyC_Qj_G_FOrlSehcj6qjdYB8x_G-yIyWnU",
+            authDomain: "hub-54f3d.firebaseapp.com",
+            projectId: "hub-54f3d"
+        };
+        const primaryApp = !getApps().length ? initializeApp(primaryFirebaseConfig) : getApp();
+        const db = getFirestore(primaryApp);
+
+        // Core App State
+        let currentUserTg = null;
+        let userData = null;
+        let activeBookingService = null;
+        let selectedCategoryFilter = 'all';
+        let selectedMarketplaceFilter = 'all';
+
+        // Catalog of 24/7 Technician Services
+        const coreServices = [
+            {
+                id: "srv_ac_service",
+                title: "এসি মাস্টার সার্ভিসিং ও ওয়াশ",
+                category: "ac",
+                icon: "wind",
+                rateText: "৳৫০০ - ৳৮০০",
+                approxFee: 500,
+                desc: "ইনডোর ও আউটডোর প্রেশার ওয়াশ, ফিল্টার ক্লিনিং ও কুলিং পারফরম্যান্স চেকিং।"
+            },
+            {
+                id: "srv_ac_gas",
+                title: "এসি গ্যাস রিফিল ও লিকেজ রিপেয়ার",
+                category: "ac",
+                icon: "zap",
+                rateText: "৳১৫০০ - ৳৩০০০",
+                approxFee: 1500,
+                desc: "R22/R410/R32 গ্যাস টপ-আপ, লিকেজ আইডেন্টিফিকেশন এবং টেস্ট।"
+            },
+            {
+                id: "srv_fridge_repair",
+                title: "ফ্রিজ ও ডিপ-ফ্রিজ মেরামত",
+                category: "fridge",
+                icon: "thermometer-snowflake",
+                rateText: "৳৬০০ - ৳১২০০",
+                approxFee: 600,
+                desc: "কম্প্রেসর সমস্যা, ঠান্ডা না হওয়া, গ্যাস লিকেজ এবং থার্মোস্টেট প্রতিস্থাপন।"
+            },
+            {
+                id: "srv_house_wiring",
+                title: "বাসা-বাড়ি ও অফিস ইলেকট্রিক ওয়্যারিং",
+                category: "wiring",
+                icon: "plug-zap",
+                rateText: "৳৪০০ থেকে শুরু",
+                approxFee: 400,
+                desc: "নতুন ওয়্যারিং, শর্ট সার্কিট ফিক্সিং, সুইচ-সকেট পরিবর্তন ও ডিবি বোর্ড ইনস্টলেশন।"
+            },
+            {
+                id: "srv_washing_machine",
+                title: "ওয়াশিং মেশিন সার্ভিসিং",
+                category: "appliances",
+                icon: "refresh-cw",
+                rateText: "৳৭০০ - ৳১৫০০",
+                approxFee: 700,
+                desc: "টপ লোড ও ফ্রন্ট লোড ওয়াশিং মেশিনের মোটর, ড্রেন ও সেন্সর রিপেয়ার।"
+            },
+            {
+                id: "srv_water_pump",
+                title: "পানির মোটর ও পাম্প মেরামত",
+                category: "wiring",
+                icon: "droplet",
+                rateText: "৳৫০০ - ৳১০০০",
+                approxFee: 500,
+                desc: "পানি না ওঠা, মোটর জ্যাম, ক্যাপাসিটর বা কয়েল রিওয়াইন্ডিং সেবা।"
+            },
+            {
+                id: "srv_ips_solar",
+                title: "আইপিএস ও সোলার ব্যাটারি সেটআপ",
+                category: "wiring",
+                icon: "battery-charging",
+                rateText: "৳৬০০ - ৳১২০০",
+                approxFee: 600,
+                desc: "ইনভার্টার মেরামত, ব্যাটারি পানি লেভেলিং ও সম্পূর্ণ হোম ব্যাকআপ সংযোগ।"
             }
-          }
-        });
-      } catch(e) {
-        clearTimeout(fallbackTimer);
-        document.getElementById('loader').style.display = 'none';
-        document.getElementById('app').style.display = 'block';
-      }
-    };
-  </script>
+        ];
+
+        // Sample Marketplace Items
+        let marketplaceItems = [];
+
+        window.showToast = function(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            if(!container) return;
+            const toast = document.createElement('div');
+            toast.className = `toast-item toast-${type}`;
+            toast.innerHTML = `<i data-lucide="${type === 'error' ? 'alert-circle' : type === 'success' ? 'check-circle' : 'info'}" class="w-4 h-4"></i><span>${message}</span>`;
+            container.appendChild(toast);
+            lucide.createIcons();
+            requestAnimationFrame(() => toast.classList.add('show'));
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 400);
+            }, 3200);
+        };
+
+        window.navigateTo = function(pageId) {
+            document.querySelectorAll('.sub-page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.toggle('active', item.dataset.page === pageId);
+            });
+            const target = document.getElementById(pageId);
+            if(target) target.classList.add('active');
+
+            if(pageId === 'services-page') renderServicesList();
+            if(pageId === 'marketplace-page') loadMarketplaceData();
+            if(pageId === 'orders-page') loadUserBookings();
+            if(pageId === 'pay-page') updateBalanceUI();
+            if(pageId === 'profile-page') updateProfileUI();
+            lucide.createIcons();
+        };
+
+        window.onload = async () => {
+            try {
+                if (window.Telegram?.WebApp && window.Telegram.WebApp.initDataUnsafe?.user) {
+                    window.Telegram.WebApp.ready();
+                    window.Telegram.WebApp.expand();
+                    currentUserTg = window.Telegram.WebApp.initDataUnsafe.user;
+                } else {
+                    currentUserTg = { id: "01700000000", first_name: "Customer" };
+                }
+            } catch(e) {
+                currentUserTg = { id: "01700000000", first_name: "Customer" };
+            }
+
+            supportUserId = String(currentUserTg.id);
+            await initUserData();
+            renderHomeQuickServices();
+            renderHomeMarketplacePreview();
+            renderServicesList();
+            loadMarketplaceData();
+
+            const loader = document.getElementById('loader');
+            if(loader) {
+                loader.style.opacity = '0';
+                setTimeout(() => loader.style.display = 'none', 300);
+            }
+        };
+
+        async function initUserData() {
+            const uid = String(currentUserTg.id);
+            const userRef = doc(db, "electrician_users", uid);
+            const snap = await getDoc(userRef);
+
+            if(snap.exists()) {
+                userData = snap.data();
+            } else {
+                userData = {
+                    userId: uid,
+                    name: `${currentUserTg.first_name || ''} ${currentUserTg.last_name || ''}`.trim() || 'ব্যবহারকারী',
+                    balance: 0,
+                    createdAt: serverTimestamp()
+                };
+                await setDoc(userRef, userData);
+            }
+
+            updateBalanceUI();
+            updateProfileUI();
+        }
+
+        function updateBalanceUI() {
+            const bal = parseFloat(userData?.balance || 0).toFixed(2);
+            document.getElementById('header-coin-balance').textContent = `৳${bal}`;
+            const depBal = document.getElementById('deposit-wallet-display');
+            if(depBal) depBal.textContent = `৳${bal}`;
+            const profBal = document.getElementById('profile-wallet-balance');
+            if(profBal) profBal.textContent = `৳${bal}`;
+
+            const banner = document.getElementById('deposit-alert-banner');
+            if(parseFloat(bal) >= 100) {
+                if(banner) banner.classList.add('hidden');
+            } else {
+                if(banner) banner.classList.remove('hidden');
+            }
+        }
+
+        function updateProfileUI() {
+            if(!userData) return;
+            document.getElementById('profile-user-name').textContent = userData.name || 'ব্যবহারকারী';
+            document.getElementById('profile-user-id').textContent = `User ID: ${userData.userId}`;
+            document.getElementById('profile-avatar').textContent = (userData.name || 'U').charAt(0).toUpperCase();
+        }
+
+        // --- SERVICES LOGIC ---
+        function renderHomeQuickServices() {
+            const container = document.getElementById('home-quick-services');
+            if(!container) return;
+            container.innerHTML = coreServices.slice(0, 4).map(s => `
+                <div onclick="openServiceBookingModal('${s.id}')" class="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 transition">
+                    <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-1.5">
+                        <i data-lucide="${s.icon}" class="w-5 h-5"></i>
+                    </div>
+                    <span class="text-[11px] font-bold text-slate-800 leading-tight">${s.title.split(' ')[0]}</span>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function renderServicesList() {
+            const container = document.getElementById('services-list-container');
+            if(!container) return;
+
+            const filtered = selectedCategoryFilter === 'all' 
+                ? coreServices 
+                : coreServices.filter(s => s.category === selectedCategoryFilter);
+
+            container.innerHTML = filtered.map(s => `
+                <div class="service-card p-4 space-y-3">
+                    <div class="flex items-start justify-between gap-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="${s.icon}" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-extrabold text-sm text-slate-900 leading-snug">${s.title}</h4>
+                                <span class="text-xs font-black text-emerald-600 font-mono">${s.rateText}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed">${s.desc}</p>
+                    <div class="pt-1 flex items-center justify-between border-t border-slate-100">
+                        <span class="text-[10.5px] font-bold text-slate-500">বুকিং অগ্রিম: ৳১০০</span>
+                        <button onclick="openServiceBookingModal('${s.id}')" class="px-4 py-2 btn-action-primary text-xs flex items-center gap-1.5 shadow">
+                            <i data-lucide="check" class="w-3.5 h-3.5"></i> বুক করুন
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        window.filterServices = function(category, btn) {
+            document.querySelectorAll('#service-category-chips .category-chip').forEach(c => c.classList.remove('active'));
+            if(btn) btn.classList.add('active');
+            selectedCategoryFilter = category;
+            renderServicesList();
+        };
+
+        // --- 100 TK DEPOSIT CHECK & BOOKING ---
+        window.openServiceBookingModal = function(serviceId) {
+            // STRICT 100 TK RULE ENFORCEMENT
+            const currentBal = parseFloat(userData?.balance || 0);
+            if(currentBal < 100) {
+                showToast("সার্ভিস বুকিং করতে ওয়ালেটে সর্বনিম্ন ১০০ টাকা ডিপোজিট থাকতে হবে!", "error");
+                setTimeout(() => navigateTo('pay-page'), 1000);
+                return;
+            }
+
+            const srv = coreServices.find(s => s.id === serviceId);
+            if(!srv) return;
+            activeBookingService = srv;
+
+            document.getElementById('bm-service-title').textContent = srv.title;
+            document.getElementById('bm-service-rate').textContent = `আনুমানিক চার্জ: ${srv.rateText}`;
+            document.getElementById('service-booking-modal').classList.remove('hidden');
+            lucide.createIcons();
+        };
+
+        window.closeBookingModal = function() {
+            document.getElementById('service-booking-modal').classList.add('hidden');
+        };
+
+        window.executeServiceBooking = async function() {
+            if(!activeBookingService) return;
+
+            const address = document.getElementById('bm-address-input').value.trim();
+            const phone = document.getElementById('bm-phone-input').value.trim();
+            const problem = document.getElementById('bm-problem-input').value.trim() || 'সাধারণ সমস্যা';
+
+            if(!address || !phone) {
+                return showToast("দয়া করে আপনার ঠিকানা এবং মোবাইল নম্বর লিখুন!", "error");
+            }
+
+            const btn = document.getElementById('btn-confirm-booking');
+            btn.disabled = true;
+            btn.textContent = "Checking...";
+
+            try {
+                const userRef = doc(db, "electrician_users", String(userData.userId));
+
+                // Deduct 100 TK token booking deposit
+                await runTransaction(db, async (t) => {
+                    const snap = await t.get(userRef);
+                    const bal = parseFloat(snap.data().balance || 0);
+                    if(bal < 100) {
+                        throw new Error("আপনার ওয়ালেটে ১০০ টাকা নেই। অনুগ্রহ করে আগে ডিপোজিট করুন!");
+                    }
+
+                    t.update(userRef, { balance: bal - 100 });
+
+                    const bookingRef = doc(collection(db, "service_bookings"));
+                    t.set(bookingRef, {
+                        userId: String(userData.userId),
+                        userName: userData.name || 'Customer',
+                        serviceId: activeBookingService.id,
+                        serviceTitle: activeBookingService.title,
+                        tokenDeposit: 100,
+                        address: address,
+                        phone: phone,
+                        problem: problem,
+                        status: "pending",
+                        assignedTechnician: null,
+                        createdAt: serverTimestamp()
+                    });
+                });
+
+                userData.balance -= 100;
+                updateBalanceUI();
+                closeBookingModal();
+                showToast("🎉 বুকিং সফল হয়েছে! ১০০ টাকা অগ্রিম জমা হয়েছে। টেকনিশিয়ান শীঘ্রই কল করবেন।", "success");
+                navigateTo('orders-page');
+            } catch(e) {
+                showToast(e.message || "বুকিং ব্যর্থ হয়েছে", "error");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "বুকিং কনফার্ম (৳১০০)";
+            }
+        };
+
+        // --- BOOKINGS LIST ---
+        async function loadUserBookings() {
+            const list = document.getElementById('user-bookings-list');
+            if(!list) return;
+            list.innerHTML = `<div class="p-6 text-center text-xs text-slate-400">বুকিং লোড হচ্ছে...</div>`;
+
+            try {
+                const q = query(
+                    collection(db, "service_bookings"), 
+                    where("userId", "==", String(userData.userId)),
+                    orderBy("createdAt", "desc"),
+                    limit(15)
+                );
+                const snap = await getDocs(q);
+
+                if(snap.empty) {
+                    list.innerHTML = `<div class="bg-white p-8 rounded-3xl text-center text-slate-400 font-bold border border-dashed">আপনার কোনো অ্যাক্টিভ সার্ভিস বুকিং নেই।</div>`;
+                    return;
+                }
+
+                list.innerHTML = snap.docs.map(doc => {
+                    const b = doc.data();
+                    const dateStr = b.createdAt?.toDate ? b.createdAt.toDate().toLocaleDateString('bn-BD') : 'আজকে';
+                    const isCompleted = b.status === 'completed';
+
+                    return `
+                        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-2 text-xs">
+                            <div class="flex items-center justify-between">
+                                <h4 class="font-extrabold text-slate-900">${b.serviceTitle}</h4>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${
+                                    isCompleted ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
+                                }">${b.status === 'pending' ? 'পেন্ডিং (অনুমোদন বাকি)' : b.status}</span>
+                            </div>
+                            <p class="text-slate-600">ঠিকানা: ${b.address} | ফোন: ${b.phone}</p>
+                            <div class="flex justify-between items-center pt-2 border-t text-[11px] text-slate-500 font-medium">
+                                <span>অগ্রিম জমা: ৳${b.tokenDeposit}</span>
+                                <span>তারিখ: ${dateStr}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                lucide.createIcons();
+            } catch(e) {
+                list.innerHTML = `<div class="text-center text-xs text-red-500 py-4">ডাটা লোড করা যায়নি</div>`;
+            }
+        }
+
+        // --- MARKETPLACE LOGIC ---
+        function renderHomeMarketplacePreview() {
+            const container = document.getElementById('home-marketplace-preview');
+            if(!container) return;
+            const items = marketplaceItems.length ? marketplaceItems.slice(0, 2) : [
+                { id: '1', title: '১.৫ টন ব্যবহৃত এসি', price: 14000, category: 'AC', location: 'ঢাকা', img: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=300' },
+                { id: '2', title: 'ওয়ালটন ডিপ ফ্রিজ', price: 9500, category: 'Fridge', location: 'গাজীপুর', img: 'https://images.unsplash.com/photo-1584992236310-6edddc08acff?w=300' }
+            ];
+
+            container.innerHTML = items.map(it => `
+                <div onclick="navigateTo('marketplace-page')" class="bg-white p-2.5 rounded-2xl border border-slate-200 shadow-sm cursor-pointer hover:border-amber-400">
+                    <img src="${it.img || 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=300'}" class="w-full h-24 object-cover rounded-xl mb-1.5" alt="">
+                    <h4 class="font-bold text-xs text-slate-800 truncate">${it.title}</h4>
+                    <span class="font-black text-amber-600 text-xs">৳${it.price}</span>
+                </div>
+            `).join('');
+        }
+
+        async function loadMarketplaceData() {
+            const container = document.getElementById('marketplace-grid-container');
+            if(!container) return;
+
+            try {
+                const snap = await getDocs(query(collection(db, "marketplace_posts"), limit(30)));
+                if(!snap.empty) {
+                    marketplaceItems = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                } else if(!marketplaceItems.length) {
+                    marketplaceItems = [
+                        { id: 'm1', title: '১.৫ টন ব্যবহৃত ক্যারিয়ার এসি', price: 15500, category: 'AC', location: 'উত্তরা, ঢাকা', contact: '01711000000', desc: '১ বছর ব্যবহৃত, একদম ফ্রেশ কন্ডিশন। কুলিং খুব দ্রুত হয়।', img: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=400' },
+                        { id: 'm2', title: 'সিঙ্গার রেফ্রিজারেটর ২২০ লিটার', price: 11000, category: 'Fridge', location: 'মিরপুর, ঢাকা', contact: '01822000000', desc: 'কোনো সমস্যা নেই, নতুন মডেল কেনায় বিক্রি করছি।', img: 'https://images.unsplash.com/photo-1584992236310-6edddc08acff?w=400' },
+                        { id: 'm3', title: 'গাজী ১ হর্সপাওয়ার পানির পাম্প', price: 2800, category: 'Motor', location: 'টঙ্গী', contact: '01933000000', desc: 'কয়েল একদম অরিজিনাল, খুব ভালো প্রেসার আছে।', img: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=400' }
+                    ];
+                }
+
+                const filtered = selectedMarketplaceFilter === 'all'
+                    ? marketplaceItems
+                    : marketplaceItems.filter(i => i.category === selectedMarketplaceFilter);
+
+                container.innerHTML = filtered.map(item => `
+                    <div onclick="viewMarketplaceItem('${item.id}')" class="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between cursor-pointer hover:border-amber-500 transition">
+                        <div>
+                            <div class="w-full h-28 rounded-xl bg-slate-100 overflow-hidden mb-2">
+                                <img src="${item.img || 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=300'}" class="w-full h-full object-cover">
+                            </div>
+                            <span class="text-[9.5px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded">${item.category}</span>
+                            <h4 class="font-extrabold text-xs text-slate-800 mt-1 line-clamp-1">${item.title}</h4>
+                            <span class="text-sm font-black text-amber-600 block mt-0.5">৳${item.price}</span>
+                        </div>
+                        <span class="text-[10px] text-slate-400 mt-2 block flex items-center gap-1">
+                            <i data-lucide="map-pin" class="w-3 h-3 text-red-400"></i> ${item.location}
+                        </span>
+                    </div>
+                `).join('');
+                lucide.createIcons();
+            } catch(e) {}
+        }
+
+        window.filterMarketplace = function(category, btn) {
+            document.querySelectorAll('#marketplace-filter-chips .category-chip').forEach(c => c.classList.remove('active'));
+            if(btn) btn.classList.add('active');
+            selectedMarketplaceFilter = category;
+            loadMarketplaceData();
+        };
+
+        window.openCreateAdModal = function() {
+            document.getElementById('marketplace-create-ad-modal').classList.remove('hidden');
+        };
+        window.closeCreateAdModal = function() {
+            document.getElementById('marketplace-create-ad-modal').classList.add('hidden');
+        };
+
+        window.submitMarketplaceAd = async function() {
+            const title = document.getElementById('ad-title').value.trim();
+            const category = document.getElementById('ad-category').value;
+            const price = parseFloat(document.getElementById('ad-price').value || 0);
+            const contact = document.getElementById('ad-contact').value.trim();
+            const location = document.getElementById('ad-location').value.trim();
+            const img = document.getElementById('ad-image').value.trim();
+            const desc = document.getElementById('ad-desc').value.trim();
+
+            if(!title || !price || !contact || !location) {
+                return showToast("অনুগ্রহ করে তারকাচিহ্নিত ঘরগুলো পূরণ করুন!", "error");
+            }
+
+            const btn = document.getElementById('btn-submit-ad');
+            btn.disabled = true;
+            btn.textContent = "পোস্ট হচ্ছে...";
+
+            try {
+                const newDoc = {
+                    title, category, price, contact, location, desc,
+                    img: img || 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=300',
+                    sellerId: String(userData.userId),
+                    createdAt: serverTimestamp()
+                };
+                await addDoc(collection(db, "marketplace_posts"), newDoc);
+
+                showToast("বিজ্ঞাপন সফলভাবে প্রকাশিত হয়েছে!", "success");
+                closeCreateAdModal();
+                loadMarketplaceData();
+            } catch(e) {
+                showToast("বিজ্ঞাপন পোস্ট করতে সমস্যা হয়েছে", "error");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "পোস্ট করুন";
+            }
+        };
+
+        window.viewMarketplaceItem = function(id) {
+            const it = marketplaceItems.find(i => i.id === id);
+            if(!it) return;
+
+            document.getElementById('view-ad-title').textContent = it.title;
+            document.getElementById('view-ad-price').textContent = `৳${it.price}`;
+            document.getElementById('view-ad-cat').textContent = it.category;
+            document.getElementById('view-ad-location').textContent = it.location;
+            document.getElementById('view-ad-desc').textContent = it.desc || 'কোনো বিবরণ দেওয়া নেই।';
+            document.getElementById('view-ad-img').src = it.img || 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=300';
+            document.getElementById('view-ad-call-btn').href = `tel:${it.contact}`;
+            document.getElementById('view-ad-wa-btn').href = `https://wa.me/88${it.contact.replace(/[^0-9]/g,'')}`;
+
+            document.getElementById('view-ad-modal').classList.remove('hidden');
+            lucide.createIcons();
+        };
+
+        // --- DEPOSIT SYSTEM ---
+        window.setDepositAmount = function(amt) {
+            document.getElementById('deposit-amount-input').value = amt;
+        };
+
+        window.initiateInstantDeposit = async function() {
+            const amt = parseFloat(document.getElementById('deposit-amount-input').value || 0);
+            if(amt < 100) return showToast("সর্বনিম্ন ১০০ টাকা ডিপোজিট করতে হবে!", "error");
+
+            const returnUrl = window.location.href.split('?')[0];
+            showToast("পেমেন্ট গেটওয়েতে নিয়ে যাওয়া হচ্ছে...", "info");
+
+            try {
+                const res = await fetch('/api/payment?action=create', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        amount: String(amt),
+                        success_url: returnUrl + "?status=success&amt=" + amt,
+                        cancel_url: returnUrl + "?status=cancel",
+                        metadata: { userId: String(userData.userId) }
+                    })
+                });
+                const data = await res.json();
+                const payUrl = data.payment_url || data.url;
+                if(payUrl) {
+                    window.location.href = payUrl;
+                } else {
+                    // DEMO BALANCE ADDITION (If testing locally without gateway backend)
+                    await updateDoc(doc(db, "electrician_users", String(userData.userId)), {
+                        balance: increment(amt)
+                    });
+                    userData.balance = (userData.balance || 0) + amt;
+                    updateBalanceUI();
+                    showToast(`পরীক্ষামূলকভাবে ৳${amt} ব্যালেন্সে যুক্ত হয়েছে!`, "success");
+                    navigateTo('services-page');
+                }
+            } catch(e) {
+                // Fallback for simulation
+                await updateDoc(doc(db, "electrician_users", String(userData.userId)), {
+                    balance: increment(amt)
+                });
+                userData.balance = (userData.balance || 0) + amt;
+                updateBalanceUI();
+                showToast(`৳${amt} ডিপোজিট সফল হয়েছে!`, "success");
+                navigateTo('services-page');
+            }
+        };
+
+        window.openEmergencyCall = function() {
+            window.location.href = "tel:01827750260";
+        };
+    </script>
 </body>
 </html>
