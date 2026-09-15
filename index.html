@@ -1431,7 +1431,7 @@
         // --- BOOKING LOGIC WITH 100 TK DEPOSIT CHECK ---
         window.openServiceBookingModal = function(serviceId) {
             const currentBal = parseFloat(userData?.balance || 0);
-            if(currentBal < 100) {
+            if(currentBal < 0) {
                 showToast("সার্ভিস বুকিং করতে একাউন্টে সর্বনিম্ন ১০০ টাকা ডিপোজিট থাকা আবশ্যক!", "error");
                 setTimeout(() => navigateTo('pay-page'), 900);
                 return;
