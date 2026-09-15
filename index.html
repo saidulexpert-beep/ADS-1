@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ElectricianBD - 24/7 Technician & Marketplace</title>
+    <title>ElectricianBD - 24/7 On-Demand Technicians & Marketplace</title>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- Support Chat Firebase Realtime Database SDKs (Compat) -->
+    <!-- Firebase Realtime Database SDK (Support Chat & Admin) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
 
@@ -28,32 +28,30 @@
             user-select: text;
         }
         .main-header {
-            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            background: linear-gradient(135deg, #09152e 0%, #1e3a8a 100%);
             color: #ffffff;
-            padding: 10px 16px;
+            padding: 11px 16px;
             position: sticky;
             top: 0;
             z-index: 40;
-            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.15);
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.2);
         }
         .wallet-pill {
             background: rgba(255, 255, 255, 0.15);
             border: 1px solid rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(10px);
             border-radius: 9999px;
             padding: 5px 12px;
-            transition: all 0.2s ease;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .wallet-pill:active {
-            transform: scale(0.95);
-            background: rgba(255, 255, 255, 0.25);
-        }
+        .wallet-pill:active { transform: scale(0.95); }
+
         .category-chip {
             background: #ffffff;
             color: #475569;
             border: 1px solid #e2e8f0;
             border-radius: 14px;
-            padding: 8px 12px;
+            padding: 8px 14px;
             font-size: 0.78rem;
             font-weight: 700;
             display: flex;
@@ -70,22 +68,24 @@
             border-color: #2563eb;
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
         }
+
         .service-card {
             background: #ffffff;
-            border-radius: 20px;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-            transition: all 0.2s ease;
+            border-radius: 22px;
+            border: 1.5px solid #e2e8f0;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+            transition: all 0.25s ease;
         }
         .service-card:hover {
             border-color: #93c5fd;
-            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.08);
+            box-shadow: 0 10px 24px rgba(37, 99, 235, 0.09);
         }
+
         .btn-action-primary {
             background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
             color: white;
-            font-weight: 700;
-            border-radius: 12px;
+            font-weight: 800;
+            border-radius: 14px;
             transition: all 0.2s ease;
             cursor: pointer;
         }
@@ -94,8 +94,8 @@
         .btn-warning-action {
             background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
             color: white;
-            font-weight: 700;
-            border-radius: 12px;
+            font-weight: 800;
+            border-radius: 14px;
             transition: all 0.2s ease;
             cursor: pointer;
         }
@@ -112,16 +112,16 @@
             z-index: 50;
         }
         .bottom-nav {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(18px);
             border: 1px solid rgba(226, 232, 240, 0.9);
-            border-radius: 24px;
+            border-radius: 26px;
             display: flex;
             justify-content: space-around;
             align-items: center;
             height: 64px;
             padding: 4px 6px;
-            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+            box-shadow: 0 14px 34px rgba(15, 23, 42, 0.12);
         }
         .nav-item {
             display: flex;
@@ -135,9 +135,7 @@
             cursor: pointer;
             flex: 1;
         }
-        .nav-item.active {
-            color: #2563eb;
-        }
+        .nav-item.active { color: #2563eb; }
         .nav-item.active .nav-icon-wrapper {
             background: #eff6ff;
             color: #2563eb;
@@ -166,7 +164,7 @@
             border-color: #2563eb;
             background-color: #ffffff;
             outline: none;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+            box-shadow: 0 0 0 3.5px rgba(37, 99, 235, 0.14);
         }
 
         .toast-container {
@@ -204,28 +202,56 @@
         .toast-item.toast-error { border-left-color: #ef4444; }
         .toast-item.toast-info { border-left-color: #f59e0b; }
 
-        /* FLOATING TELEGRAM BUTTON */
+        /* FLOATING TELEGRAM LIVE SUPPORT BUTTON */
         .floating-telegram-btn {
             position: fixed;
             bottom: 84px;
             right: 18px;
-            width: 52px;
-            height: 52px;
+            width: 54px;
+            height: 54px;
             border-radius: 50%;
             background: linear-gradient(135deg, #2AABEE 0%, #229ed9 100%);
             color: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.4rem;
-            box-shadow: 0 8px 25px rgba(42, 171, 238, 0.4);
+            font-size: 1.55rem;
+            box-shadow: 0 8px 25px rgba(42, 171, 238, 0.45);
             z-index: 60;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid rgba(255, 255, 255, 0.35);
         }
         .floating-telegram-btn:active { transform: scale(0.92); }
+        .floating-telegram-btn .pulse-ring {
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 2px solid #2AABEE;
+            animation: supportPulse 2s infinite;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+        @keyframes supportPulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            70% { transform: scale(1.2); opacity: 0; }
+            100% { transform: scale(1.2); opacity: 0; }
+        }
+        .floating-support-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background: #ef4444;
+            color: white;
+            font-size: 10px;
+            font-weight: 900;
+            padding: 2px 6px;
+            border-radius: 9999px;
+            border: 2px solid #ffffff;
+            display: none;
+        }
 
-        /* SUPPORT CHAT MODAL */
+        /* SUPPORT DESK MODAL */
         #support-modal-overlay {
             position: fixed;
             inset: 0;
@@ -251,11 +277,41 @@
         }
         .tg-top-bar {
             background: #17212b;
+            color: #fff;
             padding: 10px 14px;
             display: flex;
             align-items: center;
             gap: 10px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+        .tg-exit-btn, .tg-back-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .tg-chat-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .tg-avatar-wrap img {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #2AABEE;
         }
         .tg-chat-body {
             flex: 1;
@@ -271,14 +327,23 @@
         .msg-row.user { justify-content: flex-end; }
         .msg-bubble {
             max-width: 86%;
-            padding: 10px 14px;
+            padding: 11px 14px;
             border-radius: 16px;
             font-size: 0.85rem;
-            line-height: 1.4;
+            line-height: 1.45;
             color: #fff;
+            position: relative;
+            word-break: break-word;
         }
-        .msg-row.admin .msg-bubble { background: #1e2c3a; border-bottom-left-radius: 4px; }
-        .msg-row.user .msg-bubble { background: #2b5278; border-bottom-right-radius: 4px; }
+        .msg-row.admin .msg-bubble {
+            background: #1e2c3a;
+            border-bottom-left-radius: 4px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .msg-row.user .msg-bubble {
+            background: #2b5278;
+            border-bottom-right-radius: 4px;
+        }
         .tg-bottom-bar {
             background: #17212b;
             padding: 8px 12px;
@@ -286,6 +351,102 @@
             align-items: center;
             gap: 8px;
             border-top: 1px solid rgba(255,255,255,0.08);
+        }
+        .tg-input {
+            flex: 1;
+            padding: 10px 16px;
+            border-radius: 22px;
+            border: 1px solid rgba(255,255,255,0.12);
+            outline: none;
+            font-size: 0.86rem;
+            background: #0e1621;
+            color: #fff;
+        }
+        .tg-send-btn {
+            background: #2AABEE;
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        /* 5-STEP BOOKING LIFECYCLE TRACKER */
+        .lifecycle-step {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            text-align: center;
+        }
+        .lifecycle-step::before {
+            content: '';
+            position: absolute;
+            top: 13px;
+            left: -50%;
+            width: 100%;
+            height: 3px;
+            background-color: #e2e8f0;
+            z-index: 1;
+        }
+        .lifecycle-step:first-child::before { display: none; }
+        .lifecycle-step.active::before, .lifecycle-step.completed::before {
+            background-color: #10b981;
+        }
+        .step-circle {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            border: 2px solid #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 800;
+            color: #64748b;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+        .lifecycle-step.active .step-circle {
+            background: #2563eb;
+            border-color: #93c5fd;
+            color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+            animation: pulse 1.8s infinite;
+        }
+        .lifecycle-step.completed .step-circle {
+            background: #10b981;
+            border-color: #10b981;
+            color: #ffffff;
+        }
+        .step-label {
+            font-size: 9.5px;
+            font-weight: 700;
+            margin-top: 5px;
+            color: #64748b;
+        }
+        .lifecycle-step.active .step-label { color: #2563eb; font-weight: 800; }
+        .lifecycle-step.completed .step-label { color: #0f172a; }
+
+        .rating-stars-row {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .rating-star-btn {
+            font-size: 1.6rem;
+            color: #cbd5e1;
+            cursor: pointer;
+            transition: transform 0.15s, color 0.15s;
+        }
+        .rating-star-btn.selected, .rating-star-btn:hover {
+            color: #f59e0b;
+            transform: scale(1.18);
         }
     </style>
 </head>
@@ -295,40 +456,60 @@
     <div id="toast-container" class="toast-container"></div>
 
     <!-- FLOATING LIVE SUPPORT CHAT BUTTON -->
-    <div id="floating-support-btn" class="floating-telegram-btn" onclick="openSupportModal()" title="২৪/৭ হেল্পলাইন">
+    <div id="floating-support-btn" class="floating-telegram-btn" onclick="openSupportModal()" title="২৪/৭ লাইভ সাপোর্ট">
+        <div class="pulse-ring"></div>
         <i class="fab fa-telegram-plane"></i>
+        <span id="floating-support-badge" class="floating-support-badge">0</span>
     </div>
 
-    <!-- LIVE SUPPORT DESK MODAL -->
+    <!-- LIVE TELEGRAM SUPPORT CHAT MODAL -->
     <div id="support-modal-overlay">
         <div id="support-chat-wrapper">
             <div class="tg-top-bar">
-                <button onclick="closeSupportModal()" class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center text-white">
-                    <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                <button class="tg-exit-btn" onclick="closeSupportModal()" title="ফিরে যান">
+                    <i data-lucide="arrow-left" class="w-5 h-5 text-white"></i>
                 </button>
-                <div class="flex items-center gap-2.5 flex-1">
-                    <div class="w-9 h-9 rounded-full bg-amber-500 flex items-center justify-center font-bold text-white">
-                        <i data-lucide="wrench" class="w-5 h-5"></i>
+                <div class="tg-chat-user" onclick="handleSupportHeaderClick()">
+                    <div class="tg-avatar-wrap">
+                        <img id="support-header-img" src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=100" alt="Tech">
                     </div>
-                    <div>
-                        <h4 class="font-bold text-sm leading-tight">ElectricianBD হেল্পডেস্ক</h4>
-                        <p class="text-[11px] text-emerald-400 font-semibold">অনলাইন সাপোর্ট টিম (২৪/৭)</p>
+                    <div class="user-text-info overflow-hidden">
+                        <h4 class="text-sm font-black text-white leading-tight flex items-center gap-1.5" id="support-header-title">
+                            <span>ElectricianBD Support</span>
+                            <i class="fas fa-check-circle text-sky-400 text-xs"></i>
+                        </h4>
+                        <p class="text-[10.5px] text-sky-400 font-semibold" id="support-header-sub">অনলাইন কাস্টমার সাপোর্ট</p>
                     </div>
                 </div>
             </div>
 
+            <!-- Admin Search Bar (Auto displays for Admin) -->
+            <div id="admin-search-bar" class="hidden p-2.5 bg-[#17212b] border-b border-white/10">
+                <input type="text" id="admin-search-input" placeholder="ব্যবহারকারীর নাম বা আইডি..." oninput="filterAdminInbox()" class="w-full bg-[#0e1621] text-white px-3 py-2 rounded-xl text-xs outline-none">
+            </div>
+
+            <!-- Admin Inbox List View -->
+            <div id="admin-inbox-view" class="hidden flex-1 overflow-y-auto p-3 space-y-2"></div>
+
+            <!-- Chat Messages Body -->
             <div class="tg-chat-body" id="chat-messages">
                 <div class="msg-row admin">
                     <div class="msg-bubble">
-                        স্বাগতম <b>ElectricianBD</b> সাপোর্টে! এসি, ফ্রিজ বা যেকোনো টেকনিক্যাল সমস্যা অথবা মার্কেটপ্লেস সংক্রান্ত তথ্যের জন্য বার্তা পাঠান।
+                        স্বাগতম <b>ElectricianBD</b> এর অফিশিয়াল হেল্পডেস্কে! এসি, ফ্রিজ, হোম ওয়্যারিং সার্ভিস বা টেকনিশিয়ানের যেকোনো তথ্যের জন্য বিস্তারিত লিখুন।
                     </div>
                 </div>
             </div>
 
-            <div class="tg-bottom-bar">
-                <input type="text" id="chat-text-input" placeholder="আপনার সমস্যা লিখে জানান..." class="flex-1 bg-[#0e1621] text-white border border-white/10 rounded-full px-4 py-2.5 text-xs outline-none focus:border-blue-500">
-                <button onclick="sendSupportMessage()" class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center">
-                    <i class="fas fa-paper-plane text-sm"></i>
+            <!-- Typing Bar -->
+            <div id="typing-box" class="hidden px-4 py-1 text-xs text-sky-400 bg-[#17212b] font-semibold items-center gap-1.5">
+                <i class="fas fa-pencil-alt"></i> <span>লিখছেন...</span>
+            </div>
+
+            <!-- Bottom Chat Input -->
+            <div class="tg-bottom-bar" id="support-input-bar">
+                <input type="text" id="chat-text-input" placeholder="আপনার বার্তা লিখুন..." class="tg-input" onkeydown="if(event.key==='Enter') sendSupportMessage()">
+                <button class="tg-send-btn" onclick="sendSupportMessage()">
+                    <i class="fas fa-paper-plane text-xs"></i>
                 </button>
             </div>
         </div>
@@ -344,18 +525,18 @@
         </div>
         <div class="text-center space-y-1">
             <h1 class="font-black text-2xl tracking-wider text-white">ElectricianBD</h1>
-            <p class="text-xs text-amber-300 font-bold">24/7 Technician Service & Marketplace</p>
-            <p class="text-[11px] text-slate-400 pt-2">অনুগ্রহ করে অপেক্ষা করুন...</p>
+            <p class="text-xs text-amber-300 font-bold">24/7 Verified Technicians & Marketplace</p>
+            <p class="text-[11px] text-slate-400 pt-2">সিস্টেম প্রস্তুত হচ্ছে...</p>
         </div>
     </div>
 
-    <!-- MAIN APP WRAPPER -->
+    <!-- MAIN APPLICATION WRAPPER -->
     <div id="app-container" class="min-h-screen flex flex-col">
 
-        <!-- HEADER -->
+        <!-- MAIN HEADER -->
         <header class="main-header flex items-center justify-between">
             <div class="flex items-center gap-2.5">
-                <div class="w-9 h-9 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center font-black shadow-md">
+                <div class="w-9 h-9 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center font-black shadow-md shadow-amber-500/20">
                     <i data-lucide="wrench" class="w-5 h-5"></i>
                 </div>
                 <div>
@@ -365,8 +546,7 @@
             </div>
 
             <div class="flex items-center gap-2">
-                <!-- WALLET PILL -->
-                <div onclick="navigateTo('pay-page')" class="wallet-pill flex items-center gap-1.5 cursor-pointer" title="ডিপোজিট করুন">
+                <div onclick="navigateTo('pay-page')" class="wallet-pill flex items-center gap-1.5 cursor-pointer" title="ওয়ালেট ব্যালেন্স">
                     <i data-lucide="wallet" class="w-3.5 h-3.5 text-amber-300"></i>
                     <span id="header-coin-balance" class="font-black text-xs text-white">৳0.00</span>
                     <span class="bg-amber-400 text-slate-950 text-[9px] font-black px-1.5 py-0.5 rounded-full">+</span>
@@ -374,13 +554,13 @@
             </div>
         </header>
 
-        <!-- 100 TK DEPOSIT MANDATORY NOTICE BANNER -->
-        <div id="deposit-alert-banner" class="bg-gradient-to-r from-amber-600 to-red-600 text-white p-2.5 px-4 text-xs font-bold flex items-center justify-between shadow-sm">
+        <!-- 100 TK DEPOSIT MANDATORY NOTIFICATION BANNER -->
+        <div id="deposit-alert-banner" class="bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 text-white p-2.5 px-4 text-xs font-bold flex items-center justify-between shadow-sm">
             <div class="flex items-center gap-2">
                 <i data-lucide="shield-alert" class="w-4 h-4 text-amber-200 flex-shrink-0"></i>
-                <span class="leading-tight">যেকোনো সার্ভিস অর্ডার করতে ওয়ালেটে ১০০ টাকা ডিপোজিট থাকা আবশ্যক!</span>
+                <span class="leading-tight">সার্ভিস বুকিং দিতে ওয়ালেটে সর্বনিম্ন ১০০ টাকা ব্যালেন্স থাকা বাধ্যতামূলক!</span>
             </div>
-            <button onclick="navigateTo('pay-page')" class="bg-white text-slate-900 px-2.5 py-1 rounded-lg text-[10px] font-black shrink-0 hover:bg-slate-100 shadow">
+            <button onclick="navigateTo('pay-page')" class="bg-white text-slate-950 px-2.5 py-1 rounded-lg text-[10.5px] font-black shrink-0 hover:bg-slate-100 shadow">
                 ডিপোজিট
             </button>
         </div>
@@ -390,20 +570,20 @@
 
             <!-- 1. HOME PAGE -->
             <div id="home-page" class="p-4 space-y-4 sub-page active">
-                <!-- HERO BANNER -->
-                <div class="bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-white p-5 rounded-3xl relative overflow-hidden shadow-xl border border-blue-800/40">
+                <!-- HERO CARD -->
+                <div class="bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900 text-white p-5 rounded-3xl relative overflow-hidden shadow-xl border border-blue-800/40">
                     <div class="relative z-10 space-y-2">
                         <span class="px-2.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 text-[10px] font-black uppercase tracking-wider inline-flex items-center gap-1 border border-amber-400/30">
-                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span> ২৪ ঘণ্টা ইমার্জেন্সি সাপোর্ট
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span> ৬৪ জেলায় ২৪ ঘণ্টা ইমার্জেন্সি
                         </span>
-                        <h2 class="text-xl font-black leading-tight text-white">দক্ষ টেকনিশিয়ান খুঁজছেন?</h2>
-                        <p class="text-xs text-slate-300">এসি, ফ্রিজ, বাসা-বাড়ির বিদ্যুৎ সমস্যা বা যেকোনো মেরামতের জন্য অভিজ্ঞ টেকনিশিয়ান পান দ্রুততম সময়ে।</p>
+                        <h2 class="text-xl font-black leading-tight text-white">দক্ষ টেকনিশিয়ান বুক করুন</h2>
+                        <p class="text-xs text-slate-300">এসি, ফ্রিজ, ওয়াশিং মেশিন, মোটর ও যেকোনো ওয়্যারিং সমস্যার সমাধান নিন অভিজ্ঞ ইঞ্জিনিয়ারদের মাধ্যমে।</p>
                         <div class="pt-2 flex gap-2">
                             <button onclick="navigateTo('services-page')" class="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs rounded-xl flex items-center gap-1.5 shadow-md active:scale-95 transition">
-                                <i data-lucide="calendar" class="w-4 h-4"></i> সার্ভিস বুক করুন
+                                <i data-lucide="calendar" class="w-4 h-4"></i> বুকিং দিন
                             </button>
-                            <button onclick="openEmergencyCall()" class="px-3 py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-xl flex items-center gap-1.5 border border-white/20">
-                                <i data-lucide="phone-call" class="w-4 h-4 text-emerald-400"></i> কল করুন
+                            <button onclick="openEmergencyHelpline()" class="px-3 py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-xl flex items-center gap-1.5 border border-white/20">
+                                <i data-lucide="phone-call" class="w-4 h-4 text-emerald-400"></i> জরুরি কল
                             </button>
                         </div>
                     </div>
@@ -413,48 +593,44 @@
                 <div>
                     <div class="flex justify-between items-center mb-2.5 px-1">
                         <h3 class="text-xs font-black uppercase text-slate-700 tracking-wider flex items-center gap-1.5">
-                            <i data-lucide="grid" class="w-4 h-4 text-blue-600"></i> জরুরি সার্ভিসসমূহ
+                            <i data-lucide="grid" class="w-4 h-4 text-blue-600"></i> সেবা সমূহ
                         </h3>
-                        <span onclick="navigateTo('services-page')" class="text-xs font-bold text-blue-600 cursor-pointer">সব দেখুন &rarr;</span>
+                        <span onclick="navigateTo('services-page')" class="text-xs font-bold text-blue-600 cursor-pointer">সবগুলো দেখুন &rarr;</span>
                     </div>
-                    <div class="grid grid-cols-4 gap-2 text-center" id="home-quick-services">
-                        <!-- Populated by JS -->
-                    </div>
+                    <div class="grid grid-cols-4 gap-2 text-center" id="home-quick-services"></div>
                 </div>
 
-                <!-- HOW IT WORKS & 100 TK RULE -->
+                <!-- NOTICE CARD -->
                 <div class="bg-blue-50/80 p-4 rounded-2xl border border-blue-200 text-xs text-blue-950 space-y-2">
                     <h4 class="font-extrabold flex items-center gap-1.5 text-blue-900">
-                        <i data-lucide="info" class="w-4 h-4 text-blue-600"></i> বুকিংয়ের নিয়মাবলী:
+                        <i data-lucide="info" class="w-4 h-4 text-blue-600"></i> বুকিং ও সিকিউরিটি নিয়মাবলী:
                     </h4>
-                    <p>• বুকিং নিশ্চিত করার জন্য অ্যাকাউন্টে <b>সর্বনিম্ন ১০০ টাকা ব্যালেন্স</b> থাকতে হবে।</p>
-                    <p>• এই ১০০ টাকা আপনার সার্ভিস বিলের সাথে অগ্রিম সমন্বয় (Deduct) করা হবে।</p>
-                    <p>• টেকনিশিয়ান আপনার ঠিকানায় পৌঁছে সমস্যা পর্যবেক্ষণ করে কাজ শুরু করবেন।</p>
+                    <p>• প্রতিটি সার্ভিস বুকিংয়ের জন্য ওয়ালেটে <b>সর্বনিম্ন ১০০ টাকা</b> থাকা আবশ্যক।</p>
+                    <p>• বুকিং নিশ্চিত হলে ওয়ালেট থেকে ১০০ টাকা অগ্রিম নেওয়া হবে যা মূল কাজের বিলের সাথে বাদ দেওয়া হবে।</p>
+                    <p>• বুকিংয়ের পর লাইভ প্রসেস (কামিং, রানিং, সম্পন্ন) ধাপে ধাপে দেখতে পারবেন।</p>
                 </div>
 
-                <!-- MARKETPLACE PREVIEW SECTION -->
+                <!-- MARKETPLACE PREVIEW -->
                 <div>
                     <div class="flex justify-between items-center mb-2.5 px-1">
                         <h3 class="text-xs font-black uppercase text-slate-700 tracking-wider flex items-center gap-1.5">
-                            <i data-lucide="shopping-bag" class="w-4 h-4 text-amber-600"></i> পুরাতন জিনিসপত্রের মার্কেট
+                            <i data-lucide="shopping-bag" class="w-4 h-4 text-amber-600"></i> পুরাতন ইলেকট্রনিক্স বাজার
                         </h3>
                         <span onclick="navigateTo('marketplace-page')" class="text-xs font-bold text-amber-600 cursor-pointer">মার্কেটে যান &rarr;</span>
                     </div>
-                    <div class="grid grid-cols-2 gap-2.5" id="home-marketplace-preview">
-                        <!-- Populated by JS -->
-                    </div>
+                    <div class="grid grid-cols-2 gap-2.5" id="home-marketplace-preview"></div>
                 </div>
             </div>
 
-            <!-- 2. SERVICES PAGE (AC, Fridge, Electrician, etc.) -->
+            <!-- 2. SERVICES CATALOG (AC, Fridge, Electrician, etc.) -->
             <div id="services-page" class="p-4 space-y-4 sub-page">
                 <div class="flex items-center justify-between border-b pb-2">
                     <div>
                         <h2 class="text-base font-extrabold text-slate-900">২৪ ঘণ্টা ইলেকট্রিশিয়ান ও টেকনিশিয়ান সেবা</h2>
-                        <p class="text-[11px] text-slate-500">আপনার সুবিধাজনক সময়ে দক্ষ টেকনিশিয়ান বুক করুন</p>
+                        <p class="text-[11px] text-slate-500">আপনার সুবিধাজনক সময়ে দক্ষ টেকনিশিয়ান অর্ডার করুন</p>
                     </div>
                     <span class="text-[10px] font-black bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-full border border-emerald-300">
-                        24/7 Live
+                        24/7 Available
                     </span>
                 </div>
 
@@ -468,24 +644,21 @@
                 </div>
 
                 <!-- SERVICE ITEMS LIST -->
-                <div id="services-list-container" class="space-y-3">
-                    <!-- Populated dynamically -->
-                </div>
+                <div id="services-list-container" class="space-y-3"></div>
             </div>
 
-            <!-- 3. MARKETPLACE PAGE (Used Goods Buy/Sell) -->
+            <!-- 3. MARKETPLACE (BUY/SELL USED GOODS) -->
             <div id="marketplace-page" class="p-4 space-y-4 sub-page">
                 <div class="bg-gradient-to-r from-amber-500 to-orange-600 p-4 rounded-3xl text-white flex items-center justify-between shadow-lg">
                     <div>
-                        <h3 class="font-black text-base">পুরাতন ইলেকট্রনিক্স মার্কেটপ্লেস</h3>
-                        <p class="text-xs text-amber-100">পুরাতন এসি, ফ্রিজ, টিভি বা মোটর ক্রয়-বিক্রয় করুন</p>
+                        <h3 class="font-black text-base">পুরাতন ইলেকট্রনিক্স বাজার</h3>
+                        <p class="text-xs text-amber-100">পুরাতন এসি, ফ্রিজ, টিভি, মোটর ক্রয় ও বিক্রয়</p>
                     </div>
-                    <button onclick="openCreateAdModal()" class="px-3 py-2 bg-slate-900 hover:bg-slate-800 text-white font-black text-xs rounded-xl flex items-center gap-1 shadow-md active:scale-95 transition">
+                    <button onclick="openCreateAdModal()" class="px-3 py-2 bg-slate-950 hover:bg-slate-900 text-white font-black text-xs rounded-xl flex items-center gap-1 shadow-md active:scale-95 transition">
                         <i data-lucide="plus-circle" class="w-4 h-4 text-amber-400"></i> বিজ্ঞাপন দিন
                     </button>
                 </div>
 
-                <!-- MARKETPLACE FILTER -->
                 <div class="flex gap-2 overflow-x-auto pb-1" id="marketplace-filter-chips">
                     <button class="category-chip active" onclick="filterMarketplace('all', this)">সব জিনিস</button>
                     <button class="category-chip" onclick="filterMarketplace('AC', this)">এসি</button>
@@ -495,23 +668,22 @@
                     <button class="category-chip" onclick="filterMarketplace('Tools', this)">টুলস/যন্ত্রপাতি</button>
                 </div>
 
-                <!-- MARKETPLACE ITEMS LIST -->
-                <div id="marketplace-grid-container" class="grid grid-cols-2 gap-3 min-h-[220px]">
-                    <!-- Populated dynamically -->
-                </div>
+                <div id="marketplace-grid-container" class="grid grid-cols-2 gap-3 min-h-[220px]"></div>
             </div>
 
-            <!-- 4. BOOKINGS / ORDERS PAGE -->
+            <!-- 4. BOOKINGS / ORDERS PAGE (LIFECYCLE TRACKING WITH TIMESTAMPS) -->
             <div id="orders-page" class="p-4 space-y-4 sub-page">
                 <div class="flex items-center justify-between border-b pb-2.5">
-                    <h2 class="text-base font-extrabold text-slate-800">আমার বুকিং ও সার্ভিস হিস্ট্রি</h2>
-                    <button onclick="loadUserBookings()" class="text-xs font-bold text-blue-600 flex items-center gap-1">
+                    <div>
+                        <h2 class="text-base font-extrabold text-slate-800">আমার সার্ভিস বুকিং ও ট্র্যাকিং</h2>
+                        <p class="text-[10.5px] text-slate-500">কাজের রিয়েল-টাইম প্রোগ্রেস ও টেকনিশিয়ান ট্র্যাকার</p>
+                    </div>
+                    <button onclick="loadUserBookings()" class="text-xs font-bold text-blue-600 flex items-center gap-1 bg-blue-50 px-2.5 py-1 rounded-lg">
                         <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> রিফ্রেশ
                     </button>
                 </div>
-                <div id="user-bookings-list" class="space-y-3 min-h-[200px]">
-                    <!-- Populated by JS -->
-                </div>
+
+                <div id="user-bookings-list" class="space-y-4 min-h-[200px]"></div>
             </div>
 
             <!-- 5. WALLET / DEPOSIT PAGE -->
@@ -519,7 +691,7 @@
                 <div class="bg-gradient-to-br from-blue-700 via-indigo-800 to-slate-900 p-5 rounded-3xl text-white shadow-xl">
                     <div class="flex items-center justify-between">
                         <div>
-                            <span class="text-xs text-blue-200 font-bold block">আপনার মোট ওয়ালেট ব্যালেন্স</span>
+                            <span class="text-xs text-blue-200 font-bold block">আপনার বর্তমান ওয়ালেট ব্যালেন্স</span>
                             <span id="deposit-wallet-display" class="text-2xl font-black text-white tracking-tight">৳0.00</span>
                         </div>
                         <div class="w-12 h-12 rounded-2xl bg-white/15 flex items-center justify-center">
@@ -530,11 +702,11 @@
 
                 <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-4">
                     <div class="bg-amber-50 p-3 rounded-2xl border border-amber-200 text-xs text-amber-900 font-medium">
-                        <b>⚠️ জরুরি তথ্য:</b> সার্ভিস অর্ডার করতে ওয়ালেটে সর্বনিম্ন <b>৳১০০</b> থাকা আবশ্যক। আপনি যেকোনো পরিমাণ (মিনিমাম ৳১০০) ডিপোজিট করে ব্যালেন্স রাখতে পারেন।
+                        <b>⚠️ সিকিউরিটি রুল:</b> সার্ভিস অর্ডার করতে ওয়ালেটে সর্বনিম্ন <b>৳১০০</b> থাকা আবশ্যক। আপনি যেকোনো পরিমাণ (মিনিমাম ৳১০০) ডিপোজিট করতে পারেন।
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1.5">ডিপোজিট পরিমাণ (BDT):</label>
+                        <label class="block text-xs font-bold text-slate-700 mb-1.5">টাকার পরিমাণ (BDT):</label>
                         <div class="relative">
                             <input id="deposit-amount-input" type="number" step="10" value="100" min="100" class="w-full p-3.5 pl-10 rounded-2xl input-field text-xl font-black text-slate-800">
                             <span class="absolute left-4 top-3.5 text-slate-400 font-black text-lg">৳</span>
@@ -558,7 +730,7 @@
                 </div>
             </div>
 
-            <!-- 6. PROFILE & SETTINGS -->
+            <!-- 6. PROFILE PAGE -->
             <div id="profile-page" class="p-4 space-y-4 sub-page">
                 <div class="bg-gradient-to-br from-slate-900 to-blue-950 p-5 rounded-3xl text-white shadow-xl space-y-3">
                     <div class="flex items-center gap-3.5">
@@ -587,14 +759,14 @@
                     <button onclick="navigateTo('orders-page')" class="w-full p-3.5 flex items-center justify-between hover:bg-slate-50 rounded-xl transition">
                         <div class="flex items-center gap-2.5">
                             <i data-lucide="clipboard-list" class="w-4 h-4 text-blue-600"></i>
-                            <span>আমার সার্ভিস বুকিং</span>
+                            <span>আমার সার্ভিস বুকিং ও ট্র্যাকিং</span>
                         </div>
                         <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
                     </button>
                     <button onclick="openSupportModal()" class="w-full p-3.5 flex items-center justify-between hover:bg-slate-50 rounded-xl transition">
                         <div class="flex items-center gap-2.5">
                             <i class="fab fa-telegram text-sky-500 text-base"></i>
-                            <span>২৪/৭ লাইভ চ্যাট সাপোর্ট</span>
+                            <span>২৪/৭ লাইভ সাপোর্ট ডেক্স</span>
                         </div>
                         <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
                     </button>
@@ -626,7 +798,7 @@
                 </div>
                 <div class="nav-item" data-page="orders-page" onclick="navigateTo('orders-page')">
                     <div class="nav-icon-wrapper"><i data-lucide="clipboard-check" class="w-5 h-5"></i></div>
-                    <span>Bookings</span>
+                    <span>Tracking</span>
                 </div>
                 <div class="nav-item" data-page="profile-page" onclick="navigateTo('profile-page')">
                     <div class="nav-icon-wrapper"><i data-lucide="user" class="w-5 h-5"></i></div>
@@ -637,36 +809,68 @@
 
     </div>
 
-    <!-- SERVICE BOOKING MODAL (100 TK DEPOSIT CHECK ENFORCED) -->
-    <div id="service-booking-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[80] p-4 backdrop-blur-sm">
-        <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-3.5 shadow-2xl relative">
+    <!-- ADVANCED SERVICE BOOKING MODAL (WITH 64 DISTRICTS & DETAILED QUESTIONS) -->
+    <div id="service-booking-modal" class="hidden fixed inset-0 bg-black/75 flex items-center justify-center z-[80] p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-3.5 shadow-2xl relative max-h-[92vh] overflow-y-auto">
             <div class="flex items-center justify-between border-b pb-2">
                 <div>
-                    <h3 class="font-extrabold text-sm text-slate-900" id="bm-service-title">এসি সার্ভিসিং বুক করুন</h3>
+                    <h3 class="font-extrabold text-sm text-slate-900" id="bm-service-title">এসি সার্ভিসিং বুকিং</h3>
                     <span class="text-[11px] text-blue-600 font-bold" id="bm-service-rate">আনুমানিক চার্জ: ৳৫০০</span>
                 </div>
                 <button onclick="closeBookingModal()" class="p-1 rounded-full bg-slate-100"><i data-lucide="x" class="w-4 h-4"></i></button>
             </div>
 
-            <div class="bg-amber-50 p-3 rounded-2xl border border-amber-200 text-xs text-amber-900 font-medium">
+            <div class="bg-amber-50 p-2.5 rounded-2xl border border-amber-200 text-xs text-amber-950 font-medium">
                 <span class="font-bold flex items-center gap-1 text-amber-800">
-                    <i data-lucide="alert-circle" class="w-4 h-4 text-amber-600"></i> ১০০ টাকা অগ্রিম বুকিং ফি:
+                    <i data-lucide="shield-check" class="w-4 h-4 text-amber-600"></i> অগ্রিম বুকিং ফি ৳১০০:
                 </span>
-                বুকিং কনফার্ম করতে ওয়ালেট থেকে <b>৳১০০</b> অগ্রিম নেওয়া হবে। এটি টেকনিশিয়ানের ফাইনাল বিলের সাথে কাটাকাটি হবে।
+                বুকিং কনফার্ম করতে ওয়ালেট থেকে ১০০ টাকা কর্তন হবে, যা টেকনিশিয়ানের মূল কাজের বিল থেকে কেটে নেওয়া হবে।
             </div>
 
-            <div class="space-y-2 text-xs">
+            <div class="space-y-2.5 text-xs">
+                <!-- District 64 Dropdown -->
                 <div>
-                    <label class="block font-bold text-slate-700 mb-1">আপনার পূর্ণ ঠিকানা (Address): *</label>
-                    <textarea id="bm-address-input" rows="2" placeholder="বাড়ি/রোড নং, এলাকা, থানা..." class="w-full p-2.5 rounded-xl input-field"></textarea>
+                    <label class="block font-bold text-slate-700 mb-1">জেলা নির্বাচন করুন: *</label>
+                    <select id="bm-district-select" class="w-full p-2.5 rounded-xl input-field bg-white font-bold cursor-pointer">
+                        <option value="">-- জেলা পছন্দ করুন --</option>
+                        <!-- Populated by JS -->
+                    </select>
                 </div>
-                <div>
-                    <label class="block font-bold text-slate-700 mb-1">মোবাইল নম্বর: *</label>
-                    <input id="bm-phone-input" type="tel" placeholder="017xxxxxxxx" class="w-full p-2.5 rounded-xl input-field font-mono font-bold">
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">থানা / উপজেলা: *</label>
+                        <input id="bm-thana-input" type="text" placeholder="যেমন: মিরপুর / সদর" class="w-full p-2.5 rounded-xl input-field font-semibold">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">মোবাইল নম্বর: *</label>
+                        <input id="bm-phone-input" type="tel" placeholder="017xxxxxxxx" class="w-full p-2.5 rounded-xl input-field font-mono font-bold">
+                    </div>
                 </div>
+
                 <div>
-                    <label class="block font-bold text-slate-700 mb-1">সমস্যার বিস্তারিত বিবরণ (Problem):</label>
-                    <input id="bm-problem-input" type="text" placeholder="যেমন: গ্যাস কমে গেছে, ঠান্ডা হচ্ছে না..." class="w-full p-2.5 rounded-xl input-field">
+                    <label class="block font-bold text-slate-700 mb-1">বাসার পূর্ণ ঠিকানা (রোড, বাড়ি নং, ফ্লোর): *</label>
+                    <textarea id="bm-address-input" rows="2" placeholder="বাড়ি নং, রোড নং, ফ্ল্যাট বা এরিয়ার বিবরণ..." class="w-full p-2.5 rounded-xl input-field font-medium"></textarea>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">অ্যাপ্লায়েন্সের ব্র্যান্ড/মডেল:</label>
+                        <input id="bm-brand-input" type="text" placeholder="যেমন: ওয়ালটন ১.৫ টন" class="w-full p-2.5 rounded-xl input-field">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">কাজের জরুরি অবস্থা:</label>
+                        <select id="bm-urgency-select" class="w-full p-2.5 rounded-xl input-field bg-white font-semibold cursor-pointer">
+                            <option value="Emergency (জরুরি - ১ ঘণ্টার মধ্যে)">জরুরি (১ ঘণ্টার মধ্যে)</option>
+                            <option value="Today (আজকের মধ্যে)">আজকের মধ্যে</option>
+                            <option value="Flexible (যেকোনো সুবিধাজনক সময়)">সুবিধাজনক সময়</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">সমস্যার বিস্তারিত কারণ/বিবরণ:</label>
+                    <input id="bm-problem-input" type="text" placeholder="যেমন: কোনো ঠান্ডা বাতাস বের হচ্ছে না, অতিরিক্ত শব্দ করে..." class="w-full p-2.5 rounded-xl input-field font-medium">
                 </div>
             </div>
 
@@ -679,18 +883,50 @@
         </div>
     </div>
 
+    <!-- TECHNICIAN RATING / VOTING MODAL -->
+    <div id="rate-technician-modal" class="hidden fixed inset-0 bg-black/75 flex items-center justify-center z-[88] p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-3.5 shadow-2xl text-center relative">
+            <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center mx-auto">
+                <i data-lucide="star" class="w-6 h-6 fill-current"></i>
+            </div>
+            <div>
+                <h3 class="font-black text-sm text-slate-900">কাজের অভিজ্ঞতা ও রেটিং দিন</h3>
+                <p class="text-[11px] text-slate-500 mt-0.5">টেকনিশিয়ানের কাজ কেমন ছিল? আপনার ভোট এবং মতামত জানান।</p>
+            </div>
+
+            <div class="rating-stars-row py-1" id="vote-stars-container">
+                <i class="fas fa-star rating-star-btn" onclick="setRatingVote(1)"></i>
+                <i class="fas fa-star rating-star-btn" onclick="setRatingVote(2)"></i>
+                <i class="fas fa-star rating-star-btn" onclick="setRatingVote(3)"></i>
+                <i class="fas fa-star rating-star-btn" onclick="setRatingVote(4)"></i>
+                <i class="fas fa-star rating-star-btn" onclick="setRatingVote(5)"></i>
+            </div>
+            <input type="hidden" id="vote-rating-value" value="5">
+            <input type="hidden" id="vote-booking-id" value="">
+
+            <div>
+                <textarea id="vote-review-text" rows="2" placeholder="মতামত লিখুন (যেমন: টেকনিশিয়ান খুব দক্ষ এবং সময়মত এসেছেন)..." class="w-full p-2.5 rounded-xl input-field text-xs"></textarea>
+            </div>
+
+            <div class="flex gap-2 pt-1">
+                <button onclick="document.getElementById('rate-technician-modal').classList.add('hidden')" class="w-1/2 py-2.5 bg-slate-100 font-bold rounded-xl text-xs">পরে দেব</button>
+                <button onclick="submitTechnicianRating()" class="w-1/2 py-2.5 btn-action-primary text-xs shadow-md">ভোট সাবমিট করুন</button>
+            </div>
+        </div>
+    </div>
+
     <!-- POST AD IN MARKETPLACE MODAL -->
-    <div id="marketplace-create-ad-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[85] p-4 backdrop-blur-sm">
+    <div id="marketplace-create-ad-modal" class="hidden fixed inset-0 bg-black/75 flex items-center justify-center z-[85] p-4 backdrop-blur-sm">
         <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-3 shadow-2xl max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between border-b pb-2">
-                <h3 class="font-extrabold text-sm text-slate-900">পুরাতন জিনিসের বিজ্ঞাপন দিন</h3>
+                <h3 class="font-extrabold text-sm text-slate-900">পুরাতন জিনিস বিক্রির বিজ্ঞাপন দিন</h3>
                 <button onclick="closeCreateAdModal()" class="p-1 rounded-full bg-slate-100"><i data-lucide="x" class="w-4 h-4"></i></button>
             </div>
 
             <div class="space-y-2 text-xs">
                 <div>
                     <label class="block font-bold text-slate-700 mb-1">পণ্যের নাম/শিরোনাম: *</label>
-                    <input id="ad-title" type="text" placeholder="যেমন: ১.৫ টন ব্যবহৃত ওয়ালটন এসি" class="w-full p-2.5 rounded-xl input-field">
+                    <input id="ad-title" type="text" placeholder="যেমন: ওয়ালটন ১.৫ টন ইনভার্টার এসি" class="w-full p-2.5 rounded-xl input-field">
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                     <div>
@@ -710,20 +946,20 @@
                     </div>
                 </div>
                 <div>
-                    <label class="block font-bold text-slate-700 mb-1">যোগাযোগের মোবাইল/WhatsApp: *</label>
+                    <label class="block font-bold text-slate-700 mb-1">মোবাইল / WhatsApp: *</label>
                     <input id="ad-contact" type="tel" placeholder="018xxxxxxxx" class="w-full p-2.5 rounded-xl input-field font-mono">
                 </div>
                 <div>
-                    <label class="block font-bold text-slate-700 mb-1">অবস্থান / এলাকা: *</label>
+                    <label class="block font-bold text-slate-700 mb-1">জেলা ও অবস্থান: *</label>
                     <input id="ad-location" type="text" placeholder="যেমন: মিরপুর ১০, ঢাকা" class="w-full p-2.5 rounded-xl input-field">
                 </div>
                 <div>
-                    <label class="block font-bold text-slate-700 mb-1">পণ্যের ছবি URL (ঐচ্ছিক):</label>
+                    <label class="block font-bold text-slate-700 mb-1">ছবির লিংক / URL (ঐচ্ছিক):</label>
                     <input id="ad-image" type="url" placeholder="https://..." class="w-full p-2.5 rounded-xl input-field">
                 </div>
                 <div>
-                    <label class="block font-bold text-slate-700 mb-1">পণ্যের কন্ডিশন ও বিবরণ:</label>
-                    <textarea id="ad-desc" rows="2" placeholder="কতদিন ব্যবহার করেছেন বা কোনো ত্রুটি আছে কিনা লিখুন..." class="w-full p-2.5 rounded-xl input-field"></textarea>
+                    <label class="block font-bold text-slate-700 mb-1">কন্ডিশন ও বিবরণ:</label>
+                    <textarea id="ad-desc" rows="2" placeholder="ব্যবহারের সময়কাল, সার্ভিসিং রেকর্ড ইত্যাদি লিখুন..." class="w-full p-2.5 rounded-xl input-field"></textarea>
                 </div>
             </div>
 
@@ -737,7 +973,7 @@
     </div>
 
     <!-- VIEW MARKETPLACE AD MODAL -->
-    <div id="view-ad-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[88] p-4 backdrop-blur-sm">
+    <div id="view-ad-modal" class="hidden fixed inset-0 bg-black/75 flex items-center justify-center z-[88] p-4 backdrop-blur-sm">
         <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-3.5 shadow-2xl relative text-xs">
             <button onclick="document.getElementById('view-ad-modal').classList.add('hidden')" class="absolute top-4 right-4 p-1 rounded-full bg-slate-100 z-10"><i data-lucide="x" class="w-4 h-4"></i></button>
             <div class="w-full h-44 rounded-2xl bg-slate-100 overflow-hidden relative">
@@ -766,10 +1002,10 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- JAVASCRIPT & DATABASE LOGIC                                               -->
+    <!-- JAVASCRIPT & DATABASE ENGINE                                              -->
     <!-- ========================================================================= -->
 
-    <!-- SUPPORT CHAT SCRIPT -->
+    <!-- LIVE TELEGRAM SUPPORT DESK LOGIC -->
     <script>
         const OFFICIAL_ADMIN_ID = "7358825471";
         const supportFirebaseConfig = {
@@ -780,34 +1016,110 @@
         };
         const supportApp = firebase.initializeApp(supportFirebaseConfig, "supportAppInstance");
         const supportDb = supportApp.database();
-        let supportUserId = "guest_" + Date.now();
+
+        let supportUser = { id: 'user_' + Date.now(), name: 'Customer' };
+        let activeAdminChatUserId = null;
+        let isSupportOpen = false;
+
+        const isSupportAdmin = () => String(supportUser.id) === String(OFFICIAL_ADMIN_ID);
 
         function openSupportModal() {
+            isSupportOpen = true;
             document.getElementById('support-modal-overlay').style.display = 'flex';
-            loadSupportChat();
+            if (isSupportAdmin()) {
+                openAdminSupportInbox();
+            } else {
+                openUserDirectSupport();
+            }
         }
         function closeSupportModal() {
+            isSupportOpen = false;
             document.getElementById('support-modal-overlay').style.display = 'none';
         }
 
-        function loadSupportChat() {
-            supportDb.ref('electrician_support/' + supportUserId).on('value', snap => {
+        function openUserDirectSupport() {
+            document.getElementById('admin-search-bar').style.display = 'none';
+            document.getElementById('admin-inbox-view').style.display = 'none';
+            document.getElementById('chat-messages').style.display = 'flex';
+            document.getElementById('support-input-bar').style.display = 'flex';
+
+            supportDb.ref('electrician_support/' + supportUser.id).on('value', snap => {
                 const body = document.getElementById('chat-messages');
                 body.innerHTML = `
                     <div class="msg-row admin">
                         <div class="msg-bubble">
-                            স্বাগতম <b>ElectricianBD</b> সাপোর্টে! এসি, ফ্রিজ বা যেকোনো টেকনিক্যাল সমস্যা অথবা মার্কেটপ্লেস সংক্রান্ত তথ্যের জন্য বার্তা পাঠান।
+                            স্বাগতম <b>ElectricianBD</b> সাপোর্টে! এসি, ফ্রিজ, হোম ওয়্যারিং সার্ভিস বা টেকনিশিয়ানের যেকোনো তথ্যের জন্য বিস্তারিত লিখুন।
                         </div>
                     </div>`;
-                if(snap.exists()){
+                if (snap.exists()) {
+                    snap.forEach(c => {
+                        const m = c.val();
+                        const isAdm = m.sender === 'admin';
+                        body.innerHTML += `
+                            <div class="msg-row ${isAdm ? 'admin' : 'user'}">
+                                <div class="msg-bubble">
+                                    ${escapeHTML(m.text)}
+                                    <div class="text-[9px] text-right opacity-60 mt-1">${m.time || ''}</div>
+                                </div>
+                            </div>`;
+                    });
+                    body.scrollTop = body.scrollHeight;
+                }
+            });
+        }
+
+        function openAdminSupportInbox() {
+            document.getElementById('admin-search-bar').style.display = 'block';
+            document.getElementById('admin-inbox-view').style.display = 'block';
+            document.getElementById('chat-messages').style.display = 'none';
+            document.getElementById('support-input-bar').style.display = 'none';
+
+            supportDb.ref('electrician_support').on('value', snap => {
+                const container = document.getElementById('admin-inbox-view');
+                container.innerHTML = '';
+                if (!snap.exists()) {
+                    container.innerHTML = `<div class="p-6 text-center text-xs text-slate-400">কোনো চ্যাট নেই</div>`;
+                    return;
+                }
+                snap.forEach(userNode => {
+                    const uid = userNode.key;
+                    const msgs = userNode.val();
+                    const msgKeys = Object.keys(msgs);
+                    const lastMsg = msgs[msgKeys[msgKeys.length - 1]];
+
+                    const div = document.createElement('div');
+                    div.className = "p-3 bg-[#182236] border border-white/10 rounded-xl flex items-center justify-between cursor-pointer active:scale-98 transition";
+                    div.onclick = () => openAdminDirectChatWithUser(uid);
+                    div.innerHTML = `
+                        <div>
+                            <h4 class="text-xs font-bold text-white">ইউজার: ${uid}</h4>
+                            <p class="text-[11px] text-slate-400 truncate">${escapeHTML(lastMsg.text)}</p>
+                        </div>
+                        <span class="text-xs text-sky-400">&rarr;</span>
+                    `;
+                    container.appendChild(div);
+                });
+            });
+        }
+
+        function openAdminDirectChatWithUser(uid) {
+            activeAdminChatUserId = uid;
+            document.getElementById('admin-search-bar').style.display = 'none';
+            document.getElementById('admin-inbox-view').style.display = 'none';
+            document.getElementById('chat-messages').style.display = 'flex';
+            document.getElementById('support-input-bar').style.display = 'flex';
+
+            supportDb.ref('electrician_support/' + uid).on('value', snap => {
+                const body = document.getElementById('chat-messages');
+                body.innerHTML = '';
+                if (snap.exists()) {
                     snap.forEach(c => {
                         const m = c.val();
                         const isAdm = m.sender === 'admin';
                         body.innerHTML += `
                             <div class="msg-row ${isAdm ? 'admin' : 'user'}">
                                 <div class="msg-bubble">${escapeHTML(m.text)}</div>
-                            </div>
-                        `;
+                            </div>`;
                     });
                     body.scrollTop = body.scrollHeight;
                 }
@@ -817,22 +1129,31 @@
         async function sendSupportMessage() {
             const input = document.getElementById('chat-text-input');
             const txt = input.value.trim();
-            if(!txt) return;
-            await supportDb.ref('electrician_support/' + supportUserId).push({
-                sender: 'user',
+            if (!txt) return;
+
+            const targetUid = isSupportAdmin() && activeAdminChatUserId ? activeAdminChatUserId : supportUser.id;
+            const senderRole = isSupportAdmin() ? 'admin' : 'user';
+
+            await supportDb.ref('electrician_support/' + targetUid).push({
+                sender: senderRole,
                 text: txt,
                 time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                 timestamp: Date.now()
             });
+
             input.value = '';
         }
 
         function escapeHTML(str) {
             return String(str || '').replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
         }
+
+        function handleSupportHeaderClick() {
+            if (isSupportAdmin()) openAdminSupportInbox();
+        }
     </script>
 
-    <!-- MAIN APP SCRIPT (ES MODULE / FIRESTORE) -->
+    <!-- PRIMARY BUSINESS & FIRESTORE ENGINE -->
     <script type="module">
         import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
         import { 
@@ -848,41 +1169,57 @@
         const primaryApp = !getApps().length ? initializeApp(primaryFirebaseConfig) : getApp();
         const db = getFirestore(primaryApp);
 
-        // Core App State
+        // BANGLADESH 64 DISTRICTS LIST
+        const bdDistricts = [
+            "ঢাকা (Dhaka)", "গাজীপুর (Gazipur)", "নারায়ণগঞ্জ (Narayanganj)", "নরসিংদী (Narsingdi)", "মানিকগঞ্জ (Manikganj)", 
+            "মুন্সীগঞ্জ (Munshiganj)", "কিশোরগঞ্জ (Kishoreganj)", "টাঙ্গাইল (Tangail)", "ফরিদপুর (Faridpur)", "মাদারীপুর (Madaripur)", 
+            "গোপালগঞ্জ (Gopalganj)", "রাজবাড়ী (Rajbari)", "শরীয়তপুর (Shariatpur)", "চট্টগ্রাম (Chattogram)", "কক্সবাজার (Cox's Bazar)", 
+            "কুমিল্লা (Cumilla)", "ফেনী (Feni)", "ব্রাহ্মণবাড়িয়া (Brahmanbaria)", "নোয়াখালী (Noakhali)", "চাঁদপুর (Chandpur)", 
+            "লক্ষ্মীপুর (Lakshmipur)", "বান্দরবান (Bandarban)", "রাঙ্গামাটি (Rangamati)", "খাগড়াছড়ি (Khagrachhari)", "রাজশাহী (Rajshahi)", 
+            "বগুড়া (Bogura)", "পাবনা (Pabna)", "সিরাজগঞ্জ (Sirajganj)", "নাটোর (Natore)", "নওগাঁ (Naogaon)", "চাঁপাইনবাবগঞ্জ (Chapainawabganj)", 
+            "জয়পুরহাট (Joypurhat)", "খুলনা (Khulna)", "যশোর (Jashore)", "বাগেরহাট (Bagerhat)", "সাতক্ষীরা (Satkhira)", "ঝিনাইদহ (Jhenaidah)", 
+            "কুষ্টিয়া (Kushtia)", "চুয়াডাঙ্গা (Chuadanga)", "মেহেরপুর (Meherpur)", "নড়াইল (Narail)", "মাগুরা (Magura)", "বরিশাল (Barishal)", 
+            "পটুয়াখালী (Patuakhali)", "ভোলা (Bhola)", "পিরোজপুর (Pirojpur)", "বরগুনা (Barguna)", "ঝালকাঠি (Jhalokati)", "সিলেট (Sylhet)", 
+            "মৌলভীবাজার (Moulvibazar)", "হবিগঞ্জ (Habiganj)", "সুনামগঞ্জ (Sunamganj)", "রংপুর (Rangpur)", "দিনাজপুর (Dinajpur)", 
+            "গাইবান্ধা (Gaibandha)", "কুড়িগ্রাম (Kurigram)", "নীলফামারী (Nilphamari)", "পঞ্চগড় (Panchagarh)", "ঠাকুরগাঁও (Thakurgaon)", 
+            "লালমনিরহাট (Lalmonirhat)", "ময়মনসিংহ (Mymensingh)", "জামালপুর (Jamalpur)", "নেত্রকোণা (Netrokona)", "শেরপুর (Sherpur)"
+        ];
+
         let currentUserTg = null;
         let userData = null;
         let activeBookingService = null;
         let selectedCategoryFilter = 'all';
         let selectedMarketplaceFilter = 'all';
+        let marketplaceItems = [];
 
-        // Catalog of 24/7 Technician Services
+        // SERVICES CATALOG
         const coreServices = [
             {
                 id: "srv_ac_service",
-                title: "এসি মাস্টার সার্ভিসিং ও ওয়াশ",
+                title: "এসি মাস্টার সার্ভিসিং ও কেমিক্যাল ওয়াশ",
                 category: "ac",
                 icon: "wind",
                 rateText: "৳৫০০ - ৳৮০০",
                 approxFee: 500,
-                desc: "ইনডোর ও আউটডোর প্রেশার ওয়াশ, ফিল্টার ক্লিনিং ও কুলিং পারফরম্যান্স চেকিং।"
+                desc: "ইনডোর ও আউটডোর জেট প্রেশার ওয়াশ, ফিল্টার ক্লিনিং এবং কুলিং লেভেল সম্পূর্ণ চেক।"
             },
             {
                 id: "srv_ac_gas",
-                title: "এসি গ্যাস রিফিল ও লিকেজ রিপেয়ার",
+                title: "এসি গ্যাস রিফিল ও লিকেজ মেরামত",
                 category: "ac",
                 icon: "zap",
                 rateText: "৳১৫০০ - ৳৩০০০",
                 approxFee: 1500,
-                desc: "R22/R410/R32 গ্যাস টপ-আপ, লিকেজ আইডেন্টিফিকেশন এবং টেস্ট।"
+                desc: "R22/R410/R32 হাই-প্রেসার গ্যাস রিফিল ও ফ্লেয়ার নাট লিকেজ সল্যুশন।"
             },
             {
                 id: "srv_fridge_repair",
-                title: "ফ্রিজ ও ডিপ-ফ্রিজ মেরামত",
+                title: "ফ্রিজ ও ডিপ-ফ্রিজ মেরামত সার্ভিস",
                 category: "fridge",
                 icon: "thermometer-snowflake",
                 rateText: "৳৬০০ - ৳১২০০",
                 approxFee: 600,
-                desc: "কম্প্রেসর সমস্যা, ঠান্ডা না হওয়া, গ্যাস লিকেজ এবং থার্মোস্টেট প্রতিস্থাপন।"
+                desc: "কম্প্রেসর সমস্যা, ওভারহিটিং, ঠান্ডা না হওয়া, গ্যাস লিকেজ এবং থার্মোস্টেট প্রতিস্থাপন।"
             },
             {
                 id: "srv_house_wiring",
@@ -891,25 +1228,25 @@
                 icon: "plug-zap",
                 rateText: "৳৪০০ থেকে শুরু",
                 approxFee: 400,
-                desc: "নতুন ওয়্যারিং, শর্ট সার্কিট ফিক্সিং, সুইচ-সকেট পরিবর্তন ও ডিবি বোর্ড ইনস্টলেশন।"
+                desc: "নতুন ওয়্যারিং, শর্ট সার্কিট ফিক্সিং, সার্কিট ব্রেকার ও ডিস্ট্রিবিউশন বোর্ড সেটআপ।"
             },
             {
                 id: "srv_washing_machine",
-                title: "ওয়াশিং মেশিন সার্ভিসিং",
+                title: "ওয়াশিং মেশিন সার্ভিসিং ও মেরামত",
                 category: "appliances",
                 icon: "refresh-cw",
                 rateText: "৳৭০০ - ৳১৫০০",
                 approxFee: 700,
-                desc: "টপ লোড ও ফ্রন্ট লোড ওয়াশিং মেশিনের মোটর, ড্রেন ও সেন্সর রিপেয়ার।"
+                desc: "টপ লোড ও ফ্রন্ট লোড ওয়াশিং মেশিনের ড্রেন প্রবলেম, ড্রাম জ্যাম ও প্যানেল বোর্ড রিপেয়ার।"
             },
             {
                 id: "srv_water_pump",
-                title: "পানির মোটর ও পাম্প মেরামত",
+                title: "পানির মোটর ও পাম্প মেকানিকাল সার্ভিস",
                 category: "wiring",
                 icon: "droplet",
                 rateText: "৳৫০০ - ৳১০০০",
                 approxFee: 500,
-                desc: "পানি না ওঠা, মোটর জ্যাম, ক্যাপাসিটর বা কয়েল রিওয়াইন্ডিং সেবা।"
+                desc: "পানি না ওঠা, মোটর অতিরিক্ত গরম হওয়া, ক্যাপাসিটর বা কয়েল রিওয়াইন্ডিং সেবা।"
             },
             {
                 id: "srv_ips_solar",
@@ -918,12 +1255,9 @@
                 icon: "battery-charging",
                 rateText: "৳৬০০ - ৳১২০০",
                 approxFee: 600,
-                desc: "ইনভার্টার মেরামত, ব্যাটারি পানি লেভেলিং ও সম্পূর্ণ হোম ব্যাকআপ সংযোগ।"
+                desc: "ইনভার্টার রিপেয়ার, ব্যাটারি ইলেকট্রোলাইট ওয়াটার লেভেলিং ও নতুন ব্যাকআপ লাইন স্থাপন।"
             }
         ];
-
-        // Sample Marketplace Items
-        let marketplaceItems = [];
 
         window.showToast = function(message, type = 'info') {
             const container = document.getElementById('toast-container');
@@ -969,7 +1303,8 @@
                 currentUserTg = { id: "01700000000", first_name: "Customer" };
             }
 
-            supportUserId = String(currentUserTg.id);
+            supportUser = { id: String(currentUserTg.id), name: currentUserTg.first_name || 'Customer' };
+            populateDistrictsDropdown();
             await initUserData();
             renderHomeQuickServices();
             renderHomeMarketplacePreview();
@@ -982,6 +1317,17 @@
                 setTimeout(() => loader.style.display = 'none', 300);
             }
         };
+
+        function populateDistrictsDropdown() {
+            const select = document.getElementById('bm-district-select');
+            if(!select) return;
+            bdDistricts.forEach(d => {
+                const opt = document.createElement('option');
+                opt.value = d;
+                opt.textContent = d;
+                select.appendChild(opt);
+            });
+        }
 
         async function initUserData() {
             const uid = String(currentUserTg.id);
@@ -1027,7 +1373,7 @@
             document.getElementById('profile-avatar').textContent = (userData.name || 'U').charAt(0).toUpperCase();
         }
 
-        // --- SERVICES LOGIC ---
+        // --- SERVICES CATALOG ---
         function renderHomeQuickServices() {
             const container = document.getElementById('home-quick-services');
             if(!container) return;
@@ -1082,13 +1428,12 @@
             renderServicesList();
         };
 
-        // --- 100 TK DEPOSIT CHECK & BOOKING ---
+        // --- BOOKING LOGIC WITH 100 TK DEPOSIT CHECK ---
         window.openServiceBookingModal = function(serviceId) {
-            // STRICT 100 TK RULE ENFORCEMENT
             const currentBal = parseFloat(userData?.balance || 0);
             if(currentBal < 100) {
-                showToast("সার্ভিস বুকিং করতে ওয়ালেটে সর্বনিম্ন ১০০ টাকা ডিপোজিট থাকতে হবে!", "error");
-                setTimeout(() => navigateTo('pay-page'), 1000);
+                showToast("সার্ভিস বুকিং করতে একাউন্টে সর্বনিম্ন ১০০ টাকা ডিপোজিট থাকা আবশ্যক!", "error");
+                setTimeout(() => navigateTo('pay-page'), 900);
                 return;
             }
 
@@ -1109,43 +1454,58 @@
         window.executeServiceBooking = async function() {
             if(!activeBookingService) return;
 
-            const address = document.getElementById('bm-address-input').value.trim();
+            const district = document.getElementById('bm-district-select').value;
+            const thana = document.getElementById('bm-thana-input').value.trim();
             const phone = document.getElementById('bm-phone-input').value.trim();
+            const address = document.getElementById('bm-address-input').value.trim();
+            const brand = document.getElementById('bm-brand-input').value.trim() || 'উল্লেখ নেই';
+            const urgency = document.getElementById('bm-urgency-select').value;
             const problem = document.getElementById('bm-problem-input').value.trim() || 'সাধারণ সমস্যা';
 
-            if(!address || !phone) {
-                return showToast("দয়া করে আপনার ঠিকানা এবং মোবাইল নম্বর লিখুন!", "error");
-            }
+            if(!district) return showToast("অনুগ্রহ করে আপনার জেলা নির্বাচন করুন!", "error");
+            if(!thana || !phone || !address) return showToast("অনুগ্রহ করে থানা, মোবাইল এবং পূর্ণ ঠিকানা দিন!", "error");
 
             const btn = document.getElementById('btn-confirm-booking');
             btn.disabled = true;
-            btn.textContent = "Checking...";
+            btn.textContent = "বুকিং নিশ্চিত হচ্ছে...";
 
             try {
                 const userRef = doc(db, "electrician_users", String(userData.userId));
 
-                // Deduct 100 TK token booking deposit
                 await runTransaction(db, async (t) => {
                     const snap = await t.get(userRef);
                     const bal = parseFloat(snap.data().balance || 0);
-                    if(bal < 100) {
-                        throw new Error("আপনার ওয়ালেটে ১০০ টাকা নেই। অনুগ্রহ করে আগে ডিপোজিট করুন!");
-                    }
+                    if(bal < 100) throw new Error("ওয়ালেটে পর্যাপ্ত ১০০ টাকা নেই!");
 
                     t.update(userRef, { balance: bal - 100 });
 
                     const bookingRef = doc(collection(db, "service_bookings"));
+                    const now = new Date();
                     t.set(bookingRef, {
                         userId: String(userData.userId),
                         userName: userData.name || 'Customer',
                         serviceId: activeBookingService.id,
                         serviceTitle: activeBookingService.title,
                         tokenDeposit: 100,
-                        address: address,
+                        district: district,
+                        thana: thana,
                         phone: phone,
+                        address: address,
+                        brand: brand,
+                        urgency: urgency,
                         problem: problem,
-                        status: "pending",
-                        assignedTechnician: null,
+                        status: "pending", // pending -> processing -> coming -> running -> completed
+                        rating: null,
+                        review: null,
+                        technicianName: "অ্যাসাইন করা হচ্ছে...",
+                        technicianPhone: "",
+                        timeline: {
+                            pendingAt: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ' (' + now.toLocaleDateString('bn-BD') + ')',
+                            processingAt: null,
+                            comingAt: null,
+                            runningAt: null,
+                            completedAt: null
+                        },
                         createdAt: serverTimestamp()
                     });
                 });
@@ -1153,7 +1513,7 @@
                 userData.balance -= 100;
                 updateBalanceUI();
                 closeBookingModal();
-                showToast("🎉 বুকিং সফল হয়েছে! ১০০ টাকা অগ্রিম জমা হয়েছে। টেকনিশিয়ান শীঘ্রই কল করবেন।", "success");
+                showToast("🎉 বুকিং সফল হয়েছে! ১০০ টাকা অগ্রিম জমা হয়েছে। টেকনিশিয়ান ট্র্যাকার চালু হয়েছে।", "success");
                 navigateTo('orders-page');
             } catch(e) {
                 showToast(e.message || "বুকিং ব্যর্থ হয়েছে", "error");
@@ -1163,11 +1523,11 @@
             }
         };
 
-        // --- BOOKINGS LIST ---
+        // --- 5-STEP LIFECYCLE BOOKINGS TRACKER ---
         async function loadUserBookings() {
             const list = document.getElementById('user-bookings-list');
             if(!list) return;
-            list.innerHTML = `<div class="p-6 text-center text-xs text-slate-400">বুকিং লোড হচ্ছে...</div>`;
+            list.innerHTML = `<div class="p-6 text-center text-xs text-slate-400">বুকিং রেকর্ড ও ট্র্যাকিং লোড হচ্ছে...</div>`;
 
             try {
                 const q = query(
@@ -1183,45 +1543,155 @@
                     return;
                 }
 
-                list.innerHTML = snap.docs.map(doc => {
-                    const b = doc.data();
-                    const dateStr = b.createdAt?.toDate ? b.createdAt.toDate().toLocaleDateString('bn-BD') : 'আজকে';
-                    const isCompleted = b.status === 'completed';
+                list.innerHTML = snap.docs.map(docSnap => {
+                    const b = docSnap.data();
+                    const bId = docSnap.id;
+                    const st = b.status || 'pending';
+
+                    // Determine Stepper Active Levels:
+                    // 1: pending, 2: processing, 3: coming, 4: running, 5: completed
+                    let stepLevel = 1;
+                    if(st === 'processing') stepLevel = 2;
+                    if(st === 'coming') stepLevel = 3;
+                    if(st === 'running') stepLevel = 4;
+                    if(st === 'completed') stepLevel = 5;
+
+                    const timePending = b.timeline?.pendingAt || 'স্বীকৃত';
+                    const timeProc = b.timeline?.processingAt || (stepLevel >= 2 ? 'চলমান' : '--:--');
+                    const timeComing = b.timeline?.comingAt || (stepLevel >= 3 ? 'রওয়ানা' : '--:--');
+                    const timeRunning = b.timeline?.runningAt || (stepLevel >= 4 ? 'কাজ চলছে' : '--:--');
+                    const timeComp = b.timeline?.completedAt || (stepLevel === 5 ? 'সম্পন্ন' : '--:--');
 
                     return `
-                        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-2 text-xs">
-                            <div class="flex items-center justify-between">
-                                <h4 class="font-extrabold text-slate-900">${b.serviceTitle}</h4>
-                                <span class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${
-                                    isCompleted ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
-                                }">${b.status === 'pending' ? 'পেন্ডিং (অনুমোদন বাকি)' : b.status}</span>
+                    <div class="bg-white p-4 rounded-3xl border border-slate-200 shadow-sm space-y-3.5 text-xs">
+                        <div class="flex items-start justify-between border-b border-slate-100 pb-2.5">
+                            <div>
+                                <h4 class="font-black text-sm text-slate-900">${b.serviceTitle}</h4>
+                                <p class="text-[10px] text-slate-500 font-bold mt-0.5">${b.district} • ${b.thana}</p>
                             </div>
-                            <p class="text-slate-600">ঠিকানা: ${b.address} | ফোন: ${b.phone}</p>
-                            <div class="flex justify-between items-center pt-2 border-t text-[11px] text-slate-500 font-medium">
-                                <span>অগ্রিম জমা: ৳${b.tokenDeposit}</span>
-                                <span>তারিখ: ${dateStr}</span>
+                            <span class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase ${
+                                stepLevel === 5 ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-blue-800'
+                            }">
+                                ${stepLevel === 1 ? 'পেন্ডিং' : stepLevel === 2 ? 'প্রসেসিং' : stepLevel === 3 ? 'টেকনিশিয়ান অন দ্য ওয়ে' : stepLevel === 4 ? 'কাজ চলছে' : 'সম্পন্ন'}
+                            </span>
+                        </div>
+
+                        <!-- 5-STEP LIFECYCLE PROGRESS STEPPER -->
+                        <div class="py-2">
+                            <div class="flex items-center justify-between">
+                                <div class="lifecycle-step ${stepLevel >= 1 ? (stepLevel === 1 ? 'active' : 'completed') : ''}">
+                                    <div class="step-circle"><i data-lucide="${stepLevel > 1 ? 'check' : 'clock'}" class="w-3.5 h-3.5"></i></div>
+                                    <span class="step-label">পেন্ডিং</span>
+                                    <span class="text-[8.5px] text-slate-400 font-mono">${timePending}</span>
+                                </div>
+                                <div class="lifecycle-step ${stepLevel >= 2 ? (stepLevel === 2 ? 'active' : 'completed') : ''}">
+                                    <div class="step-circle"><i data-lucide="${stepLevel > 2 ? 'check' : 'cpu'}" class="w-3.5 h-3.5"></i></div>
+                                    <span class="step-label">প্রসেস</span>
+                                    <span class="text-[8.5px] text-slate-400 font-mono">${timeProc}</span>
+                                </div>
+                                <div class="lifecycle-step ${stepLevel >= 3 ? (stepLevel === 3 ? 'active' : 'completed') : ''}">
+                                    <div class="step-circle"><i data-lucide="${stepLevel > 3 ? 'check' : 'truck'}" class="w-3.5 h-3.5"></i></div>
+                                    <span class="step-label">কামিং</span>
+                                    <span class="text-[8.5px] text-slate-400 font-mono">${timeComing}</span>
+                                </div>
+                                <div class="lifecycle-step ${stepLevel >= 4 ? (stepLevel === 4 ? 'active' : 'completed') : ''}">
+                                    <div class="step-circle"><i data-lucide="${stepLevel > 4 ? 'check' : 'wrench'}" class="w-3.5 h-3.5"></i></div>
+                                    <span class="step-label">রানিং</span>
+                                    <span class="text-[8.5px] text-slate-400 font-mono">${timeRunning}</span>
+                                </div>
+                                <div class="lifecycle-step ${stepLevel === 5 ? 'completed' : ''}">
+                                    <div class="step-circle"><i data-lucide="check-check" class="w-3.5 h-3.5"></i></div>
+                                    <span class="step-label">সম্পন্ন</span>
+                                    <span class="text-[8.5px] text-slate-400 font-mono">${timeComp}</span>
+                                </div>
                             </div>
                         </div>
-                    `;
+
+                        <!-- DETAILS & CONTACT -->
+                        <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100 text-[11px] text-slate-600 space-y-1">
+                            <p><b>ঠিকানা:</b> ${b.address}</p>
+                            <p><b>সমস্যা:</b> ${b.problem} (${b.brand || ''})</p>
+                            ${b.technicianPhone ? `
+                                <div class="pt-1.5 flex items-center justify-between border-t border-slate-200/60">
+                                    <span class="font-bold text-slate-800">টেকনিশিয়ান: ${b.technicianName}</span>
+                                    <a href="tel:${b.technicianPhone}" class="px-2.5 py-1 bg-emerald-600 text-white rounded-lg font-black flex items-center gap-1">
+                                        <i data-lucide="phone" class="w-3 h-3"></i> কল দিন
+                                    </a>
+                                </div>
+                            ` : ''}
+                        </div>
+
+                        <!-- RATING / VOTING SYSTEM -->
+                        <div class="pt-1 flex items-center justify-between">
+                            <span class="text-xs font-bold text-slate-500">অগ্রিম জমা: ৳${b.tokenDeposit}</span>
+                            ${b.rating ? `
+                                <div class="flex items-center gap-1 text-amber-500 font-black">
+                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                    <span>${b.rating}.0 ভোট দেওয়া হয়েছে</span>
+                                </div>
+                            ` : `
+                                <button onclick="openRateTechnicianModal('${bId}')" class="px-3.5 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black rounded-xl flex items-center gap-1 shadow-sm">
+                                    <i data-lucide="star" class="w-3.5 h-3.5"></i> ভোট / রেটিং দিন
+                                </button>
+                            `}
+                        </div>
+                    </div>`;
                 }).join('');
                 lucide.createIcons();
             } catch(e) {
-                list.innerHTML = `<div class="text-center text-xs text-red-500 py-4">ডাটা লোড করা যায়নি</div>`;
+                list.innerHTML = `<div class="text-center text-xs text-red-500 py-4">বুকিং ডাটা লোড হয়নি</div>`;
             }
         }
 
-        // --- MARKETPLACE LOGIC ---
+        window.openRateTechnicianModal = function(bookingId) {
+            document.getElementById('vote-booking-id').value = bookingId;
+            document.getElementById('vote-review-text').value = '';
+            setRatingVote(5);
+            document.getElementById('rate-technician-modal').classList.remove('hidden');
+        };
+
+        window.setRatingVote = function(stars) {
+            document.getElementById('vote-rating-value').value = stars;
+            const starElements = document.querySelectorAll('#vote-stars-container .rating-star-btn');
+            starElements.forEach((s, idx) => {
+                if(idx < stars) s.classList.add('selected');
+                else s.classList.remove('selected');
+            });
+        };
+
+        window.submitTechnicianRating = async function() {
+            const bookingId = document.getElementById('vote-booking-id').value;
+            const stars = parseInt(document.getElementById('vote-rating-value').value || 5);
+            const review = document.getElementById('vote-review-text').value.trim();
+
+            if(!bookingId) return;
+
+            try {
+                await updateDoc(doc(db, "service_bookings", bookingId), {
+                    rating: stars,
+                    review: review,
+                    ratedAt: serverTimestamp()
+                });
+                document.getElementById('rate-technician-modal').classList.add('hidden');
+                showToast(`ধন্যবাদ! টেকনিশিয়ানকে ${stars} স্টার ভোট সফলভাবে জমা হয়েছে।`, "success");
+                loadUserBookings();
+            } catch(e) {
+                showToast("ভোট সাবমিট ব্যর্থ হয়েছে", "error");
+            }
+        };
+
+        // --- MARKETPLACE SYSTEM ---
         function renderHomeMarketplacePreview() {
             const container = document.getElementById('home-marketplace-preview');
             if(!container) return;
-            const items = marketplaceItems.length ? marketplaceItems.slice(0, 2) : [
-                { id: '1', title: '১.৫ টন ব্যবহৃত এসি', price: 14000, category: 'AC', location: 'ঢাকা', img: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=300' },
-                { id: '2', title: 'ওয়ালটন ডিপ ফ্রিজ', price: 9500, category: 'Fridge', location: 'গাজীপুর', img: 'https://images.unsplash.com/photo-1584992236310-6edddc08acff?w=300' }
+            const items = [
+                { id: 'm1', title: '১.৫ টন ব্যবহৃত এসি', price: 14500, category: 'AC', location: 'ঢাকা', img: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=300' },
+                { id: 'm2', title: 'ওয়ালটন ডিপ ফ্রিজ', price: 9500, category: 'Fridge', location: 'গাজীপুর', img: 'https://images.unsplash.com/photo-1584992236310-6edddc08acff?w=300' }
             ];
 
             container.innerHTML = items.map(it => `
-                <div onclick="navigateTo('marketplace-page')" class="bg-white p-2.5 rounded-2xl border border-slate-200 shadow-sm cursor-pointer hover:border-amber-400">
-                    <img src="${it.img || 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=300'}" class="w-full h-24 object-cover rounded-xl mb-1.5" alt="">
+                <div onclick="navigateTo('marketplace-page')" class="bg-white p-2.5 rounded-2xl border border-slate-200 shadow-sm cursor-pointer hover:border-amber-400 transition">
+                    <img src="${it.img}" class="w-full h-24 object-cover rounded-xl mb-1.5" alt="">
                     <h4 class="font-bold text-xs text-slate-800 truncate">${it.title}</h4>
                     <span class="font-black text-amber-600 text-xs">৳${it.price}</span>
                 </div>
@@ -1236,10 +1706,10 @@
                 const snap = await getDocs(query(collection(db, "marketplace_posts"), limit(30)));
                 if(!snap.empty) {
                     marketplaceItems = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                } else if(!marketplaceItems.length) {
+                } else {
                     marketplaceItems = [
-                        { id: 'm1', title: '১.৫ টন ব্যবহৃত ক্যারিয়ার এসি', price: 15500, category: 'AC', location: 'উত্তরা, ঢাকা', contact: '01711000000', desc: '১ বছর ব্যবহৃত, একদম ফ্রেশ কন্ডিশন। কুলিং খুব দ্রুত হয়।', img: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=400' },
-                        { id: 'm2', title: 'সিঙ্গার রেফ্রিজারেটর ২২০ লিটার', price: 11000, category: 'Fridge', location: 'মিরপুর, ঢাকা', contact: '01822000000', desc: 'কোনো সমস্যা নেই, নতুন মডেল কেনায় বিক্রি করছি।', img: 'https://images.unsplash.com/photo-1584992236310-6edddc08acff?w=400' },
+                        { id: 'm1', title: '১.৫ টন ব্যবহৃত ক্যারিয়ার এসি', price: 15500, category: 'AC', location: 'উত্তরা, ঢাকা', contact: '01711000000', desc: '১ বছর ব্যবহৃত, একদম ফ্রেশ কন্ডিশন।', img: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=400' },
+                        { id: 'm2', title: 'সিঙ্গার রেফ্রিজারেটর ২২০ লিটার', price: 11000, category: 'Fridge', location: 'মিরপুর, ঢাকা', contact: '01822000000', desc: 'কোনো সমস্যা নেই, সম্পূর্ণ রানিং।', img: 'https://images.unsplash.com/photo-1584992236310-6edddc08acff?w=400' },
                         { id: 'm3', title: 'গাজী ১ হর্সপাওয়ার পানির পাম্প', price: 2800, category: 'Motor', location: 'টঙ্গী', contact: '01933000000', desc: 'কয়েল একদম অরিজিনাল, খুব ভালো প্রেসার আছে।', img: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=400' }
                     ];
                 }
@@ -1311,7 +1781,7 @@
                 closeCreateAdModal();
                 loadMarketplaceData();
             } catch(e) {
-                showToast("বিজ্ঞাপন পোস্ট করতে সমস্যা হয়েছে", "error");
+                showToast("বিজ্ঞাপন পোস্ট ব্যর্থ হয়েছে", "error");
             } finally {
                 btn.disabled = false;
                 btn.textContent = "পোস্ট করুন";
@@ -1326,7 +1796,7 @@
             document.getElementById('view-ad-price').textContent = `৳${it.price}`;
             document.getElementById('view-ad-cat').textContent = it.category;
             document.getElementById('view-ad-location').textContent = it.location;
-            document.getElementById('view-ad-desc').textContent = it.desc || 'কোনো বিবরণ দেওয়া নেই।';
+            document.getElementById('view-ad-desc').textContent = it.desc || 'কোনো বিবরণ নেই।';
             document.getElementById('view-ad-img').src = it.img || 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=300';
             document.getElementById('view-ad-call-btn').href = `tel:${it.contact}`;
             document.getElementById('view-ad-wa-btn').href = `https://wa.me/88${it.contact.replace(/[^0-9]/g,'')}`;
@@ -1345,7 +1815,7 @@
             if(amt < 100) return showToast("সর্বনিম্ন ১০০ টাকা ডিপোজিট করতে হবে!", "error");
 
             const returnUrl = window.location.href.split('?')[0];
-            showToast("পেমেন্ট গেটওয়েতে নিয়ে যাওয়া হচ্ছে...", "info");
+            showToast("পেমেন্ট গেটওয়েতে নেওয়া হচ্ছে...", "info");
 
             try {
                 const res = await fetch('/api/payment?action=create', {
@@ -1363,17 +1833,16 @@
                 if(payUrl) {
                     window.location.href = payUrl;
                 } else {
-                    // DEMO BALANCE ADDITION (If testing locally without gateway backend)
+                    // DEMO FALLBACK
                     await updateDoc(doc(db, "electrician_users", String(userData.userId)), {
                         balance: increment(amt)
                     });
                     userData.balance = (userData.balance || 0) + amt;
                     updateBalanceUI();
-                    showToast(`পরীক্ষামূলকভাবে ৳${amt} ব্যালেন্সে যুক্ত হয়েছে!`, "success");
+                    showToast(`পরীক্ষামূলকভাবে ৳${amt} যুক্ত হয়েছে!`, "success");
                     navigateTo('services-page');
                 }
             } catch(e) {
-                // Fallback for simulation
                 await updateDoc(doc(db, "electrician_users", String(userData.userId)), {
                     balance: increment(amt)
                 });
@@ -1384,7 +1853,7 @@
             }
         };
 
-        window.openEmergencyCall = function() {
+        window.openEmergencyHelpline = function() {
             window.location.href = "tel:01827750260";
         };
     </script>
