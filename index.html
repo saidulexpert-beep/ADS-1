@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GMAIL HUB</title>
+    <title>GMAIL HUB - Earn, Refer & Giveaway</title>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -23,6 +23,7 @@
             -webkit-user-select: none;
             user-select: none;
             -webkit-touch-callout: none;
+            overflow-x: hidden;
         }
         input, textarea, select, .selectable-text {
             -webkit-user-select: text;
@@ -44,7 +45,7 @@
             backdrop-filter: blur(10px);
             border-radius: 9999px;
             padding: 5px 12px;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .wallet-pill:active {
             transform: scale(0.95);
@@ -106,11 +107,34 @@
         }
 
         .main-page { display: none; }
-        .main-page.active { display: flex; animation: fadeIn 0.3s ease-in-out; }
+        .main-page.active { display: flex; animation: pageSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
         .sub-page { display: none; }
-        .sub-page.active { display: block; animation: fadeIn 0.25s ease-in-out; }
+        .sub-page.active { display: block; animation: pageSlideIn 0.32s cubic-bezier(0.16, 1, 0.3, 1); }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pageSlideIn {
+            from { opacity: 0; transform: translateY(12px) scale(0.985); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* GIVEAWAY SPECIAL ANIMATIONS */
+        @keyframes floatEffect {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-7px) rotate(1.5deg); }
+        }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(234, 179, 8, 0.4), inset 0 0 12px rgba(234, 179, 8, 0.2); }
+            50% { box-shadow: 0 0 30px rgba(234, 179, 8, 0.8), inset 0 0 20px rgba(234, 179, 8, 0.4); }
+        }
+        @keyframes confettiDrop {
+            0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(180px) rotate(360deg); opacity: 0; }
+        }
+        .animate-float {
+            animation: floatEffect 4s ease-in-out infinite;
+        }
+        .giveaway-card-glow {
+            animation: pulseGlow 3s infinite alternate;
+        }
 
         .input-field {
             background-color: #f8fafc;
@@ -494,7 +518,6 @@
         .msg-row.admin .msg-bubble { background: #1e2c3a; border-bottom-left-radius: 4px; border: 1px solid rgba(255,255,255,0.08); }
         .msg-row.user .msg-bubble { background: #2b5278; border-bottom-right-radius: 4px; }
         .msg-time { font-size: 0.65rem; color: rgba(255,255,255,0.5); text-align: right; margin-top: 5px; display: flex; align-items: center; justify-content: flex-end; gap: 4px; }
-        .tick-blue { color: #54a0ff; font-weight: 700; }
 
         .rating-box-wrap { margin-top: 10px; background: rgba(0, 0, 0, 0.4); border: 1px dashed rgba(255, 255, 255, 0.25); border-radius: 14px; padding: 12px; text-align: center; }
         .rating-stars-row { display: flex; justify-content: center; gap: 12px; margin: 10px 0 4px 0; }
@@ -672,12 +695,12 @@
         <div class="relative flex items-center justify-center mb-6">
             <div class="w-20 h-20 rounded-full border-4 border-blue-500/20 border-t-blue-400 animate-spin"></div>
             <div class="absolute inset-0 flex items-center justify-center">
-                <i data-lucide="zap" class="w-8 h-8 text-blue-400 animate-pulse"></i>
+                <i data-lucide="gift" class="w-8 h-8 text-amber-400 animate-bounce"></i>
             </div>
         </div>
         <div class="text-center space-y-2 z-10">
             <h1 class="font-black text-3xl tracking-wider shimmer-text">GMAIL HUB</h1>
-            <p class="text-xs text-slate-400 font-medium tracking-wide">Tasks, Refer & Wallet Portal</p>
+            <p class="text-xs text-slate-400 font-medium tracking-wide">Tasks, Giveaways & Wallet Portal</p>
         </div>
     </div>
 
@@ -692,7 +715,7 @@
                     </div>
                     <div>
                         <h3 class="font-black text-base text-slate-900 leading-tight">GMAIL HUB</h3>
-                        <p class="text-[10px] font-bold text-blue-600">Quick Menu</p>
+                        <p class="text-[10px] font-bold text-blue-600">Quick Portal</p>
                     </div>
                 </div>
                 <button onclick="toggleSideDrawer(false)" class="p-2 rounded-xl bg-slate-100 text-slate-500">
@@ -712,23 +735,23 @@
                 </div>
             </div>
 
-            <!-- FINANCES & WALLET -->
+            <!-- FINANCES & ACTIONS -->
             <div class="space-y-1 text-xs font-bold text-slate-700">
-                <div class="px-2 py-1 text-[10px] uppercase tracking-wider text-slate-400 font-black">Finances & Actions</div>
+                <div class="px-2 py-1 text-[10px] uppercase tracking-wider text-slate-400 font-black">Portal Hub</div>
                 
+                <button onclick="toggleSideDrawer(false); navigateTo('giveaway-page')" class="w-full flex items-center gap-3 p-2.5 rounded-xl bg-gradient-to-r from-amber-500/10 to-orange-500/10 hover:bg-amber-100/60 text-amber-700 font-black transition text-left border border-amber-300/40">
+                    <div class="p-1.5 bg-amber-500 text-white rounded-lg shadow-sm animate-pulse"><i data-lucide="sparkles" class="w-4 h-4"></i></div>
+                    <div class="flex-grow flex justify-between items-center">
+                        <span>GIVEAWAY (মেগা ড্র)</span>
+                        <span class="text-[10px] bg-amber-500 text-white px-2 py-0.5 rounded-md font-black">HOT</span>
+                    </div>
+                </button>
+
                 <button onclick="toggleSideDrawer(false); handleWithdrawNavigation()" class="w-full flex items-center gap-3 p-2.5 rounded-xl hover:bg-rose-50 text-slate-700 hover:text-rose-600 transition text-left">
                     <div class="p-1.5 bg-rose-100 text-rose-600 rounded-lg"><i data-lucide="arrow-down-to-line" class="w-4 h-4"></i></div>
                     <div class="flex-grow flex justify-between items-center">
                         <span>উত্তোলন (Withdraw)</span>
                         <span class="text-[10px] text-rose-600 font-extrabold bg-rose-50 px-2 py-0.5 rounded-md">E-Wallet</span>
-                    </div>
-                </button>
-
-                <button onclick="toggleSideDrawer(false); navigateTo('balance-history-page')" class="w-full flex items-center gap-3 p-2.5 rounded-xl hover:bg-emerald-50 text-slate-700 hover:text-emerald-600 transition text-left">
-                    <div class="p-1.5 bg-emerald-100 text-emerald-600 rounded-lg"><i data-lucide="receipt" class="w-4 h-4"></i></div>
-                    <div class="flex-grow flex justify-between items-center">
-                        <span>ব্যালেন্স হিস্ট্রি</span>
-                        <span class="text-[10px] text-emerald-600 font-extrabold bg-emerald-50 px-2 py-0.5 rounded-md">হিস্ট্রি</span>
                     </div>
                 </button>
 
@@ -763,10 +786,15 @@
                     <span>নোটিশ ও অ্যালার্ট</span>
                 </button>
 
-                <!-- ADMIN ONLY CREATE REDEEM CODE -->
+                <!-- ADMIN ONLY BUTTONS -->
                 <button id="drawer-admin-redeem-btn" onclick="toggleSideDrawer(false); openAdminCreateRedeemModal();" class="hidden w-full flex items-center gap-3 p-2.5 rounded-xl hover:bg-amber-50 text-amber-700 font-black transition text-left">
                     <div class="p-1.5 bg-amber-200 text-amber-800 rounded-lg"><i data-lucide="plus-circle" class="w-4 h-4"></i></div>
                     <span>+ Create Redeem Code</span>
+                </button>
+
+                <button id="drawer-admin-giveaway-btn" onclick="toggleSideDrawer(false); openAdminCreateGiveawayModal();" class="hidden w-full flex items-center gap-3 p-2.5 rounded-xl hover:bg-yellow-50 text-yellow-800 font-black transition text-left">
+                    <div class="p-1.5 bg-yellow-300 text-yellow-900 rounded-lg"><i data-lucide="award" class="w-4 h-4"></i></div>
+                    <span>+ Create Giveaway Event</span>
                 </button>
 
                 <button onclick="window.location.reload()" class="w-full flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-100 text-slate-700 transition text-left">
@@ -777,7 +805,7 @@
         </div>
 
         <div class="p-3 border-t border-slate-100 bg-slate-50 text-center">
-            <p class="text-[10.5px] font-semibold text-slate-400">GMAIL HUB • Official Portal</p>
+            <p class="text-[10.5px] font-semibold text-slate-400">GMAIL HUB • Official Giveaway & Rewards</p>
         </div>
     </div>
 
@@ -793,14 +821,22 @@
 
                 <div class="flex items-center gap-2 cursor-pointer" onclick="navigateTo('task-page')">
                     <div class="flex flex-col">
-                        <span class="text-lg font-black tracking-tight text-white leading-tight">GMAIL HUB</span>
-                        <span class="text-[9.5px] text-blue-200 font-bold uppercase tracking-wider">Rewards & Wallet</span>
+                        <span class="text-lg font-black tracking-tight text-white leading-tight flex items-center gap-1.5">
+                            GMAIL HUB
+                        </span>
+                        <span class="text-[9.5px] text-blue-200 font-bold uppercase tracking-wider">Rewards & Portal</span>
                     </div>
                 </div>
             </div>
 
             <div class="flex items-center gap-2">
-                <div id="header-balance-area" class="wallet-pill flex items-center gap-1.5 cursor-pointer" onclick="navigateTo('balance-history-page')" title="ব্যালেন্স হিস্ট্রি">
+                <!-- GIVEAWAY QUICK HEADER BUTTON -->
+                <button onclick="navigateTo('giveaway-page')" class="wallet-pill bg-gradient-to-r from-amber-400/30 to-yellow-300/30 border-amber-300/50 flex items-center gap-1.5 active:scale-95 transition shadow-sm" title="মেগা গিভঅ্যাওয়ে">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5 text-yellow-300 animate-spin"></i>
+                    <span class="font-black text-xs text-yellow-200">GIVEAWAY</span>
+                </button>
+
+                <div id="header-balance-area" class="wallet-pill flex items-center gap-1.5 cursor-pointer" onclick="handleWithdrawNavigation()" title="ব্যালেন্স">
                     <i data-lucide="wallet" class="w-3.5 h-3.5 text-amber-300"></i>
                     <span id="header-coin-balance" class="font-black text-xs text-white">৳0.00</span>
                 </div>
@@ -817,7 +853,7 @@
             <div class="flex items-center gap-2">
                 <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-200 flex-shrink-0"></i>
                 <div class="text-xs font-bold leading-tight">
-                    <span>ইনকাম ও উইথড্র করতে একাউন্ট একটিভ করুন</span>
+                    <span>ইনকাম, উইথড্র ও গিভঅ্যাওয়ে পেতে একাউন্ট একটিভ করুন</span>
                     <span class="text-[10px] text-amber-100 block" id="banner-activation-text">১০ টাকা দিয়ে একাউন্ট সক্রিয় করুন</span>
                 </div>
             </div>
@@ -833,8 +869,11 @@
             <div id="task-page" class="p-4 space-y-4 sub-page active">
                 <div class="bg-gradient-to-br from-blue-600 via-indigo-600 to-slate-900 p-5 rounded-3xl text-white shadow-lg space-y-2 relative overflow-hidden">
                     <div class="absolute -right-4 -bottom-4 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center justify-between">
                         <span class="px-2.5 py-0.5 rounded-full bg-white/20 text-white text-[10px] font-black uppercase tracking-wider border border-white/30">Free Rewards</span>
+                        <button onclick="navigateTo('giveaway-page')" class="px-3 py-1 bg-amber-400 text-slate-900 text-xs font-black rounded-full flex items-center gap-1 shadow hover:bg-amber-300 transition active:scale-95">
+                            <i data-lucide="gift" class="w-3.5 h-3.5"></i> Giveaway Zone
+                        </button>
                     </div>
                     <h2 class="text-xl font-black">Tasks & Free Cash</h2>
                     <p class="text-xs text-blue-100 leading-relaxed">সহজ টাস্ক পূরণ করে সরাসরি আপনার অ্যাকাউন্টে ফ্রি ব্যালেন্স আয় করুন!</p>
@@ -859,7 +898,79 @@
                 <div class="space-y-3.5" id="dynamic-tasks-container"></div>
             </div>
 
-            <!-- 2. REFER & EARN PAGE -->
+            <!-- 2. GIVEAWAY PAGE (BRAND NEW & CUSTOMIZED) -->
+            <div id="giveaway-page" class="p-4 space-y-4 sub-page">
+                <div class="bg-gradient-to-br from-amber-500 via-orange-600 to-rose-700 p-6 rounded-3xl text-white shadow-xl relative overflow-hidden border border-amber-300/40 giveaway-card-glow">
+                    <div class="absolute -right-6 -bottom-6 w-36 h-36 bg-yellow-300/20 rounded-full blur-2xl pointer-events-none"></div>
+                    <div class="relative z-10 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-yellow-100 text-[10px] font-black uppercase tracking-widest border border-white/30 flex items-center gap-1.5">
+                                <i data-lucide="award" class="w-3.5 h-3.5 text-yellow-300"></i> OFFICIAL MEGA GIVEAWAY
+                            </span>
+                            <span class="px-2.5 py-0.5 rounded-lg bg-black/20 text-white font-mono text-[11px] font-black" id="giveaway-status-badge">LIVE NOW</span>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-black tracking-tight drop-shadow-md text-white">মেগা গিভঅ্যাওয়ে ইভেন্ট</h2>
+                            <p class="text-xs text-amber-100 mt-1 leading-relaxed">ফ্রিতে এন্ট্রি নিন এবং জিতে নিন নগদ পুরস্কার সরাসরি আপনার ওয়ালেটে!</p>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur-md p-3.5 rounded-2xl border border-white/20 flex items-center justify-between">
+                            <div>
+                                <span class="text-[10px] uppercase tracking-wider text-amber-200 font-bold block">মোট প্রাইজ পুল</span>
+                                <span class="text-xl font-black text-yellow-300 font-mono" id="giveaway-prize-pool">৳ ৫,০০০</span>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-[10px] uppercase tracking-wider text-amber-200 font-bold block">মোট প্রতিযোগী</span>
+                                <span class="text-xl font-black text-white font-mono" id="giveaway-total-participants">০ জন</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lucky Entry Card -->
+                <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm text-center space-y-4 relative overflow-hidden">
+                    <div class="w-20 h-20 mx-auto rounded-3xl bg-gradient-to-tr from-amber-100 to-yellow-100 border border-amber-200 flex items-center justify-center shadow-inner animate-float">
+                        <i data-lucide="gift" class="w-10 h-10 text-amber-600"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-black text-slate-800">আজকের ফ্রি লাকি ড্র এন্ট্রি</h3>
+                        <p class="text-xs text-slate-500 mt-1">প্রতিটি সক্রিয় অ্যাকাউন্ট থেকে বিনামূল্যে টিকিট সংগ্রহ করতে পারবেন।</p>
+                    </div>
+
+                    <div id="giveaway-entry-box">
+                        <button id="btn-enter-giveaway" onclick="participateInGiveaway()" class="w-full py-3.5 bg-gradient-to-r from-amber-500 via-orange-500 to-yellow-500 hover:from-amber-600 hover:to-orange-600 text-white font-black rounded-2xl text-sm shadow-lg flex items-center justify-center gap-2 active:scale-95 transition">
+                            <i data-lucide="ticket" class="w-4 h-4"></i>
+                            <span>ফ্রি এন্ট্রি নিন (Claim Free Ticket)</span>
+                        </button>
+                    </div>
+
+                    <div id="user-ticket-card" class="hidden p-3 bg-amber-50 border border-amber-200 rounded-2xl flex items-center justify-between">
+                        <div class="flex items-center gap-2 text-left">
+                            <i data-lucide="check-circle" class="w-5 h-5 text-emerald-600"></i>
+                            <div>
+                                <h5 class="text-xs font-black text-slate-800">আপনি এন্ট্রি নিয়েছেন!</h5>
+                                <span class="text-[10.5px] text-amber-700 font-mono font-bold" id="user-ticket-number">Ticket: #GH-0000</span>
+                            </div>
+                        </div>
+                        <span class="px-2.5 py-1 bg-emerald-100 text-emerald-800 text-[10px] font-black rounded-lg uppercase">Enrolled</span>
+                    </div>
+                </div>
+
+                <!-- Live Winners & Recent Draws -->
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between px-1">
+                        <h3 class="text-xs font-black uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+                            <i data-lucide="trophy" class="w-4 h-4 text-amber-500"></i>
+                            <span>সাম্প্রতিক বিজয়ী তালিকা</span>
+                        </h3>
+                        <span class="text-[10px] text-slate-400 font-bold">অটোমেটিক লটারি ড্র</span>
+                    </div>
+                    <div id="giveaway-winners-container" class="space-y-2.5">
+                        <!-- Dynamic Winners will render here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. REFER & EARN PAGE -->
             <div id="refer-page" class="p-4 space-y-4 sub-page">
                 <div class="bg-gradient-to-br from-indigo-900 via-blue-900 to-slate-900 p-5 rounded-3xl text-white shadow-xl relative overflow-hidden border border-blue-500/20">
                     <div class="relative z-10 space-y-2">
@@ -913,15 +1024,16 @@
                     <div class="flex items-center justify-between">
                         <h3 class="text-xs font-black uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
                             <i data-lucide="users" class="w-4 h-4 text-blue-600"></i>
-                            <span>YOUR REFERRAL LIST</span>
+                            <span>YOUR REFERRAL LIST (টেলিগ্রাম প্রোফাইল সহ)</span>
                         </h3>
                         <span class="text-[10.5px] text-slate-400 font-bold" id="ref-list-count-badge">০ জন</span>
                     </div>
+                    <!-- REFERRED USERS LIST WITH TELEGRAM PROFILE PREVIEWS -->
                     <div id="referred-users-list-container" class="space-y-2.5 min-h-[140px]"></div>
                 </div>
             </div>
 
-            <!-- 3. PROFILE PAGE -->
+            <!-- 4. PROFILE PAGE -->
             <div id="profile-page" class="p-4 space-y-4 sub-page">
                 <div class="profile-hero-card p-5 rounded-3xl text-white shadow-xl space-y-3.5">
                     <div class="flex items-center justify-between">
@@ -947,10 +1059,14 @@
                         </div>
                     </div>
 
-                    <div class="pt-2 border-t border-white/10">
-                        <button onclick="openRedeemModal()" class="w-full py-2.5 px-4 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black rounded-2xl text-xs flex items-center justify-center gap-2 shadow-lg active:scale-95 transition">
-                            <i data-lucide="gift" class="w-4 h-4 text-white animate-bounce"></i>
-                            <span>রিডিম কোড (Redeem Code)</span>
+                    <div class="pt-2 border-t border-white/10 grid grid-cols-2 gap-2">
+                        <button onclick="openRedeemModal()" class="py-2.5 px-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black rounded-2xl text-xs flex items-center justify-center gap-1.5 shadow-lg active:scale-95 transition">
+                            <i data-lucide="gift" class="w-4 h-4 text-white"></i>
+                            <span>রিডিম কোড</span>
+                        </button>
+                        <button onclick="navigateTo('giveaway-page')" class="py-2.5 px-3 bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-600 hover:to-amber-700 text-white font-black rounded-2xl text-xs flex items-center justify-center gap-1.5 shadow-lg active:scale-95 transition">
+                            <i data-lucide="sparkles" class="w-4 h-4 text-white"></i>
+                            <span>GIVEAWAY</span>
                         </button>
                     </div>
 
@@ -974,12 +1090,12 @@
                 </div>
 
                 <div class="bg-white p-2 rounded-2xl border border-slate-200 shadow-sm divide-y divide-slate-100 text-xs font-bold">
-                    <button onclick="navigateTo('balance-history-page')" class="w-full p-3 flex items-center justify-between hover:bg-emerald-50 rounded-xl transition text-emerald-700">
+                    <button onclick="navigateTo('giveaway-page')" class="w-full p-3 flex items-center justify-between hover:bg-amber-50 rounded-xl transition text-amber-700">
                         <div class="flex items-center gap-2.5">
-                            <div class="p-1.5 bg-emerald-100 text-emerald-600 rounded-lg"><i data-lucide="receipt" class="w-4 h-4"></i></div>
-                            <span class="font-black">ব্যালেন্স হিস্ট্রি (আয় ও ব্যয়)</span>
+                            <div class="p-1.5 bg-amber-100 text-amber-600 rounded-lg"><i data-lucide="sparkles" class="w-4 h-4"></i></div>
+                            <span class="font-black">মেগা গিভঅ্যাওয়ে পোর্টাল (Giveaway)</span>
                         </div>
-                        <i data-lucide="chevron-right" class="w-4 h-4 text-emerald-400"></i>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-amber-400"></i>
                     </button>
 
                     <button onclick="handleWithdrawNavigation()" class="w-full p-3 flex items-center justify-between hover:bg-rose-50 rounded-xl transition text-rose-700">
@@ -1006,26 +1122,6 @@
                         <i data-lucide="chevron-right" class="w-4 h-4 text-sky-400"></i>
                     </button>
                 </div>
-            </div>
-
-            <!-- 4. BALANCE HISTORY (LEDGER) -->
-            <div id="balance-history-page" class="p-4 space-y-4 sub-page">
-                <div class="flex items-center justify-between border-b border-slate-200 pb-3">
-                    <div class="flex items-center gap-2">
-                        <button onclick="navigateTo('profile-page')" class="p-2 rounded-xl bg-white border border-slate-200">
-                            <i data-lucide="arrow-left" class="w-4 h-4"></i>
-                        </button>
-                        <div>
-                            <h2 class="text-base font-black text-slate-800">ব্যালেন্স হিস্ট্রি</h2>
-                            <p class="text-[10.5px] text-slate-500">সকল আয় ও ব্যয়ের তালিকা</p>
-                        </div>
-                    </div>
-                    <div class="text-right">
-                        <span class="text-[10px] text-slate-400 uppercase font-black block">বর্তমান ব্যালেন্স</span>
-                        <span id="ledger-current-balance" class="text-sm font-black text-blue-600 font-mono">৳0.00</span>
-                    </div>
-                </div>
-                <div id="balance-history-list" class="space-y-2.5 min-h-[220px]"></div>
             </div>
 
             <!-- 5. WALLET TRANSFERS PAGE -->
@@ -1179,7 +1275,7 @@
 
         </main>
 
-        <!-- FLOATING BOTTOM NAVIGATION (NO SHOP, NO WORK) -->
+        <!-- FLOATING BOTTOM NAVIGATION -->
         <div class="bottom-nav-container">
             <nav class="bottom-nav">
                 <div class="nav-item active" data-page="task-page" onclick="navigateTo('task-page')">
@@ -1187,6 +1283,12 @@
                         <i data-lucide="check-square" class="w-5 h-5"></i>
                     </div>
                     <span>Tasks</span>
+                </div>
+                <div class="nav-item" data-page="giveaway-page" onclick="navigateTo('giveaway-page')">
+                    <div class="nav-icon-wrapper">
+                        <i data-lucide="sparkles" class="w-5 h-5 text-amber-500"></i>
+                    </div>
+                    <span>Giveaway</span>
                 </div>
                 <div class="nav-item" data-page="refer-page" onclick="navigateTo('refer-page')">
                     <div class="nav-icon-wrapper">
@@ -1213,7 +1315,7 @@
 
     <!-- REDEEM CODE MODAL -->
     <div id="redeem-code-modal" class="hidden fixed inset-0 bg-black/65 flex items-center justify-center z-[95] p-4 backdrop-blur-sm">
-        <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 text-center shadow-2xl border border-slate-100">
+        <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 text-center shadow-2xl border border-slate-100 animate-float">
             <div class="w-14 h-14 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto">
                 <i data-lucide="gift" class="w-7 h-7"></i>
             </div>
@@ -1261,6 +1363,38 @@
             <div class="flex gap-2 pt-2">
                 <button onclick="closeAdminCreateRedeemModal()" class="w-1/2 py-2.5 bg-slate-100 font-bold rounded-xl text-xs">বাতিল</button>
                 <button id="btn-save-new-redeem" onclick="saveNewRedeemCodeToFirebase()" class="w-1/2 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl text-xs shadow">যোগ করুন</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN CREATE GIVEAWAY MODAL -->
+    <div id="admin-create-giveaway-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[98] p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 shadow-2xl border border-slate-100">
+            <div class="flex items-center justify-between border-b pb-2">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-xl bg-yellow-100 text-yellow-700 flex items-center justify-center font-bold">
+                        <i data-lucide="award" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-black text-slate-900">Manage Giveaway Event</h3>
+                        <span class="text-[10px] text-yellow-700 font-bold">নতুন ড্র বা পুরস্কার সেট করুন</span>
+                    </div>
+                </div>
+                <button onclick="closeAdminCreateGiveawayModal()" class="p-1 rounded-full bg-slate-100"><i data-lucide="x" class="w-4 h-4"></i></button>
+            </div>
+            <div class="space-y-2 text-xs">
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">মোট প্রাইজ পুল (টাকা):</label>
+                    <input id="new-giveaway-pool" type="number" value="5000" class="w-full p-2.5 rounded-xl input-field font-bold">
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">ইভেন্ট শিরোনাম:</label>
+                    <input id="new-giveaway-title" type="text" value="Official Mega Cash Giveaway" class="w-full p-2.5 rounded-xl input-field font-bold">
+                </div>
+            </div>
+            <div class="flex gap-2 pt-2">
+                <button onclick="closeAdminCreateGiveawayModal()" class="w-1/2 py-2.5 bg-slate-100 font-bold rounded-xl text-xs">বাতিল</button>
+                <button onclick="saveGiveawayConfig()" class="w-1/2 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl text-xs shadow">আপডেট করুন</button>
             </div>
         </div>
     </div>
@@ -1314,7 +1448,7 @@
             </div>
             <div>
                 <h3 class="font-black text-lg text-slate-900 leading-tight">একাউন্ট একটিভ করুন</h3>
-                <p class="text-xs text-slate-500 mt-1">উইথড্র, ট্রান্সফার এবং রেফারেল সুবিধা আনলক করতে একাউন্ট সক্রিয় করুন।</p>
+                <p class="text-xs text-slate-500 mt-1">উইথড্র, ট্রান্সফার এবং মেগা গিভঅ্যাওয়ে সুবিধা আনলক করতে একাউন্ট সক্রিয় করুন।</p>
             </div>
             <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 text-xs text-slate-700 flex justify-between items-center">
                 <span>এক্টিভেশন ফি:</span>
@@ -1875,7 +2009,6 @@
         let currentUserTg = null;
         let userData = null;
         let appConfig = {};
-        let userLedgerCache = [];
         let allUserNotifications = [];
 
         let selectedBindMethod = 'Nagad';
@@ -1905,22 +2038,6 @@
                     });
                 }
             } catch (err) {}
-        }
-
-        async function recordUserLedger(type, title, amount, isIncome, note = '') {
-            if (!userData) return;
-            try {
-                const tgChatId = String(userData.tgChatId);
-                const ledgerCol = collection(dbUser, "users", tgChatId, "ledger");
-                await addDoc(ledgerCol, {
-                    type: type,
-                    title: title,
-                    amount: parseFloat(amount),
-                    isIncome: Boolean(isIncome),
-                    note: note || '',
-                    timestamp: serverTimestamp()
-                });
-            } catch(e) {}
         }
 
         window.showToast = function(message, type = 'info') {
@@ -2057,6 +2174,7 @@
                 if (userData.isAccountActive === undefined) userData.isAccountActive = false;
                 if (!userData.boundWallets) userData.boundWallets = [];
                 if (!userData.completedTasks) userData.completedTasks = [];
+                if (!userData.giveawayTickets) userData.giveawayTickets = [];
                 await updateDoc(userRef, { name: userFullName, photo_url: photoUrl, lastSeen: serverTimestamp() });
             } else {
                 userData = {
@@ -2070,6 +2188,7 @@
                     lastDailyCheckin: null,
                     boundWallets: [],
                     completedTasks: [],
+                    giveawayTickets: [],
                     createdAt: serverTimestamp()
                 };
                 await setDoc(userRef, userData);
@@ -2090,8 +2209,11 @@
 
             const adminId = String(appConfig.adminChatId || "6954647230");
             const adminBtn = document.getElementById('drawer-admin-redeem-btn');
-            if (adminBtn && String(userData.tgChatId) === adminId) {
-                adminBtn.classList.remove('hidden');
+            const adminGiveawayBtn = document.getElementById('drawer-admin-giveaway-btn');
+
+            if (String(userData.tgChatId) === adminId) {
+                if (adminBtn) adminBtn.classList.remove('hidden');
+                if (adminGiveawayBtn) adminGiveawayBtn.classList.remove('hidden');
             }
 
             await loadUserNotifications();
@@ -2132,11 +2254,166 @@
                 const refPill = document.getElementById('refer-badge-pill');
                 if (refPill) refPill.textContent = `${refBonus.toFixed(0)} BDT / Refer`;
 
+                const giveawayPoolEl = document.getElementById('giveaway-prize-pool');
+                if (giveawayPoolEl && appConfig.giveawayPool) giveawayPoolEl.textContent = `৳ ${parseFloat(appConfig.giveawayPool).toLocaleString()}`;
+
                 renderDailyCheckinState();
             } catch (e) {
                 renderDailyCheckinState();
             }
         }
+
+        // ==========================================
+        // GIVEAWAY ENGINE (A to Z)
+        // ==========================================
+        async function loadGiveawayPageData() {
+            const container = document.getElementById('giveaway-winners-container');
+            const totalParticipantsEl = document.getElementById('giveaway-total-participants');
+            const userTicketCard = document.getElementById('user-ticket-card');
+            const userTicketNumber = document.getElementById('user-ticket-number');
+            const entryBox = document.getElementById('giveaway-entry-box');
+
+            if (!container) return;
+            container.innerHTML = getLoadingHTML();
+
+            try {
+                // Check if user already entered
+                const currentEventId = appConfig.currentGiveawayId || "mega_giveaway_round_1";
+                const userEntered = (userData.giveawayTickets || []).some(t => t.eventId === currentEventId);
+
+                if (userEntered) {
+                    const ticket = (userData.giveawayTickets || []).find(t => t.eventId === currentEventId);
+                    entryBox.classList.add('hidden');
+                    userTicketCard.classList.remove('hidden');
+                    userTicketNumber.textContent = `Ticket: #${ticket.ticketNumber || 'GH-7788'}`;
+                } else {
+                    entryBox.classList.remove('hidden');
+                    userTicketCard.classList.add('hidden');
+                }
+
+                // Load Total Participants
+                const participantsQuery = query(collection(dbUser, "giveaway_entries"), where("eventId", "==", currentEventId));
+                const partSnap = await getCountFromServer(participantsQuery);
+                const totalEntries = partSnap.data().count || 0;
+                totalParticipantsEl.textContent = `${totalEntries} জন`;
+
+                // Load Winners List
+                const winnersQuery = query(collection(dbUser, "giveaway_winners"), orderBy("awardedAt", "desc"), limit(10));
+                const winSnap = await getDocs(winnersQuery);
+
+                if (winSnap.empty) {
+                    container.innerHTML = `
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200 text-center space-y-2">
+                            <i data-lucide="sparkles" class="w-7 h-7 text-amber-500 mx-auto animate-pulse"></i>
+                            <p class="text-xs text-slate-500 font-bold">পরবর্তী ড্র দ্রুতই ঘোষণা করা হবে। আপনার টিকিট নিয়ে যুক্ত থাকুন!</p>
+                        </div>`;
+                } else {
+                    container.innerHTML = winSnap.docs.map(docSnap => {
+                        const win = docSnap.data();
+                        const winDate = win.awardedAt?.toDate ? win.awardedAt.toDate().toLocaleDateString('en-GB') : 'Recently';
+                        return `
+                            <div class="bg-white p-3.5 rounded-2xl border border-slate-200 flex items-center justify-between shadow-sm transition hover:scale-[1.01]">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center font-black">
+                                        <i data-lucide="award" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-extrabold text-xs text-slate-900 flex items-center gap-1">
+                                            ${win.userName || 'Lucky Winner'} 
+                                            <i data-lucide="check-circle" class="w-3.5 h-3.5 text-blue-500"></i>
+                                        </h4>
+                                        <p class="text-[10px] text-slate-400 font-mono">ID: ${win.userId} • ${winDate}</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-xs font-black text-amber-600 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-xl font-mono">৳${parseFloat(win.prizeAmount || 500).toFixed(0)}</span>
+                                </div>
+                            </div>`;
+                    }).join('');
+                }
+                lucide.createIcons();
+            } catch (err) {
+                container.innerHTML = `<div class="p-4 text-xs text-center text-slate-400">গিভঅ্যাওয়ে তালিকা লোড করা যায়নি</div>`;
+            }
+        }
+
+        window.participateInGiveaway = async function() {
+            if (!ensureAccountActive("গিভঅ্যাওয়ে এন্ট্রি")) return;
+            const btn = document.getElementById('btn-enter-giveaway');
+            btn.disabled = true;
+            btn.innerHTML = `<span class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span> এন্ট্রি নিশ্চিত হচ্ছে...`;
+
+            try {
+                const currentEventId = appConfig.currentGiveawayId || "mega_giveaway_round_1";
+                const ticketNumber = "GH-" + Math.floor(100000 + Math.random() * 900000);
+                const userRef = doc(dbUser, "users", String(userData.tgChatId));
+                const entryCol = collection(dbUser, "giveaway_entries");
+
+                await runTransaction(dbUser, async (t) => {
+                    const snap = await t.get(userRef);
+                    const data = snap.data();
+                    const tickets = data.giveawayTickets || [];
+                    if (tickets.some(x => x.eventId === currentEventId)) {
+                        throw new Error("আপনি ইতিমধ্যে এই গিভঅ্যাওয়েতে এন্ট্রি নিয়েছেন!");
+                    }
+
+                    tickets.push({
+                        eventId: currentEventId,
+                        ticketNumber: ticketNumber,
+                        enteredAt: Date.now()
+                    });
+
+                    t.update(userRef, { giveawayTickets: tickets });
+                    const newEntryDoc = doc(entryCol);
+                    t.set(newEntryDoc, {
+                        userId: String(userData.tgChatId),
+                        userName: userData.name || 'User',
+                        eventId: currentEventId,
+                        ticketNumber: ticketNumber,
+                        timestamp: serverTimestamp()
+                    });
+                });
+
+                if (!userData.giveawayTickets) userData.giveawayTickets = [];
+                userData.giveawayTickets.push({ eventId: currentEventId, ticketNumber: ticketNumber });
+
+                showToast(`🎉 অভিনন্দন! টিকিট #${ticketNumber} তৈরি হয়েছে!`, "success");
+                loadGiveawayPageData();
+            } catch (e) {
+                showToast(e.message || "এন্ট্রি নিতে সমস্যা হয়েছে", "error");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i data-lucide="ticket" class="w-4 h-4"></i> <span>ফ্রি এন্ট্রি নিন (Claim Free Ticket)</span>`;
+                lucide.createIcons();
+            }
+        };
+
+        window.openAdminCreateGiveawayModal = function() {
+            document.getElementById('admin-create-giveaway-modal').classList.remove('hidden');
+        };
+
+        window.closeAdminCreateGiveawayModal = function() {
+            document.getElementById('admin-create-giveaway-modal').classList.add('hidden');
+        };
+
+        window.saveGiveawayConfig = async function() {
+            const pool = parseFloat(document.getElementById('new-giveaway-pool').value || 5000);
+            const title = document.getElementById('new-giveaway-title').value.trim();
+
+            try {
+                const configRef = doc(dbUser, "config", "main");
+                await updateDoc(configRef, {
+                    giveawayPool: pool,
+                    giveawayTitle: title,
+                    currentGiveawayId: "event_" + Date.now()
+                });
+                showToast("নতুন গিভঅ্যাওয়ে রাউন্ড সফলভাবে আপডেট হয়েছে!", "success");
+                closeAdminCreateGiveawayModal();
+                fetchAppConfig();
+            } catch (e) {
+                showToast("আপডেট ব্যর্থ হয়েছে", "error");
+            }
+        };
 
         // --- TASKS ENGINE ---
         async function renderDynamicTasksList() {
@@ -2263,7 +2540,7 @@
                     clearInterval(taskActiveTimers[taskId]);
                     delete taskActiveTimers[taskId];
                     container.innerHTML = `
-                        <button onclick="claimDynamicTaskReward('${taskId}', ${reward}, 'টেলিগ্রাম চ্যানেল জয়েন রিওয়ার্ড')" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-black text-xs flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition">
+                        <button onclick="claimDynamicTaskReward('${taskId}', ${reward})" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-black text-xs flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition">
                             <i data-lucide="check-circle" class="w-4 h-4"></i>
                             <span>ভেরিফাই ও রিওয়ার্ড গ্রহণ করুন</span>
                         </button>
@@ -2292,7 +2569,7 @@
                 if (remainingTime <= 0) {
                     clearInterval(timer);
                     actionContainer.innerHTML = `
-                        <button onclick="claimDynamicTaskReward('${taskId}', ${reward}, 'ওয়েবসাইট ভিজিট রিওয়ার্ড')" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-bold text-xs flex items-center justify-center gap-2 shadow-md transition active:scale-98">
+                        <button onclick="claimDynamicTaskReward('${taskId}', ${reward})" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-bold text-xs flex items-center justify-center gap-2 shadow-md transition active:scale-98">
                             <i data-lucide="gift" class="w-4 h-4"></i>
                             <span>রিওয়ার্ড নিন (+৳${parseFloat(reward).toFixed(2)})</span>
                         </button>
@@ -2302,7 +2579,7 @@
             }, 1000);
         };
 
-        window.claimDynamicTaskReward = async function(taskId, rewardAmount, ledgerTitle = 'টাস্ক সম্পন্ন রিওয়ার্ড') {
+        window.claimDynamicTaskReward = async function(taskId, rewardAmount) {
             if (!ensureAccountActive("টাস্ক বোনাস")) return;
             try {
                 const userRef = doc(dbUser, "users", String(userData.tgChatId));
@@ -2324,7 +2601,6 @@
                 if (!userData.completedTasks) userData.completedTasks = [];
                 userData.completedTasks.push(taskId);
 
-                await recordUserLedger('income', ledgerTitle, rewardAmount, true, `টাস্ক আইডি: ${taskId}`);
                 updateUI();
                 showToast(`🎉 রিওয়ার্ড ৳${parseFloat(rewardAmount).toFixed(2)} যুক্ত হয়েছে!`, "success");
                 renderDynamicTasksList();
@@ -2334,7 +2610,19 @@
             }
         };
 
-        // --- REFERRAL & DAILY CHECKIN ---
+        // --- REFERRAL & TELEGRAM PROFILE VIEW ---
+        window.openTelegramUserProfile = function(username, userId) {
+            if (username) {
+                const url = `https://t.me/${username.replace('@', '')}`;
+                if (window.Telegram?.WebApp?.openTelegramLink) window.Telegram.WebApp.openTelegramLink(url);
+                else window.open(url, '_blank');
+            } else if (userId) {
+                const url = `tg://user?id=${userId}`;
+                if (window.Telegram?.WebApp?.openTelegramLink) window.Telegram.WebApp.openTelegramLink(url);
+                else window.open(url, '_blank');
+            }
+        };
+
         async function loadReferralPageData() {
             if (!userData) return;
             const tgId = String(userData.tgChatId);
@@ -2370,23 +2658,34 @@
                     return;
                 }
 
+                // RENDERING USERS WITH TELEGRAM PROFILE PREVIEW & LINK
                 container.innerHTML = referredUsers.map(user => {
                     const isActive = user.isAccountActive === true;
+                    const avatarSrc = user.photo_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${user.tgChatId}`;
+                    const tgHandle = user.username ? `@${user.username}` : `ID: ${user.tgChatId}`;
+
                     return `
-                    <div class="bg-white p-3.5 rounded-2xl border border-slate-200 flex items-center justify-between text-xs shadow-sm">
-                        <div class="flex items-center gap-2.5">
-                            <div class="w-9 h-9 rounded-full ${isActive ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600'} flex items-center justify-center font-bold">
-                                <i data-lucide="${isActive ? 'user-check' : 'user-x'}" class="w-4 h-4"></i>
+                    <div class="bg-white p-3 rounded-2xl border border-slate-200 flex items-center justify-between text-xs shadow-sm hover:border-blue-300 transition">
+                        <div class="flex items-center gap-3 overflow-hidden cursor-pointer" onclick="openTelegramUserProfile('${user.username || ''}', '${user.tgChatId}')">
+                            <div class="relative flex-shrink-0">
+                                <img src="${avatarSrc}" class="w-10 h-10 rounded-full object-cover border border-slate-200" alt="Avatar">
+                                ${isActive ? `<span class="w-3 h-3 bg-emerald-500 border-2 border-white rounded-full absolute bottom-0 right-0"></span>` : ''}
                             </div>
-                            <div>
-                                <h4 class="font-black text-slate-800">${user.name || 'User'}</h4>
-                                <span class="text-[10px] font-mono text-slate-400">ID: ${user.tgChatId}</span>
+                            <div class="overflow-hidden">
+                                <h4 class="font-extrabold text-slate-800 text-xs truncate flex items-center gap-1">
+                                    <span>${user.name || 'Telegram User'}</span>
+                                    <i data-lucide="external-link" class="w-3 h-3 text-slate-400"></i>
+                                </h4>
+                                <span class="text-[10.5px] font-mono text-blue-600 block truncate">${tgHandle}</span>
                             </div>
                         </div>
-                        <div>
-                            <span class="px-2.5 py-1 ${isActive ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-700 border-amber-200'} border rounded-lg text-[10.5px] font-bold">
+                        <div class="flex items-center gap-2 flex-shrink-0">
+                            <span class="px-2.5 py-1 ${isActive ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-700 border-amber-200'} border rounded-xl text-[10px] font-black">
                                 ${isActive ? `Active (+৳${refBonus.toFixed(0)})` : 'Inactive'}
                             </span>
+                            <button onclick="openTelegramUserProfile('${user.username || ''}', '${user.tgChatId}')" class="p-2 rounded-xl bg-slate-100 hover:bg-sky-50 text-sky-600 transition" title="প্রোফাইল ওপেন করুন">
+                                <i class="fab fa-telegram"></i>
+                            </button>
                         </div>
                     </div>`;
                 }).join('');
@@ -2407,7 +2706,7 @@
         window.shareReferralLinkTelegram = function() {
             const botUser = appConfig.botUsername || "Gmail_HUB7bot";
             const link = `https://t.me/${botUser}?start=ref_${userData?.tgChatId || ''}`;
-            const text = `🔥 জয়েন করুন এবং ফ্রি টাস্ক পূরণ করে টাকা ইনকাম করুন!`;
+            const text = `🔥 জয়েন করুন এবং ফ্রি টাস্ক ও গিভঅ্যাওয়েতে অংশ নিয়ে টাকা ইনকাম করুন!`;
             const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(text)}`;
             if (window.Telegram?.WebApp?.openTelegramLink) window.Telegram.WebApp.openTelegramLink(shareUrl);
             else window.open(shareUrl, '_blank');
@@ -2453,7 +2752,6 @@
 
                 userData.balance = (userData.balance || 0) + 0.20;
                 userData.lastDailyCheckin = Timestamp.now();
-                await recordUserLedger('income', 'দৈনিক চেক-ইন বোনাস', 0.20, true, 'ডেইলি ক্লেইম');
                 updateUI();
                 renderDailyCheckinState();
                 showToast("অভিনন্দন! দৈনিক চেক-ইন বোনাস ৳০.২০ যুক্ত হয়েছে!", "success");
@@ -2540,7 +2838,6 @@
                 });
 
                 userData.balance = (userData.balance || 0) + rewardedAmount;
-                await recordUserLedger('income', `রিডিম কোড (${rawCode})`, rewardedAmount, true, 'রিডিম বোনাস');
                 updateUI();
                 showToast(`🎉 অভিনন্দন! ৳${rewardedAmount.toFixed(2)} ব্যালেন্সে যুক্ত হয়েছে!`, "success");
                 closeRedeemModal();
@@ -2550,63 +2847,6 @@
                 btn.disabled = false;
             }
         };
-
-        // --- BALANCE HISTORY (LEDGER) ---
-        async function loadBalanceHistory() {
-            const listEl = document.getElementById('balance-history-list');
-            const balEl = document.getElementById('ledger-current-balance');
-            if (!listEl || !userData) return;
-
-            if (balEl) balEl.textContent = `৳${(userData.balance || 0).toFixed(2)}`;
-            listEl.innerHTML = getLoadingHTML();
-
-            try {
-                const tgChatId = String(userData.tgChatId);
-                const ledgerCol = collection(dbUser, "users", tgChatId, "ledger");
-                const q = query(ledgerCol, orderBy("timestamp", "desc"), limit(50));
-                const snap = await getDocs(q);
-
-                if (snap.empty) {
-                    listEl.innerHTML = `<div class="bg-white p-8 rounded-2xl text-center text-slate-400 font-bold border border-slate-200">এখনো কোনো লেনদেনের হিস্ট্রি নেই।</div>`;
-                    return;
-                }
-
-                userLedgerCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                renderCleanLedgerList();
-            } catch(e) {
-                listEl.innerHTML = `<div class="p-6 text-center text-xs text-red-500 font-bold">ব্যালেন্স হিস্ট্রি লোড করা যায়নি।</div>`;
-            }
-        }
-
-        function renderCleanLedgerList() {
-            const listEl = document.getElementById('balance-history-list');
-            if (!listEl) return;
-
-            listEl.innerHTML = userLedgerCache.map(item => {
-                const isInc = Boolean(item.isIncome);
-                const sign = isInc ? '+' : '-';
-                const colorText = isInc ? 'text-emerald-600' : 'text-rose-600';
-                const bgIcon = isInc ? 'bg-emerald-100 text-emerald-600' : 'bg-rose-100 text-rose-600';
-                const dateStr = item.timestamp?.toDate ? item.timestamp.toDate().toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' }) : 'Just now';
-                let iconName = isInc ? 'arrow-down-left' : 'arrow-up-right';
-
-                return `
-                    <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between text-xs">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl flex items-center justify-center font-black ${bgIcon} flex-shrink-0">
-                                <i data-lucide="${iconName}" class="w-5 h-5"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-slate-800 text-sm leading-tight">${item.title || 'লেনদেন'}</h4>
-                                <p class="text-[10px] text-slate-400 mt-0.5">${dateStr}</p>
-                            </div>
-                        </div>
-                        <span class="font-black text-sm font-mono ${colorText}">${sign}৳${parseFloat(item.amount || 0).toFixed(2)}</span>
-                    </div>
-                `;
-            }).join('');
-            lucide.createIcons();
-        }
 
         // --- WITHDRAWAL SYSTEM ---
         function loadWithdrawPageUI() {
@@ -2837,7 +3077,6 @@
                 });
 
                 userData.balance -= totalDebit;
-                await recordUserLedger('expense', `উত্তোলন (${activeWallet.method})`, totalDebit, false, `ফি: ৳${withdrawFee.toFixed(2)}`);
 
                 const withdrawMsg = `💸 <b>নতুন উত্তোলন অনুরোধ!</b>\n\n` +
                     `👤 <b>নাম:</b> ${userData.name || 'User'} (<code>${userData.tgChatId}</code>)\n` +
@@ -2931,7 +3170,6 @@
 
                 userData.balance -= actFee;
                 userData.isAccountActive = true;
-                await recordUserLedger('expense', 'অ্যাকাউন্ট অ্যাক্টিভেশন ফি', actFee, false, 'সক্রিয়করণ ফি');
                 updateUI();
                 document.getElementById('account-activation-modal').classList.add('hidden');
                 showToast(`🎉 অ্যাকাউন্ট সফলভাবে সক্রিয় হয়েছে!`, "success");
@@ -3053,9 +3291,9 @@
 
             const routes = {
                 'task-page': () => { renderDynamicTasksList(); renderDailyCheckinState(); },
+                'giveaway-page': loadGiveawayPageData,
                 'refer-page': loadReferralPageData,
                 'withdraw-page': () => { updateUI(); loadWithdrawPageUI(); },
-                'balance-history-page': loadBalanceHistory,
                 'features-page': loadFeaturesPage,
                 'history-page': loadWithdrawHistory,
                 'profile-page': loadProfilePage
@@ -3121,7 +3359,7 @@
             const btn = document.getElementById('submit-send-btn');
             btn.disabled = true;
 
-try {
+            try {
                 await runTransaction(dbUser, async (t) => {
                     const senderRef = doc(dbUser, "users", String(userData.tgChatId));
                     const recipientRef = doc(dbUser, "users", String(recipientId));
@@ -3148,8 +3386,6 @@ try {
                         createdAt: serverTimestamp()
                     });
                 });
-
-                await recordUserLedger('expense', `ব্যালেন্স ট্রান্সফার (ID: ${recipientId})`, totalCost, false, `চার্জ: ৳${(totalCost - amount).toFixed(2)}`);
 
                 showToast("ব্যালেন্স সফলভাবে ট্রান্সফার হয়েছে!", "success");
                 document.getElementById('send-recipient-id').value = '';
