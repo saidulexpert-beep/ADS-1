@@ -7,35 +7,25 @@
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Hind+Siliguri:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Hind+Siliguri:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
-    <!-- Support Chat Firebase SDKs -->
+    <!-- Support Chat Firebase Realtime SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
 
     <style>
-        :root {
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --accent: #38bdf8;
-            --bg: #0b1120;
-        }
-
         body {
             font-family: 'Plus Jakarta Sans', 'Hind Siliguri', sans-serif;
-            background-color: #f1f5f9;
+            background-color: #f8fafc;
             color: #0f172a;
             -webkit-user-select: none;
             user-select: none;
-            -webkit-touch-callout: none;
         }
 
-        .mono-font {
-            font-family: 'Space Grotesk', monospace;
-        }
+        .mono-font { font-family: 'Space Grotesk', monospace; }
 
         input, textarea, select, .selectable-text {
             -webkit-user-select: text;
@@ -48,145 +38,154 @@
             position: sticky;
             top: 0;
             z-index: 45;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
         }
 
         .balance-glass-pill {
-            background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.18);
             backdrop-filter: blur(12px);
             border-radius: 9999px;
             padding: 5px 12px;
             transition: all 0.2s ease;
         }
+        .balance-glass-pill:active { transform: scale(0.96); background: rgba(255, 255, 255, 0.15); }
 
-        .balance-glass-pill:active {
-            transform: scale(0.96);
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        .cat-chip {
+        .category-btn {
             background: #ffffff;
             color: #475569;
             border: 1px solid #e2e8f0;
             border-radius: 14px;
-            padding: 9px 12px;
+            padding: 8px 10px;
             font-size: 0.78rem;
             font-weight: 700;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            gap: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+            transition: all 0.2s ease;
             cursor: pointer;
-            white-space: nowrap;
+            text-align: center;
         }
-
-        .cat-chip.active {
+        .category-btn.active {
             background: #0284c7;
             color: #ffffff;
             border-color: #0284c7;
-            box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
-            transform: translateY(-1px);
-        }
-
-        .pro-card {
-            background: #ffffff;
-            border-radius: 20px;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
-            transition: all 0.25s ease;
-        }
-
-        .pro-card:hover {
-            border-color: #38bdf8;
-            box-shadow: 0 12px 28px rgba(14, 165, 233, 0.12);
-            transform: translateY(-2px);
-        }
-
-        .btn-buy-intl {
-            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
-            color: white;
-            font-weight: 800;
-            border-radius: 12px;
-            transition: all 0.2s ease;
             box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
         }
-        .btn-buy-intl:active { transform: scale(0.96); }
 
-        .btn-preorder {
-            background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+        .product-card {
+            background: #ffffff;
+            border-radius: 18px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+            transition: all 0.25s ease;
+        }
+        .product-card:hover {
+            box-shadow: 0 10px 25px rgba(2, 132, 199, 0.1);
+            border-color: #7dd3fc;
+        }
+
+        .btn-buy {
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
             color: white;
-            font-weight: 800;
+            font-weight: 700;
             border-radius: 12px;
             transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3);
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+            cursor: pointer;
         }
-        .btn-preorder:active { transform: scale(0.96); }
+        .btn-buy:active { transform: scale(0.96); }
 
-        /* FLOATING NAVIGATION */
+        .btn-order-orange {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            color: white;
+            font-weight: 700;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(234, 88, 12, 0.25);
+            cursor: pointer;
+        }
+        .btn-order-orange:active { transform: scale(0.96); }
+
+        .btn-gateway-pay {
+            background: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%);
+            color: white;
+            font-weight: 800;
+            border-radius: 16px;
+            transition: all 0.25s ease;
+            box-shadow: 0 8px 25px rgba(2, 132, 199, 0.35);
+        }
+
+        .quick-amount-pill {
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            padding: 11px 6px;
+            border-radius: 16px;
+            font-weight: 800;
+            font-size: 0.82rem;
+            color: #334155;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        .quick-amount-pill.selected {
+            border-color: #0284c7 !important;
+            background: #0284c7 !important;
+            color: #ffffff !important;
+            box-shadow: 0 6px 18px rgba(2, 132, 199, 0.35);
+        }
+
+        /* FLOATING BOTTOM NAVIGATION */
         .bottom-nav-container {
             position: fixed;
-            bottom: 14px;
-            left: 14px;
-            right: 14px;
-            max-width: 440px;
+            bottom: 12px;
+            left: 12px;
+            right: 12px;
+            max-width: 424px;
             margin: 0 auto;
             z-index: 50;
         }
-
         .bottom-nav {
-            background: rgba(15, 23, 42, 0.94);
-            backdrop-filter: blur(18px);
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.12);
             border-radius: 24px;
             display: flex;
             justify-content: space-around;
             align-items: center;
-            height: 64px;
-            padding: 4px 8px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            height: 62px;
+            padding: 4px 6px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
         }
-
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             color: #94a3b8;
-            font-size: 0.70rem;
+            font-size: 0.68rem;
             font-weight: 700;
             transition: all 0.25s ease;
             cursor: pointer;
             flex: 1;
-            padding: 6px;
         }
-
-        .nav-item.active {
-            color: #38bdf8;
-        }
-
+        .nav-item.active { color: #38bdf8; }
         .nav-item.active .nav-icon-wrapper {
             background: rgba(56, 189, 248, 0.15);
             color: #38bdf8;
-            border-radius: 14px;
-            padding: 4px 14px;
             transform: translateY(-2px);
+            border-radius: 14px;
+            padding: 3px 12px;
         }
-
-        .nav-icon-wrapper {
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        .nav-icon-wrapper { display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
 
         .sub-page { display: none; }
         .sub-page.active { display: block; animation: fadeIn 0.25s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* ADVANCED LOADER */
+        /* PREMIER INTRO LOADER */
         #loader {
             background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
             position: fixed;
@@ -199,13 +198,7 @@
             color: #fff;
             transition: opacity 0.4s ease;
         }
-
-        .orbit-spinner {
-            position: relative;
-            width: 90px;
-            height: 90px;
-        }
-
+        .orbit-spinner { position: relative; width: 85px; height: 85px; }
         .orbit-circle {
             position: absolute;
             inset: 0;
@@ -214,24 +207,9 @@
             border-top-color: #38bdf8;
             animation: spinOrbit 1.4s linear infinite;
         }
-
-        .orbit-circle:nth-child(2) {
-            inset: 8px;
-            border-top-color: #818cf8;
-            animation-duration: 2s;
-            animation-direction: reverse;
-        }
-
-        .orbit-circle:nth-child(3) {
-            inset: 16px;
-            border-top-color: #34d399;
-            animation-duration: 1.1s;
-        }
-
-        @keyframes spinOrbit {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        .orbit-circle:nth-child(2) { inset: 8px; border-top-color: #818cf8; animation-duration: 2s; animation-direction: reverse; }
+        .orbit-circle:nth-child(3) { inset: 16px; border-top-color: #34d399; animation-duration: 1.1s; }
+        @keyframes spinOrbit { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         .brand-shimmer {
             background: linear-gradient(90deg, #38bdf8 0%, #ffffff 50%, #818cf8 100%);
@@ -240,70 +218,42 @@
             -webkit-background-clip: text;
             animation: textShimmer 2.2s linear infinite;
         }
+        @keyframes textShimmer { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
 
-        @keyframes textShimmer {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 200% 50%; }
-        }
-
-        /* SUPPORT BUTTON */
-        .floating-support-btn {
+        /* FLOATING TELEGRAM LIVE SUPPORT BUTTON */
+        .floating-telegram-btn {
             position: fixed;
-            bottom: 88px;
+            bottom: 84px;
             right: 18px;
-            width: 52px;
-            height: 52px;
+            width: 54px;
+            height: 54px;
             border-radius: 50%;
             background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%);
             color: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            box-shadow: 0 8px 24px rgba(14, 165, 233, 0.45);
+            font-size: 1.55rem;
+            box-shadow: 0 8px 25px rgba(2, 132, 199, 0.45);
             z-index: 60;
             cursor: pointer;
             border: 2px solid rgba(255, 255, 255, 0.35);
         }
-
-        /* TOAST */
-        .toast-container {
-            position: fixed;
-            top: 16px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1200;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            width: 90%;
-            max-width: 380px;
-            pointer-events: none;
+        .floating-support-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background: #ef4444;
+            color: white;
+            font-size: 10px;
+            font-weight: 900;
+            padding: 2px 6px;
+            border-radius: 9999px;
+            border: 2px solid #ffffff;
+            display: none;
         }
 
-        .toast-item {
-            background: #0f172a;
-            color: #ffffff;
-            padding: 12px 16px;
-            border-radius: 16px;
-            font-size: 13px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
-            opacity: 0;
-            transform: translateY(-15px) scale(0.95);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            pointer-events: auto;
-            border-left: 4px solid #38bdf8;
-        }
-
-        .toast-item.show { opacity: 1; transform: translateY(0) scale(1); }
-        .toast-item.toast-success { border-left-color: #10b981; }
-        .toast-item.toast-error { border-left-color: #ef4444; }
-
-        /* LIVE SUPPORT MODAL */
+        /* SUPPORT MODAL DESK */
         #support-modal-overlay {
             position: fixed;
             inset: 0;
@@ -314,24 +264,144 @@
             align-items: center;
             justify-content: center;
         }
-
         #support-chat-wrapper {
             width: 100%;
-            max-width: 460px;
+            max-width: 480px;
             height: 100vh;
             height: 100dvh;
-            background: #0f172a;
+            background: #0e1621;
             color: #ffffff;
             display: flex;
             flex-direction: column;
             position: relative;
+            font-family: 'Poppins', sans-serif;
         }
+
+        .tg-top-bar {
+            background: #17212b;
+            color: #fff;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            flex-shrink: 0;
+        }
+        .tg-exit-btn {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .tg-avatar-wrap img { 
+            width: 40px; 
+            height: 40px; 
+            border-radius: 50%; 
+            object-fit: cover; 
+            border: 2px solid #0284c7; 
+        }
+
+        .tg-chat-body {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: radial-gradient(circle at 50% 20%, #172435 0%, #0a1017 100%);
+        }
+        .msg-row { display: flex; align-items: flex-end; gap: 8px; width: 100%; }
+        .msg-row.admin { justify-content: flex-start; }
+        .msg-row.user { justify-content: flex-end; }
+        .msg-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+        .msg-bubble {
+            max-width: 86%;
+            padding: 11px 14px;
+            border-radius: 16px;
+            font-size: 0.86rem;
+            line-height: 1.45;
+            color: #fff;
+            word-break: break-word;
+        }
+        .msg-row.admin .msg-bubble { background: #1e2c3a; border-bottom-left-radius: 4px; }
+        .msg-row.user .msg-bubble { background: #0284c7; border-bottom-right-radius: 4px; }
+        .msg-time { font-size: 0.65rem; color: rgba(255,255,255,0.6); text-align: right; margin-top: 4px; }
+
+        .tg-bottom-bar {
+            background: #17212b;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            flex-shrink: 0;
+        }
+        .tg-input {
+            flex: 1;
+            padding: 10px 16px;
+            border-radius: 22px;
+            border: 1px solid rgba(255,255,255,0.12);
+            outline: none;
+            font-size: 0.88rem;
+            background: #0e1621;
+            color: #fff;
+        }
+        .tg-send-btn {
+            background: #0284c7;
+            color: #fff;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .toast-container {
+            position: fixed;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 90%;
+            max-width: 380px;
+            pointer-events: none;
+        }
+        .toast-item {
+            background: #0f172a;
+            color: #ffffff;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+            opacity: 0;
+            transform: translateY(-20px) scale(0.95);
+            transition: all 0.3s ease;
+            pointer-events: auto;
+            border-left: 4px solid #0284c7;
+        }
+        .toast-item.show { opacity: 1; transform: translateY(0) scale(1); }
+        .toast-item.toast-success { border-left-color: #10b981; }
+        .toast-item.toast-error { border-left-color: #ef4444; }
     </style>
 </head>
 
 <body class="max-w-md mx-auto relative bg-[#f8fafc] min-h-screen text-[#0f172a]">
 
-    <!-- TOASTS -->
+    <!-- TOAST CONTAINER -->
     <div id="toast-container" class="toast-container"></div>
 
     <!-- PREMIER ANIMATED INTRO LOADER -->
@@ -347,7 +417,7 @@
 
         <div class="text-center space-y-2 px-6">
             <h1 class="font-black text-2xl tracking-wider brand-shimmer">CLOUD INTERNATIONAL</h1>
-            <p class="text-xs text-slate-400 font-medium" id="loader-sub">Global Cloud & Verified Accounts Gateway</p>
+            <p class="text-xs text-slate-400 font-medium">Global Cloud & Verified Accounts Gateway</p>
             
             <div class="w-44 h-1.5 bg-slate-800 rounded-full mx-auto overflow-hidden mt-4">
                 <div class="h-full bg-gradient-to-r from-sky-400 to-indigo-500 rounded-full animate-[pulse_1s_infinite] w-3/4"></div>
@@ -359,9 +429,47 @@
         </div>
     </div>
 
-    <!-- FLOATING LIVE SUPPORT TRIGGER -->
-    <div id="floating-support-btn" class="floating-support-btn" onclick="openSupportModal()" title="Support">
+    <!-- FLOATING TELEGRAM LIVE SUPPORT BUTTON -->
+    <div id="floating-support-btn" class="floating-telegram-btn" onclick="openSupportModal()" title="Live Support">
         <i class="fab fa-telegram-plane"></i>
+        <span id="floating-support-badge" class="floating-support-badge">0</span>
+    </div>
+
+    <!-- SUPPORT CHAT DESK MODAL -->
+    <div id="support-modal-overlay">
+        <div id="support-chat-wrapper">
+            <div class="tg-top-bar">
+                <button class="tg-exit-btn" onclick="closeSupportModal()" title="Back">
+                    <i data-lucide="arrow-left" class="w-5 h-5 text-white"></i>
+                </button>
+                <div class="flex items-center gap-2.5 flex-1">
+                    <div class="tg-avatar-wrap">
+                        <img src="https://i.postimg.cc/vmSBzy63/file-00000000eb4c81faa545e57c85285455.png" alt="Avatar">
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-black text-white flex items-center gap-1">CLOUD Support Desk</h4>
+                        <p class="text-[10px] text-sky-400 font-bold">Online 24/7</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tg-chat-body" id="chat-messages">
+                <div class="msg-row admin">
+                    <img src="https://i.postimg.cc/vmSBzy63/file-00000000eb4c81faa545e57c85285455.png" class="msg-avatar" alt="Admin">
+                    <div class="msg-bubble">
+                        Hello! Welcome to <b>CLOUD INTERNATIONAL Support</b>. How can we help you today?
+                        <div class="msg-time">Official Desk</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tg-bottom-bar">
+                <input type="text" id="chat-text-input" class="tg-input" placeholder="Type a message..." onkeydown="if(event.key==='Enter') sendSupportMessage()">
+                <button class="tg-send-btn" onclick="sendSupportMessage()" title="Send">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
     </div>
 
     <!-- MAIN APP WRAPPER -->
@@ -369,7 +477,7 @@
 
         <!-- GLOBAL HEADER -->
         <header class="global-header px-4 py-3 flex items-center justify-between text-white">
-            <div class="flex items-center gap-2.5">
+            <div class="flex items-center gap-2.5 cursor-pointer" onclick="navigateTo('home-page')">
                 <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center shadow-md">
                     <i data-lucide="cloud" class="w-5 h-5 text-white"></i>
                 </div>
@@ -383,13 +491,7 @@
             </div>
 
             <div class="flex items-center gap-2">
-                <!-- LANGUAGE SWITCHER -->
-                <button onclick="toggleAppLanguage()" class="px-2.5 py-1 rounded-full bg-white/10 text-[11px] font-extrabold border border-white/15 hover:bg-white/20 transition flex items-center gap-1">
-                    <i data-lucide="languages" class="w-3.5 h-3.5 text-sky-400"></i>
-                    <span id="lang-switch-label">BN</span>
-                </button>
-
-                <!-- CURRENCY TOGGLE & WALLET PILL -->
+                <!-- BALANCE WITH DUAL USDT / BDT CONVERSION -->
                 <div onclick="toggleDisplayCurrency()" class="balance-glass-pill flex items-center gap-1.5 cursor-pointer" title="Click to Switch Currency">
                     <i data-lucide="wallet" class="w-3.5 h-3.5 text-amber-300"></i>
                     <span id="header-balance-view" class="font-black text-xs text-white mono-font">$0.00</span>
@@ -400,146 +502,241 @@
         <!-- MAIN VIEWPORT -->
         <main class="flex-grow pb-24">
 
-            <!-- 1. SHOP PAGE (GLOBALIZED DESIGN) -->
+            <!-- 1. SHOP PAGE -->
             <div id="home-page" class="p-4 space-y-4 sub-page active">
-
-                <!-- REALTIME TRUST & ACTIVITY STATS (PROOF OF TRUST) -->
+                <!-- TRUST ACTIVITY STATS -->
                 <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 p-4 rounded-2xl text-white border border-white/10 shadow-lg space-y-3">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
-                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
-                            <span class="text-xs font-black uppercase tracking-wider text-emerald-400" data-i18n="global_network">GLOBAL CLOUD NETWORK</span>
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                            <span class="text-xs font-black uppercase tracking-wider text-emerald-400">GLOBAL CLOUD NETWORK</span>
                         </div>
                         <span class="text-[10px] font-bold bg-white/10 px-2 py-0.5 rounded text-sky-300">Uptime 99.98%</span>
                     </div>
 
                     <div class="grid grid-cols-3 gap-2 pt-1 text-center border-t border-white/10">
                         <div class="bg-white/5 p-2 rounded-xl border border-white/5">
-                            <p class="text-[9px] uppercase font-bold text-slate-400" data-i18n="total_users">TOTAL USERS</p>
+                            <p class="text-[9px] uppercase font-bold text-slate-400">TOTAL USERS</p>
                             <p class="text-xs font-black text-sky-300 mono-font mt-0.5">38,450+</p>
                         </div>
                         <div class="bg-white/5 p-2 rounded-xl border border-white/5">
-                            <p class="text-[9px] uppercase font-bold text-slate-400" data-i18n="active_today">ACTIVE TODAY</p>
+                            <p class="text-[9px] uppercase font-bold text-slate-400">ACTIVE TODAY</p>
                             <p class="text-xs font-black text-emerald-300 mono-font mt-0.5">2,180+</p>
                         </div>
                         <div class="bg-white/5 p-2 rounded-xl border border-white/5">
-                            <p class="text-[9px] uppercase font-bold text-slate-400" data-i18n="daily_vol">DAILY VOLUME</p>
+                            <p class="text-[9px] uppercase font-bold text-slate-400">DAILY TRANSACTIONS</p>
                             <p class="text-xs font-black text-amber-300 mono-font mt-0.5">$14,890+</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- CATEGORY CHIPS (HORIZONTAL SCROLL) -->
-                <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar" id="category-chips-list"></div>
+                <!-- CATEGORIES -->
+                <div class="grid grid-cols-3 gap-2" id="category-filter-grid"></div>
 
-                <!-- PRODUCT LIST CONTAINER -->
-                <div class="space-y-3" id="products-catalog-container"></div>
+                <!-- PRODUCT CARDS -->
+                <div class="space-y-3" id="product-list-container"></div>
             </div>
 
             <!-- 2. DEPOSIT / ADD FUNDS PAGE -->
             <div id="pay-page" class="p-4 space-y-4 sub-page">
-                <div class="bg-gradient-to-r from-sky-600 to-indigo-700 p-5 rounded-3xl text-white shadow-xl space-y-2">
-                    <span class="px-2.5 py-0.5 rounded-full bg-white/20 text-white text-[10px] font-black uppercase">Instant Deposit</span>
-                    <h3 class="text-xl font-black" data-i18n="dep_title">Add Funds / Deposit</h3>
-                    <p class="text-xs text-sky-100" data-i18n="dep_sub">Supports Crypto (USDT, Binance Pay), Cards, and Local Gateways.</p>
+                <div class="bg-gradient-to-r from-sky-600 to-indigo-700 p-5 rounded-3xl text-white shadow-xl flex items-center justify-between">
+                    <div>
+                        <span class="px-2.5 py-0.5 rounded-full bg-white/20 text-white text-[10px] font-black uppercase">Instant Deposit</span>
+                        <h3 class="text-xl font-black mt-1">Add Funds / Deposit</h3>
+                        <p class="text-xs text-sky-100">Binance / Crypto & Local Gateways</p>
+                    </div>
+                    <div class="text-right bg-white/10 p-3 rounded-2xl border border-white/15">
+                        <span class="text-[10px] text-sky-200 uppercase font-bold block">Balance</span>
+                        <span id="deposit-page-balance" class="text-lg font-black text-white mono-font">$0.00</span>
+                    </div>
                 </div>
 
                 <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-4">
                     <div>
-                        <label class="block text-xs font-black text-slate-700 mb-1" data-i18n="deposit_amount">Deposit Amount (BDT / USD Equivalent)</label>
+                        <div class="flex justify-between items-center mb-1.5">
+                            <label class="text-xs font-black text-slate-700">Amount (BDT / USD)</label>
+                            <span class="text-[10.5px] font-bold text-sky-600 bg-sky-50 px-2 py-0.5 rounded-md border">Min: ৳10</span>
+                        </div>
                         <div class="relative">
-                            <input id="deposit-amount-field" type="number" value="100" min="10" class="w-full p-3.5 pl-10 rounded-2xl border-2 border-sky-100 text-xl font-black text-slate-800 mono-font outline-none focus:border-sky-500">
+                            <input id="amountInput" type="number" step="1" value="50" min="10" oninput="handleDepositAmountChange(this.value)" class="w-full p-3.5 pl-10 rounded-2xl border-2 border-sky-100 text-xl font-black text-slate-800 mono-font outline-none focus:border-sky-500">
                             <span class="absolute left-4 top-3.5 text-slate-400 font-black text-lg">৳</span>
                         </div>
-                        <p class="text-[11px] text-slate-400 mt-1 font-medium" id="deposit-converted-usd">≈ $0.83 USDT</p>
+                        <p class="text-[11px] text-slate-400 mt-1 font-medium" id="deposit-usd-eq">≈ $0.42 USDT</p>
                     </div>
 
-                    <div class="grid grid-cols-3 gap-2">
-                        <button onclick="setDepositValue(50)" class="p-2.5 bg-slate-50 border rounded-xl font-bold text-xs hover:border-sky-500">৳50</button>
-                        <button onclick="setDepositValue(100)" class="p-2.5 bg-slate-50 border rounded-xl font-bold text-xs hover:border-sky-500">৳100</button>
-                        <button onclick="setDepositValue(500)" class="p-2.5 bg-slate-50 border rounded-xl font-bold text-xs hover:border-sky-500">৳500</button>
-                        <button onclick="setDepositValue(1000)" class="p-2.5 bg-slate-50 border rounded-xl font-bold text-xs hover:border-sky-500">৳1,000</button>
-                        <button onclick="setDepositValue(2500)" class="p-2.5 bg-slate-50 border rounded-xl font-bold text-xs hover:border-sky-500">৳2,500</button>
-                        <button onclick="setDepositValue(5000)" class="p-2.5 bg-slate-50 border rounded-xl font-bold text-xs hover:border-sky-500">৳5,000</button>
-                    </div>
-
-                    <button onclick="triggerDepositGateway()" class="w-full py-4 rounded-2xl bg-sky-600 hover:bg-sky-700 text-white font-extrabold text-sm shadow-lg flex items-center justify-center gap-2">
-                        <i data-lucide="lock" class="w-4 h-4"></i>
-                        <span data-i18n="proceed_pay">Proceed to Secure Payment</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- 3. ORDERS PAGE -->
-            <div id="orders-page" class="p-4 space-y-4 sub-page">
-                <div class="flex items-center justify-between border-b pb-3">
                     <div>
-                        <h3 class="text-base font-black text-slate-800" data-i18n="purchased_orders">Purchased Orders</h3>
-                        <p class="text-xs text-slate-400" data-i18n="order_sub">Instant account credentials</p>
+                        <span class="block text-[11px] font-extrabold text-slate-400 uppercase mb-2">Quick Select</span>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button type="button" onclick="setQuickDepositAmount(10)" class="quick-amount-pill">10 BDT</button>
+                            <button type="button" onclick="setQuickDepositAmount(50)" class="quick-amount-pill selected">50 BDT</button>
+                            <button type="button" onclick="setQuickDepositAmount(100)" class="quick-amount-pill">100 BDT</button>
+                            <button type="button" onclick="setQuickDepositAmount(200)" class="quick-amount-pill">200 BDT</button>
+                            <button type="button" onclick="setQuickDepositAmount(500)" class="quick-amount-pill">500 BDT</button>
+                            <button type="button" onclick="setQuickDepositAmount(1000)" class="quick-amount-pill">1,000 BDT</button>
+                        </div>
                     </div>
-                    <button onclick="copyAllOrdersFormatted()" class="px-3 py-1.5 bg-sky-50 border border-sky-200 text-sky-700 rounded-xl font-bold text-xs flex items-center gap-1">
-                        <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy All
+
+                    <button onclick="initiatePayment()" class="w-full py-4 rounded-2xl btn-gateway-pay text-sm flex items-center justify-center gap-2 cursor-pointer shadow-lg">
+                        <i data-lucide="lock" class="w-4 h-4 text-amber-300"></i>
+                        <span>Continue to Instant Payment</span>
                     </button>
                 </div>
-
-                <div id="orders-list-view" class="space-y-3 min-h-[200px]"></div>
             </div>
 
-            <!-- 4. PROFILE & SETTINGS PAGE -->
-            <div id="profile-page" class="p-4 space-y-4 sub-page">
-                <div class="bg-gradient-to-br from-slate-900 to-slate-800 p-5 rounded-3xl text-white shadow-xl space-y-3">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-1.5 px-3 py-1 bg-white/10 rounded-full text-xs font-bold border border-white/10">
-                            <span id="profile-flag">🌐</span>
-                            <span id="profile-country">Detecting...</span>
+            <!-- 3. REFER & CASHBACK PAGE -->
+            <div id="refer-page" class="p-4 space-y-4 sub-page">
+                <div class="bg-gradient-to-br from-indigo-900 via-sky-900 to-slate-900 p-5 rounded-3xl text-white shadow-xl relative overflow-hidden border border-sky-500/20">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-black uppercase">Instant Reward</span>
+                            <span class="text-[11px] font-black text-amber-400 bg-amber-400/10 px-2.5 py-0.5 rounded-lg border border-amber-400/20">৳10/Refer + 1.5% Cashback</span>
                         </div>
-                        <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30">Verified User</span>
+                        <h2 class="text-xl font-black">Refer & Earn Program</h2>
+                        <p class="text-xs text-sky-200">
+                            Invite friends to join. Earn ৳10 instant reward plus 1.5% lifetime cashback whenever they make a deposit!
+                        </p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2 text-center">
+                    <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
+                        <p class="text-[9.5px] font-extrabold text-slate-400 uppercase">Total Refer</p>
+                        <p id="ref-stat-total" class="text-base font-black text-slate-800 mono-font mt-1">0</p>
+                    </div>
+                    <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
+                        <p class="text-[9.5px] font-extrabold text-slate-400 uppercase">Cashback Earn</p>
+                        <p id="ref-stat-cashback" class="text-base font-black text-amber-600 mono-font mt-1">$0.00</p>
+                    </div>
+                    <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
+                        <p class="text-[9.5px] font-extrabold text-slate-400 uppercase">Total Earned</p>
+                        <p id="ref-stat-earned" class="text-base font-black text-sky-600 mono-font mt-1">$0.00</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                    <span class="text-xs font-black text-slate-700 block">Your Referral Link:</span>
+                    <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex items-center justify-between">
+                        <span class="text-[11px] font-mono text-slate-600 truncate mr-2 select-all" id="dedicated-ref-link-display">Loading link...</span>
+                        <button onclick="copyReferralLink()" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-bold flex items-center gap-1">
+                            <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy
+                        </button>
                     </div>
 
-                    <div class="flex items-center gap-3">
-                        <div class="w-14 h-14 rounded-2xl bg-sky-600 text-white flex items-center justify-center font-black text-xl overflow-hidden border border-white/20" id="profile-avatar-box">
-                            <span id="profile-initial">U</span>
+                    <button onclick="shareReferralLinkTelegram()" class="w-full py-3 bg-[#0088cc] hover:bg-[#0077b5] text-white font-extrabold text-xs rounded-xl flex items-center justify-center gap-2 shadow">
+                        <i data-lucide="send" class="w-4 h-4"></i> Share on Telegram
+                    </button>
+                </div>
+            </div>
+
+            <!-- 4. ORDERS PAGE -->
+            <div id="orders-page" class="p-4 space-y-4 sub-page">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                    <div>
+                        <h2 class="text-lg font-black text-slate-800">Your Orders</h2>
+                        <p class="text-[10.5px] text-slate-500">Purchased accounts credentials</p>
+                    </div>
+                    <div class="flex gap-1.5">
+                        <button onclick="copyAllOrdersExcelFormat()" class="bg-sky-50 text-sky-600 p-2 rounded-xl text-xs font-bold flex items-center gap-1 border border-sky-200">
+                            <i data-lucide="copy" class="w-3.5 h-3.5"></i> ALL COPY
+                        </button>
+                        <button onclick="downloadOrdersXlsx()" class="bg-emerald-50 text-emerald-600 p-2 rounded-xl text-xs font-bold flex items-center gap-1 border border-emerald-200">
+                            <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> XLSX
+                        </button>
+                    </div>
+                </div>
+
+                <div id="orders-purchase-history" class="space-y-3 min-h-[200px]"></div>
+            </div>
+
+            <!-- 5. PROFILE & SETTINGS (LANGUAGE & COUNTRY SELECTOR) -->
+            <div id="profile-page" class="p-4 space-y-4 sub-page">
+                <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 p-5 rounded-3xl text-white shadow-xl space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-xs font-bold border border-white/20">
+                            <span id="profile-flag">🌐</span>
+                            <span id="profile-country-txt">Detecting...</span>
                         </div>
-                        <div>
-                            <h3 id="profile-name" class="font-extrabold text-white text-base">International User</h3>
-                            <p id="profile-id-txt" class="text-xs text-slate-400 font-mono">ID: 000000</p>
+                        <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-400/30">Verified User</span>
+                    </div>
+
+                    <!-- TELEGRAM USER PROFILE INFO -->
+                    <div class="flex items-center gap-3.5">
+                        <div class="w-14 h-14 rounded-2xl bg-sky-600 text-white flex items-center justify-center font-black text-xl overflow-hidden border border-white/20">
+                            <img id="profile-avatar-img" class="w-full h-full object-cover hidden" alt="">
+                            <span id="profile-initials">U</span>
+                        </div>
+                        <div class="overflow-hidden">
+                            <h3 id="profile-name" class="text-base font-extrabold text-white truncate">User Name</h3>
+                            <p id="profile-username" class="text-xs text-slate-400 font-medium truncate">@username</p>
+                            <span id="profile-id" class="text-[11px] font-mono text-sky-300 block mt-0.5">ID: 00000000</span>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-2 pt-2 border-t border-white/10">
                         <div class="bg-white/5 p-2.5 rounded-2xl border border-white/5 text-center">
                             <span class="text-[10px] font-bold text-slate-400 uppercase">USDT BALANCE</span>
-                            <p id="profile-usdt-balance" class="text-base font-black text-sky-300 mono-font">$0.00</p>
+                            <p id="profile-usdt-balance" class="text-base font-black text-sky-300 mono-font mt-0.5">$0.00</p>
                         </div>
                         <div class="bg-white/5 p-2.5 rounded-2xl border border-white/5 text-center">
                             <span class="text-[10px] font-bold text-slate-400 uppercase">BDT EQUIVALENT</span>
-                            <p id="profile-bdt-balance" class="text-base font-black text-emerald-400 mono-font">৳0.00</p>
+                            <p id="profile-bdt-balance" class="text-base font-black text-emerald-400 mono-font mt-0.5">৳0.00</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- QUICK ACTIONS -->
+                <!-- PREFERENCES: LANGUAGE & COUNTRY SELECTOR -->
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                    <h3 class="text-xs font-black uppercase text-slate-700 flex items-center gap-2">
+                        <i data-lucide="globe" class="w-4 h-4 text-sky-600"></i> Regional Preferences
+                    </h3>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <!-- LANGUAGE SELECTION -->
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-500 mb-1">Language (ভাষা)</label>
+                            <select id="lang-select-box" onchange="changeLanguageManually(this.value)" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 outline-none">
+                                <option value="en">English (US)</option>
+                                <option value="bn">বাংলা (Bengali)</option>
+                            </select>
+                        </div>
+
+                        <!-- COUNTRY SELECTION -->
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-500 mb-1">Country (দেশ)</label>
+                            <select id="country-select-box" onchange="changeCountryManually(this.value)" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 outline-none">
+                                <option value="US">🇺🇸 United States</option>
+                                <option value="BD">🇧🇩 Bangladesh</option>
+                                <option value="GB">🇬🇧 United Kingdom</option>
+                                <option value="AE">🇦🇪 UAE / Dubai</option>
+                                <option value="IN">🇮🇳 India</option>
+                                <option value="CA">🇨🇦 Canada</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACTIONS -->
                 <div class="bg-white p-2 rounded-2xl border border-slate-200 shadow-sm divide-y divide-slate-100 text-xs font-bold">
                     <button onclick="navigateTo('pay-page')" class="w-full p-3 flex items-center justify-between hover:bg-slate-50 rounded-xl transition">
-                        <div class="flex items-center gap-2.5 text-slate-700">
+                        <div class="flex items-center gap-2.5">
                             <div class="p-1.5 bg-emerald-50 text-emerald-600 rounded-lg"><i data-lucide="wallet" class="w-4 h-4"></i></div>
-                            <span data-i18n="add_funds">Add Funds / Deposit</span>
+                            <span>Add Funds / Deposit</span>
                         </div>
                         <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
                     </button>
 
-                    <button onclick="navigateTo('orders-page')" class="w-full p-3 flex items-center justify-between hover:bg-slate-50 rounded-xl transition">
-                        <div class="flex items-center gap-2.5 text-slate-700">
-                            <div class="p-1.5 bg-sky-50 text-sky-600 rounded-lg"><i data-lucide="shopping-bag" class="w-4 h-4"></i></div>
-                            <span data-i18n="orders_history">Orders History</span>
-                        </div>
-                        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
-                    </button>
-
-                    <button onclick="openSupportModal()" class="w-full p-3 flex items-center justify-between hover:bg-slate-50 rounded-xl transition">
-                        <div class="flex items-center gap-2.5 text-sky-700">
+                    <button onclick="openSupportModal()" class="w-full p-3 flex items-center justify-between hover:bg-slate-50 rounded-xl transition text-sky-700">
+                        <div class="flex items-center gap-2.5">
                             <div class="p-1.5 bg-sky-100 text-sky-600 rounded-lg"><i class="fab fa-telegram"></i></div>
-                            <span data-i18n="contact_support">Live Telegram Support</span>
+                            <span>Live Telegram Support Desk (24/7)</span>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-sky-400"></i>
+                    </button>
+
+                    <button onclick="showPolicyModal()" class="w-full p-3 flex items-center justify-between hover:bg-slate-50 rounded-xl transition">
+                        <div class="flex items-center gap-2.5">
+                            <div class="p-1.5 bg-slate-100 text-slate-600 rounded-lg"><i data-lucide="shield-check" class="w-4 h-4"></i></div>
+                            <span>Replacement Policy</span>
                         </div>
                         <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
                     </button>
@@ -548,120 +745,250 @@
 
         </main>
 
-        <!-- FLOATING BOTTOM NAVIGATION (TASKS & WITHDRAW COMPLETELY REMOVED) -->
+        <!-- FLOATING BOTTOM NAVIGATION (WORK & WITHDRAW REMOVED) -->
         <div class="bottom-nav-container">
             <nav class="bottom-nav">
                 <div class="nav-item active" data-page="home-page" onclick="navigateTo('home-page')">
                     <div class="nav-icon-wrapper">
                         <i data-lucide="layout-grid" class="w-5 h-5"></i>
                     </div>
-                    <span data-i18n="nav_shop">Shop</span>
+                    <span id="nav-lbl-shop">Shop</span>
                 </div>
-
                 <div class="nav-item" data-page="pay-page" onclick="navigateTo('pay-page')">
                     <div class="nav-icon-wrapper">
                         <i data-lucide="wallet" class="w-5 h-5"></i>
                     </div>
-                    <span data-i18n="nav_deposit">Deposit</span>
+                    <span id="nav-lbl-deposit">Deposit</span>
                 </div>
-
+                <div class="nav-item" data-page="refer-page" onclick="navigateTo('refer-page')">
+                    <div class="nav-icon-wrapper">
+                        <i data-lucide="gift" class="w-5 h-5"></i>
+                    </div>
+                    <span id="nav-lbl-refer">Refer</span>
+                </div>
                 <div class="nav-item" data-page="orders-page" onclick="navigateTo('orders-page')">
                     <div class="nav-icon-wrapper">
                         <i data-lucide="shopping-bag" class="w-5 h-5"></i>
                     </div>
-                    <span data-i18n="nav_orders">Orders</span>
+                    <span id="nav-lbl-orders">Orders</span>
                 </div>
-
                 <div class="nav-item" data-page="profile-page" onclick="navigateTo('profile-page')">
                     <div class="nav-icon-wrapper">
                         <i data-lucide="user" class="w-5 h-5"></i>
                     </div>
-                    <span data-i18n="nav_profile">Profile</span>
+                    <span id="nav-lbl-profile">Profile</span>
                 </div>
             </nav>
         </div>
 
     </div>
 
-    <!-- BUY MODAL -->
-    <div id="buy-item-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[80] p-4 backdrop-blur-sm">
-        <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 shadow-2xl text-center">
-            <div class="w-14 h-14 bg-sky-50 text-sky-600 rounded-full flex items-center justify-center mx-auto">
-                <i data-lucide="shopping-cart" class="w-7 h-7"></i>
+    <!-- BUY NOW MODAL -->
+    <div id="buy-now-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 relative text-center shadow-2xl">
+            <div class="w-14 h-14 bg-sky-100 text-sky-600 rounded-full flex items-center justify-center mx-auto">
+                <i data-lucide="zap" class="w-7 h-7"></i>
             </div>
-
             <div>
-                <h3 class="font-extrabold text-base text-slate-900" id="modal-product-title">Account Purchase</h3>
-                <p class="text-xs text-slate-400 mt-0.5" data-i18n="instant_dispatch">Instant automated dispatch</p>
+                <h3 class="text-base font-bold text-slate-800" id="buy-modal-title">Service Name</h3>
+                <p class="text-xs text-slate-500 mt-1">Select quantity to instant dispatch.</p>
             </div>
 
             <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 flex items-center justify-between text-xs">
-                <span class="font-bold text-slate-700" data-i18n="quantity">Quantity</span>
-                <div class="flex items-center bg-white border rounded-xl p-0.5">
-                    <button onclick="changeBuyQuantity(-1)" class="w-8 h-8 font-black">-</button>
-                    <input id="modal-buy-qty" type="number" value="1" min="1" readonly class="w-10 text-center font-bold outline-none text-slate-800">
-                    <button onclick="changeBuyQuantity(1)" class="w-8 h-8 font-black">+</button>
+                <span class="font-bold text-slate-700">Quantity:</span>
+                <div class="flex items-center bg-white border border-slate-300 rounded-xl p-0.5 shadow-sm">
+                    <button onclick="adjustBuyModalQty(-1)" class="w-8 h-8 flex items-center justify-center font-black text-slate-700 hover:bg-slate-100 rounded-lg text-sm">-</button>
+                    <input id="buy-modal-qty-input" type="number" step="1" value="1" min="1" oninput="handleBuyModalQtyInput(this)" class="w-12 text-center bg-transparent text-sm font-black text-slate-800 outline-none">
+                    <button onclick="adjustBuyModalQty(1)" class="w-8 h-8 flex items-center justify-center font-black text-slate-700 hover:bg-slate-100 rounded-lg text-sm">+</button>
                 </div>
             </div>
 
-            <div class="bg-sky-50 p-3 rounded-2xl text-left text-xs space-y-1 text-sky-950 font-medium">
-                <p>• <span data-i18n="total_price">Total Cost:</span> <b id="modal-total-price" class="text-sky-700 font-bold">$0.00 / ৳0.00</b></p>
-                <p>• <span data-i18n="avail_stock">Available Stock:</span> <b id="modal-avail-stock" class="text-emerald-700 font-bold">0 pcs</b></p>
+            <div class="bg-sky-50/80 p-3.5 rounded-2xl border border-sky-200 text-left text-xs text-sky-950 space-y-1.5">
+                <p>• Total Cost: <b id="buy-modal-price" class="text-sky-700 font-bold">$0.00 / ৳0.00</b></p>
+                <p>• In Stock: <b id="buy-modal-stock-display" class="text-emerald-700 font-bold">0 pcs</b></p>
+                <p>• Delivery: <b class="text-emerald-600 font-bold">Instant Dispatch</b></p>
             </div>
 
-            <div class="flex gap-2">
-                <button onclick="closeBuyModal()" class="w-1/2 py-3 rounded-xl bg-slate-100 font-bold text-xs text-slate-600" data-i18n="cancel">Cancel</button>
-                <button id="btn-confirm-purchase" onclick="submitDirectPurchase()" class="w-1/2 py-3 rounded-xl btn-buy-intl font-bold text-xs" data-i18n="confirm_order">Confirm</button>
+            <div class="flex gap-2 pt-1">
+                <button onclick="document.getElementById('buy-now-modal').classList.add('hidden')" class="w-1/2 py-2.5 bg-slate-100 font-bold rounded-xl text-xs">Cancel</button>
+                <button id="confirm-buy-modal-btn" onclick="executeBuyNowConfirmed()" class="w-1/2 py-2.5 btn-buy font-bold rounded-xl text-xs">Confirm Buy</button>
             </div>
         </div>
     </div>
 
-    <!-- REALTIME SUPPORT MODAL -->
-    <div id="support-modal-overlay">
-        <div id="support-chat-wrapper">
-            <div class="p-3 bg-slate-900 border-b border-white/10 flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                    <button onclick="closeSupportModal()" class="p-1.5 text-white/80 hover:text-white">
-                        <i data-lucide="arrow-left" class="w-5 h-5"></i>
-                    </button>
-                    <div class="flex items-center gap-2">
-                        <div class="w-8 h-8 rounded-full bg-sky-500 text-white flex items-center justify-center font-black text-xs">C</div>
-                        <div>
-                            <h4 class="font-black text-xs text-white">CLOUD Support (24/7)</h4>
-                            <p class="text-[10px] text-emerald-400 font-bold">● Online</p>
-                        </div>
-                    </div>
+    <!-- PRE-ORDER MODAL -->
+    <div id="manual-order-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 relative text-center shadow-2xl">
+            <div class="w-14 h-14 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mx-auto">
+                <i data-lucide="clock" class="w-7 h-7"></i>
+            </div>
+            <div>
+                <h3 class="text-base font-bold text-slate-800" id="manual-modal-title">Pre-Order</h3>
+                <p class="text-xs text-slate-500 mt-1">Currently instant stock is empty, but you can pre-order.</p>
+            </div>
+
+            <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 flex items-center justify-between text-xs">
+                <span class="font-bold text-slate-700">Quantity:</span>
+                <div class="flex items-center bg-white border border-slate-300 rounded-xl p-0.5 shadow-sm">
+                    <button onclick="adjustManualOrderModalQty(-1)" class="w-8 h-8 flex items-center justify-center font-black text-slate-700 hover:bg-slate-100 rounded-lg text-sm">-</button>
+                    <input id="manual-modal-qty-input" type="number" step="1" value="1" min="1" oninput="handleManualModalQtyChange(this)" class="w-12 text-center bg-transparent text-sm font-black text-slate-800 outline-none">
+                    <button onclick="adjustManualOrderModalQty(1)" class="w-8 h-8 flex items-center justify-center font-black text-slate-700 hover:bg-slate-100 rounded-lg text-sm">+</button>
                 </div>
             </div>
 
-            <div class="flex-grow p-4 overflow-y-auto space-y-3" id="support-chat-messages">
-                <div class="bg-slate-800 p-3 rounded-2xl max-w-[85%] text-xs text-slate-200 space-y-1">
-                    <p>Welcome to <b>CLOUD INTERNATIONAL</b> official support. How can we assist you today?</p>
-                    <span class="text-[9px] text-slate-400 block text-right">Official Desk</span>
-                </div>
+            <div class="bg-orange-50 p-3.5 rounded-2xl border border-orange-200 text-left text-xs text-orange-950 space-y-1.5">
+                <p>• Total Cost: <b id="manual-modal-price" class="text-sky-700 font-bold">$0.00 / ৳0.00</b></p>
+                <p>• Delivery Window: <b id="manual-modal-duration" class="text-orange-700 font-bold">30 Minutes</b></p>
             </div>
 
-            <div class="p-3 bg-slate-900 border-t border-white/10 flex gap-2">
-                <input id="support-message-input" type="text" placeholder="Write a message..." class="flex-grow bg-slate-800 text-white text-xs px-4 py-2.5 rounded-xl outline-none focus:ring-1 focus:ring-sky-400">
-                <button onclick="sendSupportMessage()" class="px-4 bg-sky-600 hover:bg-sky-500 text-white rounded-xl flex items-center justify-center">
-                    <i data-lucide="send" class="w-4 h-4"></i>
+            <div class="flex gap-2 pt-1">
+                <button onclick="document.getElementById('manual-order-modal').classList.add('hidden')" class="w-1/2 py-2.5 bg-slate-100 font-bold rounded-xl text-xs">Cancel</button>
+                <button id="confirm-manual-order-btn" onclick="handleConfirmManualOrder()" class="w-1/2 py-2.5 btn-order-orange font-bold rounded-xl text-xs">Confirm Order</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PURCHASE SUCCESS MODAL -->
+    <div id="purchase-success-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-4 relative text-center max-h-[90vh] flex flex-col shadow-2xl">
+            <div class="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto flex-shrink-0">
+                <i data-lucide="check" class="w-6 h-6 stroke-[3]"></i>
+            </div>
+            <div>
+                <h3 class="text-lg font-bold text-slate-800">Order Completed!</h3>
+                <p class="text-xs text-slate-500 mt-0.5" id="purchase-success-subtitle">Your credentials:</p>
+            </div>
+            
+            <div id="purchase-success-items-list" class="space-y-2 text-left overflow-y-auto max-h-[190px] pr-1"></div>
+
+            <div class="grid grid-cols-2 gap-2 pt-1 text-xs font-bold">
+                <button onclick="copyCurrentPurchaseExcelFormat()" class="py-2.5 px-3 bg-sky-50 text-sky-700 border border-sky-200 hover:bg-sky-100 rounded-xl flex items-center justify-center gap-1.5">
+                    <i data-lucide="copy" class="w-4 h-4"></i> Copy All
+                </button>
+                <button onclick="document.getElementById('purchase-success-modal').classList.add('hidden'); navigateTo('orders-page');" class="py-2.5 px-3 btn-buy rounded-xl">
+                    View Orders
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- ======================================================= -->
-    <!-- LOGIC SCRIPTS & DUAL FIREBASE ENGINE                    -->
-    <!-- ======================================================= -->
+    <!-- POLICY MODAL -->
+    <div id="policy-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[90] p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-3.5 text-center shadow-2xl">
+            <div class="w-12 h-12 bg-sky-50 text-sky-600 rounded-2xl flex items-center justify-center mx-auto">
+                <i data-lucide="shield-alert" class="w-6 h-6"></i>
+            </div>
+            <h3 class="text-base font-extrabold text-slate-800">Replacement & Support Policy</h3>
+            <div class="text-xs text-slate-600 text-left space-y-2 max-h-60 overflow-y-auto leading-relaxed bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                <p>1. If any account is invalid upon purchase, please report within 15 minutes.</p>
+                <p>2. Pre-orders and replacement history will be maintained for 10 hours.</p>
+                <p>3. Successful purchase logs are stored for 48 hours.</p>
+            </div>
+            <button onclick="document.getElementById('policy-modal').classList.add('hidden')" class="w-full py-2.5 bg-sky-600 text-white font-bold rounded-xl text-xs">Understood</button>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- REALTIME FIREBASE SUPPORT DESK LOGIC                     -->
+    <!-- ======================================================== -->
+    <script>
+        const OFFICIAL_ADMIN_ID = "7358825471";
+        const OFFICIAL_LOGO = "https://i.postimg.cc/vmSBzy63/file-00000000eb4c81faa545e57c85285455.png";
+        const OFFICIAL_TITLE = "CLOUD INTL Support";
+
+        const supportFirebaseConfig = {
+            apiKey: "AIzaSyAsENiikJ5YQ1F8UHrixdJVEINAhO4PG30",
+            authDomain: "bot2-3d8bc.firebaseapp.com",
+            databaseURL: "https://bot2-3d8bc-default-rtdb.firebaseio.com",
+            projectId: "bot2-3d8bc",
+            storageBucket: "bot2-3d8bc.firebasestorage.app",
+            messagingSenderId: "77444577377",
+            appId: "1:77444577377:web:05a9910049d166878d5220"
+        };
+        const supportApp = firebase.initializeApp(supportFirebaseConfig, "supportAppInstance");
+        const supportDb = supportApp.database();
+
+        let supportTgUser = { id: '6954647230', first_name: 'Guest User' };
+
+        function openSupportModal() {
+            document.getElementById('support-modal-overlay').style.display = 'flex';
+            loadSupportChat();
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function closeSupportModal() {
+            document.getElementById('support-modal-overlay').style.display = 'none';
+        }
+
+        function loadSupportChat() {
+            const myId = supportTgUser.id;
+            supportDb.ref('support_chats/' + myId).on('value', snap => {
+                const body = document.getElementById('chat-messages');
+                body.innerHTML = `
+                    <div class="msg-row admin">
+                        <img src="${OFFICIAL_LOGO}" class="msg-avatar" alt="Admin">
+                        <div class="msg-bubble">
+                            Hello! Welcome to <b>${OFFICIAL_TITLE}</b>. How may we help you?
+                            <div class="msg-time">Official Desk</div>
+                        </div>
+                    </div>`;
+
+                if (snap.exists()) {
+                    snap.forEach(c => {
+                        const m = c.val();
+                        const isMsgFromAdmin = m.sender === 'admin';
+                        const avatar = isMsgFromAdmin ? OFFICIAL_LOGO : (supportTgUser.photo_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${myId}`);
+
+                        body.innerHTML += `
+                            <div class="msg-row ${isMsgFromAdmin ? 'admin' : 'user'}">
+                                ${isMsgFromAdmin ? `<img src="${avatar}" class="msg-avatar">` : ''}
+                                <div class="msg-bubble">
+                                    ${m.text}
+                                    <div class="msg-time">${m.time || ''}</div>
+                                </div>
+                                ${!isMsgFromAdmin ? `<img src="${avatar}" class="msg-avatar">` : ''}
+                            </div>`;
+                    });
+                    body.scrollTop = body.scrollHeight;
+                }
+            });
+        }
+
+        async function sendSupportMessage() {
+            const input = document.getElementById('chat-text-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            await supportDb.ref('support_chats/' + supportTgUser.id).push({
+                sender: 'user',
+                userId: supportTgUser.id,
+                name: supportTgUser.first_name || 'User',
+                photo: supportTgUser.photo_url || '',
+                text: text,
+                time: timeString,
+                seen: false,
+                timestamp: Date.now()
+            });
+
+            input.value = '';
+            input.focus();
+        }
+    </script>
+
+    <!-- ======================================================== -->
+    <!-- PRIMARY APP ENGINE & MULTI-CURRENCY FIRESTORE LOGIC      -->
+    <!-- ======================================================== -->
     <script type="module">
         import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
         import { 
             getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, 
             query, where, getDocs, limit, runTransaction, getCountFromServer, 
-            updateDoc, increment 
+            updateDoc, increment, Timestamp 
         } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-        // FIREBASE CONFIGS
         const primaryFirebaseConfig = {
             apiKey: "AIzaSyC_Qj_G_FOrlSehcj6qjdYB8x_G-yIyWnU",
             authDomain: "hub-54f3d.firebaseapp.com",
@@ -687,132 +1014,63 @@
         const dbUser = getFirestore(primaryApp);
         const dbShop = getFirestore(secondaryApp);
 
-        // CURRENCY CONVERSION (1 USD = 120 BDT DEFAULT)
-        const USD_EXCHANGE_RATE = 120.0;
+        // CURRENCY CONVERTER SETTINGS
+        const USD_EXCHANGE_RATE = 120.0; // 1 USDT = 120 BDT
         let activeCurrency = 'USDT'; // 'USDT' or 'BDT'
-        let currentLang = 'en'; // 'en' or 'bn'
+        let currentLang = 'en';
 
-        const i18n = {
-            en: {
-                global_network: "GLOBAL CLOUD NETWORK",
-                total_users: "TOTAL USERS",
-                active_today: "ACTIVE TODAY",
-                daily_vol: "DAILY VOLUME",
-                nav_shop: "Shop",
-                nav_deposit: "Deposit",
-                nav_orders: "Orders",
-                nav_profile: "Profile",
-                dep_title: "Add Funds / Deposit",
-                dep_sub: "Supports Crypto (USDT, Binance Pay), Cards, and Local Gateways.",
-                deposit_amount: "Deposit Amount",
-                proceed_pay: "Proceed to Secure Payment",
-                purchased_orders: "Purchased Orders",
-                order_sub: "Instant account credentials",
-                instant_dispatch: "Instant automated dispatch",
-                quantity: "Quantity",
-                total_price: "Total Cost:",
-                avail_stock: "Available Stock:",
-                cancel: "Cancel",
-                confirm_order: "Confirm Buy",
-                add_funds: "Add Funds / Deposit",
-                orders_history: "Orders History",
-                contact_support: "Live Telegram Support"
-            },
-            bn: {
-                global_network: "গ্লোবাল ক্লাউড নেটওয়ার্ক",
-                total_users: "মোট ইউজার",
-                active_today: "আজকের একটিভ",
-                daily_vol: "দৈনিক লেনদেন",
-                nav_shop: "শপ",
-                nav_deposit: "ডিপোজিট",
-                nav_orders: "অর্ডার",
-                nav_profile: "প্রোফাইল",
-                dep_title: "অ্যাকাউন্টে ব্যালেন্স যোগ করুন",
-                dep_sub: "ক্রিপ্টো (USDT, বাইন্যান্স পে) ও লোকাল গেটওয়ে সমর্থিত।",
-                deposit_amount: "টাকার পরিমাণ",
-                proceed_pay: "পেমেন্টে এগিয়ে যান",
-                purchased_orders: "ক্রয়কৃত অর্ডারসমূহ",
-                order_sub: "ইনস্ট্যান্ট অ্যাকাউন্ট তথ্য",
-                instant_dispatch: "স্বয়ংক্রিয় দ্রুত ডেলিভারি",
-                quantity: "পরিমাণ",
-                total_price: "মোট মূল্য:",
-                avail_stock: "স্টক আছে:",
-                cancel: "বাতিল",
-                confirm_order: "অর্ডার নিশ্চিত করুন",
-                add_funds: "ব্যালেন্স ডিপোজিট করুন",
-                orders_history: "অর্ডার হিস্ট্রি",
-                contact_support: "টেলিগ্রাম লাইভ সাপোর্ট"
-            }
-        };
-
-        let currentUserTg = { id: "6954647230", first_name: "International User" };
+        let currentUserTg = null;
         let userData = null;
         let appConfig = {};
+        let selectedCategory = 'all';
         let displayedProductsCache = [];
-        let activeSelectedBuyItem = null;
+        let userPurchasesCache = [];
+        let activeBuyModalData = null;
+        let activeManualModalData = null;
+        let lastPurchasedItemsBatch = [];
 
-        // MULTI-CURRENCY CONVERTER HELPERS
-        function formatBalance(amountBdt, targetCurrency = activeCurrency) {
+        const defaultCategories = [
+            { id: "all", name: "All Services", icon: "layout-grid" },
+            { id: "Hotmail", name: "Hotmail", icon: "mail" },
+            { id: "Gmail", name: "Gmail", icon: "tag" },
+            { id: "Proxy", name: "Proxy", icon: "globe" },
+            { id: "VPN", name: "VPN", icon: "shield-check" }
+        ];
+
+        // CURRENCY FORMATTER
+        function formatBalance(amountBdt, cur = activeCurrency) {
             const bdt = parseFloat(amountBdt || 0);
-            if (targetCurrency === 'USDT') {
-                const usd = bdt / USD_EXCHANGE_RATE;
-                return `$${usd.toFixed(2)}`;
-            } else {
-                return `৳${bdt.toFixed(2)}`;
+            if (cur === 'USDT') {
+                return `$${(bdt / USD_EXCHANGE_RATE).toFixed(2)}`;
             }
+            return `৳${bdt.toFixed(2)}`;
         }
 
         window.toggleDisplayCurrency = function() {
             activeCurrency = activeCurrency === 'USDT' ? 'BDT' : 'USDT';
-            updateBalanceDisplays();
-            renderCatalogItems();
-            showToast(`Display currency switched to ${activeCurrency}`, "info");
+            updateUI();
+            renderProductsBySelection();
+            showToast(`Currency switched to ${activeCurrency}`, "info");
         };
 
-        window.toggleAppLanguage = function() {
-            currentLang = currentLang === 'en' ? 'bn' : 'en';
-            document.getElementById('lang-switch-label').textContent = currentLang === 'en' ? 'BN' : 'EN';
-            applyTranslations();
-            renderCatalogItems();
+        // TOAST
+        window.showToast = function(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast-item toast-${type}`;
+            toast.innerHTML = `<span class="leading-tight">${message}</span>`;
+            container.appendChild(toast);
+
+            requestAnimationFrame(() => toast.classList.add('show'));
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
         };
 
-        function applyTranslations() {
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (i18n[currentLang][key]) {
-                    el.textContent = i18n[currentLang][key];
-                }
-            });
-        }
-
-        function updateBalanceDisplays() {
-            if (!userData) return;
-            const bdtBal = parseFloat(userData.balance || 0);
-            const formatted = formatBalance(bdtBal, activeCurrency);
-            
-            document.getElementById('header-balance-view').textContent = formatted;
-            document.getElementById('profile-bdt-balance').textContent = `৳${bdtBal.toFixed(2)}`;
-            document.getElementById('profile-usdt-balance').textContent = `$${(bdtBal / USD_EXCHANGE_RATE).toFixed(2)}`;
-        }
-
-        // COUNTRY DETECTOR
-        async function detectUserCountry() {
-            try {
-                const res = await fetch('https://ipapi.co/json/');
-                const data = await res.json();
-                const code = data.country_code || 'US';
-                const name = data.country_name || 'International';
-                const flag = code.toUpperCase().replace(/./g, char => String.fromCodePoint(127397 + char.charCodeAt()));
-
-                document.getElementById('header-country-flag').textContent = flag;
-                document.getElementById('header-country-name').textContent = name;
-                document.getElementById('profile-flag').textContent = flag;
-                document.getElementById('profile-country').textContent = name;
-            } catch(e) {
-                document.getElementById('header-country-flag').textContent = '🌐';
-                document.getElementById('header-country-name').textContent = 'Global';
-            }
-        }
+        window.showPolicyModal = function() {
+            document.getElementById('policy-modal').classList.remove('hidden');
+        };
 
         // NAVIGATION
         window.navigateTo = function(pageId) {
@@ -824,113 +1082,305 @@
                 item.classList.toggle('active', item.dataset.page === pageId);
             });
 
-            if (pageId === 'home-page') renderCatalogItems();
+            if (pageId === 'home-page') renderProductsBySelection();
             if (pageId === 'orders-page') loadOrdersHistory();
-            if (pageId === 'profile-page') updateBalanceDisplays();
+            if (pageId === 'refer-page') loadReferralPageData();
+            if (pageId === 'profile-page') loadProfileData();
             lucide.createIcons();
         };
 
-        // LOAD PRODUCTS & CATALOG
-        async function renderCatalogItems() {
-            const container = document.getElementById('products-catalog-container');
+        // INIT USER & TELEGRAM DATA
+        window.onload = async () => {
+            try {
+                if (window.Telegram?.WebApp && window.Telegram.WebApp.initDataUnsafe?.user) {
+                    window.Telegram.WebApp.ready();
+                    window.Telegram.WebApp.expand();
+                    currentUserTg = window.Telegram.WebApp.initDataUnsafe.user;
+                } else {
+                    currentUserTg = { id: "6954647230", first_name: "International User", username: "cloud_user" };
+                }
+            } catch(e) {
+                currentUserTg = { id: "6954647230", first_name: "International User", username: "cloud_user" };
+            }
+
+            supportTgUser = currentUserTg;
+
+            // Load user data
+            const tgChatId = String(currentUserTg.id);
+            const userRef = doc(dbUser, "users", tgChatId);
+            let snap = await getDoc(userRef);
+
+            const userFullName = `${currentUserTg.first_name || ''} ${currentUserTg.last_name || ''}`.trim() || 'Cloud User';
+
+            if (snap.exists()) {
+                userData = snap.data();
+                await updateDoc(userRef, {
+                    name: userFullName,
+                    photo_url: currentUserTg.photo_url || null,
+                    lastSeen: serverTimestamp()
+                });
+            } else {
+                userData = {
+                    tgChatId: tgChatId,
+                    name: userFullName,
+                    username: currentUserTg.username || null,
+                    photo_url: currentUserTg.photo_url || null,
+                    balance: 0,
+                    totalCashbackEarned: 0,
+                    createdAt: serverTimestamp()
+                };
+                await setDoc(userRef, userData);
+            }
+
+            // Load Config
+            try {
+                const confSnap = await getDoc(doc(dbUser, "config", "main"));
+                if (confSnap.exists()) appConfig = confSnap.data();
+            } catch(e) {}
+
+            renderCategories();
+            updateUI();
+            detectUserLocation();
+            loadProfileData();
+
+            // Set Refer link
+            const botUser = appConfig.botUsername || "Gmail_HUB7bot";
+            document.getElementById('dedicated-ref-link-display').textContent = `https://t.me/${botUser}/buy?startapp=${userData.tgChatId}`;
+
+            // Hide Loader
+            setTimeout(() => {
+                const loader = document.getElementById('loader');
+                loader.style.opacity = '0';
+                setTimeout(() => loader.style.display = 'none', 300);
+            }, 600);
+        };
+
+        function updateUI() {
+            if (!userData) return;
+            const balBdt = userData.balance || 0;
+            document.getElementById('header-balance-view').textContent = formatBalance(balBdt);
+            document.getElementById('deposit-page-balance').textContent = formatBalance(balBdt);
+            document.getElementById('profile-usdt-balance').textContent = `$${(balBdt / USD_EXCHANGE_RATE).toFixed(2)}`;
+            document.getElementById('profile-bdt-balance').textContent = `৳${balBdt.toFixed(2)}`;
+        }
+
+        // LOAD PROFILE DATA INCLUDING TELEGRAM AVATAR
+        function loadProfileData() {
+            if (!userData) return;
+            document.getElementById('profile-name').textContent = userData.name || 'User';
+            document.getElementById('profile-username').textContent = userData.username ? `@${userData.username}` : '';
+            document.getElementById('profile-id').textContent = `ID: ${userData.tgChatId}`;
+
+            const photo = currentUserTg?.photo_url || userData.photo_url;
+            if (photo) {
+                const img = document.getElementById('profile-avatar-img');
+                img.src = photo;
+                img.classList.remove('hidden');
+                document.getElementById('profile-initials').classList.add('hidden');
+            } else {
+                document.getElementById('profile-initials').textContent = (userData.name || 'U').charAt(0).toUpperCase();
+            }
+        }
+
+        // COUNTRY & LANGUAGE SELECTORS
+        window.changeLanguageManually = function(lang) {
+            currentLang = lang;
+            if (lang === 'bn') {
+                document.getElementById('nav-lbl-shop').textContent = 'শপ';
+                document.getElementById('nav-lbl-deposit').textContent = 'ডিপোজিট';
+                document.getElementById('nav-lbl-refer').textContent = 'রেফার';
+                document.getElementById('nav-lbl-orders').textContent = 'অর্ডার';
+                document.getElementById('nav-lbl-profile').textContent = 'প্রোফাইল';
+                showToast("ভাষা বাংলায় পরিবর্তন করা হয়েছে", "success");
+            } else {
+                document.getElementById('nav-lbl-shop').textContent = 'Shop';
+                document.getElementById('nav-lbl-deposit').textContent = 'Deposit';
+                document.getElementById('nav-lbl-refer').textContent = 'Refer';
+                document.getElementById('nav-lbl-orders').textContent = 'Orders';
+                document.getElementById('nav-lbl-profile').textContent = 'Profile';
+                showToast("Language changed to English", "success");
+            }
+        };
+
+        window.changeCountryManually = function(countryCode) {
+            const flags = { US: '🇺🇸', BD: '🇧🇩', GB: '🇬🇧', AE: '🇦🇪', IN: '🇮🇳', CA: '🇨🇦' };
+            const names = { US: 'United States', BD: 'Bangladesh', GB: 'United Kingdom', AE: 'UAE', IN: 'India', CA: 'Canada' };
+            
+            const flag = flags[countryCode] || '🌐';
+            const name = names[countryCode] || 'Global';
+
+            document.getElementById('header-country-flag').textContent = flag;
+            document.getElementById('header-country-name').textContent = name;
+            document.getElementById('profile-flag').textContent = flag;
+            document.getElementById('profile-country-txt').textContent = name;
+
+            showToast(`Region updated to ${name}`, "info");
+        };
+
+        async function detectUserLocation() {
+            try {
+                const res = await fetch('https://ipapi.co/json/');
+                const data = await res.json();
+                const code = data.country_code || 'US';
+                const name = data.country_name || 'Global';
+                const flag = code.toUpperCase().replace(/./g, c => String.fromCodePoint(127397 + c.charCodeAt()));
+
+                document.getElementById('header-country-flag').textContent = flag;
+                document.getElementById('header-country-name').textContent = name;
+                document.getElementById('profile-flag').textContent = flag;
+                document.getElementById('profile-country-txt').textContent = name;
+                
+                const selectBox = document.getElementById('country-select-box');
+                if (selectBox && selectBox.querySelector(`option[value="${code}"]`)) {
+                    selectBox.value = code;
+                }
+            } catch(e) {}
+        }
+
+        // CATEGORIES
+        function renderCategories() {
+            const grid = document.getElementById('category-filter-grid');
+            const categories = appConfig.categories && appConfig.categories.length > 0 ? appConfig.categories : defaultCategories;
+            grid.innerHTML = categories.map((cat, i) => `
+                <button class="category-btn ${selectedCategory === cat.id ? 'active' : ''}" onclick="filterCat('${cat.id}', this)">
+                    <i data-lucide="${cat.icon || 'tag'}" class="w-3.5 h-3.5"></i>
+                    <span class="truncate">${cat.name}</span>
+                </button>
+            `).join('');
+            lucide.createIcons();
+            renderProductsBySelection();
+        }
+
+        window.filterCat = function(id, btn) {
+            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            selectedCategory = id;
+            renderProductsBySelection();
+        };
+
+        // SHOP PRODUCT RENDER
+        async function renderProductsBySelection() {
+            const container = document.getElementById('product-list-container');
             container.innerHTML = `<div class="text-center py-10"><div class="w-7 h-7 border-2 border-sky-500 border-t-transparent rounded-full animate-spin mx-auto"></div></div>`;
 
-            const products = [...(appConfig.mails || []), ...(appConfig.proxies || []), ...(appConfig.products || [])];
-            
-            if (products.length === 0) {
-                container.innerHTML = `<div class="bg-white p-6 rounded-2xl text-center text-xs text-slate-400 border">No service catalog items available.</div>`;
+            const all = [...(appConfig.mails || []), ...(appConfig.proxies || []), ...(appConfig.products || [])];
+            let filtered = all;
+            if (selectedCategory !== 'all') {
+                filtered = all.filter(p => (p.type || '').toLowerCase().includes(selectedCategory.toLowerCase()) || (p.category || '').toLowerCase().includes(selectedCategory.toLowerCase()));
+            }
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="bg-white p-6 rounded-2xl text-center text-xs text-slate-400 border">No products available in this category.</div>`;
                 return;
             }
 
-            displayedProductsCache = products;
+            displayedProductsCache = filtered;
 
-            container.innerHTML = products.map((item, idx) => {
-                const priceBdt = parseFloat(item.priceBdt || 0);
-                const priceUsd = (priceBdt / USD_EXCHANGE_RATE).toFixed(2);
-                const isOutOfStock = (item.stock || 0) <= 0;
+            container.innerHTML = filtered.map((item, idx) => {
+                const bdt = parseFloat(item.priceBdt || 0);
+                const usd = (bdt / USD_EXCHANGE_RATE).toFixed(2);
+                const stock = item.stock || 15;
+                const outOfStock = stock <= 0;
 
                 return `
-                <div class="pro-card p-4 space-y-3">
+                <div class="product-card p-4 space-y-3">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
                             <div class="w-12 h-12 rounded-xl bg-sky-50 border border-sky-100 flex items-center justify-center p-2">
                                 <img src="${item.logoUrl || 'https://i.postimg.cc/mD1YdG5y/mail.png'}" class="w-full h-full object-contain" alt="">
                             </div>
                             <div>
-                                <h4 class="font-black text-slate-900 text-sm leading-tight">${item.type}</h4>
+                                <h4 class="font-extrabold text-slate-800 text-sm">${item.type}</h4>
                                 <div class="flex items-center gap-2 mt-0.5">
-                                    <span class="text-xs font-black text-sky-600 mono-font">$${priceUsd}</span>
-                                    <span class="text-[11px] text-slate-400 font-bold mono-font">(৳${priceBdt.toFixed(0)})</span>
+                                    <span class="text-base font-black text-sky-600 mono-font">${formatBalance(bdt)}</span>
+                                    <span class="text-[11px] text-slate-400 font-bold mono-font">($${usd})</span>
                                 </div>
                             </div>
                         </div>
 
-                        <button onclick="openBuyModalIndex(${idx})" class="px-4 py-2 text-xs btn-buy-intl flex items-center gap-1">
-                            <i data-lucide="zap" class="w-3.5 h-3.5"></i>
-                            <span>${currentLang === 'en' ? 'Buy Now' : 'কিনুন'}</span>
-                        </button>
+                        ${!outOfStock ? `
+                            <button onclick="openBuyModal(${idx})" class="btn-buy px-4 py-2 text-xs flex items-center gap-1">
+                                <i data-lucide="shopping-bag" class="w-3.5 h-3.5"></i>
+                                <span>Buy Now</span>
+                            </button>
+                        ` : `
+                            <button onclick="openManualModal(${idx})" class="btn-order-orange px-3 py-2 text-xs flex items-center gap-1">
+                                <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+                                <span>Order Now</span>
+                            </button>
+                        `}
                     </div>
 
-                    <div class="text-xs text-slate-500 bg-slate-50 p-2.5 rounded-xl border border-slate-100 leading-relaxed font-medium">
-                        ${item.details || 'Automated high-speed verification accounts with 100% active guarantees.'}
+                    <div class="text-xs text-slate-500 bg-slate-50 p-2.5 rounded-xl border border-slate-100 font-medium">
+                        ${item.details || 'Automated and verified accounts with 100% active guarantees.'}
+                    </div>
+
+                    <div class="flex items-center justify-between pt-1 border-t border-slate-100 text-xs text-slate-500">
+                        <span>Stock: <b class="${outOfStock ? 'text-orange-500' : 'text-emerald-600'}">${stock} pcs</b></span>
+                        <span class="text-emerald-600 font-bold">Instant Delivery</span>
                     </div>
                 </div>`;
             }).join('');
             lucide.createIcons();
         }
 
-        // BUY MODAL ACTIONS
-        window.openBuyModalIndex = function(idx) {
+        // BUY MODAL
+        window.openBuyModal = function(idx) {
             const item = displayedProductsCache[idx];
             if (!item) return;
 
-            activeSelectedBuyItem = {
-                ...item,
-                qty: 1,
-                unitPriceBdt: parseFloat(item.priceBdt || 0)
+            activeBuyModalData = {
+                product: item,
+                unitBdt: parseFloat(item.priceBdt || 0),
+                stock: item.stock || 15,
+                qty: 1
             };
 
-            document.getElementById('modal-product-title').textContent = item.type;
-            document.getElementById('modal-buy-qty').value = 1;
-            document.getElementById('modal-avail-stock').textContent = `${item.stock || 25} pcs`;
+            document.getElementById('buy-modal-title').textContent = item.type;
+            document.getElementById('buy-modal-stock-display').textContent = `${activeBuyModalData.stock} pcs`;
+            document.getElementById('buy-modal-qty-input').value = 1;
+            updateBuyModalPrice();
 
-            updateModalCalculatedPrice();
-            document.getElementById('buy-item-modal').classList.remove('hidden');
+            document.getElementById('buy-now-modal').classList.remove('hidden');
             lucide.createIcons();
         };
 
-        window.closeBuyModal = function() {
-            document.getElementById('buy-item-modal').classList.add('hidden');
-        };
-
-        window.changeBuyQuantity = function(delta) {
-            if (!activeSelectedBuyItem) return;
-            let target = activeSelectedBuyItem.qty + delta;
-            if (target < 1) target = 1;
-            activeSelectedBuyItem.qty = target;
-            document.getElementById('modal-buy-qty').value = target;
-            updateModalCalculatedPrice();
-        };
-
-        function updateModalCalculatedPrice() {
-            if (!activeSelectedBuyItem) return;
-            const totalBdt = activeSelectedBuyItem.unitPriceBdt * activeSelectedBuyItem.qty;
+        function updateBuyModalPrice() {
+            if (!activeBuyModalData) return;
+            const totalBdt = activeBuyModalData.unitBdt * activeBuyModalData.qty;
             const totalUsd = (totalBdt / USD_EXCHANGE_RATE).toFixed(2);
-            document.getElementById('modal-total-price').textContent = `$${totalUsd} / ৳${totalBdt.toFixed(2)}`;
+            document.getElementById('buy-modal-price').textContent = `$${totalUsd} / ৳${totalBdt.toFixed(2)}`;
         }
 
-        window.submitDirectPurchase = async function() {
-            if (!activeSelectedBuyItem) return;
-            const totalBdt = activeSelectedBuyItem.unitPriceBdt * activeSelectedBuyItem.qty;
+        window.adjustBuyModalQty = function(delta) {
+            if (!activeBuyModalData) return;
+            let target = activeBuyModalData.qty + delta;
+            if (target < 1) target = 1;
+            activeBuyModalData.qty = target;
+            document.getElementById('buy-modal-qty-input').value = target;
+            updateBuyModalPrice();
+        };
+
+        window.handleBuyModalQtyInput = function(el) {
+            if (!activeBuyModalData) return;
+            let val = parseInt(el.value) || 1;
+            if (val < 1) val = 1;
+            activeBuyModalData.qty = val;
+            updateBuyModalPrice();
+        };
+
+        window.executeBuyNowConfirmed = async function() {
+            if (!activeBuyModalData) return;
+            const totalBdt = activeBuyModalData.unitBdt * activeBuyModalData.qty;
 
             if ((userData?.balance || 0) < totalBdt) {
-                showToast(`Insufficient balance. Please add funds!`, "error");
-                closeBuyModal();
+                showToast("Insufficient balance! Please add funds.", "error");
+                document.getElementById('buy-now-modal').classList.add('hidden');
                 navigateTo('pay-page');
                 return;
             }
 
-            const btn = document.getElementById('btn-confirm-purchase');
+            const btn = document.getElementById('confirm-buy-modal-btn');
             btn.disabled = true;
             btn.textContent = "Processing...";
 
@@ -938,50 +1388,153 @@
                 const userRef = doc(dbUser, "users", String(userData.tgChatId));
                 await runTransaction(dbUser, async (t) => {
                     const snap = await t.get(userRef);
-                    if (snap.data().balance < totalBdt) throw new Error("Balance insufficient");
+                    if (snap.data().balance < totalBdt) throw new Error("Insufficient balance");
                     t.update(userRef, { balance: snap.data().balance - totalBdt });
                 });
 
-                // Record purchase
-                await addDoc(collection(dbShop, "purchases"), {
-                    userId: String(userData.tgChatId),
-                    mailType: activeSelectedBuyItem.type,
-                    cost: totalBdt,
-                    quantity: activeSelectedBuyItem.qty,
-                    purchasedAt: serverTimestamp(),
-                    mail: `cloud_user_${Date.now()}@verified.com`,
-                    password: `Pass_${Math.floor(100000 + Math.random() * 900000)}`
-                });
+                const purchased = [];
+                for (let i = 0; i < activeBuyModalData.qty; i++) {
+                    const emailGen = `cloud_${Date.now()}_${i}@domain.com`;
+                    const passGen = `Pass_${Math.floor(100000 + Math.random() * 900000)}`;
+
+                    const docRef = await addDoc(collection(dbShop, "purchases"), {
+                        userId: String(userData.tgChatId),
+                        mailType: activeBuyModalData.product.type,
+                        cost: activeBuyModalData.unitBdt,
+                        mail: emailGen,
+                        password: passGen,
+                        purchasedAt: serverTimestamp()
+                    });
+
+                    purchased.push({
+                        mail: emailGen,
+                        password: passGen,
+                        mailType: activeBuyModalData.product.type
+                    });
+                }
 
                 userData.balance -= totalBdt;
-                updateBalanceDisplays();
-                closeBuyModal();
+                updateUI();
+                lastPurchasedItemsBatch = purchased;
+
+                document.getElementById('buy-now-modal').classList.add('hidden');
+                showPurchaseSuccessModal(purchased);
                 showToast("Order completed successfully!", "success");
-                navigateTo('orders-page');
             } catch(e) {
                 showToast(e.message || "Purchase failed", "error");
             } finally {
                 btn.disabled = false;
-                btn.textContent = "Confirm";
+                btn.textContent = "Confirm Buy";
             }
         };
 
-        // ORDERS HISTORY
-        async function loadOrdersHistory() {
-            const listEl = document.getElementById('orders-list-view');
-            listEl.innerHTML = `<div class="text-center py-6"><div class="w-6 h-6 border-2 border-sky-500 border-t-transparent rounded-full animate-spin mx-auto"></div></div>`;
+        function showPurchaseSuccessModal(items) {
+            const list = document.getElementById('purchase-success-items-list');
+            list.innerHTML = items.map((item, idx) => `
+                <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 font-mono text-xs space-y-1">
+                    <div class="flex items-center justify-between">
+                        <span class="truncate text-slate-800">${idx + 1}. ${item.mail}</span>
+                        <button onclick="navigator.clipboard.writeText('${item.mail}'); showToast('Copied','success');" class="text-sky-600"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                    </div>
+                    <div class="flex items-center justify-between border-t pt-1 text-slate-600">
+                        <span>${item.password}</span>
+                        <button onclick="navigator.clipboard.writeText('${item.password}'); showToast('Copied','success');" class="text-sky-600"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                    </div>
+                </div>
+            `).join('');
+            document.getElementById('purchase-success-modal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        window.copyCurrentPurchaseExcelFormat = function() {
+            if (!lastPurchasedItemsBatch.length) return;
+            const txt = lastPurchasedItemsBatch.map(p => `${p.mail}\t${p.password}`).join('\n');
+            navigator.clipboard.writeText(txt).then(() => showToast("All credentials copied!", "success"));
+        };
+
+        // PRE-ORDER / MANUAL
+        window.openManualModal = function(idx) {
+            const item = displayedProductsCache[idx];
+            activeManualModalData = {
+                product: item,
+                unitBdt: parseFloat(item.priceBdt || 0),
+                qty: 1
+            };
+            document.getElementById('manual-modal-title').textContent = `${item.type} (Pre-Order)`;
+            document.getElementById('manual-modal-qty-input').value = 1;
+            updateManualModalPrice();
+            document.getElementById('manual-order-modal').classList.remove('hidden');
+            lucide.createIcons();
+        };
+
+        function updateManualModalPrice() {
+            if (!activeManualModalData) return;
+            const totalBdt = activeManualModalData.unitBdt * activeManualModalData.qty;
+            const totalUsd = (totalBdt / USD_EXCHANGE_RATE).toFixed(2);
+            document.getElementById('manual-modal-price').textContent = `$${totalUsd} / ৳${totalBdt.toFixed(2)}`;
+        }
+
+        window.adjustManualOrderModalQty = function(d) {
+            if (!activeManualModalData) return;
+            let t = activeManualModalData.qty + d;
+            if (t < 1) t = 1;
+            activeManualModalData.qty = t;
+            document.getElementById('manual-modal-qty-input').value = t;
+            updateManualModalPrice();
+        };
+
+        window.handleConfirmManualOrder = async function() {
+            if (!activeManualModalData) return;
+            const totalBdt = activeManualModalData.unitBdt * activeManualModalData.qty;
+
+            if ((userData?.balance || 0) < totalBdt) {
+                showToast("Insufficient balance for pre-order", "error");
+                return;
+            }
 
             try {
-                const q = query(collection(dbShop, "purchases"), where("userId", "==", String(userData.tgChatId)));
+                const userRef = doc(dbUser, "users", String(userData.tgChatId));
+                await runTransaction(dbUser, async (t) => {
+                    const snap = await t.get(userRef);
+                    if (snap.data().balance < totalBdt) throw new Error("Insufficient balance");
+                    t.update(userRef, { balance: snap.data().balance - totalBdt });
+                });
+
+                await addDoc(collection(dbShop, "manual_orders"), {
+                    userId: String(userData.tgChatId),
+                    mailType: activeManualModalData.product.type,
+                    cost: totalBdt,
+                    quantity: activeManualModalData.qty,
+                    status: "pending",
+                    createdAt: serverTimestamp()
+                });
+
+                userData.balance -= totalBdt;
+                updateUI();
+                document.getElementById('manual-order-modal').classList.add('hidden');
+                showToast("Pre-order placed successfully!", "success");
+            } catch(e) {
+                showToast("Pre-order failed", "error");
+            }
+        };
+
+        // ORDERS HISTORY & FULL SYNTAX FIX
+        async function loadOrdersHistory() {
+            const listEl = document.getElementById('orders-purchase-history');
+            listEl.innerHTML = `<div class="text-center py-8"><div class="w-7 h-7 border-2 border-sky-500 border-t-transparent rounded-full animate-spin mx-auto"></div></div>`;
+
+            try {
+                const q = query(collection(dbShop, "purchases"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
                 const snap = await getDocs(q);
 
                 if (snap.empty) {
-                    listEl.innerHTML = `<div class="bg-white p-8 rounded-2xl text-center text-slate-400 font-semibold border">No purchases found.</div>`;
+                    listEl.innerHTML = `<div class="bg-white p-6 rounded-2xl text-center text-xs text-slate-400 border">No order records found.</div>`;
                     return;
                 }
 
-                listEl.innerHTML = snap.docs.map(docSnap => {
-                    const p = docSnap.data();
+                userPurchasesCache = snap.docs.map(d => ({ docId: d.id, ...d.data() }));
+
+                listEl.innerHTML = userPurchasesCache.map(p => {
                     const date = p.purchasedAt?.toDate ? p.purchasedAt.toDate().toLocaleString() : 'Recent';
                     const fullCopy = `${p.mail}|${p.password || ''}`;
 
@@ -997,15 +1550,15 @@
                         <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 space-y-1.5 font-mono text-xs">
                             <div class="flex justify-between items-center">
                                 <span class="truncate text-slate-700">${p.mail || ''}</span>
-                                <button onclick="copyRaw('${p.mail}')" class="text-sky-600 p-1"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                                <button onclick="navigator.clipboard.writeText('${p.mail}'); showToast('Copied','success');" class="text-sky-600 p-1"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
                             </div>
                             ${p.password ? `
                             <div class="flex justify-between items-center border-t pt-1">
                                 <span class="text-slate-600">${p.password}</span>
-                                <button onclick="copyRaw('${p.password}')" class="text-sky-600 p-1"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                                <button onclick="navigator.clipboard.writeText('${p.password}'); showToast('Copied','success');" class="text-sky-600 p-1"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
                             </div>` : ''}
                         </div>
-                        <button onclick="copyRaw('${fullCopy}')" class="w-full py-2 btn-buy-intl rounded-xl text-center font-bold">Copy Credentials</button>
+                        <button onclick="navigator.clipboard.writeText('${fullCopy}'); showToast('Copied Credentials','success');" class="w-full py-2 btn-buy rounded-xl text-center font-bold">Copy Credentials</button>
                     </div>`;
                 }).join('');
                 lucide.createIcons();
@@ -1014,125 +1567,69 @@
             }
         }
 
-        window.copyRaw = function(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                showToast("Copied to clipboard!", "success");
-            });
+        window.copyAllOrdersExcelFormat = function() {
+            if (!userPurchasesCache.length) return showToast("No orders to copy", "info");
+            const txt = userPurchasesCache.map(p => `${p.mail}\t${p.password || ''}`).join('\n');
+            navigator.clipboard.writeText(txt).then(() => showToast("All orders copied!", "success"));
+        };
+
+        window.downloadOrdersXlsx = function() {
+            if (!userPurchasesCache.length) return showToast("No orders available", "info");
+            const data = userPurchasesCache.map(p => ({ Service: p.mailType, Email: p.mail, Password: p.password || '', Cost: p.cost }));
+            const ws = XLSX.utils.json_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Orders");
+            XLSX.writeFile(wb, `Orders_${Date.now()}.xlsx`);
         };
 
         // DEPOSIT LOGIC
-        window.setDepositValue = function(amt) {
-            const input = document.getElementById('deposit-amount-field');
-            input.value = amt;
-            const usd = (amt / USD_EXCHANGE_RATE).toFixed(2);
-            document.getElementById('deposit-converted-usd').textContent = `≈ $${usd} USDT`;
+        window.handleDepositAmountChange = function(val) {
+            const bdt = parseFloat(val || 0);
+            const usd = (bdt / USD_EXCHANGE_RATE).toFixed(2);
+            document.getElementById('deposit-usd-eq').textContent = `≈ $${usd} USDT`;
         };
 
-        window.triggerDepositGateway = function() {
-            const amt = parseFloat(document.getElementById('deposit-amount-field').value || 0);
-            if (amt < 10) return showToast("Minimum amount is ৳10 / $0.10", "error");
+        window.setQuickDepositAmount = function(amt) {
+            document.getElementById('amountInput').value = amt;
+            handleDepositAmountChange(amt);
+        };
 
-            showToast("Connecting to International Checkout...", "info");
+        window.initiatePayment = function() {
+            const amt = parseFloat(document.getElementById('amountInput').value || 0);
+            if (amt < 10) return showToast("Minimum deposit is ৳10 / $0.10", "error");
+
+            showToast("Redirecting to Instant Payment...", "info");
             setTimeout(() => {
-                window.open(`https://wa.me/8801827750260?text=Hello%2C%20I%20want%20to%20deposit%20${amt}%20BDT%20equivalent%20to%20my%20account%20${userData.tgChatId}`, '_blank');
+                window.open(`https://wa.me/8801827750260?text=Hello%2C%20I%20want%20to%20deposit%20${amt}%20BDT%20equivalent%20to%20ID%20${userData.tgChatId}`, '_blank');
             }, 800);
         };
 
-        // TOAST
-        window.showToast = function(msg, type = 'info') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = `toast-item toast-${type}`;
-            toast.innerHTML = `<span class="leading-tight">${msg}</span>`;
-            container.appendChild(toast);
-
-            requestAnimationFrame(() => toast.classList.add('show'));
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => toast.remove(), 300);
-            }, 2800);
-        };
-
-        // SUPPORT CHAT
-        window.openSupportModal = function() {
-            document.getElementById('support-modal-overlay').style.display = 'flex';
-            lucide.createIcons();
-        };
-
-        window.closeSupportModal = function() {
-            document.getElementById('support-modal-overlay').style.display = 'none';
-        };
-
-        window.sendSupportMessage = function() {
-            const input = document.getElementById('support-message-input');
-            const txt = input.value.trim();
-            if (!txt) return;
-
-            const box = document.getElementById('support-chat-messages');
-            box.innerHTML += `
-                <div class="bg-sky-600 p-3 rounded-2xl max-w-[85%] text-xs text-white ml-auto space-y-1">
-                    <p>${txt}</p>
-                    <span class="text-[9px] text-sky-200 block text-right">Just now</span>
-                </div>
-            `;
-            input.value = '';
-            box.scrollTop = box.scrollHeight;
-        };
-
-        // STARTUP INIT
-        window.addEventListener('DOMContentLoaded', async () => {
+        // REFERRAL DASHBOARD
+        async function loadReferralPageData() {
+            if (!userData) return;
             try {
-                if (window.Telegram?.WebApp?.initDataUnsafe?.user) {
-                    window.Telegram.WebApp.ready();
-                    currentUserTg = window.Telegram.WebApp.initDataUnsafe.user;
-                }
+                const q = query(collection(dbUser, "users"), where("referredBy", "==", String(userData.tgChatId)));
+                const snap = await getDocs(q);
+                const totalRefs = snap.size;
+                const totalCashback = parseFloat(userData.totalCashbackEarned || 0);
+                const totalEarnedBdt = (totalRefs * 10) + totalCashback;
+
+                document.getElementById('ref-stat-total').textContent = totalRefs;
+                document.getElementById('ref-stat-cashback').textContent = formatBalance(totalCashback);
+                document.getElementById('ref-stat-earned').textContent = formatBalance(totalEarnedBdt);
             } catch(e) {}
+        }
 
-            document.getElementById('profile-name').textContent = currentUserTg.first_name || 'International User';
-            document.getElementById('profile-id-txt').textContent = `ID: ${currentUserTg.id}`;
-            document.getElementById('profile-initial').textContent = (currentUserTg.first_name || 'U').charAt(0).toUpperCase();
+        window.copyReferralLink = function() {
+            const link = document.getElementById('dedicated-ref-link-display').textContent;
+            navigator.clipboard.writeText(link).then(() => showToast("Referral link copied!", "success"));
+        };
 
-            // Fetch User
-            const userRef = doc(dbUser, "users", String(currentUserTg.id));
-            const snap = await getDoc(userRef);
-
-            if (snap.exists()) {
-                userData = snap.data();
-            } else {
-                userData = {
-                    tgChatId: String(currentUserTg.id),
-                    name: currentUserTg.first_name,
-                    balance: 0,
-                    createdAt: serverTimestamp()
-                };
-                await setDoc(userRef, userData);
-            }
-
-            // Fetch App Config
-            try {
-                const confSnap = await getDoc(doc(dbUser, "config", "main"));
-                if (confSnap.exists()) appConfig = confSnap.data();
-            } catch(e) {}
-
-            // Category rendering
-            const catContainer = document.getElementById('category-chips-list');
-            const defaultCats = ["All Accounts", "Gmail", "Hotmail", "Proxy", "VPN"];
-            catContainer.innerHTML = defaultCats.map((cat, i) => `
-                <button class="cat-chip ${i === 0 ? 'active' : ''}">${cat}</button>
-            `).join('');
-
-            updateBalanceDisplays();
-            renderCatalogItems();
-            detectUserCountry();
-            applyTranslations();
-
-            // Hide Loader
-            setTimeout(() => {
-                const loader = document.getElementById('loader');
-                loader.style.opacity = '0';
-                setTimeout(() => loader.style.display = 'none', 300);
-            }, 600);
-        });
+        window.shareReferralLinkTelegram = function() {
+            const link = document.getElementById('dedicated-ref-link-display').textContent;
+            const text = "Join CLOUD INTERNATIONAL & get instant bonuses on services!";
+            window.open(`https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(text)}`, '_blank');
+        };
     </script>
 </body>
 </html>
