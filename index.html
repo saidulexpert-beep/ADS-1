@@ -84,22 +84,23 @@
             letter-spacing: 0.5px;
         }
 
+        /* FLOATING SUPPORT BUTTON & POPUP */
         .floating-support-btn {
             position: fixed;
-            bottom: 82px;
-            right: 18px;
+            bottom: 84px;
+            right: 16px;
             z-index: 60;
             width: 52px;
             height: 52px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #2AABEE 0%, #229ed9 100%);
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             color: #ffffff;
-            box-shadow: 0 8px 24px rgba(42, 171, 238, 0.45);
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.45);
             cursor: pointer;
-            border: 2px solid rgba(255, 255, 255, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.6);
             transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
             animation: floatingBounce 3s ease-in-out infinite alternate;
         }
@@ -118,7 +119,22 @@
         }
         @keyframes floatingBounce {
             0% { transform: translateY(0px); }
-            100% { transform: translateY(-7px); }
+            100% { transform: translateY(-6px); }
+        }
+
+        #support-choice-popup {
+            display: none;
+            position: fixed;
+            bottom: 145px;
+            right: 16px;
+            z-index: 65;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 10px;
+            width: 220px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            animation: fadeIn 0.2s ease-out;
         }
 
         .category-btn {
@@ -185,9 +201,10 @@
         }
         .btn-order-orange:active { transform: scale(0.97); }
 
+        /* REFINED BALANCED BOTTOM NAVIGATION */
         .bottom-nav {
-            background: rgba(255, 255, 255, 0.96);
-            backdrop-filter: blur(14px);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(16px);
             border-top: 1px solid #e2e8f0;
             position: fixed;
             bottom: 0;
@@ -195,13 +212,12 @@
             right: 0;
             max-width: 448px;
             margin: 0 auto;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            height: 68px;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            height: 64px;
             z-index: 50;
-            padding: 0 12px;
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.04);
+            padding: 0 4px;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
         }
         .nav-item {
             display: flex;
@@ -209,19 +225,21 @@
             align-items: center;
             justify-content: center;
             color: #64748b;
-            font-size: 0.72rem;
+            font-size: 0.68rem;
             font-weight: 700;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
-            padding: 6px 12px;
-            border-radius: 16px;
-            flex: 1;
-            gap: 3px;
+            padding: 4px 0;
+            gap: 2px;
+            border-radius: 12px;
         }
         .nav-item .nav-icon-wrapper {
-            padding: 4px 16px;
+            padding: 4px 12px;
             border-radius: 9999px;
-            transition: all 0.25s ease;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .nav-item.active {
             color: #2563eb;
@@ -512,11 +530,39 @@
 
     <div id="toast-container" class="toast-container"></div>
 
-    <!-- FLOATING TELEGRAM LIVE SUPPORT BUTTON -->
-    <button onclick="openSupportDeskModal()" class="floating-support-btn" title="লাইভ কাস্টমার সাপোর্ট">
-        <i class="fab fa-telegram-plane text-2xl"></i>
+    <!-- FLOATING CUSTOMER SUPPORT BUTTON (CHANGED TO HEADSET ICON) -->
+    <button onclick="toggleSupportChoicePopup()" class="floating-support-btn" title="কাস্টমার সাপোর্ট হেল্পলাইন">
+        <i class="fas fa-headset text-2xl"></i>
         <div class="online-ping"></div>
     </button>
+
+    <!-- SUPPORT CHOICE POPUP -->
+    <div id="support-choice-popup">
+        <div class="text-[11px] font-black text-slate-400 uppercase tracking-wider px-2 pb-1 border-b border-slate-100 mb-1 flex items-center justify-between">
+            <span>Help & Support</span>
+            <button onclick="toggleSupportChoicePopup(false)" class="text-slate-400 hover:text-slate-600"><i class="fas fa-times text-xs"></i></button>
+        </div>
+        <div class="space-y-1">
+            <a id="btn-support-telegram-link" href="https://t.me/EXPERTearn_team" target="_blank" onclick="toggleSupportChoicePopup(false)" class="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-sky-50 text-slate-800 transition text-xs font-bold">
+                <div class="w-8 h-8 rounded-lg bg-[#2AABEE] text-white flex items-center justify-center flex-shrink-0">
+                    <i class="fab fa-telegram-plane text-sm"></i>
+                </div>
+                <div>
+                    <div class="leading-tight text-slate-900 font-black">Telegram Web</div>
+                    <div class="text-[10px] text-slate-400 font-normal">অফিসিয়াল টেলিগ্রাম সাপোর্ট</div>
+                </div>
+            </a>
+            <button onclick="toggleSupportChoicePopup(false); openSupportDeskModal();" class="w-full flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-indigo-50 text-slate-800 transition text-xs font-bold text-left">
+                <div class="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-comments text-sm"></i>
+                </div>
+                <div>
+                    <div class="leading-tight text-slate-900 font-black">Live Chat Desk</div>
+                    <div class="text-[10px] text-slate-400 font-normal">ইন-অ্যাপ সরাসরি চ্যাট</div>
+                </div>
+            </button>
+        </div>
+    </div>
 
     <!-- ADVANCED ECOSYSTEM LOADER -->
     <div id="loader" class="select-none text-white">
@@ -616,8 +662,12 @@
             <div class="space-y-2 flex-grow">
                 <div class="text-[11px] font-extrabold text-gray-400 uppercase tracking-wider px-2 pt-1">Support & Rewards</div>
                 <button onclick="toggleSideMenu(false); openSupportDeskModal();" class="w-full flex items-center gap-3 p-3 rounded-2xl bg-sky-50 text-sky-700 hover:bg-sky-100 transition font-bold text-xs border border-sky-200">
-                    <div class="p-2 rounded-xl bg-[#2AABEE] text-white"><i class="fab fa-telegram-plane"></i></div>
+                    <div class="p-2 rounded-xl bg-[#2AABEE] text-white"><i class="fas fa-headset"></i></div>
                     <span>লাইভ কাস্টমার সাপোর্ট</span>
+                </button>
+                <button onclick="toggleSideMenu(false); openRedeemModal();" class="w-full flex items-center gap-3 p-3 rounded-2xl bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition font-bold text-xs border border-emerald-200">
+                    <div class="p-2 rounded-xl bg-emerald-600 text-white"><i data-lucide="ticket" class="w-4 h-4"></i></div>
+                    <span>রিডিম কোড (Redeem Code)</span>
                 </button>
                 <button onclick="toggleSideMenu(false); navigateTo('refer-page');" class="w-full flex items-center gap-3 p-3 rounded-2xl bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition font-bold text-xs border border-indigo-200">
                     <div class="p-2 rounded-xl bg-indigo-600 text-white"><i data-lucide="gift" class="w-4 h-4"></i></div>
@@ -656,7 +706,7 @@
             </div>
 
             <div class="pt-4 border-t border-gray-100 text-center">
-                <p class="text-[11px] text-gray-400 font-semibold">ACC X SHOP • v2.6</p>
+                <p class="text-[11px] text-gray-400 font-semibold">ACC X SHOP • v2.8</p>
             </div>
         </div>
 
@@ -866,7 +916,7 @@
                 <div id="orders-purchase-history" class="space-y-3 min-h-[200px]"></div>
             </div>
 
-            <!-- 5. PROFILE PAGE -->
+            <!-- 5. PROFILE PAGE (REPLACED REFER CARD WITH REDEEM CODE CARD) -->
             <div id="profile-page" class="p-4 space-y-4 sub-page">
                 <div class="bg-gradient-to-br from-white to-slate-50 p-5 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden">
                     <div class="flex items-center gap-4">
@@ -881,14 +931,17 @@
                         </div>
                     </div>
 
+                    <!-- PROFILE STATS ROW (UPDATED WITH REDEEM CODE) -->
                     <div class="grid grid-cols-2 gap-2 mt-4 pt-4 border-t border-gray-100">
                         <div class="bg-blue-50/60 p-3 rounded-2xl border border-blue-100">
                             <span class="text-[10px] font-extrabold text-blue-600 uppercase tracking-wider block">Wallet Balance</span>
                             <span id="profile-stat-balance" class="text-lg font-black text-gray-900">৳0.00</span>
                         </div>
-                        <div class="bg-indigo-50/60 p-3 rounded-2xl border border-indigo-100 flex flex-col justify-center cursor-pointer" onclick="navigateTo('refer-page')">
-                            <span class="text-[10px] font-extrabold text-indigo-600 uppercase tracking-wider block">Refer & Earn</span>
-                            <span class="text-xs font-black text-indigo-700 flex items-center gap-1 mt-0.5">Bonus 5% <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></span>
+                        <div class="bg-emerald-50/70 p-3 rounded-2xl border border-emerald-200 flex flex-col justify-center cursor-pointer hover:bg-emerald-100 transition" onclick="openRedeemModal()">
+                            <span class="text-[10px] font-extrabold text-emerald-700 uppercase tracking-wider block flex items-center gap-1">
+                                <i data-lucide="ticket" class="w-3.5 h-3.5"></i> Redeem Code
+                            </span>
+                            <span class="text-xs font-black text-emerald-800 flex items-center gap-1 mt-0.5">গিফট রিডিম করুন <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></span>
                         </div>
                     </div>
                 </div>
@@ -905,6 +958,23 @@
                     <button onclick="navigateTo('refer-page')" class="p-3 bg-white rounded-2xl border border-gray-200 shadow-sm flex flex-col items-center text-center hover:border-indigo-400 transition">
                         <div class="p-2 rounded-xl bg-indigo-50 text-indigo-600 mb-1"><i data-lucide="gift" class="w-4 h-4"></i></div>
                         <span class="text-[11px] font-black text-gray-800">Refer</span>
+                    </button>
+                </div>
+
+                <!-- ADMIN REDEEM CODE CREATOR (VISIBLE TO ADMIN ONLY) -->
+                <div id="admin-redeem-creator-box" class="hidden bg-slate-900 text-white p-4 rounded-3xl space-y-3">
+                    <div class="flex items-center justify-between border-b border-slate-700 pb-2">
+                        <span class="text-xs font-black text-emerald-400 uppercase tracking-wider flex items-center gap-1">
+                            <i data-lucide="shield-check" class="w-4 h-4"></i> Admin: Create Redeem Code
+                        </span>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 text-xs">
+                        <input type="text" id="admin-code-name" placeholder="CODE (e.g. FREE50)" class="p-2 bg-slate-800 border border-slate-700 rounded-xl text-white font-mono uppercase font-bold text-center">
+                        <input type="number" id="admin-code-amount" placeholder="Amount (৳)" class="p-2 bg-slate-800 border border-slate-700 rounded-xl text-white font-mono font-bold text-center">
+                        <input type="number" id="admin-code-maxuses" placeholder="Max Users" class="p-2 bg-slate-800 border border-slate-700 rounded-xl text-white font-mono font-bold text-center">
+                    </div>
+                    <button onclick="adminCreateRedeemCode()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1 transition">
+                        <i data-lucide="plus" class="w-4 h-4"></i> Create Redeem Code
                     </button>
                 </div>
 
@@ -1002,40 +1072,65 @@
 
         </main>
 
-        <!-- BOTTOM NAVIGATION -->
+        <!-- REFINED BALANCED BOTTOM NAVIGATION -->
         <nav class="bottom-nav">
             <div class="nav-item active" data-page="home-page" onclick="navigateTo('home-page')">
-                <div class="nav-icon-wrapper flex items-center justify-center">
-                    <i data-lucide="layout-grid" class="w-5 h-5"></i>
+                <div class="nav-icon-wrapper">
+                    <i data-lucide="layout-grid" class="w-4 h-4"></i>
                 </div>
                 <span>Home</span>
             </div>
             <div class="nav-item" data-page="refer-page" onclick="navigateTo('refer-page')">
-                <div class="nav-icon-wrapper flex items-center justify-center">
-                    <i data-lucide="gift" class="w-5 h-5"></i>
+                <div class="nav-icon-wrapper">
+                    <i data-lucide="gift" class="w-4 h-4"></i>
                 </div>
                 <span>Refer</span>
             </div>
             <div class="nav-item" data-page="pay-page" onclick="navigateTo('pay-page')">
-                <div class="nav-icon-wrapper flex items-center justify-center">
-                    <i data-lucide="coins" class="w-5 h-5"></i>
+                <div class="nav-icon-wrapper">
+                    <i data-lucide="coins" class="w-4 h-4"></i>
                 </div>
                 <span>Deposit</span>
             </div>
             <div class="nav-item" data-page="orders-page" onclick="navigateTo('orders-page')">
-                <div class="nav-icon-wrapper flex items-center justify-center">
-                    <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+                <div class="nav-icon-wrapper">
+                    <i data-lucide="shopping-cart" class="w-4 h-4"></i>
                 </div>
                 <span>Orders</span>
             </div>
             <div class="nav-item" data-page="profile-page" onclick="navigateTo('profile-page')">
-                <div class="nav-icon-wrapper flex items-center justify-center">
-                    <i data-lucide="user" class="w-5 h-5"></i>
+                <div class="nav-icon-wrapper">
+                    <i data-lucide="user" class="w-4 h-4"></i>
                 </div>
                 <span>Profile</span>
             </div>
         </nav>
 
+    </div>
+
+    <!-- REDEEM CODE MODAL -->
+    <div id="redeem-code-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[75] p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 relative text-center shadow-2xl">
+            <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
+                <i data-lucide="gift" class="w-7 h-7"></i>
+            </div>
+            <div>
+                <h3 class="text-lg font-black text-gray-800">Redeem Promo Code</h3>
+                <p class="text-xs text-gray-500 mt-1">আপনার উপহার বা প্রোমো কোডটি নিচে দিয়ে রিডিম করুন।</p>
+            </div>
+
+            <div class="space-y-3">
+                <input id="input-redeem-code" type="text" placeholder="ENTER CODE HERE" class="w-full p-3.5 rounded-2xl input-field text-center font-mono font-black text-gray-800 uppercase tracking-widest text-lg">
+                <div class="bg-emerald-50 text-emerald-800 p-2.5 rounded-xl text-[11px] font-semibold border border-emerald-100 flex items-center justify-center gap-1.5">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5 text-emerald-600"></i> কোড রিডিম করলে ব্যালেন্স ইনস্ট্যান্ট যোগ হবে
+                </div>
+            </div>
+
+            <div class="flex gap-2 pt-1">
+                <button onclick="closeRedeemModal()" class="w-1/2 py-3 bg-gray-100 font-bold rounded-xl text-xs text-gray-700">বাতিল</button>
+                <button id="btn-submit-redeem" onclick="handleRedeemCodeSubmit()" class="w-1/2 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs transition">রিডিম করুন</button>
+            </div>
+        </div>
     </div>
 
     <!-- SUPPORT DESK OVERLAY -->
@@ -1346,7 +1441,7 @@
         };
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy, limit, runTransaction, getCountFromServer, writeBatch, updateDoc, Timestamp, increment } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy, limit, runTransaction, getCountFromServer, writeBatch, updateDoc, Timestamp, increment, arrayUnion } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
@@ -1417,6 +1512,15 @@
             }
         };
 
+        window.toggleSupportChoicePopup = function(forceState) {
+            const popup = document.getElementById('support-choice-popup');
+            if (forceState !== undefined) {
+                popup.style.display = forceState ? 'block' : 'none';
+            } else {
+                popup.style.display = (popup.style.display === 'block') ? 'none' : 'block';
+            }
+        };
+
         window.onload = async () => {
             try {
                 window.Telegram.WebApp.ready();
@@ -1461,7 +1565,6 @@
             const userRef = doc(db, "users", tgChatId);
             let userSnap = await getDoc(userRef);
 
-            // Check Telegram Start Param for Referral
             const startParam = window.Telegram?.WebApp?.initDataUnsafe?.start_param || "";
             let inviterId = null;
             if (startParam && startParam.startsWith('ref_')) {
@@ -1500,6 +1603,12 @@
             await fetchAppConfig();
             await loadUserNotifications();
 
+            // Check if admin user to display admin redeem code creator
+            if (String(userData.tgChatId) === "7358825471" || String(userData.tgChatId) === "6954647230") {
+                const adminBox = document.getElementById('admin-redeem-creator-box');
+                if (adminBox) adminBox.classList.remove('hidden');
+            }
+
             updateUI();
             showMainPage('app-container');
             navigateTo('home-page');
@@ -1511,16 +1620,19 @@
                 const configSnap = await getDoc(configRef);
                 appConfig = configSnap.exists() ? configSnap.data() : {};
 
-                if (appConfig.telegramSupportUrl) {
-                    const el = document.getElementById('drawer-tg-support');
-                    if (el) el.href = appConfig.telegramSupportUrl;
-                }
-                if (appConfig.whatsappSupportUrl) {
-                    const el = document.getElementById('drawer-wa-support');
-                    if (el) el.href = appConfig.whatsappSupportUrl;
-                }
+                // Dynamic Official Links from Firebase
+                const tgSupportUrl = appConfig.telegramSupportUrl || "https://t.me/EXPERTearn_team";
+                const waSupportUrl = appConfig.whatsappSupportUrl || "https://wa.me/8801827750260";
 
-                // Configurable Referral Bonus Percentage
+                const elTg = document.getElementById('drawer-tg-support');
+                if (elTg) elTg.href = tgSupportUrl;
+
+                const elPopupTg = document.getElementById('btn-support-telegram-link');
+                if (elPopupTg) elPopupTg.href = tgSupportUrl;
+
+                const elWa = document.getElementById('drawer-wa-support');
+                if (elWa) elWa.href = waSupportUrl;
+
                 const refBonusPercent = appConfig.referralCommissionPercent !== undefined ? appConfig.referralCommissionPercent : 5;
                 const rateBadge = document.getElementById('refer-rate-badge');
                 if (rateBadge) rateBadge.textContent = `${refBonusPercent}% বোনাস`;
@@ -1559,9 +1671,138 @@
             lucide.createIcons();
         }
 
-        // ========================================================
-        // REFERRAL PAGE LOGIC & 5% BONUS SYSTEM
-        // ========================================================
+        // ==========================================
+        // REDEEM CODE MANAGEMENT (FIRESTORE BASED)
+        // ==========================================
+        window.openRedeemModal = function() {
+            document.getElementById('input-redeem-code').value = '';
+            document.getElementById('redeem-code-modal').classList.remove('hidden');
+            lucide.createIcons();
+        };
+
+        window.closeRedeemModal = function() {
+            document.getElementById('redeem-code-modal').classList.add('hidden');
+        };
+
+        window.handleRedeemCodeSubmit = async function() {
+            const codeInput = document.getElementById('input-redeem-code');
+            const code = codeInput.value.trim().toUpperCase();
+            if (!code) return showToast("একটি রিডিম কোড লিখুন", "error");
+
+            const btn = document.getElementById('btn-submit-redeem');
+            btn.disabled = true;
+            btn.innerHTML = `<span class="animate-spin inline-block w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full mr-1"></span> ভেরিফাই হচ্ছে...`;
+
+            try {
+                const userId = String(userData.tgChatId);
+                const codeRef = doc(db, "redeem_codes", code);
+
+                await runTransaction(db, async (transaction) => {
+                    const codeSnap = await transaction.get(codeRef);
+                    if (!codeSnap.exists()) {
+                        throw new Error("ভুল কোড! এমন কোনো রিডিম কোড পাওয়া যায়নি।");
+                    }
+
+                    const codeData = codeSnap.data();
+
+                    if (codeData.status !== "active") {
+                        throw new Error("এই রিডিম কোডটি বর্তমানে নিষ্ক্রিয় রয়েছে।");
+                    }
+
+                    const redeemedUsers = codeData.redeemedUsers || [];
+                    if (redeemedUsers.includes(userId)) {
+                        throw new Error("আপনি ইতিমধ্যে এই কোডটি একবার রিডিম করেছেন!");
+                    }
+
+                    const currentUses = codeData.currentUses || 0;
+                    const maxUses = codeData.maxUses || 1;
+
+                    if (currentUses >= maxUses) {
+                        throw new Error("দুঃখিত, এই কোড ব্যবহারের সর্বোচ্চ সীমা শেষ হয়ে গেছে!");
+                    }
+
+                    const bonusAmount = parseFloat(codeData.amount || 0);
+                    if (bonusAmount <= 0) {
+                        throw new Error("অকার্যকর কোড ব্যালেন্স।");
+                    }
+
+                    const userRef = doc(db, "users", userId);
+                    const userSnap = await transaction.get(userRef);
+                    if (!userSnap.exists()) throw new Error("ব্যবহারকারী অ্যাকাউন্ট পাওয়া যায়নি।");
+
+                    // 1. Update Redeem Code Uses
+                    transaction.update(codeRef, {
+                        currentUses: increment(1),
+                        redeemedUsers: arrayUnion(userId)
+                    });
+
+                    // 2. Credit User Balance
+                    transaction.update(userRef, {
+                        balance: increment(bonusAmount)
+                    });
+
+                    // 3. Record Deposit Log for Transparency
+                    const depositRef = doc(collection(db, "deposits"));
+                    transaction.set(depositRef, {
+                        userId: userId,
+                        userName: userData.name,
+                        method: 'Redeem Code',
+                        gateway: 'Redeem Code',
+                        amount: bonusAmount,
+                        transactionId: `CODE_${code}_${Date.now()}`,
+                        status: "approved",
+                        details: { code: code },
+                        requestedAt: serverTimestamp()
+                    });
+                });
+
+                closeRedeemModal();
+                showToast(`অভিনন্দন! আপনার অ্যাকাউন্টে ব্যালেন্স যোগ হয়েছে।`, "success");
+
+                const refreshedUser = await getDoc(doc(db, "users", String(userData.tgChatId)));
+                userData = refreshedUser.data();
+                updateUI();
+
+            } catch (err) {
+                showToast(err.message || "কোড রিডিম করতে সমস্যা হয়েছে।", "error");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "রিডিম করুন";
+            }
+        };
+
+        // ADMIN FUNCTION TO CREATE REDEEM CODES DIRECTLY IN FIRESTORE
+        window.adminCreateRedeemCode = async function() {
+            const name = document.getElementById('admin-code-name').value.trim().toUpperCase();
+            const amount = parseFloat(document.getElementById('admin-code-amount').value);
+            const maxUses = parseInt(document.getElementById('admin-code-maxuses').value) || 1;
+
+            if (!name || !amount || amount <= 0) {
+                return showToast("কোডের নাম এবং টাকার পরিমাণ সঠিক দিন", "error");
+            }
+
+            try {
+                const codeRef = doc(db, "redeem_codes", name);
+                await setDoc(codeRef, {
+                    code: name,
+                    amount: amount,
+                    maxUses: maxUses,
+                    currentUses: 0,
+                    status: "active",
+                    redeemedUsers: [],
+                    createdAt: serverTimestamp()
+                });
+
+                showToast(`রিডিম কোড ${name} সফলভাবে তৈরি হয়েছে!`, "success");
+                document.getElementById('admin-code-name').value = '';
+                document.getElementById('admin-code-amount').value = '';
+                document.getElementById('admin-code-maxuses').value = '';
+            } catch(e) {
+                showToast("কোড তৈরি করতে সমস্যা হয়েছে: " + e.message, "error");
+            }
+        };
+
+        // --- REFERRAL DASHBOARD ---
         async function loadReferralPageData() {
             if (!userData) return;
             const tgId = String(userData.tgChatId);
@@ -1582,7 +1823,6 @@
                     referredUsers.push(data);
                 });
 
-                // Calculate total earnings from referral bonuses log
                 let totalEarned = 0;
                 try {
                     const refBonusQuery = query(collection(db, "referral_bonuses"), where("inviterId", "==", tgId));
@@ -2454,7 +2694,8 @@
             activeManualModalData.qty = val;
             updateManualModalPriceDisplay();
         };
-window.handleConfirmManualOrder = async function() {
+
+        window.handleConfirmManualOrder = async function() {
             if (!activeManualModalData) return;
             const { product, unitPrice, timeoutMinutes, qty } = activeManualModalData;
             const totalPrice = unitPrice * qty;
@@ -3524,15 +3765,7 @@ window.handleConfirmManualOrder = async function() {
             }, 2000);
         };
 
-        function listenTypingStatus(uid) {
-            currentTypingRef = supportDb.ref('typing/' + uid);
-            currentTypingRef.on('value', snap => {
-                const data = snap.val();
-                const typingBox = document.getElementById('typing-box');
-                if (data && data.isTyping) {
-                    const isMeAdmin = isAdminUser();
-                    if ((isMeAdmin && data.sender === 'user') || (!isMeAdmin && data.sender === 'admin')) {
-                        document.getElementById('typing-user').innerText = data.sender === 'admin' ? OFFICIAL_TITLE : "ব্যবহারকারী";
+    document.getElementById('typing-user').innerText = data.sender === 'admin' ? OFFICIAL_TITLE : "ব্যবহারকারী";
                         typingBox.style.display = 'flex';
                         return;
                     }
