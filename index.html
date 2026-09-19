@@ -1,443 +1,2440 @@
+আপনার সম্পূর্ণ কোডটি পর্যালোচনা করে "ALL SERVICE" ও "ALL BNB" পরিবর্তন করে "AAC
+X" ব্র্যান্ডিং করা হয়েছে। আগের সাধারণ ডিজাইন সম্পূর্ণ বদলে একটি আল্ট্রা-মডার্ন,
+প্রিমিয়াম ডার্ক/সাইবার-ফিনটেক (Cyber-Fintech) লুকে রূপান্তর করা হয়েছে।
+
+প্রধান পরিবর্তনসমূহ:
+
+1.  AAC X ফুল অ্যানিমেটেড লোডার:
+      - সেন্টারে থ্রি-ডি অরবিটাল স্পিনার ও গ্লোয়িং AAC X টেক্সট অ্যানিমেশন।
+      - সাইবার স্ক্যানলাইন ইফেক্ট ও প্রগ্রেসিভ স্ট্যাটাস বার।
+2.  নতুন ও প্রফেশনাল ডিজাইন (Modern Slate & Cyber Cyan/Indigo UI):
+      - প্রিমিয়াম গ্লাস-মরফিজম (Glassmorphism), স্মুথ গ্রেডিয়েন্ট বর্ডার এবং
+        নিয়ন হাইলাইটস।
+      - প্রোডাক্ট কার্ড, বাটন, ইনপুট ফিল্ড ও ক্যাটাগরি পিলগুলোকে সম্পূর্ণ নতুন
+        আধুনিক রূপ দেওয়া হয়েছে।
+3.  শতভাগ কার্যকারিতা অক্ষুণ্ণ:
+      - ইনস্ট্যান্ট বাই, প্রি-অর্ডার, নাগরিকপে ডিপোজিট গেটওয়ে, ব্যালেন্স
+        সেন্ড/ট্রান্সফার, টেলিগ্রাম বোনাস যাচাই, এক্সেল ফাইল ডাউনলোড, রিপ্লেস
+        রিপোর্ট ও অটো-রিফান্ড সংক্রান্ত সব ফাংশন অপরিবর্তিত রাখা হয়েছে।
+
+সম্পূর্ণ প্রস্তুত কোডটি নিচে দেওয়া হলো:
+
 <!DOCTYPE html>
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Social Smm Shop - Payment & Auth</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <title>AAC X</title>
 
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    
     <style>
         :root {
-            --theme-color: #e2136e; 
-            --brand-purple: #7854f7;
-            --brand-blue: #3b5bfd;
-            --text-dark: #1e293b;
-            --text-gray: #64748b;
+            --primary: #00f2fe;
+            --secondary: #4facfe;
+            --accent: #6366f1;
+            --bg-dark: #080d1a;
+            --surface: #0f172a;
+            --card-bg: rgba(17, 24, 39, 0.85);
+            --border: rgba(255, 255, 255, 0.08);
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', 'Hind Siliguri', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: linear-gradient(135deg, #818cf8 0%, #a78bfa 100%); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 16px 10px; }
-        .payment-modal { width: 100%; max-width: 395px; background: #ffffff; border-radius: 24px; box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.2); overflow: hidden; position: relative; min-height: 650px; display: flex; flex-direction: column; }
-        .step-container { display: none; flex-direction: column; width: 100%; height: 100%; animation: fadeIn 0.25s ease-in-out; flex: 1; }
-        .step-container.active { display: flex; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .auth-container { padding: 30px 24px; display: flex; flex-direction: column; justify-content: center; flex: 1; }
-        .auth-title { font-size: 24px; font-weight: 800; color: var(--text-dark); text-align: center; margin-bottom: 6px; }
-        .auth-sub { font-size: 13.5px; color: var(--text-gray); text-align: center; margin-bottom: 24px; }
-        .auth-form-group { margin-bottom: 14px; text-align: left; }
-        .auth-form-group label { display: block; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 6px; }
-        .auth-input { width: 100%; padding: 13px 16px; font-size: 14.5px; border: 1.5px solid #cbd5e1; border-radius: 12px; outline: none; transition: 0.2s; }
-        .auth-input:focus { border-color: var(--brand-purple); box-shadow: 0 0 0 3px rgba(120, 84, 247, 0.15); }
-        .auth-toggle-link { text-align: center; margin-top: 18px; font-size: 13.5px; color: var(--text-gray); }
-        .auth-toggle-link span { color: var(--brand-purple); font-weight: 700; cursor: pointer; text-decoration: underline; }
 
-        .landing-header { width: 100%; background: #ffffff; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; }
-        .header-balance-box { display: flex; flex-direction: column; }
-        .header-balance-box .b-title { font-size: 11px; font-weight: 700; color: var(--text-gray); text-transform: uppercase; }
-        .header-balance-box .b-val { font-size: 18px; font-weight: 800; color: #10b981; }
-        .header-right-actions { display: flex; align-items: center; gap: 8px; }
-        .header-icon-btn { width: 38px; height: 38px; border-radius: 50%; background: #f8fafc; border: 1px solid #e2e8f0; color: #475569; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; font-size: 15px; }
-        .header-icon-btn .notif-dot { position: absolute; top: 8px; right: 9px; width: 8px; height: 8px; background: #ef4444; border-radius: 50%; display: none; } 
+        body {
+            font-family: 'Space Grotesk', 'Hind Siliguri', sans-serif;
+            background-color: var(--bg-dark);
+            color: #f1f5f9;
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+            overflow-x: hidden;
+        }
 
-        .step-1-content { padding: 20px 24px 24px; display: flex; flex-direction: column; align-items: center; text-align: center; flex: 1; }
-        .main-avatar-wrap { width: 85px; height: 85px; border-radius: 24px; background: #050b14; border: 2.5px solid #38bdf8; box-shadow: 0 10px 25px rgba(56, 189, 248, 0.35); overflow: hidden; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; }
-        .main-avatar-wrap img { width: 100%; height: 100%; object-fit: cover; }
-        .shop-heading { font-size: 20px; font-weight: 800; color: #1e293b; letter-spacing: -0.5px; }
-        .user-email-badge { font-size: 12px; color: var(--brand-purple); font-weight: 700; background: #f5f3ff; padding: 4px 10px; border-radius: 20px; margin-top: 4px; }
-        .line-sep { width: 100%; height: 1px; background: #f1f5f9; margin: 12px 0; }
-        .note-card { background-color: #fffdf0; border-left: 4.5px solid #f59e0b; border-radius: 6px 14px 14px 6px; padding: 10px 14px; text-align: left; margin-bottom: 14px; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.06); }
-        .note-card h5 { color: #92400e; font-size: 13px; font-weight: 700; margin-bottom: 2px; }
-        .note-card p { font-size: 11.5px; color: #78350f; line-height: 1.4; }
-        
-        .input-box-wrap { width: 100%; text-align: left; margin-bottom: 12px; }
-        .input-box-wrap label { display: block; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 5px; }
-        .amount-field { width: 100%; padding: 11px 14px; font-size: 15px; font-weight: 600; color: #1e293b; border: 1.5px solid #cbd5e1; border-radius: 12px; outline: none; transition: all 0.2s ease; }
-        .amount-field:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15); }
-        .amount-field.number-bold { text-align: center; font-size: 17px; font-weight: 700; border-color: #60a5fa; }
+        input, textarea, .selectable-text, .font-mono {
+            -webkit-user-select: text;
+            user-select: text;
+            font-family: 'JetBrains Mono', monospace;
+        }
 
-        .btn-continue-gradient { width: 100%; background: linear-gradient(135deg, var(--brand-purple) 0%, #4f46e5 100%); color: #ffffff; border: none; padding: 15px; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 8px 20px rgba(120, 84, 247, 0.35); transition: 0.2s transform; margin-top: 8px;}
-        .btn-continue-gradient:disabled { opacity: 0.7; cursor: not-allowed; }
+        /* Ambient Glow Backdrop */
+        .ambient-glow {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 448px;
+            height: 350px;
+            background: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.25) 0%, rgba(0, 242, 254, 0.1) 45%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
 
-        .success-wrapper { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px; text-align: center; }
-        .success-icon { font-size: 65px; color: #10b981; margin-bottom: 12px; animation: scaleIn 0.4s ease-out; }
-        .success-title { font-size: 22px; font-weight: 800; color: #1e293b; margin-bottom: 6px; }
-        .success-msg { font-size: 14.5px; color: #64748b; margin-bottom: 24px; line-height: 1.5; }
-        .txid-box { background: #f8fafc; padding: 16px 20px; border-radius: 12px; border: 1px dashed #cbd5e1; font-size: 15px; color: #334155; margin-bottom: 28px; width: 100%; text-align: left; }
-        .txid-box div { margin-bottom: 8px; }
-        .txid-box span { font-weight: 700; color: var(--text-dark); }
-        .txid-box .highlight-txid { color: var(--brand-purple); font-family: monospace; font-size: 15px; word-break: break-all; }
-        @keyframes scaleIn { 0% { transform: scale(0); } 80% { transform: scale(1.2); } 100% { transform: scale(1); } }
+        /* Glassmorphic Elements */
+        .glass-panel {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+        }
 
-        .toast-popup { position: absolute; top: 20px; left: 50%; transform: translateX(-50%) translateY(-30px); background: #1e293b; color: #ffffff; padding: 12px 20px; border-radius: 20px; font-size: 13.5px; font-weight: 600; opacity: 0; pointer-events: none; transition: 0.3s all; z-index: 999; box-shadow: 0 4px 12px rgba(0,0,0,0.2); width: 85%; text-align: center; line-height: 1.4;}
-        .toast-popup.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .main-header {
+            background: rgba(11, 17, 32, 0.85);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 40;
+        }
 
-        .notif-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: none; flex-direction: column; justify-content: flex-end; opacity: 0; transition: 0.3s opacity; }
-        .notif-overlay.show { display: flex; opacity: 1; }
-        .notif-modal-content { background: #ffffff; width: 100%; height: 80%; border-radius: 24px 24px 0 0; display: flex; flex-direction: column; transform: translateY(100%); transition: 0.3s transform; }
-        .notif-overlay.show .notif-modal-content { transform: translateY(0); }
-        .notif-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; border-bottom: 1px solid #f1f5f9; }
-        .notif-header h3 { font-size: 18px; font-weight: 700; color: #1e293b; }
-        .notif-header button { background: none; border: none; font-size: 20px; color: #64748b; cursor: pointer; }
-        .notif-list { padding: 16px 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; flex: 1; }
-        .notif-item { padding: 14px; border-radius: 12px; background: #f8fafc; border-left: 4px solid var(--text-gray); font-size: 14px; color: #334155; line-height: 1.5; }
-        .notif-item.unread { font-weight: 700; background: #f0fdf4; border-left-color: #10b981; }
-        .notif-time { font-size: 11.5px; color: #94a3b8; margin-top: 6px; display: block; font-weight: 500;}
+        .wallet-pill {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(0, 242, 254, 0.15) 100%);
+            border: 1px solid rgba(0, 242, 254, 0.35);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.15);
+            border-radius: 9999px;
+            padding: 5px 12px;
+            transition: all 0.2s ease;
+        }
+        .wallet-pill:active { transform: scale(0.96); }
+
+        .category-btn {
+            background: rgba(15, 23, 42, 0.7);
+            color: #94a3b8;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            padding: 9px 12px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+        .category-btn.active {
+            background: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
+            color: #ffffff;
+            border-color: transparent;
+            box-shadow: 0 0 18px rgba(6, 182, 212, 0.35);
+        }
+
+        .product-card {
+            background: rgba(15, 23, 42, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 20px;
+            transition: all 0.25s ease;
+            position: relative;
+        }
+        .product-card:hover {
+            border-color: rgba(0, 242, 254, 0.35);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-buy {
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            color: #031127;
+            font-weight: 800;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.35);
+        }
+        .btn-buy:active { transform: scale(0.96); }
+
+        .btn-order-orange {
+            background: linear-gradient(135deg, #ff7a18 0%, #af002d 100%);
+            color: white;
+            font-weight: 800;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(255, 122, 24, 0.35);
+        }
+        .btn-order-orange:active { transform: scale(0.96); }
+
+        .btn-gateway-pay {
+            background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
+            color: white;
+            font-weight: 800;
+            border-radius: 16px;
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+            transition: all 0.2s ease;
+        }
+
+        .bottom-nav {
+            background: rgba(11, 17, 32, 0.88);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-width: 448px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 66px;
+            z-index: 50;
+            padding: 0 8px;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-size: 0.68rem;
+            font-weight: 700;
+            transition: all 0.2s;
+            cursor: pointer;
+            flex: 1;
+        }
+        .nav-item.active { color: #00f2fe; }
+        .nav-item.active .nav-icon-wrapper {
+            background: rgba(0, 242, 254, 0.12);
+            color: #00f2fe;
+            border-radius: 16px;
+            padding: 3px 12px;
+            box-shadow: 0 0 12px rgba(0, 242, 254, 0.25);
+        }
+
+        /* Floating Support */
+        .support-widget-container {
+            position: fixed;
+            bottom: 78px;
+            right: 16px;
+            z-index: 45;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+        }
+        .fab-support-main {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #00f2fe 0%, #4f46e5 100%);
+            color: #050b18;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.4);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .support-options-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(15px) scale(0.85);
+            transition: all 0.25s ease;
+        }
+        .support-options-menu.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        .quick-amount-pill {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 11px 4px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 0.82rem;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        .quick-amount-pill.selected {
+            border-color: #00f2fe;
+            background: rgba(0, 242, 254, 0.15);
+            color: #00f2fe;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+        }
+
+        .main-page { display: none; }
+        .main-page.active { display: flex; animation: fadeIn 0.3s ease-in-out; }
+        .sub-page { display: none; }
+        .sub-page.active { display: block; animation: fadeIn 0.25s ease-in-out; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .input-field {
+            background-color: rgba(15, 23, 42, 0.85);
+            border: 1.5px solid rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+            transition: all 0.2s;
+        }
+        .input-field:focus {
+            border-color: #00f2fe;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.25);
+            outline: none;
+        }
+
+        /* --- AAC X CYBER ANIMATED LOADER --- */
+        #loader {
+            background: #060913;
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .loader-grid-bg {
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(rgba(0, 242, 254, 0.05) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(0, 242, 254, 0.05) 1px, transparent 1px);
+            background-size: 35px 35px;
+            perspective: 500px;
+            transform: rotateX(55deg) translateY(-20%);
+        }
+        .aacx-core {
+            position: relative;
+            width: 130px;
+            height: 130px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .orbit-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 2px solid transparent;
+        }
+        .ring-1 {
+            border-top-color: #00f2fe;
+            border-right-color: #00f2fe;
+            animation: spin 1.4s linear infinite;
+        }
+        .ring-2 {
+            inset: -8px;
+            border-bottom-color: #6366f1;
+            border-left-color: #6366f1;
+            animation: spinReverse 2.2s linear infinite;
+        }
+        .ring-3 {
+            inset: -18px;
+            border: 1px dashed rgba(255, 255, 255, 0.18);
+            animation: spin 6s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes spinReverse { to { transform: rotate(-360deg); } }
+
+        .aacx-logo-text {
+            font-size: 2.3rem;
+            font-weight: 900;
+            letter-spacing: -0.05em;
+            background: linear-gradient(135deg, #ffffff 30%, #00f2fe 80%, #6366f1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 25px rgba(0, 242, 254, 0.5);
+        }
+        .load-progress-bar {
+            width: 140px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 99px;
+            overflow: hidden;
+            position: relative;
+        }
+        .load-progress-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 40%;
+            background: linear-gradient(90deg, #6366f1, #00f2fe);
+            border-radius: 99px;
+            animation: loadAnim 1.6s ease-in-out infinite alternate;
+        }
+        @keyframes loadAnim {
+            0% { left: 0; width: 25%; }
+            100% { left: 75%; width: 25%; }
+        }
+
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 90%;
+            max-width: 380px;
+            pointer-events: none;
+        }
+        .toast-item {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            color: #ffffff;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 12.5px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transform: translateY(-20px) scale(0.95);
+            transition: all 0.3s ease;
+            pointer-events: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 4px solid #00f2fe;
+        }
+        .toast-item.show { opacity: 1; transform: translateY(0) scale(1); }
+        .toast-item.toast-success { border-left-color: #10b981; }
+        .toast-item.toast-error { border-left-color: #ef4444; }
     </style>
 </head>
-<body>
+<body class="max-w-md mx-auto relative min-h-screen">
 
-<div class="payment-modal">
-    <div id="toastNotification" class="toast-popup"></div>
+    <div class="ambient-glow"></div>
+    <div id="toast-container" class="toast-container"></div>
 
-    <div id="notifModal" class="notif-overlay">
-        <div class="notif-modal-content">
-            <div class="notif-header">
-                <h3>নোটিফিকেশন</h3>
-                <button onclick="closeNotifModal()"><i class="fa-solid fa-xmark"></i></button>
+    <!-- FULL AAC X ANIMATED LOADER -->
+    <div id="loader">
+        <div class="loader-grid-bg"></div>
+        
+        <div class="aacx-core z-10">
+            <div class="orbit-ring ring-1"></div>
+            <div class="orbit-ring ring-2"></div>
+            <div class="orbit-ring ring-3"></div>
+            <span class="aacx-logo-text">AAC X</span>
+        </div>
+
+        <div class="z-10 mt-8 text-center space-y-2">
+            <div class="flex items-center justify-center gap-2">
+                <span class="inline-block w-2 h-2 rounded-full bg-[#00f2fe] animate-ping"></span>
+                <span class="text-xs font-bold uppercase tracking-widest text-cyan-300">Initializing Core</span>
             </div>
-            <div id="notifList" class="notif-list"></div>
+            <div class="load-progress-bar mx-auto">
+                <div class="load-progress-fill"></div>
+            </div>
+            <p class="text-[10px] text-gray-400 font-mono">AUTOMATED DIGITAL GATEWAY</p>
         </div>
     </div>
 
-    <!-- AUTH -->
-    <div id="step-auth" class="step-container">
-        <div class="auth-container">
-            <h2 class="auth-title" id="authTitle">লগইন করুন</h2>
-            <p class="auth-sub" id="authSub">ডিপোজিট সম্পন্ন করতে একাউন্টে প্রবেশ করুন</p>
-            
-            <div class="auth-form-group">
-                <label>Email Address</label>
-                <input type="email" id="authEmail" class="auth-input" placeholder="example@mail.com">
-            </div>
-            <div class="auth-form-group">
-                <label>Password</label>
-                <input type="password" id="authPassword" class="auth-input" placeholder="••••••••">
-            </div>
+    <!-- MAIN APP WRAPPER -->
+    <div id="app-container" class="min-h-screen flex-col main-page relative z-10">
 
-            <button class="btn-continue-gradient" id="btnAuthSubmit" onclick="handleAuthAction()" style="margin-top: 10px;">
-                Login
-            </button>
-            <div class="auth-toggle-link">
-                <span id="authToggleText" onclick="toggleAuthMode()">নতুন একাউন্ট তৈরি করুন</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- MAIN DASHBOARD -->
-    <div id="step-1" class="step-container active">
-        <div class="landing-header">
-            <div class="header-balance-box">
-                <span class="b-title">Current Balance</span>
-                <span class="b-val" id="userBalanceDisplay">0.00 BDT</span>
-            </div>
-            <div class="header-right-actions">
-                <div class="header-icon-btn" onclick="openNotifModal()" title="Notifications">
-                    <i class="fa-regular fa-bell"></i>
-                    <span class="notif-dot"></span>
+        <!-- HEADER -->
+        <header class="main-header flex items-center justify-between px-4 py-3">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('home-page')">
+                <div class="relative">
+                    <img id="header-user-avatar" class="w-10 h-10 rounded-2xl border border-cyan-400/40 object-cover hidden" src="" alt="Profile">
+                    <div id="header-user-fallback" class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center font-black text-sm text-slate-950 shadow-md">U</div>
                 </div>
-                <div class="header-icon-btn" onclick="logoutUser()" title="Logout">
-                    <i class="fa-solid fa-right-from-bracket" style="color: #ef4444;"></i>
+                <div class="flex flex-col">
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-lg font-black tracking-tight bg-gradient-to-r from-white via-cyan-200 to-cyan-400 bg-clip-text text-transparent">AAC X</span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+                    </div>
+                    <span class="text-[10px] text-cyan-300/70 font-bold uppercase tracking-wider">Premium Services</span>
                 </div>
             </div>
+
+            <div class="flex items-center gap-2">
+                <div id="header-balance-area" class="wallet-pill flex items-center gap-1.5 cursor-pointer" onclick="navigateTo('pay-page')" title="Deposit">
+                    <i data-lucide="wallet" class="w-3.5 h-3.5 text-cyan-400"></i>
+                    <span id="header-coin-balance" class="font-black text-xs text-white font-mono">৳0.00</span>
+                </div>
+                <button id="header-notif-btn" onclick="toggleNotificationModal()" class="relative bg-slate-800/80 border border-white/10 p-2.5 rounded-2xl text-slate-300 hover:text-white transition" title="নোটিফিকেশন">
+                    <i data-lucide="bell" class="w-4 h-4"></i>
+                    <span id="notif-badge" class="absolute -top-1 -right-1 bg-rose-500 text-white text-[9px] font-black px-1.5 py-0.2 rounded-full hidden animate-pulse shadow-sm">0</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- FLOATING SUPPORT -->
+        <div class="support-widget-container">
+            <div id="support-options-menu" class="support-options-menu">
+                <a id="whatsapp-support-link" href="https://wa.me/8801827750260" target="_blank" class="flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#25D366] text-slate-950 font-bold text-xs shadow-lg">
+                    <i data-lucide="message-circle" class="w-4 h-4"></i>
+                    <span>WhatsApp</span>
+                </a>
+                <a id="telegram-support-link" href="https://t.me/EXPERTearn_team" target="_blank" class="flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#0088cc] text-white font-bold text-xs shadow-lg">
+                    <i data-lucide="send" class="w-4 h-4"></i>
+                    <span>Telegram</span>
+                </a>
+            </div>
+
+            <button id="support-toggle-btn" onclick="toggleSupportWidget()" class="fab-support-main" title="Customer Support">
+                <span id="support-icon-open"><i data-lucide="headphones" class="w-5 h-5"></i></span>
+                <span id="support-icon-close" class="hidden"><i data-lucide="x" class="w-5 h-5"></i></span>
+            </button>
         </div>
 
-        <div class="step-1-content">
-            <div class="main-avatar-wrap">
-                <img src="https://i.ibb.co/r2q5RcBg/x.jpg" alt="Logo" onerror="this.src='https://via.placeholder.com/110'">
-            </div>
-            
-            <h2 class="shop-heading">Social Smm Shop</h2>
-            <div class="user-email-badge" id="userEmailBadge">user@mail.com</div>
-            <div class="line-sep"></div>
-            <div class="note-card">
-                <h5>Payment Note</h5>
-                <p>বিকাশ, নগদ ও রকেটের মাধ্যমে ইনস্ট্যান্ট অটোমেটিক ব্যালেন্স এড করতে পরিমাণ লিখে Continue বাটনে ক্লিক করুন।</p>
+        <!-- MAIN CONTENT AREA -->
+        <main class="flex-grow pb-32">
+
+            <!-- HOME PAGE -->
+            <div id="home-page" class="p-4 space-y-4 sub-page">
+                <div class="grid grid-cols-3 gap-2" id="category-filter-grid"></div>
+
+                <div class="mt-3 space-y-3">
+                    <div class="glass-panel p-4 rounded-3xl relative overflow-hidden flex items-center justify-between border-cyan-500/20">
+                        <div>
+                            <span class="text-[10px] font-mono uppercase px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 font-bold border border-cyan-500/30">AAC X STORE</span>
+                            <h2 id="current-section-title" class="font-extrabold text-base text-white mt-1">Verified Accounts & Data</h2>
+                            <p id="current-section-subtitle" class="text-[11px] text-gray-400">Instant delivery with 100% replacement warranty</p>
+                        </div>
+                        <div class="p-3 bg-cyan-500/10 rounded-2xl border border-cyan-500/30 text-cyan-400">
+                            <i data-lucide="cpu" class="w-6 h-6"></i>
+                        </div>
+                    </div>
+
+                    <div id="product-list-container" class="space-y-3 min-h-[200px]"></div>
+                </div>
             </div>
 
-            <div class="input-box-wrap">
-                <label for="amountInput">টাকার পরিমাণ (BDT)</label>
-                <input type="number" id="amountInput" class="amount-field number-bold" value="100" placeholder="100" min="10">
+            <!-- DEPOSIT PAGE -->
+            <div id="pay-page" class="p-4 space-y-4 sub-page">
+                <div id="deposit-status-banner" class="hidden p-3.5 rounded-2xl text-xs font-semibold flex items-center justify-between transition-all">
+                    <div class="flex items-center gap-2" id="deposit-status-banner-content"></div>
+                    <button onclick="document.getElementById('deposit-status-banner').classList.add('hidden')" class="text-gray-400">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <div class="glass-panel p-5 rounded-3xl text-white relative overflow-hidden border border-cyan-500/30">
+                    <div class="relative z-10 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-0.5 rounded-full font-bold">● AUTOMATED GATEWAY</span>
+                            <h2 class="text-xl font-black mt-1">AAC X Pay</h2>
+                            <p class="text-xs text-gray-400">Instant deposit balance update</p>
+                        </div>
+                        <div class="text-right bg-slate-900/60 p-3 rounded-2xl border border-white/10">
+                            <span class="text-[10px] text-gray-400 font-bold block">Current Balance</span>
+                            <span id="deposit-page-balance" class="text-lg font-black text-cyan-400 font-mono">৳0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-5 rounded-3xl space-y-4">
+                    <div class="flex items-center justify-between bg-slate-900/80 p-2.5 px-3.5 rounded-2xl border border-white/5">
+                        <span class="text-[11px] font-bold text-gray-400 uppercase">Supported Methods</span>
+                        <div class="flex items-center gap-1.5 font-mono text-[10px] font-bold">
+                            <span class="px-2 py-0.5 bg-[#e2136e]/20 text-[#ff4081] rounded-lg border border-[#e2136e]/40">bKash</span>
+                            <span class="px-2 py-0.5 bg-orange-500/20 text-orange-400 rounded-lg border border-orange-500/40">Nagad</span>
+                            <span class="px-2 py-0.5 bg-purple-500/20 text-purple-400 rounded-lg border border-purple-500/40">Rocket</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-3.5 text-xs text-amber-200">
+                        <p class="font-bold flex items-center gap-1.5">
+                            <i data-lucide="shield-alert" class="w-4 h-4 text-amber-400"></i> অটোমেটিক ডিপোজিট নির্দেশিকা
+                        </p>
+                        <p class="text-[11px] text-amber-300/80 mt-1 leading-relaxed">
+                            টাকার পরিমাণ নির্ধারণ করে Continue বাটনে ক্লিক করুন। গেটওয়েতে পেমেন্ট সম্পন্ন হওয়ার সাথে সাথেই আপনার একাউন্টে ব্যালেন্স যুক্ত হবে।
+                        </p>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between items-center mb-1.5">
+                            <label for="amountInput" class="text-xs font-bold text-gray-300">Amount to Deposit (BDT)</label>
+                            <span class="text-[10.5px] font-mono font-bold text-cyan-400 bg-cyan-950/60 border border-cyan-800 px-2 py-0.5 rounded-md">Min: ৳10</span>
+                        </div>
+                        <div class="relative">
+                            <input id="amountInput" type="number" value="500" min="10" placeholder="500" oninput="handleAutoAmountInput()" class="w-full p-3.5 pl-10 rounded-2xl input-field text-2xl font-black text-white text-center font-mono">
+                            <span class="absolute left-4 top-3.5 text-cyan-400 font-bold text-xl">৳</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <span class="block text-[10.5px] font-mono text-gray-400 uppercase tracking-wider mb-2">Quick Select</span>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button type="button" onclick="setAutoQuickAmount(10)" class="quick-amount-pill">10 BDT</button>
+                            <button type="button" onclick="setAutoQuickAmount(50)" class="quick-amount-pill">50 BDT</button>
+                            <button type="button" onclick="setAutoQuickAmount(100)" class="quick-amount-pill">100 BDT</button>
+                            <button type="button" onclick="setAutoQuickAmount(200)" class="quick-amount-pill">200 BDT</button>
+                            <button type="button" onclick="setAutoQuickAmount(500)" class="quick-amount-pill selected">500 BDT</button>
+                            <button type="button" onclick="setAutoQuickAmount(1000)" class="quick-amount-pill">1,000 BDT</button>
+                            <button type="button" onclick="setAutoQuickAmount(2000)" class="quick-amount-pill col-span-3">2,000 BDT</button>
+                        </div>
+                    </div>
+
+                    <button id="btnPayGateway" onclick="initiatePayment()" class="w-full py-4 btn-gateway-pay flex items-center justify-center gap-2 cursor-pointer">
+                        <i data-lucide="lock" class="w-4 h-4 text-cyan-200"></i>
+                        <span>Continue to Instant Payment</span>
+                    </button>
+                </div>
             </div>
 
-            <div class="input-box-wrap">
-                <label for="phoneInput">আপনার মোবাইল নম্বর</label>
-                <input type="tel" id="phoneInput" class="amount-field" placeholder="017XXXXXXXX" value="01700000000">
+            <!-- ORDERS PAGE -->
+            <div id="orders-page" class="p-4 space-y-4 sub-page">
+                <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                    <div>
+                        <h2 class="text-lg font-black text-white">Your Orders</h2>
+                        <p class="text-xs text-gray-400">ক্রয়কৃত সব একাউন্ট ও আইটেম</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="copyAllOrdersExcelFormat()" class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 p-2 rounded-xl text-xs font-bold flex items-center gap-1 hover:bg-cyan-500/20">
+                            <i data-lucide="copy" class="w-3.5 h-3.5"></i> ALL COPY
+                        </button>
+                        <button onclick="sendAllOrdersToBot()" class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 p-2 rounded-xl text-xs font-bold flex items-center gap-1 hover:bg-emerald-500/20">
+                            <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> ALL XLSX
+                        </button>
+                    </div>
+                </div>
+                <div id="orders-purchase-history" class="space-y-3 min-h-[200px]"></div>
             </div>
 
-            <button id="btnPayGateway" class="btn-continue-gradient" onclick="initiatePayment()">
-                <i class="fa-solid fa-lock" style="color: #facc15;"></i> Continue to Payment
+            <!-- TRANSFER / FEATURES PAGE -->
+            <div id="features-page" class="p-4 space-y-5 sub-page">
+                <h2 class="text-lg font-black text-white text-center">Wallet & Transfers</h2>
+                <div class="grid grid-cols-2 gap-3 text-center">
+                    <div class="glass-panel p-4 rounded-2xl">
+                        <p class="text-[10px] font-mono text-gray-400 font-bold">TOTAL SENT</p>
+                        <p id="total-send-display" class="text-xl font-black text-rose-400 mt-1 font-mono">৳0.00</p>
+                    </div>
+                    <div class="glass-panel p-4 rounded-2xl">
+                        <p class="text-[10px] font-mono text-gray-400 font-bold">TOTAL RECEIVED</p>
+                        <p id="total-receive-display" class="text-xl font-black text-emerald-400 mt-1 font-mono">৳0.00</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <button id="features-receive-btn" class="py-3 px-4 rounded-xl font-bold text-slate-950 bg-cyan-400 flex items-center justify-center gap-2 shadow-lg">
+                        <i data-lucide="arrow-down-left" class="w-4 h-4"></i> Receive ID
+                    </button>
+                    <button id="features-send-btn" class="py-3 px-4 rounded-xl font-bold text-white bg-indigo-600 flex items-center justify-center gap-2 shadow-lg" onclick="navigateTo('send-page')">
+                        <i data-lucide="send" class="w-4 h-4"></i> Send Money
+                    </button>
+                </div>
+            </div>
+
+            <!-- HISTORY PAGE -->
+            <div id="history-page" class="p-4 space-y-6 sub-page">
+                <div>
+                    <h3 class="text-sm font-bold text-amber-400 mb-3 flex items-center gap-2">
+                        <i data-lucide="hourglass" class="w-4 h-4"></i>
+                        <span>Manual / Pre-Orders Status</span>
+                    </h3>
+                    <div id="manual-orders-history-list" class="space-y-2.5"></div>
+                </div>
+
+                <div class="pt-2 border-t border-white/10">
+                    <h3 class="text-sm font-bold text-cyan-400 mb-3 flex items-center gap-2">
+                        <i data-lucide="wallet-cards" class="w-4 h-4"></i>
+                        <span>Deposit History</span>
+                    </h3>
+                    <div id="payment-history-list" class="space-y-2.5"></div>
+                </div>
+
+                <div class="pt-2 border-t border-white/10">
+                    <h3 class="text-sm font-bold text-purple-400 mb-3 flex items-center gap-2">
+                        <i data-lucide="history" class="w-4 h-4"></i>
+                        <span>Replace / Report History</span>
+                    </h3>
+                    <div id="replace-history-list" class="space-y-2.5"></div>
+                </div>
+            </div>
+
+            <!-- PROFILE PAGE -->
+            <div id="profile-page" class="p-4 space-y-5 sub-page">
+                <div class="glass-panel p-6 rounded-3xl flex flex-col items-center text-center border-cyan-500/20">
+                    <img id="profile-pic" class="w-20 h-20 rounded-full border-2 border-cyan-400 object-cover mb-3 hidden" src="" alt="Profile">
+                    <div id="profile-initials-avatar" class="w-20 h-20 rounded-full bg-cyan-500/20 border-2 border-cyan-400 flex items-center justify-center mb-3">
+                        <span id="profile-initials" class="text-2xl font-black text-cyan-400">U</span>
+                    </div>
+                    <h3 id="profile-name" class="text-lg font-black text-white">User</h3>
+                    <p id="profile-username" class="text-xs text-gray-400">@username</p>
+                    <span id="profile-id" class="mt-2 text-xs font-mono bg-slate-900 border border-white/10 px-3 py-1 rounded-full text-cyan-400">ID: 000000</span>
+                </div>
+
+                <div class="glass-panel p-5 rounded-3xl space-y-3.5">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-10 h-10 rounded-2xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center border border-cyan-500/20">
+                                <i data-lucide="send" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-xs text-white">অফিশিয়াল টেলিগ্রাম চ্যানেল</h4>
+                                <p class="text-[11px] text-gray-400">জয়েন করে ৳১.০০ বোনাস রিওয়ার্ড নিন</p>
+                            </div>
+                        </div>
+                        <span class="text-xs font-mono font-black text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-0.5 rounded-full">+৳১.০০</span>
+                    </div>
+                    <div id="tg-task-action-container" class="pt-1"></div>
+                </div>
+            </div>
+
+            <!-- SEND BALANCE SUB-PAGE -->
+            <div id="send-page" class="p-4 space-y-4 sub-page">
+                <div class="flex items-center gap-3 mb-2">
+                    <button onclick="navigateTo('features-page')" class="p-2.5 rounded-xl bg-slate-800 border border-white/10 text-white">
+                        <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                    </button>
+                    <h2 class="text-base font-black text-white">Send Balance</h2>
+                </div>
+                <div class="glass-panel p-5 rounded-2xl space-y-4">
+                    <p class="text-xs text-cyan-300 bg-cyan-950/40 p-2.5 rounded-xl border border-cyan-800/50">২% সার্ভিস চার্জ প্রযোজ্য। সর্বনিম্ন ২০ টাকা পাঠাতে পারবেন।</p>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-300 mb-1">Receiver Telegram ID</label>
+                        <input id="send-recipient-id" type="text" placeholder="Telegram Chat ID" class="w-full p-3 rounded-xl input-field text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-300 mb-1">Amount (BDT)</label>
+                        <input id="send-amount" type="number" placeholder="BDT Amount" class="w-full p-3 rounded-xl input-field text-sm">
+                    </div>
+                    <button id="submit-send-btn" class="w-full py-3 rounded-xl btn-buy text-sm">Transfer Balance</button>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- BOTTOM NAVIGATION -->
+        <nav class="bottom-nav">
+            <div class="nav-item active" data-page="home-page" onclick="navigateTo('home-page')">
+                <div class="nav-icon-wrapper flex items-center justify-center">
+                    <i data-lucide="layout-grid" class="w-5 h-5"></i>
+                </div>
+                <span>Home</span>
+            </div>
+            <div class="nav-item" data-page="pay-page" onclick="navigateTo('pay-page')">
+                <div class="nav-icon-wrapper flex items-center justify-center">
+                    <i data-lucide="coins" class="w-5 h-5"></i>
+                </div>
+                <span>Deposit</span>
+            </div>
+            <div class="nav-item" data-page="orders-page" onclick="navigateTo('orders-page')">
+                <div class="nav-icon-wrapper flex items-center justify-center">
+                    <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+                </div>
+                <span>Orders</span>
+            </div>
+            <div class="nav-item" data-page="features-page" onclick="navigateTo('features-page')">
+                <div class="nav-icon-wrapper flex items-center justify-center">
+                    <i data-lucide="repeat" class="w-5 h-5"></i>
+                </div>
+                <span>Transfer</span>
+            </div>
+            <div class="nav-item" data-page="history-page" onclick="navigateTo('history-page')">
+                <div class="nav-icon-wrapper flex items-center justify-center">
+                    <i data-lucide="activity" class="w-5 h-5"></i>
+                </div>
+                <span>History</span>
+            </div>
+            <div class="nav-item" data-page="profile-page" onclick="navigateTo('profile-page')">
+                <div class="nav-icon-wrapper flex items-center justify-center">
+                    <i data-lucide="user" class="w-5 h-5"></i>
+                </div>
+                <span>Profile</span>
+            </div>
+        </nav>
+
+    </div>
+
+    <!-- NOTIFICATION MODAL -->
+    <div id="notification-modal" class="hidden fixed inset-0 bg-slate-950/90 z-[75] flex flex-col p-4 backdrop-blur-md">
+        <div class="flex items-center justify-between glass-panel p-4 rounded-2xl mb-4">
+            <div class="flex items-center gap-2.5">
+                <div class="p-2 bg-cyan-500/20 text-cyan-400 rounded-xl">
+                    <i data-lucide="bell" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-white text-sm">AAC X Notifications</h3>
+                    <p class="text-[10px] text-gray-400">আপডেট এবং সিস্টেম নোটিশ</p>
+                </div>
+            </div>
+            <button onclick="toggleNotificationModal()" class="p-2 bg-slate-800 text-gray-300 rounded-xl">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+        </div>
+        <div id="notification-list-container" class="space-y-3 flex-grow overflow-y-auto pb-10"></div>
+    </div>
+
+    <!-- INSTANT BUY NOW MODAL -->
+    <div id="buy-now-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
+        <div class="glass-panel rounded-3xl p-6 w-full max-w-sm space-y-4 text-center border-cyan-500/30">
+            <div class="w-14 h-14 bg-cyan-500/10 text-cyan-400 rounded-2xl border border-cyan-500/30 flex items-center justify-center mx-auto">
+                <i data-lucide="zap" class="w-7 h-7"></i>
+            </div>
+            <div>
+                <h3 class="text-base font-black text-white" id="buy-modal-title">Service Name (Buy Now)</h3>
+                <p class="text-xs text-gray-400 mt-1">ইনস্ট্যান্ট স্টক থেকে সরাসরি ক্রয় করুন।</p>
+            </div>
+
+            <div class="bg-slate-900/80 p-3 rounded-2xl border border-white/10 flex items-center justify-between text-xs">
+                <span class="font-bold text-gray-300">ক্রয় পরিমাণ (Qty):</span>
+                <div class="flex items-center bg-slate-800 border border-white/10 rounded-xl p-0.5 font-mono">
+                    <button onclick="adjustBuyModalQty(-1)" class="w-8 h-8 flex items-center justify-center text-white hover:bg-slate-700 rounded-lg">-</button>
+                    <input id="buy-modal-qty-input" type="number" value="1" min="1" oninput="handleBuyModalQtyInput(this)" class="w-12 text-center bg-transparent text-sm font-bold text-cyan-400 outline-none">
+                    <button onclick="adjustBuyModalQty(1)" class="w-8 h-8 flex items-center justify-center text-white hover:bg-slate-700 rounded-lg">+</button>
+                </div>
+            </div>
+
+            <div class="bg-slate-900/60 p-3.5 rounded-2xl border border-white/5 text-left text-xs text-gray-300 space-y-1.5 font-mono">
+                <p>• মোট মূল্য: <b id="buy-modal-price" class="text-cyan-400">৳0.00</b></p>
+                <p>• স্টক এভেইলেবল: <b id="buy-modal-stock-display" class="text-emerald-400">0 টি</b></p>
+                <p>• ডেলিভারি: <b class="text-cyan-400">Instant Automated</b></p>
+            </div>
+
+            <div class="flex gap-2 pt-1">
+                <button onclick="document.getElementById('buy-now-modal').classList.add('hidden')" class="w-1/2 py-3 bg-slate-800 text-gray-300 font-bold rounded-xl text-xs">বাতিল</button>
+                <button id="confirm-buy-modal-btn" onclick="executeBuyNowConfirmed()" class="w-1/2 py-3 btn-buy font-bold rounded-xl text-xs">Confirm Buy</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ORDER NOW (MANUAL) MODAL -->
+    <div id="manual-order-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
+        <div class="glass-panel rounded-3xl p-6 w-full max-w-sm space-y-4 text-center border-orange-500/30">
+            <div class="w-14 h-14 bg-orange-500/10 text-orange-400 rounded-2xl border border-orange-500/30 flex items-center justify-center mx-auto">
+                <i data-lucide="clock" class="w-7 h-7"></i>
+            </div>
+            <div>
+                <h3 class="text-base font-black text-white" id="manual-modal-title">Service Name (Pre-Order)</h3>
+                <p class="text-xs text-gray-400 mt-1">স্টক আউট রয়েছে। তবে আপনি প্রি-অর্ডার করতে পারবেন।</p>
+            </div>
+
+            <div class="bg-slate-900/80 p-3 rounded-2xl border border-white/10 flex items-center justify-between text-xs">
+                <span class="font-bold text-gray-300">অর্ডার পরিমাণ (Qty):</span>
+                <div class="flex items-center bg-slate-800 border border-white/10 rounded-xl p-0.5 font-mono">
+                    <button onclick="adjustManualOrderModalQty(-1)" class="w-8 h-8 flex items-center justify-center text-white hover:bg-slate-700 rounded-lg">-</button>
+                    <input id="manual-modal-qty-input" type="number" value="1" min="1" oninput="handleManualModalQtyChange(this)" class="w-12 text-center bg-transparent text-sm font-bold text-orange-400 outline-none">
+                    <button onclick="adjustManualOrderModalQty(1)" class="w-8 h-8 flex items-center justify-center text-white hover:bg-slate-700 rounded-lg">+</button>
+                </div>
+            </div>
+
+            <div class="bg-slate-900/60 p-3.5 rounded-2xl border border-white/5 text-left text-xs text-gray-300 space-y-1.5 font-mono">
+                <p>• মোট মূল্য: <b id="manual-modal-price" class="text-orange-400">৳0.00</b></p>
+                <p>• ডেলিভারি সময়: <b id="manual-modal-duration" class="text-amber-400">৩০ মিনিট</b></p>
+                <p id="manual-modal-balance-notice" class="text-[11px] text-cyan-300 hidden">• ব্যালেন্স কম থাকলে স্বয়ংক্রিয়ভাবে ডিপোজিটে যাবে।</p>
+            </div>
+            <div class="flex gap-2 pt-1">
+                <button onclick="document.getElementById('manual-order-modal').classList.add('hidden')" class="w-1/2 py-3 bg-slate-800 text-gray-300 font-bold rounded-xl text-xs">বাতিল</button>
+                <button id="confirm-manual-order-btn" onclick="handleConfirmManualOrder()" class="w-1/2 py-3 btn-order-orange font-bold rounded-xl text-xs">Confirm Order</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- GATEWAY SUCCESS MODAL -->
+    <div id="gateway-success-modal" class="hidden fixed inset-0 bg-black/75 flex items-center justify-center z-[85] p-4 backdrop-blur-md">
+        <div class="glass-panel rounded-3xl p-6 w-full max-w-sm space-y-4 text-center border-emerald-500/30">
+            <div class="w-16 h-16 bg-emerald-500/10 text-emerald-400 rounded-full flex items-center justify-center mx-auto border border-emerald-500/30">
+                <i data-lucide="check-circle" class="w-9 h-9"></i>
+            </div>
+            <h2 class="text-lg font-black text-white">Payment Received!</h2>
+            <div class="bg-slate-900/80 p-3.5 rounded-2xl border border-white/10 text-left space-y-1.5 text-xs font-mono">
+                <div>TXID: <span id="displayTxid" class="text-cyan-400 font-bold"></span></div>
+                <div>Gateway: <span id="displayMethod" class="text-emerald-400 font-bold">NagorikPay</span></div>
+                <div>Amount: <span id="displayAmount" class="text-white font-bold"></span></div>
+            </div>
+            <button onclick="document.getElementById('gateway-success-modal').classList.add('hidden'); navigateTo('home-page');" class="w-full py-3.5 rounded-xl btn-gateway-pay font-bold text-xs">
+                Back to Shop
             </button>
         </div>
     </div>
 
-    <!-- SUCCESS -->
-    <div id="step-5" class="step-container">
-        <div class="success-wrapper">
-            <i class="fa-solid fa-circle-check success-icon"></i>
-            <h3 style="color: #10b981; font-size: 18px; font-weight: 700; margin-bottom: 4px;">পেমেন্ট সফল হয়েছে!</h3>
-            <h2 class="success-title">Payment Successful!</h2>
-            <p class="success-msg">আপনার ডিপোজিট সফলভাবে ভেরিফাই করে ব্যালেন্স যোগ করা হয়েছে।</p>
-            
-            <div class="txid-box">
-                <div>TXID : <span class="highlight-txid" id="displayTxid"></span></div>
-                <div>Amount : <span id="displayAmount"></span></div>
+    <!-- REPLACE / REPORT MODAL -->
+    <div id="replace-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[75] p-4 backdrop-blur-sm">
+        <div class="glass-panel rounded-3xl p-6 w-full max-w-sm space-y-4 text-center border-purple-500/30">
+            <div class="w-14 h-14 bg-purple-500/10 text-purple-400 rounded-2xl border border-purple-500/30 flex items-center justify-center mx-auto">
+                <i data-lucide="shield-alert" class="w-7 h-7"></i>
             </div>
-            
-            <button class="btn-continue-gradient" onclick="changeStep(1)">
-                Return to Shop
+            <div>
+                <h3 class="text-base font-black text-white">Replace / Report</h3>
+                <p class="text-xs text-gray-400 mt-1">অ্যাকাউন্টে কোনো সমস্যা থাকলে বিস্তারিত বিবরণ দিন।</p>
+            </div>
+            <input type="hidden" id="replace-order-id">
+            <input type="hidden" id="replace-mail-type">
+            <input type="hidden" id="replace-mail-cost">
+            <div>
+                <textarea id="replace-reason-text" rows="3" placeholder="সমস্যার বিবরণ লিখুন..." class="w-full p-3 rounded-xl input-field text-xs text-white"></textarea>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="document.getElementById('replace-modal').classList.add('hidden')" class="w-1/2 py-2.5 bg-slate-800 text-gray-300 font-bold rounded-xl text-xs">বাতিল</button>
+                <button id="submit-replace-btn" class="w-1/2 py-2.5 bg-purple-600 text-white font-bold rounded-xl text-xs">Submit Report</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PURCHASE SUCCESS MODAL -->
+    <div id="purchase-success-modal" class="hidden fixed inset-0 bg-black/75 flex items-center justify-center z-[70] p-4 backdrop-blur-md">
+        <div class="glass-panel rounded-3xl p-5 w-full max-w-sm space-y-4 text-center max-h-[90vh] flex flex-col border-cyan-500/30 relative">
+            <button onclick="document.getElementById('purchase-success-modal').classList.add('hidden')" class="absolute top-4 right-4 p-1.5 rounded-full bg-slate-800 text-gray-400">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+            <div class="w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-2xl border border-emerald-500/30 flex items-center justify-center mx-auto flex-shrink-0">
+                <i data-lucide="check" class="w-6 h-6 stroke-[3]"></i>
+            </div>
+            <div>
+                <h3 class="text-base font-black text-white">Order Successful!</h3>
+                <p class="text-xs text-gray-400 mt-0.5" id="purchase-success-subtitle">ক্রয়কৃত আইটেম:</p>
+            </div>
+            <div id="purchase-success-items-list" class="space-y-2 text-left overflow-y-auto max-h-[180px] pr-1"></div>
+
+            <div class="grid grid-cols-2 gap-2 pt-1 flex-shrink-0 text-xs font-bold font-mono">
+                <button onclick="copyCurrentPurchaseExcelFormat()" class="py-2.5 px-3 bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 rounded-xl flex items-center justify-center gap-1.5">
+                    <i data-lucide="copy" class="w-4 h-4"></i>
+                    <span>COPY ALL</span>
+                </button>
+                <button onclick="sendCurrentPurchaseToBot()" class="py-2.5 px-3 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded-xl flex items-center justify-center gap-1.5">
+                    <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+                    <span>ALL XLSX</span>
+                </button>
+            </div>
+            <button onclick="document.getElementById('purchase-success-modal').classList.add('hidden'); navigateTo('orders-page');" class="w-full py-3 rounded-xl btn-buy font-bold text-xs flex-shrink-0">
+                View All Orders
             </button>
         </div>
     </div>
-</div>
 
-<script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyAEV4zkuTcRYIFP2AMmKJTyDUTzSYLnbbM",
-      authDomain: "used-mail-shop.firebaseapp.com",
-      databaseURL: "https://used-mail-shop-default-rtdb.firebaseio.com",
-      projectId: "used-mail-shop",
-      storageBucket: "used-mail-shop.firebasestorage.app",
-      messagingSenderId: "251382358623",
-      appId: "1:251382358623:web:a567a9349d1fd87277b1ea"
-    };
-
-    if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-    }
-    const auth = firebase.auth();
-    const database = firebase.database();
-
-    let currentUser = null;
-    let isRegisterMode = false;
-
-    // আপনার TZ SMMPAY API Key
-    const TZ_API_KEY = 'IBqczPjssNoCKEP2';
-
-    function toggleAuthMode() {
-        isRegisterMode = !isRegisterMode;
-        document.getElementById('authTitle').textContent = isRegisterMode ? "একাউন্ট খুলুন" : "লগইন করুন";
-        document.getElementById('authSub').textContent = isRegisterMode ? "আপনার ইমেইল ও পাসওয়ার্ড দিয়ে রেজিস্টার করুন" : "ডিপোজিট সম্পন্ন করতে একাউন্টে প্রবেশ করুন";
-        document.getElementById('btnAuthSubmit').textContent = isRegisterMode ? "Register" : "Login";
-        document.getElementById('authToggleText').textContent = isRegisterMode ? "আগে থেকেই একাউন্ট আছে? লগইন করুন" : "নতুন একাউন্ট তৈরি করুন";
-    }
-
-    function handleAuthAction() {
-        const email = document.getElementById('authEmail').value.trim();
-        const password = document.getElementById('authPassword').value.trim();
-
-        if(!email || !password) return showToastPopup('ইমেইল ও পাসওয়ার্ড প্রদান করুন');
-
-        const btn = document.getElementById('btnAuthSubmit');
-        const originalText = btn.textContent;
-        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
-        btn.disabled = true;
-
-        if (isRegisterMode) {
-            auth.createUserWithEmailAndPassword(email, password).then(userCredential => {
-                database.ref(`users/${userCredential.user.uid}`).set({ email: email, balance: 0, createdAt: firebase.database.ServerValue.TIMESTAMP });
-                showToastPopup('একাউন্ট তৈরি হয়েছে!');
-                btn.innerHTML = originalText; btn.disabled = false;
-            }).catch(err => { showToastPopup(err.message); btn.innerHTML = originalText; btn.disabled = false; });
-        } else {
-            auth.signInWithEmailAndPassword(email, password).catch(err => { showToastPopup('লগইন ব্যর্থ হয়েছে।'); btn.innerHTML = originalText; btn.disabled = false; });
-        }
-    }
-
-    auth.onAuthStateChanged(user => {
-        if (user) {
-            currentUser = user;
-            document.getElementById('userEmailBadge').textContent = user.email;
-            listenUserData(user.uid);
-            listenForNotifications(user.uid); 
-            
-            changeStep(1); 
-            checkReturnPaymentStatus(); 
-        } else {
-            currentUser = null;
-            changeStep('auth');
-        }
-    });
-
-    function listenUserData(uid) {
-        database.ref(`users/${uid}/balance`).on('value', snapshot => {
-            const balance = snapshot.val() || 0;
-            document.getElementById('userBalanceDisplay').textContent = `${parseFloat(balance).toFixed(2)} BDT`;
-        });
-    }
-
-    // TZ SMMPAY এর মাধ্যমে পেমেন্ট তৈরি
-    async function initiatePayment() {
-        if (!currentUser) return showToastPopup('প্রথমে লগইন করুন');
-        const amount = document.getElementById('amountInput').value.trim();
-        const phone = document.getElementById('phoneInput').value.trim();
-
-        if (!amount || parseFloat(amount) <= 0) return showToastPopup('সঠিক এমাউন্ট লিখুন');
-        if (!phone || phone.length < 11) return showToastPopup('সঠিক ১১ ডিজিটের ফোন নম্বর দিন');
-
-        const btn = document.getElementById('btnPayGateway');
-        btn.disabled = true; 
-        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Loading Gateway...';
-
-        const returnUrl = window.location.href.split('?')[0];
-
-        const payload = {
-            api_key: TZ_API_KEY,
-            cus_name: currentUser.email.split('@')[0],
-            cus_email: currentUser.email,
-            cus_number: phone,
-            amount: parseFloat(amount),
-            success_url: returnUrl + `?status=success&amount=${amount}&uid=${currentUser.uid}`,
-            cancel_url: returnUrl + "?status=cancel",
-            callback_url: returnUrl + "?status=callback"
+    <!-- FIREBASE & APPLICATION LOGIC -->
+    <script type="module">
+        const firebaseConfig = {
+            apiKey: "AIzaSyAEV4zkuTcRYIFP2AMmKJTyDUTzSYLnbbM",
+            authDomain: "used-mail-shop.firebaseapp.com",
+            databaseURL: "https://used-mail-shop-default-rtdb.firebaseio.com",
+            projectId: "used-mail-shop",
+            storageBucket: "used-mail-shop.firebasestorage.app",
+            messagingSenderId: "251382358623",
+            appId: "1:251382358623:web:a567a9349d1fd87277b1ea"
         };
 
-        try {
-            const res = await fetch('https://tzsmmpay.com/api/payment/create', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify(payload)
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy, limit, runTransaction, getCountFromServer, updateDoc, Timestamp, increment } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let currentUserTg = null;
+        let userData = null;
+        let appConfig = {};
+        let selectedCategory = 'all';
+        let userPurchasesCache = [];
+        let displayedProductsCache = [];
+        let activeBuyModalData = null;
+        let activeManualModalData = null;
+        let countdownTimerInterval = null;
+        let allUserNotifications = [];
+        let lastPurchasedItemsBatch = [];
+        let tgTaskState = 0;
+        let tgCountdownInterval = null;
+
+        const defaultCategories = [
+            { id: "all", name: "All Services", icon: "layout-grid" },
+            { id: "Hotmail", name: "Hotmail", icon: "mail" },
+            { id: "Gmail", name: "Gmail", icon: "tag" },
+            { id: "Proxy", name: "Proxy", icon: "globe" },
+            { id: "VPN", name: "VPN", icon: "shield-check" },
+            { id: "Social", name: "Social", icon: "users" }
+        ];
+
+        const loader = document.getElementById('loader');
+        const getLoadingHTML = () => `<div class="flex justify-center p-8"><div class="w-8 h-8 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></div></div>`;
+
+        window.showToast = function(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+
+            const toast = document.createElement('div');
+            toast.className = `toast-item toast-${type}`;
+            
+            let iconName = 'info';
+            if (type === 'success') iconName = 'check-circle';
+            if (type === 'error') iconName = 'alert-circle';
+
+            toast.innerHTML = `
+                <i data-lucide="${iconName}" class="w-4 h-4 flex-shrink-0 text-cyan-400"></i>
+                <span class="leading-tight">${message}</span>
+            `;
+            container.appendChild(toast);
+            lucide.createIcons();
+
+            requestAnimationFrame(() => toast.classList.add('show'));
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        };
+
+        window.showAlert = (msg) => showToast(msg, 'info');
+
+        window.onload = async () => {
+            try {
+                window.Telegram.WebApp.ready();
+                window.Telegram.WebApp.expand();
+                currentUserTg = window.Telegram.WebApp.initDataUnsafe?.user;
+            } catch (e) {
+                currentUserTg = null;
+            }
+
+            if (!currentUserTg || !currentUserTg.id) {
+                let storedGuestId = localStorage.getItem('app_guest_user_id');
+                if (!storedGuestId) {
+                    storedGuestId = String(Math.floor(100000000 + Math.random() * 900000000));
+                    localStorage.setItem('app_guest_user_id', storedGuestId);
+                }
+                currentUserTg = { id: storedGuestId, first_name: "Guest", username: `user_${storedGuestId.slice(-4)}` };
+            }
+
+            lucide.createIcons();
+            setupEventListeners();
+            await initUserSession();
+            
+            await checkReturnPaymentStatus();
+            checkAndRefundExpiredOrders();
+            startCountdownTimerRoutine();
+
+            setTimeout(() => {
+                loader.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                loader.style.opacity = '0';
+                loader.style.transform = 'scale(1.05)';
+                setTimeout(() => loader.style.display = 'none', 500);
+            }, 1000);
+        };
+
+        async function initUserSession() {
+            const tgChatId = String(currentUserTg.id);
+            const userRef = doc(db, "users", tgChatId);
+            let userSnap = await getDoc(userRef);
+
+            if (userSnap.exists()) {
+                userData = userSnap.data();
+                await updateDoc(userRef, {
+                    name: `${currentUserTg.first_name || ''} ${currentUserTg.last_name || ''}`.trim() || userData.name || `User ${tgChatId}`,
+                    photo_url: currentUserTg.photo_url || userData.photo_url || null,
+                    lastSeen: serverTimestamp()
+                });
+            } else {
+                const userName = `${currentUserTg.first_name || ''} ${currentUserTg.last_name || ''}`.trim() || `User ${tgChatId}`;
+                userData = {
+                    tgChatId: tgChatId,
+                    name: userName,
+                    username: currentUserTg.username || null,
+                    photo_url: currentUserTg.photo_url || null,
+                    balance: 0,
+                    hasClaimedTgBonus: false,
+                    createdAt: serverTimestamp()
+                };
+                await setDoc(userRef, userData);
+            }
+
+            const headerAvatar = document.getElementById('header-user-avatar');
+            const headerFallback = document.getElementById('header-user-fallback');
+            if (currentUserTg.photo_url || (userData && userData.photo_url)) {
+                headerAvatar.src = currentUserTg.photo_url || userData.photo_url;
+                headerAvatar.classList.remove('hidden');
+                headerFallback.classList.add('hidden');
+            } else {
+                headerAvatar.classList.add('hidden');
+                headerFallback.classList.remove('hidden');
+                headerFallback.textContent = ((userData && userData.name) || 'U').charAt(0).toUpperCase();
+            }
+
+            await fetchAppConfig();
+            await loadUserNotifications();
+
+            updateUI();
+            showMainPage('app-container');
+            navigateTo('home-page');
+        }
+
+        async function fetchAppConfig() {
+            try {
+                const configRef = doc(db, "config", "main");
+                const configSnap = await getDoc(configRef);
+                appConfig = configSnap.exists() ? configSnap.data() : {};
+
+                if (appConfig.telegramSupportUrl) document.getElementById('telegram-support-link').href = appConfig.telegramSupportUrl;
+                if (appConfig.whatsappSupportUrl) document.getElementById('whatsapp-support-link').href = appConfig.whatsappSupportUrl;
+
+                renderDynamicCategories();
+                renderTelegramTaskUI();
+            } catch (e) {
+                renderDynamicCategories();
+                renderTelegramTaskUI();
+            }
+        }
+
+        function renderTelegramTaskUI() {
+            const container = document.getElementById('tg-task-action-container');
+            if (!container) return;
+
+            if (userData && userData.hasClaimedTgBonus) {
+                container.innerHTML = `
+                    <div class="w-full py-2.5 px-4 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded-2xl font-bold text-xs flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="check-circle" class="w-4 h-4"></i>
+                            <span>বোনাস সংগৃহীত (৳১.০০ ব্যালেন্সে যুক্ত)</span>
+                        </div>
+                        <span class="text-[10px] bg-emerald-500/20 px-2 py-0.5 rounded font-mono">CLAIMED</span>
+                    </div>
+                `;
+            } else if (tgTaskState === 1) {
+                container.innerHTML = `
+                    <button disabled class="w-full py-3 bg-slate-800 text-gray-400 rounded-2xl font-bold text-xs flex items-center justify-center gap-2 border border-white/10 cursor-not-allowed">
+                        <span class="w-4 h-4 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></span>
+                        <span id="tg-task-timer-text">অপেক্ষা করুন (5s)...</span>
+                    </button>
+                `;
+            } else if (tgTaskState === 2) {
+                container.innerHTML = `
+                    <button onclick="verifyTelegramChannelMembership()" id="btn-tg-verify" class="w-full py-3 bg-emerald-500 text-slate-950 rounded-2xl font-black text-xs flex items-center justify-center gap-2 shadow-lg transition active:scale-95">
+                        <i data-lucide="shield-check" class="w-4 h-4"></i>
+                        <span>ভেরিফাই করুন ও ৳১.০০ বোনাস নিন</span>
+                    </button>
+                `;
+            } else {
+                container.innerHTML = `
+                    <button onclick="startTelegramJoinFlow()" class="w-full py-3 bg-[#0088cc] text-white rounded-2xl font-bold text-xs flex items-center justify-center gap-2 shadow-lg transition active:scale-95">
+                        <i data-lucide="send" class="w-4 h-4"></i>
+                        <span>Join Channel & Claim ৳1.00</span>
+                    </button>
+                `;
+            }
+            lucide.createIcons();
+        }
+
+        window.startTelegramJoinFlow = function() {
+            const channelUrl = appConfig.telegramChannelUrl || appConfig.telegramSupportUrl || "https://t.me/EXPERTearn_team";
+            try {
+                if (window.Telegram?.WebApp?.openTelegramLink) {
+                    window.Telegram.WebApp.openTelegramLink(channelUrl);
+                } else {
+                    window.open(channelUrl, '_blank');
+                }
+            } catch(e) {
+                window.open(channelUrl, '_blank');
+            }
+
+            tgTaskState = 1;
+            renderTelegramTaskUI();
+
+            let timeLeft = 5;
+            if (tgCountdownInterval) clearInterval(tgCountdownInterval);
+
+            tgCountdownInterval = setInterval(() => {
+                timeLeft--;
+                const timerEl = document.getElementById('tg-task-timer-text');
+                if (timerEl) timerEl.textContent = `অপেক্ষা করুন (${timeLeft}s)...`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(tgCountdownInterval);
+                    tgTaskState = 2;
+                    renderTelegramTaskUI();
+                }
+            }, 1000);
+        };
+
+        window.verifyTelegramChannelMembership = async function() {
+            if (!userData) return showToast("প্রথমে লগইন করুন", "error");
+            if (userData.hasClaimedTgBonus) return showToast("আপনি ইতিমধ্যে বোনাস গ্রহণ করেছেন", "info");
+
+            const btn = document.getElementById('btn-tg-verify');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = `<span class="w-4 h-4 border-2 border-slate-950 border-t-transparent rounded-full animate-spin mr-1"></span> Checking...`;
+            }
+
+            const tgUserId = String(userData.tgChatId);
+            const botToken = appConfig.botToken || "";
+            let channelId = appConfig.officialChannelId || "@EXPERTearn_team";
+            let isMember = false;
+
+            if (botToken && channelId) {
+                try {
+                    const checkRes = await fetch(`https://api.telegram.org/bot${botToken}/getChatMember?chat_id=${channelId}&user_id=${tgUserId}`);
+                    const checkData = await checkRes.json();
+                    if (checkData.ok && checkData.result) {
+                        const status = checkData.result.status;
+                        if (["creator", "administrator", "member", "restricted"].includes(status)) isMember = true;
+                    }
+                } catch(err) { isMember = true; }
+            } else {
+                isMember = true;
+            }
+
+            if (isMember) {
+                try {
+                    const userRef = doc(db, "users", tgUserId);
+                    await runTransaction(db, async (transaction) => {
+                        const userSnap = await transaction.get(userRef);
+                        if (!userSnap.exists()) throw new Error("ইউজার পাওয়া যায়নি");
+                        if (userSnap.data().hasClaimedTgBonus) throw new Error("বোনাস ইতিমধ্যে নেওয়া হয়েছে");
+
+                        transaction.update(userRef, {
+                            balance: increment(1.00),
+                            hasClaimedTgBonus: true
+                        });
+                    });
+
+                    await addDoc(collection(db, "users", tgUserId, "notifications"), {
+                        title: "AAC X বোনাস রিওয়ার্ড!",
+                        message: `টেলিগ্রাম চ্যানেলে যুক্ত হওয়ার জন্য আপনার অ্যাকাউন্টে ৳১.০০ সফলভাবে যোগ হয়েছে।`,
+                        time: serverTimestamp(),
+                        type: "bonus"
+                    });
+
+                    userData.balance = (userData.balance || 0) + 1.00;
+                    userData.hasClaimedTgBonus = true;
+                    updateUI();
+                    renderTelegramTaskUI();
+                    showToast("অভিনন্দন! ৳১.০০ ব্যালেন্সে যোগ হয়েছে!", "success");
+                } catch(e) {
+                    showToast(e.message || "বোনাস যোগ ব্যর্থ হয়েছে", "error");
+                    if (btn) {
+                        btn.disabled = false;
+                        btn.innerHTML = `<i data-lucide="shield-check" class="w-4 h-4"></i> <span>ভেরিফাই করুন ও ৳১.০০ বোনাস নিন</span>`;
+                        lucide.createIcons();
+                    }
+                }
+            } else {
+                showToast("চ্যানেলে জয়েন করা সম্পন্ন হয়নি", "error");
+                tgTaskState = 0;
+                renderTelegramTaskUI();
+            }
+        };
+
+        window.setAutoQuickAmount = function(val) {
+            document.getElementById('amountInput').value = val;
+            document.querySelectorAll('.quick-amount-pill').forEach(chip => {
+                const chipVal = parseInt(chip.textContent.replace(/[^0-9]/g, ''));
+                chip.classList.toggle('selected', chipVal === val);
             });
-            
-            const data = await res.json();
-            
-            // বিভিন্ন সম্ভাব্য রেসপন্স থেকে পেমেন্ট লিংক বের করা
-            let payUrl = data.payment_url || data.url || (data.data && data.data.payment_url) || (data.data && data.data.url);
+        };
 
-            if (payUrl) {
-                window.location.href = payUrl;
-            } else {
-                showToastPopup(data.message || data.error || 'পেমেন্ট গেটওয়েতে সমস্যা হচ্ছে!');
-                btn.disabled = false; 
-                btn.innerHTML = '<i class="fa-solid fa-lock" style="color: #facc15;"></i> Continue to Payment';
+        window.handleAutoAmountInput = function() {
+            const val = parseInt(document.getElementById('amountInput').value);
+            document.querySelectorAll('.quick-amount-pill').forEach(chip => {
+                const chipVal = parseInt(chip.textContent.replace(/[^0-9]/g, ''));
+                chip.classList.toggle('selected', chipVal === val);
+            });
+        };
+
+        window.initiatePayment = async function(customAmount = null) {
+            if (!userData) return showToast('প্রথমে লগইন করুন', 'error');
+            const amountVal = customAmount || document.getElementById('amountInput').value.trim();
+            const amount = parseFloat(amountVal);
+
+            if (!amount || amount < 10) return showToast('সর্বনিম্ন ১০ টাকা ডিপোজিট করতে হবে', 'error');
+
+            const btn = document.getElementById('btnPayGateway');
+            if (btn) {
+                btn.disabled = true; 
+                btn.innerHTML = `<span class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></span> Processing Gateway...`;
             }
-        } catch (err) {
-            console.error(err);
-            showToastPopup('সার্ভার কানেকশন ব্যর্থ হয়েছে। CORS বা নেটওয়ার্ক সমস্যা হতে পারে।');
-            btn.disabled = false; 
-            btn.innerHTML = '<i class="fa-solid fa-lock" style="color: #facc15;"></i> Continue to Payment';
-        }
-    }
 
-    // গেটওয়ে থেকে ফিরে আসার পর ব্যালেন্স যোগ করার লজিক
-    async function checkReturnPaymentStatus() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const transactionId = urlParams.get('transaction_id') || urlParams.get('transactionId') || urlParams.get('txid') || ('TXN' + Date.now());
-        const urlStatus = urlParams.get('status');
-        const depositAmount = parseFloat(urlParams.get('amount') || urlParams.get('paymentAmount') || 0);
+            const returnUrl = window.location.href.split('?')[0];
+            const payload = {
+                amount: String(amount),
+                success_url: returnUrl + "?status=success",
+                cancel_url: returnUrl + "?status=cancel",
+                webhook_url: returnUrl + "?status=webhook",
+                metadata: {
+                    phone: "01700000000",
+                    userId: String(userData.tgChatId)
+                }
+            };
 
-        if (urlStatus === 'success' && depositAmount > 0) {
-            showToastPopup('পেমেন্ট সফল! ব্যালেন্স আপডেট করা হচ্ছে...');
-            
-            savePaymentAndUpdateBalance(depositAmount, transactionId);
-            
-            document.getElementById('displayTxid').textContent = transactionId;
-            document.getElementById('displayAmount').textContent = depositAmount + " BDT";
-            changeStep(5);
-            window.history.replaceState({}, document.title, window.location.pathname);
-        } else if (urlStatus === 'cancel') {
-            showToastPopup('পেমেন্ট বাতিল করা হয়েছে');
-            window.history.replaceState({}, document.title, window.location.pathname);
-        }
-    }
-
-    function savePaymentAndUpdateBalance(depositAmount, txid) {
-        if (!currentUser) return;
-        const uid = currentUser.uid;
-
-        const txRef = database.ref(`users/${uid}/deposits/${txid}`);
-        txRef.once('value', snapshot => {
-            if (!snapshot.exists()) {
-                txRef.set({
-                    txid: txid,
-                    amount: depositAmount,
-                    gateway: 'TZSMMPAY',
-                    timestamp: firebase.database.ServerValue.TIMESTAMP
-                }).then(() => {
-                    database.ref(`users/${uid}/balance`).transaction(currentBalance => {
-                        return (currentBalance || 0) + depositAmount;
-                    });
-
-                    database.ref(`users/${uid}/notifications`).push({
-                        message: `অভিনন্দন! আপনার একাউন্টে ${depositAmount} BDT সফলভাবে অ্যাড হয়েছে। (TXID: ${txid})`,
-                        timestamp: firebase.database.ServerValue.TIMESTAMP,
-                        read: false
-                    });
+            try {
+                const res = await fetch('/api/payment?action=create', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
                 });
-            }
-        });
-    }
-
-    function openNotifModal() {
-        document.getElementById('notifModal').classList.add('show');
-        loadNotificationsList();
-    }
-
-    function closeNotifModal() {
-        document.getElementById('notifModal').classList.remove('show');
-    }
-
-    function loadNotificationsList() {
-        if (!currentUser) return;
-        const uid = currentUser.uid;
-        const listDiv = document.getElementById('notifList');
-        listDiv.innerHTML = '<div style="text-align:center; padding: 20px; color:#64748b;"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</div>';
-        
-        database.ref(`users/${uid}/notifications`).orderByChild('timestamp').limitToLast(10).once('value', snapshot => {
-            listDiv.innerHTML = '';
-            if (snapshot.exists()) {
-                const notifs = [];
-                snapshot.forEach(child => { notifs.push({ id: child.key, ...child.val() }); });
-                notifs.reverse();
                 
-                notifs.forEach(data => {
-                    const div = document.createElement('div');
-                    div.className = `notif-item ${!data.read ? 'unread' : ''}`;
-                    const dateObj = new Date(data.timestamp);
-                    div.innerHTML = `${data.message} <span class="notif-time">${dateObj.toLocaleDateString()} - ${dateObj.toLocaleTimeString()}</span>`;
-                    listDiv.appendChild(div);
-                    if (!data.read) database.ref(`users/${uid}/notifications/${data.id}`).update({ read: true });
-                });
-            } else {
-                listDiv.innerHTML = '<div style="text-align:center; color:#64748b; font-size: 14px; margin-top:20px;">কোনো নোটিফিকেশন নেই</div>';
+                const data = await res.json();
+                let payUrl = data.payment_url || data.url || (data.data && (data.data.payment_url || data.data.url));
+
+                if (payUrl) {
+                    window.location.href = payUrl;
+                } else {
+                    showToast(data.message || data.error || 'গেটওয়ে কানেকশন ব্যর্থ হয়েছে', 'error');
+                    if (btn) {
+                        btn.disabled = false; 
+                        btn.innerHTML = `<i data-lucide="lock" class="w-4 h-4 text-cyan-200"></i> <span>Continue to Instant Payment</span>`;
+                        lucide.createIcons();
+                    }
+                }
+            } catch (err) {
+                showToast('সার্ভার কানেকশন ত্রুটি', 'error');
+                if (btn) {
+                    btn.disabled = false; 
+                    btn.innerHTML = `<i data-lucide="lock" class="w-4 h-4 text-cyan-200"></i> <span>Continue to Instant Payment</span>`;
+                    lucide.createIcons();
+                }
             }
-        });
-    }
+        };
 
-    function listenForNotifications(uid) {
-        database.ref(`users/${uid}/notifications`).orderByChild('read').equalTo(false).on('value', snapshot => {
-            const dot = document.querySelector('.notif-dot');
-            if (dot) dot.style.display = snapshot.exists() ? 'block' : 'none';
-        });
-    }
-
-    function changeStep(stepId) {
-        document.querySelectorAll('.step-container').forEach(page => page.classList.remove('active'));
-        const targetElement = document.getElementById(`step-${stepId}`);
-        if (targetElement) targetElement.classList.add('active');
-    }
-
-    function showToastPopup(message) {
-        const toast = document.getElementById('toastNotification');
-        if(toast) {
-            toast.textContent = message;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3500);
+        function showDepositBanner(message) {
+            const banner = document.getElementById('deposit-status-banner');
+            const content = document.getElementById('deposit-status-banner-content');
+            if (!banner || !content) return;
+            banner.className = 'p-3.5 rounded-2xl text-xs font-semibold flex items-center justify-between mb-3 bg-rose-500/20 text-rose-300 border border-rose-500/30';
+            content.innerHTML = `<i data-lucide="alert-circle" class="w-4 h-4 text-rose-400"></i> <span>${message}</span>`;
+            banner.classList.remove('hidden');
+            lucide.createIcons();
         }
-    }
 
-    function logoutUser() {
-        auth.signOut().then(() => showToastPopup('লগআউট করা হয়েছে'));
-    }
-</script>
-</body>    
+        async function checkReturnPaymentStatus() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const transactionId = urlParams.get('transaction_id') || urlParams.get('transactionId') || urlParams.get('trx_id') || urlParams.get('txid');
+            const urlStatus = (urlParams.get('status') || '').toLowerCase();
+
+            if (urlStatus === 'cancel' || urlStatus === 'failed') {
+                localStorage.removeItem('pending_preorder_data');
+                showDepositBanner('পেমেন্ট বাতিল করা হয়েছে।');
+                showToast('পেমেন্ট বাতিল করা হয়েছে', 'info');
+                window.history.replaceState({}, document.title, window.location.pathname);
+                navigateTo('pay-page');
+                return;
+            }
+
+            if (transactionId || urlStatus === 'success') {
+                showToast('পেমেন্ট ভেরিফাই করা হচ্ছে...', 'info');
+                try {
+                    const res = await fetch('/api/payment?action=verify', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ transaction_id: transactionId })
+                    });
+                    const data = await res.json();
+                    const apiStatus = data.status ? String(data.status).toUpperCase() : "";
+
+                    if (apiStatus === "COMPLETED" || apiStatus === "SUCCESS" || data.success === true) {
+                        let depositAmount = parseFloat(data.amount || 0);
+                        let finalTxid = data.transaction_id || transactionId || ("TXN_" + Date.now());
+
+                        if (depositAmount > 0 && userData) {
+                            await savePaymentAndUpdateBalance(depositAmount, finalTxid, data);
+                            
+                            const pendingOrderRaw = localStorage.getItem('pending_preorder_data');
+                            if (pendingOrderRaw) {
+                                try {
+                                    const pendingOrder = JSON.parse(pendingOrderRaw);
+                                    localStorage.removeItem('pending_preorder_data');
+                                    await executePendingPreOrder(pendingOrder);
+                                } catch(err) { console.error(err); }
+                            } else {
+                                document.getElementById('displayTxid').textContent = finalTxid;
+                                document.getElementById('displayMethod').textContent = "NagorikPay";
+                                document.getElementById('displayAmount').textContent = `${depositAmount.toFixed(2)} BDT`;
+                                document.getElementById('gateway-success-modal').classList.remove('hidden');
+                            }
+                            window.history.replaceState({}, document.title, window.location.pathname);
+                        }
+                    } else {
+                        showToast(data.message || 'ভেরিফিকেশন ব্যর্থ হয়েছে', 'error');
+                    }
+                } catch (e) {
+                    showToast('ভেরিফিকেশন এরর', 'error');
+                }
+            }
+        }
+
+        async function savePaymentAndUpdateBalance(depositAmount, txid, fullData) {
+            if (!userData) return;
+            const tgChatId = String(userData.tgChatId);
+            const depositRef = doc(db, "deposits", txid);
+            const userRef = doc(db, "users", tgChatId);
+
+            try {
+                await runTransaction(db, async (transaction) => {
+                    const depSnap = await transaction.get(depositRef);
+                    if (depSnap.exists()) return;
+
+                    transaction.set(depositRef, {
+                        userId: tgChatId,
+                        userName: userData.name,
+                        method: 'NagorikPay',
+                        gateway: 'NagorikPay',
+                        amount: depositAmount,
+                        transactionId: txid,
+                        status: "approved",
+                        details: fullData || null,
+                        requestedAt: serverTimestamp()
+                    });
+
+                    transaction.update(userRef, {
+                        balance: increment(depositAmount)
+                    });
+                });
+
+                await addDoc(collection(db, "users", tgChatId, "notifications"), {
+                    title: "ডিপোজিট সফল!",
+                    message: `AAC X একাউন্টে ${depositAmount.toFixed(2)} BDT সফলভাবে যোগ হয়েছে। (TXID: ${txid})`,
+                    time: serverTimestamp(),
+                    type: "deposit"
+                });
+
+                const userSnap = await getDoc(userRef);
+                userData = userSnap.data();
+                updateUI();
+                await loadUserNotifications();
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        async function executePendingPreOrder(orderData) {
+            const { product, unitPrice, timeoutMinutes, qty, totalPrice } = orderData;
+            const tgChatId = String(userData.tgChatId);
+
+            try {
+                await runTransaction(db, async (transaction) => {
+                    const buyerRef = doc(db, "users", tgChatId);
+                    const buyerSnap = await transaction.get(buyerRef);
+                    
+                    if (!buyerSnap.exists() || buyerSnap.data().balance < totalPrice) {
+                        throw new Error("ডিপোজিট করার পরেও পর্যাপ্ত ব্যালেন্স নেই");
+                    }
+
+                    transaction.update(buyerRef, { balance: buyerSnap.data().balance - totalPrice });
+
+                    const expiryDate = new Date(Date.now() + timeoutMinutes * 60 * 1000);
+                    const manualOrderRef = doc(collection(db, "manual_orders"));
+                    
+                    transaction.set(manualOrderRef, {
+                        userId: tgChatId,
+                        userName: userData.name || 'User',
+                        mailType: product.type,
+                        category: product.category || 'service',
+                        unitPrice: unitPrice,
+                        quantity: qty,
+                        cost: totalPrice,
+                        status: "pending",
+                        createdAt: serverTimestamp(),
+                        expiresAt: Timestamp.fromDate(expiryDate),
+                        durationMinutes: timeoutMinutes
+                    });
+                });
+
+                const adminAlert = `⚡ <b>AAC X ডিপোজিট ও প্রি-অর্ডার কনফার্ম!</b>\n\n👤 ইউজার: ${userData.name} (<code>${userData.tgChatId}</code>)\n📦 সার্ভিস: ${product.type}\n🔢 পরিমাণ: ${qty}\n💰 মূল্য: ৳${totalPrice}`;
+                await notifyAdminViaTelegram(adminAlert);
+
+                showToast(`অর্ডার কনফার্ম হয়েছে!`, 'success');
+                const userSnap = await getDoc(doc(db, "users", tgChatId));
+                userData = userSnap.data();
+                updateUI();
+                navigateTo('history-page');
+            } catch (e) {
+                showToast(e.message, "error");
+            }
+        }
+
+        async function loadUserNotifications() {
+            if (!userData) return;
+            const tgChatId = String(userData.tgChatId);
+            let notifications = [];
+
+            if (appConfig.notices && Array.isArray(appConfig.notices)) {
+                appConfig.notices.forEach((n, idx) => {
+                    notifications.push({
+                        id: `notice_${idx}`,
+                        title: n.title || 'AAC X নোটিশ',
+                        message: n.message || '',
+                        timeStr: n.time || 'Admin',
+                        timestamp: Date.now() - (idx * 1000)
+                    });
+                });
+            }
+
+            try {
+                const notifRef = collection(db, "users", tgChatId, "notifications");
+                const q = query(notifRef, orderBy("time", "desc"), limit(20));
+                const snap = await getDocs(q);
+                snap.forEach(docSnap => {
+                    const data = docSnap.data();
+                    const dateObj = data.time?.toDate ? data.time.toDate() : new Date();
+                    notifications.push({
+                        id: docSnap.id,
+                        title: data.title || 'মেসেজ',
+                        message: data.message || '',
+                        timeStr: dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                        timestamp: dateObj.getTime()
+                    });
+                });
+            } catch (e) {}
+
+            notifications.sort((a, b) => b.timestamp - a.timestamp);
+            allUserNotifications = notifications;
+            updateNotificationBadgeUI();
+        }
+
+        function updateNotificationBadgeUI() {
+            const tgChatId = String(userData?.tgChatId || '0');
+            const lastReadTime = parseInt(localStorage.getItem(`notif_last_read_${tgChatId}`) || '0');
+            const unreadCount = allUserNotifications.filter(n => n.timestamp > lastReadTime).length;
+            const badge = document.getElementById('notif-badge');
+
+            if (unreadCount > 0) {
+                badge.classList.remove('hidden');
+                badge.textContent = unreadCount > 9 ? "9+" : String(unreadCount);
+            } else {
+                badge.classList.add('hidden');
+                badge.textContent = "0";
+            }
+        }
+
+        window.toggleNotificationModal = function() {
+            const modal = document.getElementById('notification-modal');
+            const isOpening = modal.classList.contains('hidden');
+            modal.classList.toggle('hidden');
+
+            if (isOpening) {
+                const tgChatId = String(userData?.tgChatId || '0');
+                localStorage.setItem(`notif_last_read_${tgChatId}`, String(Date.now()));
+                const badge = document.getElementById('notif-badge');
+                badge.classList.add('hidden');
+                badge.textContent = "0";
+                renderNotifications();
+            }
+        };
+
+        function renderNotifications() {
+            const container = document.getElementById('notification-list-container');
+            if (allUserNotifications.length === 0) {
+                container.innerHTML = `<div class="p-8 text-center text-xs text-gray-400 font-mono glass-panel rounded-2xl">কোনো নোটিফিকেশন নেই</div>`;
+                return;
+            }
+
+            container.innerHTML = allUserNotifications.map(n => `
+                <div class="glass-panel p-4 rounded-2xl text-left space-y-1.5 border-white/5">
+                    <div class="flex justify-between items-center">
+                        <h4 class="font-bold text-xs text-cyan-400 flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                            ${n.title}
+                        </h4>
+                        <span class="text-[10px] text-gray-500 font-mono">${n.timeStr}</span>
+                    </div>
+                    <p class="text-xs text-gray-300 leading-relaxed pl-3.5">${n.message}</p>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        async function sendTelegramMessage(chatId, text) {
+            const botToken = appConfig.botToken || "";
+            if (!botToken || !chatId) return;
+            try {
+                await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: String(chatId),
+                        text: text,
+                        parse_mode: 'HTML'
+                    })
+                });
+            } catch (err) {}
+        }
+
+        async function notifyAdminViaTelegram(alertMessage) {
+            const adminTgId = appConfig.adminTelegramId || "6954647230";
+            await sendTelegramMessage(adminTgId, alertMessage);
+        }
+
+        function renderDynamicCategories() {
+            const grid = document.getElementById('category-filter-grid');
+            const categories = appConfig.categories && Array.isArray(appConfig.categories) && appConfig.categories.length > 0 
+                                ? appConfig.categories 
+                                : defaultCategories;
+
+            grid.innerHTML = categories.map((cat, index) => {
+                const isActive = (selectedCategory === cat.id || (index === 0 && selectedCategory === 'all')) ? 'active' : '';
+                return `
+                <button class="category-btn ${isActive}" data-category="${cat.id}" onclick="filterByCategory('${cat.id}', this)">
+                    <i data-lucide="${cat.icon || 'tag'}" class="w-3.5 h-3.5"></i>
+                    <span class="truncate">${cat.name}</span>
+                </button>`;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        function updateUI() {
+            if (!userData) return;
+            const balanceFormatted = (userData.balance || 0).toFixed(2);
+            document.getElementById('header-coin-balance').textContent = `৳${balanceFormatted}`;
+            const depBalance = document.getElementById('deposit-page-balance');
+            if (depBalance) depBalance.textContent = `৳${balanceFormatted}`;
+        }
+
+        function showMainPage(pageId) {
+            document.querySelectorAll('.main-page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        function navigateTo(pageId) {
+            document.querySelectorAll('.sub-page').forEach(p => p.classList.remove('active'));
+            const target = document.getElementById(pageId);
+            if (target) target.classList.add('active');
+
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.toggle('active', item.dataset.page === pageId);
+            });
+
+            const routes = {
+                'home-page': renderProductsBySelection,
+                'pay-page': updateUI,
+                'orders-page': loadOrdersHistory,
+                'features-page': loadFeaturesPage,
+                'history-page': () => { loadManualOrdersHistory(); loadPaymentHistory(); loadReplaceHistory(); },
+                'profile-page': () => { loadProfilePage(); renderTelegramTaskUI(); }
+            };
+
+            if (routes[pageId]) routes[pageId]();
+            lucide.createIcons();
+        }
+        window.navigateTo = navigateTo;
+
+        window.filterByCategory = function(category, element) {
+            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+            if(element) element.classList.add('active');
+            selectedCategory = category;
+            renderProductsBySelection();
+        };
+
+        async function getStockCount(collectionName) {
+            if(!collectionName) return 0;
+            try {
+                const q = query(collection(db, collectionName), where("isSold", "==", false));
+                const snapshot = await getCountFromServer(q);
+                return snapshot.data().count;
+            } catch (e) { return 0; }
+        }
+
+        window.toggleCardDetails = function(detailsId, btnElement) {
+            const el = document.getElementById(detailsId);
+            if (el) {
+                const isHidden = el.classList.contains('hidden');
+                el.classList.toggle('hidden');
+                if (btnElement) {
+                    const icon = btnElement.querySelector('i');
+                    if (icon) {
+                        icon.setAttribute('data-lucide', isHidden ? 'chevron-up' : 'chevron-down');
+                        lucide.createIcons();
+                    }
+                }
+            }
+        };
+
+        async function renderProductsBySelection() {
+            const container = document.getElementById('product-list-container');
+            container.innerHTML = getLoadingHTML();
+
+            const allProducts = [...(appConfig.mails || []), ...(appConfig.proxies || []), ...(appConfig.products || [])];
+            let filtered = allProducts;
+
+            if (selectedCategory.toLowerCase() !== 'all') {
+                filtered = allProducts.filter(item => {
+                    const type = (item.type || '').toLowerCase();
+                    const cat = (item.category || '').toLowerCase();
+                    const target = selectedCategory.toLowerCase();
+                    return type.includes(target) || cat.includes(target);
+                });
+            }
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="glass-panel p-8 rounded-2xl text-center text-gray-400 font-mono text-xs">কোনো প্রোডাক্ট পাওয়া যায়নি।</div>`;
+                return;
+            }
+
+            const stockPromises = filtered.map(item => getStockCount(item.stockKey));
+            const stockCounts = await Promise.all(stockPromises);
+
+            displayedProductsCache = filtered.map((item, idx) => ({
+                ...item,
+                stock: stockCounts[idx] || 0
+            }));
+
+            container.innerHTML = displayedProductsCache.map((item, idx) => {
+                const stock = item.stock;
+                const outOfStock = stock <= 0;
+                const originalPrice = (parseFloat(item.priceBdt || 0) * 1.15).toFixed(2);
+                const currentPrice = parseFloat(item.priceBdt || 0).toFixed(2);
+                const detailsId = `card-details-${idx}`;
+                
+                const hasApi = !!(item.apiUrl && item.apiUrl.trim() !== '');
+                const isStockHidden = !!item.hideStock;
+                const isManualAllowed = item.allowManual === true;
+
+                return `
+                <div class="product-card p-4 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-2xl bg-slate-800/80 border border-white/10 flex items-center justify-center p-2.5">
+                                <img src="${item.logoUrl || 'https://i.postimg.cc/mD1YdG5y/mail.png'}" class="w-full h-full object-contain" alt="Logo">
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <h4 class="font-black text-white text-sm tracking-wide">${item.type}</h4>
+                                    <span class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 text-[9px] font-mono font-bold px-2 py-0.5 rounded-full">AAC-X</span>
+                                </div>
+                                <div class="flex items-center gap-2 mt-0.5 font-mono">
+                                    <span class="text-xs text-gray-500 line-through">৳${originalPrice}</span>
+                                    <span class="text-sm font-black text-cyan-400">৳${currentPrice}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="toggleCardDetails('${detailsId}', this)" class="text-xs font-bold text-gray-400 bg-slate-800/80 hover:text-white px-2.5 py-1.5 rounded-xl border border-white/5 flex items-center gap-1">
+                            <span>Details</span>
+                            <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+
+                    <div id="${detailsId}" class="hidden text-xs text-gray-300 bg-slate-900/90 p-3 rounded-2xl border border-white/10 leading-relaxed font-normal selectable-text">
+                        ${item.details ? item.details.replace(/\n/g, '<br>') : 'কোনো অতিরিক্ত বিবরণ নেই।'}
+                    </div>
+
+                    <div class="flex items-center justify-between pt-2 border-t border-white/10 text-xs">
+                        <div class="flex items-center gap-2 font-mono">
+                            ${isStockHidden ? '<span></span>' : `
+                                <span class="font-bold ${outOfStock ? 'text-orange-400' : 'text-emerald-400'}">
+                                    Stock: <b>${stock}</b>
+                                </span>
+                            `}
+
+                            ${hasApi ? `
+                                <a href="${item.apiUrl}" target="_blank" class="px-2 py-0.5 rounded-lg text-[10px] font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 flex items-center gap-1">
+                                    <i data-lucide="code" class="w-3 h-3"></i> API
+                                </a>
+                            ` : ''}
+                        </div>
+
+                        <div>
+                            ${!outOfStock ? `
+                                <button type="button" class="btn-buy px-4 py-2 text-xs flex items-center gap-1 font-mono" onclick="openBuyModal(${idx})">
+                                    <i data-lucide="zap" class="w-3.5 h-3.5"></i>
+                                    <span>Buy Now</span>
+                                </button>
+                            ` : isManualAllowed ? `
+                                <button type="button" class="btn-order-orange px-4 py-2 text-xs flex items-center gap-1 font-mono" onclick="openManualModal(${idx})">
+                                    <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+                                    <span>Order Now</span>
+                                </button>
+                            ` : `
+                                <button disabled type="button" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-800 text-gray-500 cursor-not-allowed">
+                                    Sold Out
+                                </button>
+                            `}
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        window.openBuyModal = function(index) {
+            const item = displayedProductsCache[index];
+            if (!item) return;
+
+            const unitPrice = parseFloat(item.priceBdt || 0);
+            const userBal = userData?.balance || 0;
+            const maxCanAfford = unitPrice > 0 ? Math.floor(userBal / unitPrice) : 1;
+            const maxAllowed = Math.min(item.stock, maxCanAfford > 0 ? maxCanAfford : 1);
+
+            activeBuyModalData = {
+                product: item,
+                unitPrice: unitPrice,
+                stock: item.stock,
+                maxAllowed: maxAllowed,
+                qty: 1
+            };
+
+            document.getElementById('buy-modal-title').textContent = `${item.type}`;
+            document.getElementById('buy-modal-stock-display').textContent = `${item.stock} টি`;
+            document.getElementById('buy-modal-qty-input').value = 1;
+            updateBuyModalPriceDisplay();
+
+            document.getElementById('buy-now-modal').classList.remove('hidden');
+            lucide.createIcons();
+        };
+
+        function updateBuyModalPriceDisplay() {
+            if (!activeBuyModalData) return;
+            const total = activeBuyModalData.unitPrice * activeBuyModalData.qty;
+            document.getElementById('buy-modal-price').textContent = `৳${total.toFixed(2)} (${activeBuyModalData.qty} টি)`;
+        }
+
+        window.adjustBuyModalQty = function(delta) {
+            if (!activeBuyModalData) return;
+            let target = activeBuyModalData.qty + delta;
+            if (target < 1) target = 1;
+
+            const userBal = userData?.balance || 0;
+            const maxCanAfford = activeBuyModalData.unitPrice > 0 ? Math.floor(userBal / activeBuyModalData.unitPrice) : 1;
+            const effectiveMax = Math.min(activeBuyModalData.stock, maxCanAfford > 0 ? maxCanAfford : 1);
+
+            if (target > effectiveMax) target = effectiveMax;
+
+            activeBuyModalData.qty = target;
+            document.getElementById('buy-modal-qty-input').value = target;
+            updateBuyModalPriceDisplay();
+        };
+
+        window.handleBuyModalQtyInput = function(inputEl) {
+            if (!activeBuyModalData) return;
+            let val = parseInt(inputEl.value) || 1;
+            if (val < 1) val = 1;
+
+            const userBal = userData?.balance || 0;
+            const maxCanAfford = activeBuyModalData.unitPrice > 0 ? Math.floor(userBal / activeBuyModalData.unitPrice) : 1;
+            const effectiveMax = Math.min(activeBuyModalData.stock, maxCanAfford > 0 ? maxCanAfford : 1);
+
+            if (val > effectiveMax) val = effectiveMax;
+
+            inputEl.value = val;
+            activeBuyModalData.qty = val;
+            updateBuyModalPriceDisplay();
+        };
+
+        window.executeBuyNowConfirmed = async function() {
+            if (!activeBuyModalData) return;
+            const { product, unitPrice, qty } = activeBuyModalData;
+            const totalCost = unitPrice * qty;
+
+            if (userData.balance < totalCost) {
+                return showToast(`পর্যাপ্ত ব্যালেন্স নেই! প্রয়োজন ৳${totalCost.toFixed(2)}`, 'error');
+            }
+
+            const btn = document.getElementById('confirm-buy-modal-btn');
+            btn.disabled = true;
+            btn.innerHTML = `<span class="animate-spin inline-block w-3 h-3 border-2 border-slate-950 border-t-transparent rounded-full mr-1"></span> Processing...`;
+
+            try {
+                const itemQuery = query(collection(db, product.stockKey), where("isSold", "==", false), limit(qty));
+                const itemQuerySnapshot = await getDocs(itemQuery);
+
+                if (itemQuerySnapshot.docs.length < qty) {
+                    throw new Error(`দুঃখিত, পর্যাপ্ত স্টক নেই! বর্তমানে মাত্র ${itemQuerySnapshot.docs.length} টি রয়েছে।`);
+                }
+
+                const purchasedItems = [];
+
+                await runTransaction(db, async (transaction) => {
+                    const buyerRef = doc(db, "users", String(userData.tgChatId));
+                    const counterRef = doc(db, "counters", "item_purchase");
+                    const buyerSnap = await transaction.get(buyerRef);
+                    
+                    if (!buyerSnap.exists() || buyerSnap.data().balance < totalCost) {
+                        throw new Error("আপনার পর্যাপ্ত ব্যালেন্স নেই");
+                    }
+
+                    const counterSnap = await transaction.get(counterRef);
+                    let saleId = counterSnap.exists() ? counterSnap.data().currentId : 1000;
+
+                    transaction.update(buyerRef, { balance: buyerSnap.data().balance - totalCost });
+
+                    itemQuerySnapshot.docs.forEach((itemDoc) => {
+                        const itemData = itemDoc.data();
+                        transaction.update(itemDoc.ref, { 
+                            isSold: true, 
+                            soldTo: String(userData.tgChatId), 
+                            soldAt: serverTimestamp() 
+                        });
+
+                        const purchaseLogRef = doc(collection(db, "purchases"));
+                        transaction.set(purchaseLogRef, {
+                            saleId: saleId,
+                            userId: String(userData.tgChatId),
+                            mailType: product.type,
+                            category: product.category || 'service',
+                            cost: parseFloat(unitPrice),
+                            purchasedAt: serverTimestamp(),
+                            mail: itemData.email || itemData.ip || itemData.data || 'N/A',
+                            password: itemData.password || null
+                        });
+
+                        purchasedItems.push({
+                            saleId: saleId,
+                            mail: itemData.email || itemData.ip || itemData.data || 'N/A',
+                            password: itemData.password || null,
+                            mailType: product.type,
+                            cost: parseFloat(unitPrice)
+                        });
+
+                        saleId++;
+                    });
+
+                    transaction.set(counterRef, { currentId: saleId }, { merge: true });
+                });
+
+                document.getElementById('buy-now-modal').classList.add('hidden');
+                lastPurchasedItemsBatch = purchasedItems;
+                showPurchaseSuccessModal(purchasedItems);
+
+                const userSnap = await getDoc(doc(db, "users", String(userData.tgChatId)));
+                userData = userSnap.data();
+                updateUI();
+                renderProductsBySelection();
+                showToast("অর্ডার সফল হয়েছে!", "success");
+
+            } catch (e) {
+                showToast(e.message || "ক্রয় ব্যর্থ হয়েছে", "error");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "Confirm Buy";
+            }
+        };
+
+        window.openManualModal = function(index) {
+            const item = displayedProductsCache[index];
+            if (!item) return;
+
+            const unitPrice = item.manualPrice !== undefined ? parseFloat(item.manualPrice) : parseFloat(item.priceBdt || 0);
+            const timeoutMinutes = item.manualDurationMinutes || appConfig.manualOrderTimeoutMinutes || 30;
+
+            activeManualModalData = {
+                product: item,
+                unitPrice: unitPrice,
+                timeoutMinutes: timeoutMinutes,
+                qty: 1
+            };
+
+            document.getElementById('manual-modal-title').textContent = `${item.type}`;
+            document.getElementById('manual-modal-duration').textContent = `${timeoutMinutes} মিনিট`;
+            document.getElementById('manual-modal-qty-input').value = 1;
+            updateManualModalPriceDisplay();
+
+            document.getElementById('manual-order-modal').classList.remove('hidden');
+            lucide.createIcons();
+        };
+
+        function updateManualModalPriceDisplay() {
+            if (!activeManualModalData) return;
+            const total = activeManualModalData.unitPrice * activeManualModalData.qty;
+            document.getElementById('manual-modal-price').textContent = `৳${total.toFixed(2)} (${activeManualModalData.qty} টি)`;
+
+            const notice = document.getElementById('manual-modal-balance-notice');
+            if (notice) {
+                notice.classList.toggle('hidden', (userData?.balance || 0) >= total);
+            }
+        }
+
+        window.adjustManualOrderModalQty = function(delta) {
+            if (!activeManualModalData) return;
+            let target = activeManualModalData.qty + delta;
+            if (target < 1) target = 1;
+
+            activeManualModalData.qty = target;
+            document.getElementById('manual-modal-qty-input').value = target;
+            updateManualModalPriceDisplay();
+        };
+
+        window.handleManualModalQtyChange = function(inputEl) {
+            if (!activeManualModalData) return;
+            let val = parseInt(inputEl.value) || 1;
+            if (val < 1) val = 1;
+
+            inputEl.value = val;
+            activeManualModalData.qty = val;
+            updateManualModalPriceDisplay();
+        };
+
+        window.handleConfirmManualOrder = async function() {
+            if (!activeManualModalData) return;
+            const { product, unitPrice, timeoutMinutes, qty } = activeManualModalData;
+            const totalPrice = unitPrice * qty;
+            const userBal = userData?.balance || 0;
+
+            if (userBal < totalPrice) {
+                const depositNeeded = Math.max(10, Math.ceil(totalPrice - userBal));
+                localStorage.setItem('pending_preorder_data', JSON.stringify({
+                    product, unitPrice, timeoutMinutes, qty, totalPrice, createdAt: Date.now()
+                }));
+
+                document.getElementById('manual-order-modal').classList.add('hidden');
+                showToast(`আরও ৳${depositNeeded} ডিপোজিট করুন`, 'info');
+                navigateTo('pay-page');
+                setAutoQuickAmount(depositNeeded);
+                return;
+            }
+
+            const btn = document.getElementById('confirm-manual-order-btn');
+            btn.disabled = true;
+            btn.textContent = "Processing...";
+
+            try {
+                await runTransaction(db, async (transaction) => {
+                    const buyerRef = doc(db, "users", String(userData.tgChatId));
+                    const buyerSnap = await transaction.get(buyerRef);
+                    
+                    if (!buyerSnap.exists() || buyerSnap.data().balance < totalPrice) {
+                        throw new Error("পর্যাপ্ত ব্যালেন্স নেই");
+                    }
+
+                    transaction.update(buyerRef, { balance: buyerSnap.data().balance - totalPrice });
+
+                    const expiryDate = new Date(Date.now() + timeoutMinutes * 60 * 1000);
+                    const manualOrderRef = doc(collection(db, "manual_orders"));
+                    
+                    transaction.set(manualOrderRef, {
+                        userId: String(userData.tgChatId),
+                        userName: userData.name || 'User',
+                        mailType: product.type,
+                        category: product.category || 'service',
+                        unitPrice: unitPrice,
+                        quantity: qty,
+                        cost: totalPrice,
+                        status: "pending",
+                        createdAt: serverTimestamp(),
+                        expiresAt: Timestamp.fromDate(expiryDate),
+                        durationMinutes: timeoutMinutes
+                    });
+                });
+
+                const adminAlert = `⚡ <b>AAC X নতুন প্রি-অর্ডার!</b>\n\n👤 ইউজার: ${userData.name} (<code>${userData.tgChatId}</code>)\n📦 সার্ভিস: ${product.type}\n🔢 পরিমাণ: ${qty}\n💰 মূল্য: ৳${totalPrice}`;
+                await notifyAdminViaTelegram(adminAlert);
+
+                document.getElementById('manual-order-modal').classList.add('hidden');
+                showToast(`প্রি-অর্ডার গ্রহণ করা হয়েছে!`, 'success');
+                
+                const userSnap = await getDoc(doc(db, "users", String(userData.tgChatId)));
+                userData = userSnap.data();
+                updateUI();
+                navigateTo('history-page');
+            } catch(e) {
+                showToast(e.message || "অর্ডার ব্যর্থ হয়েছে", "error");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "Confirm Order";
+            }
+        };
+
+        function showPurchaseSuccessModal(items) {
+            const list = document.getElementById('purchase-success-items-list');
+            document.getElementById('purchase-success-subtitle').textContent = `মোট: ${items.length} টি আইটেম`;
+            
+            list.innerHTML = items.map((item, idx) => `
+                <div class="glass-panel p-2.5 rounded-xl border-white/10 font-mono text-xs space-y-1">
+                    <div class="flex items-center justify-between">
+                        <span class="truncate text-cyan-300 font-bold">${idx + 1}. ${item.mail}</span>
+                        <button onclick="copyToClipboard('${item.mail}', this)" class="p-1 text-cyan-400"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                    </div>
+                    ${item.password ? `
+                    <div class="flex items-center justify-between border-t border-white/5 pt-1 text-gray-400">
+                        <span>${item.password}</span>
+                        <button onclick="copyToClipboard('${item.password}', this)" class="p-1 text-cyan-400"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                    </div>` : ''}
+                </div>
+            `).join('');
+
+            document.getElementById('purchase-success-modal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        window.copyCurrentPurchaseExcelFormat = function() {
+            if (!lastPurchasedItemsBatch || lastPurchasedItemsBatch.length === 0) return showToast("কোনো আইটেম নেই", "info");
+            const text = lastPurchasedItemsBatch.map(item => `${item.mail}\t${item.password || ''}`).join('\n');
+            copyToClipboard(text, null, `এক্সেল ফরমেটে কপি হয়েছে!`);
+        };
+
+        window.sendCurrentPurchaseToBot = async function() {
+            if (!lastPurchasedItemsBatch || lastPurchasedItemsBatch.length === 0) return showToast("কোনো আইটেম নেই", "info");
+            const tgChatId = String(userData.tgChatId);
+            
+            let botText = `📦 <b>AAC X অর্ডারের তালিকা (${lastPurchasedItemsBatch.length} টি):</b>\n\n`;
+            lastPurchasedItemsBatch.forEach((item, idx) => {
+                botText += `${idx+1}. <code>${item.mail}</code>${item.password ? ' | <code>' + item.password + '</code>' : ''}\n`;
+            });
+            await sendTelegramMessage(tgChatId, botText);
+            exportItemsToExcelCustom(lastPurchasedItemsBatch, `AACX_Purchase_${tgChatId}`);
+            showToast("বটে পাঠানো হয়েছে ও এক্সেল তৈরি হয়েছে", "success");
+        };
+
+        async function handleSendBalance() {
+            const recipientId = document.getElementById('send-recipient-id').value.trim();
+            const amount = parseFloat(document.getElementById('send-amount').value);
+
+            if (!recipientId || !amount || amount < 20) {
+                return showToast("সর্বনিম্ন ২০ টাকা পাঠান এবং আইডি দিন", "error");
+            }
+            if (recipientId === String(userData.tgChatId)) {
+                return showToast("নিজের অ্যাকাউন্টে পাঠানো যাবে না", "error");
+            }
+
+            const totalCost = amount * 1.02;
+            const btn = document.getElementById('submit-send-btn');
+            btn.disabled = true;
+            btn.textContent = "Processing...";
+
+            try {
+                await runTransaction(db, async (t) => {
+                    const senderRef = doc(db, "users", String(userData.tgChatId));
+                    const recipientRef = doc(db, "users", String(recipientId));
+
+                    const senderSnap = await t.get(senderRef);
+                    const recipientSnap = await t.get(recipientRef);
+
+                    if (!senderSnap.exists() || senderSnap.data().balance < totalCost) {
+                        throw new Error("পর্যাপ্ত ব্যালেন্স নেই");
+                    }
+                    if (!recipientSnap.exists()) {
+                        throw new Error("প্রাপকের আইডি পাওয়া যায়নি");
+                    }
+
+                    t.update(senderRef, { balance: senderSnap.data().balance - totalCost });
+                    t.update(recipientRef, { balance: increment(amount) });
+
+                    const transferRef = doc(collection(db, "transfers"));
+                    t.set(transferRef, {
+                        fromId: String(userData.tgChatId),
+                        toId: String(recipientId),
+                        amount: amount,
+                        charge: totalCost - amount,
+                        createdAt: serverTimestamp()
+                    });
+                });
+
+                const recMsg = `🎁 <b>AAC X ব্যালেন্স রিসিভ!</b>\n\nপরিমাণ: ৳${amount}\nপ্রেরক: ${userData.name} (<code>${userData.tgChatId}</code>)`;
+                await sendTelegramMessage(recipientId, recMsg);
+
+                showToast("ব্যালেন্স ট্রান্সফার সম্পন্ন!", "success");
+                document.getElementById('send-recipient-id').value = '';
+                document.getElementById('send-amount').value = '';
+
+                const userSnap = await getDoc(doc(db, "users", String(userData.tgChatId)));
+                userData = userSnap.data();
+                updateUI();
+                navigateTo('features-page');
+            } catch(e) {
+                showToast(e.message || "ব্যর্থ হয়েছে", "error");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "Transfer Balance";
+            }
+        }
+
+        window.copyAllOrdersExcelFormat = function() {
+            if (!userPurchasesCache || userPurchasesCache.length === 0) return showToast("কোনো অর্ডার নেই", "info");
+            const text = userPurchasesCache.map(p => `${p.mail}\t${p.password || ''}`).join('\n');
+            copyToClipboard(text, null, `সকল অর্ডার কপি হয়েছে!`);
+        };
+
+        window.sendAllOrdersToBot = async function() {
+            if (!userPurchasesCache || userPurchasesCache.length === 0) return showToast("কোনো অর্ডার নেই", "info");
+            const tgChatId = String(userData.tgChatId);
+
+            let botText = `📦 <b>AAC X সকল অর্ডার (${userPurchasesCache.length} টি):</b>\n\n`;
+            userPurchasesCache.slice(0, 30).forEach((item, idx) => {
+                botText += `${idx+1}. <code>${item.mail}</code>${item.password ? ' | <code>' + item.password + '</code>' : ''}\n`;
+            });
+            await sendTelegramMessage(tgChatId, botText);
+            exportItemsToExcelCustom(userPurchasesCache, `AACX_All_Orders_${tgChatId}`);
+            showToast("বটে পাঠানো হয়েছে ও এক্সেল ডাউনলোড হয়েছে", "success");
+        };
+
+        function exportItemsToExcelCustom(items, filename) {
+            const dataToExport = items.map(p => ({
+                "Sale ID": p.saleId || '',
+                "Service": p.mailType || '',
+                "Email / Credentials": p.mail || '',
+                "Password": p.password || '',
+                "Cost (BDT)": p.cost || 0
+            }));
+            const ws = XLSX.utils.json_to_sheet(dataToExport);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Items");
+            XLSX.writeFile(wb, `${filename}.xlsx`);
+        }
+
+        function startCountdownTimerRoutine() {
+            if (countdownTimerInterval) clearInterval(countdownTimerInterval);
+            countdownTimerInterval = setInterval(() => {
+                const timerElements = document.querySelectorAll('.live-order-countdown');
+                const now = new Date().getTime();
+
+                timerElements.forEach(el => {
+                    const expiryTime = parseInt(el.dataset.expiryTime);
+                    const diff = expiryTime - now;
+
+                    if (diff <= 0) {
+                        el.innerHTML = `<span class="text-rose-400 font-bold font-mono">00:00 (Expired)</span>`;
+                    } else {
+                        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                        const s = Math.floor((diff % (1000 * 60)) / 1000);
+                        el.innerHTML = `<span class="text-amber-400 font-bold font-mono">${m}m ${s < 10 ? '0' : ''}${s}s</span>`;
+                    }
+                });
+            }, 1000);
+        }
+
+        async function checkAndRefundExpiredOrders() {
+            try {
+                const now = new Date();
+                const q = query(collection(db, "manual_orders"), where("status", "==", "pending"));
+                const snap = await getDocs(q);
+
+                snap.docs.forEach(async (docSnap) => {
+                    const po = docSnap.data();
+                    if (po.expiresAt && po.expiresAt.toDate() <= now) {
+                        await runTransaction(db, async (t) => {
+                            const moRef = doc(db, "manual_orders", docSnap.id);
+                            const userRef = doc(db, "users", String(po.userId));
+                            t.update(moRef, { status: "expired_auto_refunded", refundedAt: serverTimestamp() });
+                            t.update(userRef, { balance: increment(parseFloat(po.cost)) });
+                        });
+                    }
+                });
+            } catch(e) {}
+        }
+
+        async function loadOrdersHistory() {
+            const listEl = document.getElementById('orders-purchase-history');
+            listEl.innerHTML = getLoadingHTML();
+            try {
+                const q = query(collection(db, "purchases"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
+                const snap = await getDocs(q);
+
+                if (snap.empty) {
+                    userPurchasesCache = [];
+                    listEl.innerHTML = `<div class="glass-panel p-8 rounded-2xl text-center text-gray-400 font-mono text-xs">আপনার কোনো অর্ডার ইতিহাস নেই।</div>`;
+                    return;
+                }
+
+                userPurchasesCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                userPurchasesCache.sort((a, b) => (b.purchasedAt?.seconds || 0) - (a.purchasedAt?.seconds || 0));
+
+                listEl.innerHTML = userPurchasesCache.map(p => {
+                    const date = p.purchasedAt?.toDate ? p.purchasedAt.toDate().toLocaleString('en-GB') : 'Just now';
+                    const fullCopy = `${p.mail}|${p.password || ''}`;
+
+                    return `
+                    <div class="product-card p-4 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h4 class="font-black text-sm text-white">${p.mailType}</h4>
+                                <p class="text-[10px] text-gray-400 font-mono mt-0.5">${date} • ID: #${p.saleId || 'N/A'}</p>
+                            </div>
+                            <span class="text-sm font-black text-cyan-400 font-mono">৳${p.cost ? p.cost.toFixed(2) : '0.00'}</span>
+                        </div>
+                        <div class="bg-slate-900/80 p-2.5 rounded-xl border border-white/5 space-y-1 font-mono text-xs">
+                            <div class="flex justify-between items-center">
+                                <span class="truncate text-cyan-200">${p.mail || ''}</span>
+                                <button onclick="copyToClipboard('${p.mail}', this)" class="text-cyan-400 p-1"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                            </div>
+                            ${p.password ? `<div class="flex justify-between items-center border-t border-white/5 pt-1">
+                                <span class="text-gray-400">${p.password}</span>
+                                <button onclick="copyToClipboard('${p.password}', this)" class="text-cyan-400 p-1"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                            </div>` : ''}
+                        </div>
+                        <div class="flex gap-2 pt-1 text-xs font-mono">
+                            <button onclick="copyToClipboard('${fullCopy}', this)" class="btn-buy py-2 px-3 rounded-xl font-bold flex-1 text-center">Copy Full</button>
+                            <button onclick="openReplaceModal('${p.saleId || p.id}', '${p.mailType}', ${p.cost || 0})" class="bg-purple-500/10 text-purple-300 border border-purple-500/30 hover:bg-purple-500/20 py-2 px-3 rounded-xl font-bold flex items-center justify-center gap-1">
+                                <i data-lucide="shield-alert" class="w-3.5 h-3.5"></i> Report
+                            </button>
+                        </div>
+                    </div>`;
+                }).join('');
+                lucide.createIcons();
+            } catch (e) {
+                listEl.innerHTML = `<p class="text-center text-rose-400 text-xs">${e.message}</p>`;
+            }
+        }
+
+        async function loadManualOrdersHistory() {
+            const list = document.getElementById('manual-orders-history-list');
+            if(!list) return;
+            list.innerHTML = getLoadingHTML();
+            try {
+                const q = query(collection(db, "manual_orders"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
+                const snap = await getDocs(q);
+                if (snap.empty) return list.innerHTML = '<p class="text-center text-xs text-gray-400 py-2 font-mono">কোনো ম্যানুয়াল অর্ডার হিস্ট্রি নেই</p>';
+
+                const docs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                docs.sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+
+                list.innerHTML = docs.map(p => {
+                    const expiryMillis = p.expiresAt ? p.expiresAt.toDate().getTime() : 0;
+                    const isPending = p.status === 'pending';
+
+                    return `
+                    <div class="glass-panel p-3.5 rounded-xl border-white/5 flex justify-between items-center text-xs">
+                        <div>
+                            <p class="font-bold text-white">${p.mailType} ${p.quantity ? `(${p.quantity} টি)` : ''} - ৳${p.cost}</p>
+                            ${isPending ? `
+                                <div class="flex items-center gap-1 mt-0.5 text-[11px] text-gray-400">
+                                    <span>টাইম বাকি:</span>
+                                    <span class="live-order-countdown" data-order-id="${p.id}" data-expiry-time="${expiryMillis}">Calculating...</span>
+                                </div>
+                            ` : `
+                                <p class="text-[10px] text-gray-500 font-mono">মেয়াদ: ${p.durationMinutes || 30}m</p>
+                            `}
+                        </div>
+                        <span class="font-mono font-bold uppercase text-[10px] px-2 py-1 rounded ${
+                            p.status === 'approved' ? 'bg-emerald-500/20 text-emerald-400' :
+                            p.status === 'pending' ? 'bg-amber-500/20 text-amber-400' : 'bg-rose-500/20 text-rose-400'
+                        }">${p.status.replace(/_/g, ' ')}</span>
+                    </div>`;
+                }).join('');
+                lucide.createIcons();
+            } catch(e) {}
+        }
+
+        async function loadPaymentHistory() {
+            const list = document.getElementById('payment-history-list');
+            if(!list) return;
+            list.innerHTML = getLoadingHTML();
+            try {
+                const q = query(collection(db, "deposits"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
+                const snap = await getDocs(q);
+                if (snap.empty) return list.innerHTML = '<p class="text-center text-xs text-gray-400 font-mono">কোনো ডিপোজিট রেকর্ড নেই</p>';
+                const docs = snap.docs.map(d => d.data());
+                docs.sort((a,b) => (b.requestedAt?.seconds || 0) - (a.requestedAt?.seconds || 0));
+
+                list.innerHTML = docs.map(d => `
+                    <div class="glass-panel p-3 rounded-xl border-white/5 flex justify-between items-center text-xs font-mono">
+                        <div>
+                            <p class="font-bold text-white">${d.method || 'NagorikPay'} (৳${d.amount})</p>
+                            <p class="text-gray-400 text-[10px]">${d.transactionId}</p>
+                        </div>
+                        <span class="font-bold capitalize ${d.status==='approved'?'text-emerald-400':d.status==='rejected'?'text-rose-400':'text-amber-400'}">${d.status}</span>
+                    </div>`).join('');
+            } catch(e) {}
+        }
+
+        async function loadReplaceHistory() {
+            const list = document.getElementById('replace-history-list');
+            if(!list) return;
+            list.innerHTML = getLoadingHTML();
+            try {
+                const q = query(collection(db, "replace_requests"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
+                const snap = await getDocs(q);
+                if (snap.empty) return list.innerHTML = '<p class="text-center text-xs text-gray-400 font-mono">কোনো রিপোর্ট রেকর্ড নেই</p>';
+                const docs = snap.docs.map(d => d.data());
+                docs.sort((a,b) => (b.requestedAt?.seconds || 0) - (a.requestedAt?.seconds || 0));
+
+                list.innerHTML = docs.map(r => `
+                    <div class="glass-panel p-3 rounded-xl border-white/5 flex justify-between items-center text-xs">
+                        <div>
+                            <p class="font-bold text-white">${r.mailType}</p>
+                            <p class="text-gray-400 text-[10px] truncate max-w-[200px]">${r.reason}</p>
+                        </div>
+                        <span class="font-mono font-bold uppercase text-[10px] ${r.status==='approved'?'text-emerald-400':r.status==='rejected'?'text-rose-400':'text-amber-400'}">${r.status}</span>
+                    </div>`).join('');
+            } catch(e) {}
+        }
+
+        async function loadFeaturesPage() {
+            try {
+                const receivedQuery = query(collection(db, "transfers"), where("toId", "==", String(userData.tgChatId)));
+                const sentQuery = query(collection(db, "transfers"), where("fromId", "==", String(userData.tgChatId)));
+                const [recSnap, sentSnap] = await Promise.all([getDocs(receivedQuery), getDocs(sentQuery)]);
+                
+                const recTotal = recSnap.docs.reduce((sum, d) => sum + (d.data().amount || 0), 0);
+                const sentTotal = sentSnap.docs.reduce((sum, d) => sum + (d.data().amount || 0), 0);
+
+                document.getElementById('total-receive-display').textContent = `৳${recTotal.toFixed(2)}`;
+                document.getElementById('total-send-display').textContent = `৳${sentTotal.toFixed(2)}`;
+            } catch(e) {}
+        }
+
+        function loadProfilePage() {
+            if (!userData) return;
+            document.getElementById('profile-name').textContent = userData.name || 'User';
+            document.getElementById('profile-username').textContent = userData.username ? `@${userData.username}` : '';
+            document.getElementById('profile-id').textContent = `ID: ${userData.tgChatId}`;
+            if (userData.photo_url) {
+                document.getElementById('profile-pic').src = userData.photo_url;
+                document.getElementById('profile-pic').classList.remove('hidden');
+                document.getElementById('profile-initials-avatar').classList.add('hidden');
+            } else {
+                document.getElementById('profile-pic').classList.add('hidden');
+                document.getElementById('profile-initials-avatar').classList.remove('hidden');
+                document.getElementById('profile-initials').textContent = (userData.name || 'U').charAt(0).toUpperCase();
+            }
+            renderTelegramTaskUI();
+        }
+
+        window.openReplaceModal = function(saleId, mailType, cost) {
+            document.getElementById('replace-order-id').value = saleId;
+            document.getElementById('replace-mail-type').value = mailType;
+            document.getElementById('replace-mail-cost').value = cost;
+            document.getElementById('replace-reason-text').value = '';
+            document.getElementById('replace-modal').classList.remove('hidden');
+        };
+
+        async function handleSubmitReplace() {
+            const saleId = document.getElementById('replace-order-id').value;
+            const mailType = document.getElementById('replace-mail-type').value;
+            const cost = parseFloat(document.getElementById('replace-mail-cost').value || 0);
+            const reason = document.getElementById('replace-reason-text').value.trim();
+
+            if (!reason) return showToast("সমস্যার বিবরণ লিখুন", "error");
+
+            const btn = document.getElementById('submit-replace-btn');
+            btn.disabled = true;
+            btn.textContent = "Submitting...";
+
+            try {
+                await addDoc(collection(db, "replace_requests"), {
+                    userId: String(userData.tgChatId),
+                    userName: userData.name || 'User',
+                    saleId: saleId,
+                    mailType: mailType,
+                    cost: cost,
+                    reason: reason,
+                    status: "pending",
+                    requestedAt: serverTimestamp()
+                });
+
+                const adminAlert = `⚠️ <b>AAC X রিপ্লেসমেন্ট রিকোয়েস্ট!</b>\n\n👤 ইউজার: ${userData.name} (<code>${userData.tgChatId}</code>)\n📦 সার্ভিস: ${mailType} (#${saleId})\n📝 কারণ: ${reason}`;
+                await notifyAdminViaTelegram(adminAlert);
+
+                document.getElementById('replace-modal').classList.add('hidden');
+                showToast("অনুরোধ সাবমিট হয়েছে", "success");
+                navigateTo('history-page');
+            } catch(e) {
+                showToast("ব্যর্থ হয়েছে", "error");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "Submit Report";
+            }
+        }
+
+        window.toggleSupportWidget = function() {
+            const menu = document.getElementById('support-options-menu');
+            const openIcon = document.getElementById('support-icon-open');
+            const closeIcon = document.getElementById('support-icon-close');
+            const isOpen = menu.classList.contains('open');
+            menu.classList.toggle('open');
+            openIcon.classList.toggle('hidden', !isOpen);
+            closeIcon.classList.toggle('hidden', isOpen);
+            lucide.createIcons();
+        };
+
+        window.copyToClipboard = (text, btn, msg) => {
+            if(!text) return;
+            navigator.clipboard.writeText(text).then(() => {
+                if (btn) {
+                    const old = btn.innerHTML;
+                    btn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i>`;
+                    lucide.createIcons();
+                    setTimeout(() => { btn.innerHTML = old; lucide.createIcons(); }, 1400);
+                } else if(msg) showToast(msg, "success");
+            });
+        };
+
+        function setupEventListeners() {
+            document.getElementById('submit-replace-btn').addEventListener('click', handleSubmitReplace);
+            document.getElementById('submit-send-btn').addEventListener('click', handleSendBalance);
+            document.getElementById('features-receive-btn').addEventListener('click', () => {
+                copyToClipboard(userData.tgChatId, null, `রিসিভ আইডি কপি হয়েছে: ${userData.tgChatId}`);
+            });
+        }
+    </script>
+</body>
 </html>
