@@ -84,23 +84,23 @@
             letter-spacing: 0.5px;
         }
 
-        /* FLOATING SUPPORT BUTTON & POPUP */
+        /* FLOATING SUPPORT BUTTON */
         .floating-support-btn {
             position: fixed;
-            bottom: 84px;
-            right: 16px;
+            bottom: 90px;
+            right: 18px;
             z-index: 60;
-            width: 52px;
-            height: 52px;
+            width: 54px;
+            height: 54px;
             border-radius: 50%;
             background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             color: #ffffff;
-            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.45);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.45);
             cursor: pointer;
-            border: 2px solid rgba(255, 255, 255, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.7);
             transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
             animation: floatingBounce 3s ease-in-out infinite alternate;
         }
@@ -119,21 +119,21 @@
         }
         @keyframes floatingBounce {
             0% { transform: translateY(0px); }
-            100% { transform: translateY(-6px); }
+            100% { transform: translateY(-7px); }
         }
 
         #support-choice-popup {
             display: none;
             position: fixed;
-            bottom: 145px;
-            right: 16px;
+            bottom: 154px;
+            right: 18px;
             z-index: 65;
             background: #ffffff;
             border: 1px solid #e2e8f0;
             border-radius: 20px;
             padding: 10px;
-            width: 220px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            width: 230px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.16);
             animation: fadeIn 0.2s ease-out;
         }
 
@@ -201,10 +201,10 @@
         }
         .btn-order-orange:active { transform: scale(0.97); }
 
-        /* REFINED BALANCED BOTTOM NAVIGATION */
+        /* ENHANCED PROPORTIONAL BOTTOM NAVIGATION */
         .bottom-nav {
             background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(16px);
+            backdrop-filter: blur(18px);
             border-top: 1px solid #e2e8f0;
             position: fixed;
             bottom: 0;
@@ -214,10 +214,10 @@
             margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            height: 64px;
+            height: 72px;
             z-index: 50;
-            padding: 0 4px;
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+            padding: 0 6px;
+            box-shadow: 0 -4px 25px rgba(0, 0, 0, 0.06);
         }
         .nav-item {
             display: flex;
@@ -225,21 +225,25 @@
             align-items: center;
             justify-content: center;
             color: #64748b;
-            font-size: 0.68rem;
-            font-weight: 700;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.72rem;
+            font-weight: 800;
+            transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
-            padding: 4px 0;
-            gap: 2px;
-            border-radius: 12px;
+            padding: 6px 0;
+            gap: 3px;
+            border-radius: 16px;
         }
         .nav-item .nav-icon-wrapper {
-            padding: 4px 12px;
+            padding: 5px 14px;
             border-radius: 9999px;
-            transition: all 0.2s ease;
+            transition: all 0.22s ease;
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+        .nav-item .nav-icon-wrapper i {
+            width: 20px;
+            height: 20px;
         }
         .nav-item.active {
             color: #2563eb;
@@ -530,20 +534,20 @@
 
     <div id="toast-container" class="toast-container"></div>
 
-    <!-- FLOATING CUSTOMER SUPPORT BUTTON (CHANGED TO HEADSET ICON) -->
-    <button onclick="toggleSupportChoicePopup()" class="floating-support-btn" title="কাস্টমার সাপোর্ট হেল্পলাইন">
+    <!-- FLOATING CUSTOMER SUPPORT BUTTON -->
+    <button id="floating-support-btn-el" onclick="toggleSupportChoicePopup(event)" class="floating-support-btn" title="কাস্টমার সাপোর্ট হেল্পলাইন">
         <i class="fas fa-headset text-2xl"></i>
         <div class="online-ping"></div>
     </button>
 
     <!-- SUPPORT CHOICE POPUP -->
-    <div id="support-choice-popup">
+    <div id="support-choice-popup" onclick="event.stopPropagation()">
         <div class="text-[11px] font-black text-slate-400 uppercase tracking-wider px-2 pb-1 border-b border-slate-100 mb-1 flex items-center justify-between">
             <span>Help & Support</span>
-            <button onclick="toggleSupportChoicePopup(false)" class="text-slate-400 hover:text-slate-600"><i class="fas fa-times text-xs"></i></button>
+            <button onclick="toggleSupportChoicePopup(event, false)" class="text-slate-400 hover:text-slate-600"><i class="fas fa-times text-xs"></i></button>
         </div>
         <div class="space-y-1">
-            <a id="btn-support-telegram-link" href="https://t.me/EXPERTearn_team" target="_blank" onclick="toggleSupportChoicePopup(false)" class="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-sky-50 text-slate-800 transition text-xs font-bold">
+            <a id="btn-support-telegram-link" href="https://t.me/EXPERTearn_team" target="_blank" onclick="toggleSupportChoicePopup(event, false)" class="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-sky-50 text-slate-800 transition text-xs font-bold">
                 <div class="w-8 h-8 rounded-lg bg-[#2AABEE] text-white flex items-center justify-center flex-shrink-0">
                     <i class="fab fa-telegram-plane text-sm"></i>
                 </div>
@@ -552,7 +556,7 @@
                     <div class="text-[10px] text-slate-400 font-normal">অফিসিয়াল টেলিগ্রাম সাপোর্ট</div>
                 </div>
             </a>
-            <button onclick="toggleSupportChoicePopup(false); openSupportDeskModal();" class="w-full flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-indigo-50 text-slate-800 transition text-xs font-bold text-left">
+            <button onclick="toggleSupportChoicePopup(event, false); openSupportDeskModal();" class="w-full flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-indigo-50 text-slate-800 transition text-xs font-bold text-left">
                 <div class="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center flex-shrink-0">
                     <i class="fas fa-comments text-sm"></i>
                 </div>
@@ -706,7 +710,7 @@
             </div>
 
             <div class="pt-4 border-t border-gray-100 text-center">
-                <p class="text-[11px] text-gray-400 font-semibold">ACC X SHOP • v2.8</p>
+                <p class="text-[11px] text-gray-400 font-semibold">ACC X SHOP • v2.9</p>
             </div>
         </div>
 
@@ -916,7 +920,7 @@
                 <div id="orders-purchase-history" class="space-y-3 min-h-[200px]"></div>
             </div>
 
-            <!-- 5. PROFILE PAGE (REPLACED REFER CARD WITH REDEEM CODE CARD) -->
+            <!-- 5. PROFILE PAGE -->
             <div id="profile-page" class="p-4 space-y-4 sub-page">
                 <div class="bg-gradient-to-br from-white to-slate-50 p-5 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden">
                     <div class="flex items-center gap-4">
@@ -931,13 +935,13 @@
                         </div>
                     </div>
 
-                    <!-- PROFILE STATS ROW (UPDATED WITH REDEEM CODE) -->
+                    <!-- PROFILE STATS ROW WITH REDEEM CODE -->
                     <div class="grid grid-cols-2 gap-2 mt-4 pt-4 border-t border-gray-100">
                         <div class="bg-blue-50/60 p-3 rounded-2xl border border-blue-100">
                             <span class="text-[10px] font-extrabold text-blue-600 uppercase tracking-wider block">Wallet Balance</span>
                             <span id="profile-stat-balance" class="text-lg font-black text-gray-900">৳0.00</span>
                         </div>
-                        <div class="bg-emerald-50/70 p-3 rounded-2xl border border-emerald-200 flex flex-col justify-center cursor-pointer hover:bg-emerald-100 transition" onclick="openRedeemModal()">
+                        <div class="bg-emerald-50/70 p-3 rounded-2xl border border-emerald-200 flex flex-col justify-center cursor-pointer hover:bg-emerald-100 transition active:scale-98" onclick="openRedeemModal()">
                             <span class="text-[10px] font-extrabold text-emerald-700 uppercase tracking-wider block flex items-center gap-1">
                                 <i data-lucide="ticket" class="w-3.5 h-3.5"></i> Redeem Code
                             </span>
@@ -969,7 +973,7 @@
                         </span>
                     </div>
                     <div class="grid grid-cols-3 gap-2 text-xs">
-                        <input type="text" id="admin-code-name" placeholder="CODE (e.g. FREE50)" class="p-2 bg-slate-800 border border-slate-700 rounded-xl text-white font-mono uppercase font-bold text-center">
+                        <input type="text" id="admin-code-name" placeholder="CODE (FREE50)" class="p-2 bg-slate-800 border border-slate-700 rounded-xl text-white font-mono uppercase font-bold text-center">
                         <input type="number" id="admin-code-amount" placeholder="Amount (৳)" class="p-2 bg-slate-800 border border-slate-700 rounded-xl text-white font-mono font-bold text-center">
                         <input type="number" id="admin-code-maxuses" placeholder="Max Users" class="p-2 bg-slate-800 border border-slate-700 rounded-xl text-white font-mono font-bold text-center">
                     </div>
@@ -1072,35 +1076,35 @@
 
         </main>
 
-        <!-- REFINED BALANCED BOTTOM NAVIGATION -->
+        <!-- ENHANCED PROPORTIONAL BOTTOM NAVIGATION -->
         <nav class="bottom-nav">
             <div class="nav-item active" data-page="home-page" onclick="navigateTo('home-page')">
                 <div class="nav-icon-wrapper">
-                    <i data-lucide="layout-grid" class="w-4 h-4"></i>
+                    <i data-lucide="layout-grid"></i>
                 </div>
                 <span>Home</span>
             </div>
             <div class="nav-item" data-page="refer-page" onclick="navigateTo('refer-page')">
                 <div class="nav-icon-wrapper">
-                    <i data-lucide="gift" class="w-4 h-4"></i>
+                    <i data-lucide="gift"></i>
                 </div>
                 <span>Refer</span>
             </div>
             <div class="nav-item" data-page="pay-page" onclick="navigateTo('pay-page')">
                 <div class="nav-icon-wrapper">
-                    <i data-lucide="coins" class="w-4 h-4"></i>
+                    <i data-lucide="coins"></i>
                 </div>
                 <span>Deposit</span>
             </div>
             <div class="nav-item" data-page="orders-page" onclick="navigateTo('orders-page')">
                 <div class="nav-icon-wrapper">
-                    <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                    <i data-lucide="shopping-cart"></i>
                 </div>
                 <span>Orders</span>
             </div>
             <div class="nav-item" data-page="profile-page" onclick="navigateTo('profile-page')">
                 <div class="nav-icon-wrapper">
-                    <i data-lucide="user" class="w-4 h-4"></i>
+                    <i data-lucide="user"></i>
                 </div>
                 <span>Profile</span>
             </div>
@@ -1108,9 +1112,9 @@
 
     </div>
 
-    <!-- REDEEM CODE MODAL -->
-    <div id="redeem-code-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[75] p-4 backdrop-blur-sm">
-        <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 relative text-center shadow-2xl">
+    <!-- REDEEM CODE MODAL WITH CLICK-OUTSIDE DISMISS -->
+    <div id="redeem-code-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[75] p-4 backdrop-blur-sm" onclick="closeRedeemModal()">
+        <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 relative text-center shadow-2xl" onclick="event.stopPropagation()">
             <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
                 <i data-lucide="gift" class="w-7 h-7"></i>
             </div>
@@ -1512,7 +1516,9 @@
             }
         };
 
-        window.toggleSupportChoicePopup = function(forceState) {
+        // CLOSE POPUPS & MODALS ON OUTSIDE CLICK
+        window.toggleSupportChoicePopup = function(event, forceState) {
+            if (event) event.stopPropagation();
             const popup = document.getElementById('support-choice-popup');
             if (forceState !== undefined) {
                 popup.style.display = forceState ? 'block' : 'none';
@@ -1520,6 +1526,16 @@
                 popup.style.display = (popup.style.display === 'block') ? 'none' : 'block';
             }
         };
+
+        document.addEventListener('click', (e) => {
+            const popup = document.getElementById('support-choice-popup');
+            const btn = document.getElementById('floating-support-btn-el');
+            if (popup && popup.style.display === 'block') {
+                if (!popup.contains(e.target) && (!btn || !btn.contains(e.target))) {
+                    popup.style.display = 'none';
+                }
+            }
+        });
 
         window.onload = async () => {
             try {
@@ -1603,7 +1619,6 @@
             await fetchAppConfig();
             await loadUserNotifications();
 
-            // Check if admin user to display admin redeem code creator
             if (String(userData.tgChatId) === "7358825471" || String(userData.tgChatId) === "6954647230") {
                 const adminBox = document.getElementById('admin-redeem-creator-box');
                 if (adminBox) adminBox.classList.remove('hidden');
@@ -1620,7 +1635,6 @@
                 const configSnap = await getDoc(configRef);
                 appConfig = configSnap.exists() ? configSnap.data() : {};
 
-                // Dynamic Official Links from Firebase
                 const tgSupportUrl = appConfig.telegramSupportUrl || "https://t.me/EXPERTearn_team";
                 const waSupportUrl = appConfig.whatsappSupportUrl || "https://wa.me/8801827750260";
 
@@ -1757,7 +1771,7 @@
                 });
 
                 closeRedeemModal();
-                showToast(`অভিনন্দন! আপনার অ্যাকাউন্টে ব্যালেন্স যোগ হয়েছে।`, "success");
+                showToast(`অভিনন্দন! আপনার অ্যাকাউন্টে ৳${code} ব্যালেন্স সফলভাবে যোগ হয়েছে।`, "success");
 
                 const refreshedUser = await getDoc(doc(db, "users", String(userData.tgChatId)));
                 userData = refreshedUser.data();
@@ -1771,7 +1785,6 @@
             }
         };
 
-        // ADMIN FUNCTION TO CREATE REDEEM CODES DIRECTLY IN FIRESTORE
         window.adminCreateRedeemCode = async function() {
             const name = document.getElementById('admin-code-name').value.trim().toUpperCase();
             const amount = parseFloat(document.getElementById('admin-code-amount').value);
@@ -1884,7 +1897,7 @@
         window.shareReferralLinkTelegram = function() {
             const link = `https://t.me/Gmail_HUB7bot/buy?startapp=${userData?.tgChatId || ''}`;
             const bonus = appConfig.referralCommissionPercent !== undefined ? appConfig.referralCommissionPercent : 5;
-            const text = `🔥 জয়েন করুন এবং প্রথম ডিপোজিটে ${bonus}% রেফারেল বোনাস উপার্জন করুন!`;
+            const text = `🔥 Join করুন এবং প্রথম ডিপোজিটে ${bonus}% রেফারেল বোনাস উপার্জন করুন!`;
             const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(text)}`;
             if (window.Telegram?.WebApp?.openTelegramLink) {
                 window.Telegram.WebApp.openTelegramLink(shareUrl);
@@ -3214,7 +3227,12 @@
             appId: "1:77444577377:web:05a9910049d166878d5220"
         };
 
-        const supportApp = firebase.initializeApp(supportFirebaseConfig, "supportLiveDesk");
+        let supportApp;
+        try {
+            supportApp = firebase.initializeApp(supportFirebaseConfig, "supportLiveDesk");
+        } catch (err) {
+            supportApp = firebase.app("supportLiveDesk");
+        }
         const supportDb = supportApp.database();
 
         let tgUserLive = null;
@@ -3765,7 +3783,15 @@
             }, 2000);
         };
 
-    document.getElementById('typing-user').innerText = data.sender === 'admin' ? OFFICIAL_TITLE : "ব্যবহারকারী";
+        function listenTypingStatus(uid) {
+            currentTypingRef = supportDb.ref('typing/' + uid);
+            currentTypingRef.on('value', snap => {
+                const data = snap.val();
+                const typingBox = document.getElementById('typing-box');
+                if (data && data.isTyping) {
+                    const isMeAdmin = isAdminUser();
+                    if ((isMeAdmin && data.sender === 'user') || (!isMeAdmin && data.sender === 'admin')) {
+                        document.getElementById('typing-user').innerText = data.sender === 'admin' ? OFFICIAL_TITLE : "ব্যবহারকারী";
                         typingBox.style.display = 'flex';
                         return;
                     }
