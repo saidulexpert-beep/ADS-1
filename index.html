@@ -75,7 +75,6 @@
             background: rgba(255, 255, 255, 0.22);
         }
 
-        /* STYLISH BRAND TEXT */
         .brand-text-styled {
             font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
             background: linear-gradient(90deg, #ffffff 0%, #93c5fd 50%, #60a5fa 100%);
@@ -85,7 +84,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* ================= FLOATING SUPPORT ACTION BUTTON (ON EVERY PAGE) ================= */
         .floating-support-btn {
             position: fixed;
             bottom: 82px;
@@ -187,7 +185,6 @@
         }
         .btn-order-orange:active { transform: scale(0.97); }
 
-        /* BOTTOM NAV */
         .bottom-nav {
             background: rgba(255, 255, 255, 0.96);
             backdrop-filter: blur(14px);
@@ -235,7 +232,6 @@
             transform: translateY(-2px);
         }
         
-        /* QUICK AMOUNT PILLS */
         .quick-amount-pill {
             background: #f8fafc;
             border: 1.5px solid #e2e8f0;
@@ -283,7 +279,6 @@
             outline: none;
         }
 
-        /* ================= NEW REVOLVING ORBIT LOADER DESIGN ================= */
         #loader {
             background: radial-gradient(circle at center, #0a1128 0%, #030712 100%);
             position: fixed;
@@ -303,8 +298,6 @@
             align-items: center;
             justify-content: center;
         }
-
-        /* Rotating Orbit Path that spins all icons smoothly */
         .orbiting-track {
             position: absolute;
             width: 230px;
@@ -317,8 +310,6 @@
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
-
-        /* Inner static soft ring */
         .orbit-inner-glow {
             position: absolute;
             width: 165px;
@@ -327,8 +318,6 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: inset 0 0 25px rgba(37, 99, 235, 0.2);
         }
-
-        /* Each orbital item positioned on the rotating track */
         .orbit-item {
             position: absolute;
             width: 40px;
@@ -342,23 +331,19 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-            /* Counter-rotate icons so they stay upright while revolving */
             animation: counterSpin 14s linear infinite;
         }
         @keyframes counterSpin {
             from { transform: rotate(0deg); }
             to { transform: rotate(-360deg); }
         }
+        .orbit-pos-1 { top: 0%; left: 50%; }
+        .orbit-pos-2 { top: 25%; left: 93.3%; }
+        .orbit-pos-3 { top: 75%; left: 93.3%; }
+        .orbit-pos-4 { top: 100%; left: 50%; }
+        .orbit-pos-5 { top: 75%; left: 6.7%; }
+        .orbit-pos-6 { top: 25%; left: 6.7%; }
 
-        /* Specific positions around the 230px circle */
-        .orbit-pos-1 { top: 0%; left: 50%; }              /* Top - Gmail */
-        .orbit-pos-2 { top: 25%; left: 93.3%; }          /* Top Right - Outlook */
-        .orbit-pos-3 { top: 75%; left: 93.3%; }          /* Bottom Right - Discord */
-        .orbit-pos-4 { top: 100%; left: 50%; }            /* Bottom - X */
-        .orbit-pos-5 { top: 75%; left: 6.7%; }            /* Bottom Left - Yahoo */
-        .orbit-pos-6 { top: 25%; left: 6.7%; }            /* Top Left - Telegram */
-
-        /* CENTER BRAND: 100% CIRCULAR WITH CLEAN GMAIL LOGO & STATIC */
         .center-circle-brand {
             width: 110px;
             height: 110px;
@@ -373,7 +358,6 @@
             z-index: 10;
         }
 
-        /* SIDE MENU DRAWER */
         #side-drawer-overlay {
             background: rgba(15, 23, 42, 0.6);
             backdrop-filter: blur(4px);
@@ -433,7 +417,7 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* ================= FULL INTEGRATED TELEGRAM SUPPORT DESK CSS ================= */
+        /* SUPPORT DESK STYLES */
         #support-desk-overlay {
             position: fixed;
             inset: 0;
@@ -456,7 +440,6 @@
             from { transform: translateY(100%); }
             to { transform: translateY(0); }
         }
-
         .tg-top-bar {
             background: var(--tg-surface);
             color: #fff;
@@ -469,498 +452,107 @@
             z-index: 10;
             flex-shrink: 0;
         }
-        .tg-back-btn { 
-            background: none; 
-            border: none; 
-            color: #fff; 
-            font-size: 1.25rem; 
-            cursor: pointer; 
-            padding: 6px; 
-            transition: transform .2s;
-        }
-        .tg-back-btn:active { transform: scale(0.9); }
-        .tg-chat-user { 
-            display: flex; 
-            align-items: center; 
-            gap: 12px; 
-            flex: 1; 
-            overflow: hidden;
-            cursor: pointer;
-        }
-        .tg-avatar-wrap {
-            position: relative;
-            flex-shrink: 0;
-        }
-        .tg-avatar-wrap img { 
-            width: 44px; 
-            height: 44px; 
-            border-radius: 50%; 
-            object-fit: cover; 
-            border: 2px solid var(--tg-blue); 
-            display: block;
-            background: #111;
-        }
-        .online-badge {
-            width: 11px;
-            height: 11px;
-            background: var(--online);
-            border: 2px solid var(--tg-surface);
-            border-radius: 50%;
-            position: absolute;
-            bottom: 0;
-            right: 0;
-        }
-        .user-text-info {
-            flex: 1;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-        .user-text-info h4 { 
-            font-size: 0.95rem; 
-            font-weight: 700; 
-            color: #fff;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .tg-verified-svg {
-            width: 18px;
-            height: 18px;
-            display: inline-block;
-            vertical-align: middle;
-            flex-shrink: 0;
-        }
-        .user-text-info p { 
-            font-size: 0.72rem; 
-            color: var(--tg-blue); 
-            font-weight: 600; 
-        }
-        .btn-complete-ticket {
-            display: none;
-            background: linear-gradient(135deg, #00b894, #00cec9);
-            color: #fff;
-            border: none;
-            padding: 7px 12px;
-            border-radius: 12px;
-            font-size: 0.72rem;
-            font-weight: 700;
-            cursor: pointer;
-            align-items: center;
-            gap: 5px;
-            box-shadow: 0 3px 10px rgba(0, 184, 148, 0.35);
-            transition: transform 0.2s;
-            flex-shrink: 0;
-        }
-        .btn-complete-ticket:active { transform: scale(0.95); }
-        .btn-manage-links {
-            display: none;
-            background: rgba(255,255,255,0.08);
-            border: 1px solid var(--chat-border);
-            color: #fff;
-            padding: 7px 10px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            cursor: pointer;
-            align-items: center;
-            gap: 5px;
-        }
-        .search-box {
-            padding: 10px 14px;
-            background: var(--tg-surface);
-            border-bottom: 1px solid var(--chat-border);
-            display: none;
-            flex-shrink: 0;
-        }
-        .search-box input {
-            width: 100%;
-            padding: 9px 14px;
-            border-radius: 12px;
-            background: #0e1621;
-            border: 1px solid var(--chat-border);
-            color: #fff;
-            outline: none;
-            font-size: 0.85rem;
-        }
-        #admin-inbox-view {
-            display: none;
-            flex-direction: column;
-            flex: 1;
-            overflow-y: auto;
-            padding: 14px;
-            gap: 10px;
-        }
-        .inbox-card {
-            background: var(--tg-surface-card);
-            border-radius: 16px;
-            padding: 12px 14px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border: 1px solid var(--chat-border);
-            cursor: pointer;
-            transition: all .2s;
-        }
-        .inbox-card:active { background: #22304d; transform: scale(0.98); }
-        .inbox-left { 
-            display: flex; 
-            align-items: center; 
-            gap: 12px; 
-            flex: 1;
-            overflow: hidden;
-        }
-        .inbox-left img { 
-            width: 44px; 
-            height: 44px; 
-            border-radius: 50%; 
-            object-fit: cover; 
-            border: 1.5px solid var(--primary);
-            flex-shrink: 0;
-        }
+        .tg-back-btn { background: none; border: none; color: #fff; font-size: 1.25rem; cursor: pointer; padding: 6px; }
+        .tg-chat-user { display: flex; align-items: center; gap: 12px; flex: 1; overflow: hidden; cursor: pointer; }
+        .tg-avatar-wrap { position: relative; flex-shrink: 0; }
+        .tg-avatar-wrap img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid var(--tg-blue); display: block; background: #111; }
+        .online-badge { width: 11px; height: 11px; background: var(--online); border: 2px solid var(--tg-surface); border-radius: 50%; position: absolute; bottom: 0; right: 0; }
+        .user-text-info { flex: 1; overflow: hidden; white-space: nowrap; }
+        .user-text-info h4 { font-size: 0.95rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 6px; }
+        .tg-verified-svg { width: 18px; height: 18px; display: inline-block; vertical-align: middle; flex-shrink: 0; }
+        .user-text-info p { font-size: 0.72rem; color: var(--tg-blue); font-weight: 600; }
+        .btn-complete-ticket { display: none; background: linear-gradient(135deg, #00b894, #00cec9); color: #fff; border: none; padding: 7px 12px; border-radius: 12px; font-size: 0.72rem; font-weight: 700; cursor: pointer; align-items: center; gap: 5px; flex-shrink: 0; }
+        .btn-manage-links { display: none; background: rgba(255,255,255,0.08); border: 1px solid var(--chat-border); color: #fff; padding: 7px 10px; border-radius: 12px; font-size: 0.75rem; cursor: pointer; align-items: center; gap: 5px; }
+        .search-box { padding: 10px 14px; background: var(--tg-surface); border-bottom: 1px solid var(--chat-border); display: none; flex-shrink: 0; }
+        .search-box input { width: 100%; padding: 9px 14px; border-radius: 12px; background: #0e1621; border: 1px solid var(--chat-border); color: #fff; outline: none; font-size: 0.85rem; }
+        #admin-inbox-view { display: none; flex-direction: column; flex: 1; overflow-y: auto; padding: 14px; gap: 10px; }
+        .inbox-card { background: var(--tg-surface-card); border-radius: 16px; padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; border: 1px solid var(--chat-border); cursor: pointer; }
+        .inbox-left { display: flex; align-items: center; gap: 12px; flex: 1; overflow: hidden; }
+        .inbox-left img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--primary); flex-shrink: 0; }
         .inbox-meta { flex: 1; overflow: hidden; }
-        .inbox-meta h4 { font-size: 0.9rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 6px; }
-        .inbox-meta p { 
-            font-size: 0.74rem; 
-            color: var(--text-muted); 
-            white-space: nowrap; 
-            overflow: hidden; 
-            text-overflow: ellipsis; 
-            margin-top: 2px;
-        }
-        .unread-pill {
-            background: var(--danger);
-            color: #fff;
-            font-size: 0.68rem;
-            font-weight: 800;
-            padding: 3px 8px;
-            border-radius: 20px;
-            margin-left: 8px;
-        }
-        .tg-chat-body {
-            flex: 1;
-            padding: 16px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            background: radial-gradient(circle at 50% 20%, #172435 0%, #0a1017 100%);
-        }
-        .msg-row {
-            display: flex;
-            align-items: flex-end;
-            gap: 8px;
-            width: 100%;
-        }
+        .inbox-meta h4 { font-size: 0.9rem; font-weight: 700; color: #fff; }
+        .inbox-meta p { font-size: 0.74rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+        .unread-pill { background: var(--danger); color: #fff; font-size: 0.68rem; font-weight: 800; padding: 3px 8px; border-radius: 20px; margin-left: 8px; }
+        .tg-chat-body { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; background: radial-gradient(circle at 50% 20%, #172435 0%, #0a1017 100%); }
+        .msg-row { display: flex; align-items: flex-end; gap: 8px; width: 100%; }
         .msg-row.admin { justify-content: flex-start; }
         .msg-row.user { justify-content: flex-end; }
-        .msg-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            object-fit: cover;
-            flex-shrink: 0;
-            border: 1px solid rgba(255,255,255,0.15);
-            background: #111;
-        }
-        .msg-bubble {
-            max-width: 86%;
-            padding: 11px 14px;
-            border-radius: 16px;
-            font-size: 0.86rem;
-            line-height: 1.45;
-            color: #fff;
-            position: relative;
-            word-break: break-word;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-        }
-        .msg-row.admin .msg-bubble {
-            background: var(--chat-admin);
-            border-bottom-left-radius: 4px;
-            border: 1px solid var(--chat-border);
-        }
-        .msg-row.user .msg-bubble {
-            background: var(--chat-my);
-            border-bottom-right-radius: 4px;
-        }
-        .msg-time {
-            font-size: 0.65rem;
-            color: rgba(255,255,255,0.5);
-            text-align: right;
-            margin-top: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 4px;
-        }
+        .msg-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.15); background: #111; }
+        .msg-bubble { max-width: 86%; padding: 11px 14px; border-radius: 16px; font-size: 0.86rem; line-height: 1.45; color: #fff; position: relative; word-break: break-word; }
+        .msg-row.admin .msg-bubble { background: var(--chat-admin); border-bottom-left-radius: 4px; border: 1px solid var(--chat-border); }
+        .msg-row.user .msg-bubble { background: var(--chat-my); border-bottom-right-radius: 4px; }
+        .msg-time { font-size: 0.65rem; color: rgba(255,255,255,0.5); text-align: right; margin-top: 5px; display: flex; align-items: center; justify-content: flex-end; gap: 4px; }
         .tick-blue { color: #54a0ff; font-weight: 700; }
-        .rating-box-wrap {
-            margin-top: 10px;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px dashed rgba(255, 255, 255, 0.25);
-            border-radius: 14px;
-            padding: 12px;
-            text-align: center;
-        }
-        .rating-stars-row {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 10px 0 4px 0;
-        }
-        .rating-star-btn {
-            font-size: 1.65rem;
-            color: #636e72;
-            cursor: pointer;
-            transition: transform 0.15s ease, color 0.15s ease;
-        }
-        .rating-star-btn:hover {
-            color: var(--star-active);
-            transform: scale(1.2);
-        }
-        .community-hub-card {
-            margin-top: 8px;
-            background: linear-gradient(145deg, rgba(23, 33, 43, 0.95), rgba(14, 22, 33, 0.95));
-            border: 1px solid rgba(42, 171, 238, 0.3);
-            border-radius: 16px;
-            padding: 14px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-        }
-        .community-hub-title {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            margin-bottom: 8px;
-            padding-bottom: 6px;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-        }
-        .community-hub-desc {
-            font-size: 0.8rem;
-            color: #dfe6e9;
-            line-height: 1.5;
-            margin-bottom: 12px;
-        }
-        .community-links-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .community-link-btn {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 9px 12px;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #fff;
-            text-decoration: none;
-            font-size: 0.82rem;
-            font-weight: 600;
-            transition: all .2s ease;
-        }
-        .community-link-btn:hover, .community-link-btn:active {
-            background: rgba(42, 171, 238, 0.18);
-            border-color: var(--tg-blue);
-            transform: translateY(-1px);
-        }
-        .community-link-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .community-link-left i {
-            font-size: 1.15rem;
-            width: 22px;
-            text-align: center;
-        }
-        .typing-bar {
-            padding: 4px 16px;
-            font-size: 0.72rem;
-            color: var(--tg-blue);
-            font-weight: 600;
-            display: none;
-            background: var(--tg-surface);
-            align-items: center;
-            gap: 6px;
-            flex-shrink: 0;
-        }
-        .typing-dots span {
-            animation: blink 1.2s infinite;
-            display: inline-block;
-        }
+        .rating-box-wrap { margin-top: 10px; background: rgba(0, 0, 0, 0.4); border: 1px dashed rgba(255, 255, 255, 0.25); border-radius: 14px; padding: 12px; text-align: center; }
+        .rating-stars-row { display: flex; justify-content: center; gap: 10px; margin: 10px 0 4px 0; }
+        .rating-star-btn { font-size: 1.65rem; color: #636e72; cursor: pointer; }
+        .rating-star-btn:hover { color: var(--star-active); transform: scale(1.2); }
+        .community-hub-card { margin-top: 8px; background: linear-gradient(145deg, rgba(23, 33, 43, 0.95), rgba(14, 22, 33, 0.95)); border: 1px solid rgba(42, 171, 238, 0.3); border-radius: 16px; padding: 14px; }
+        .community-hub-title { font-size: 0.85rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 6px; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .community-hub-desc { font-size: 0.8rem; color: #dfe6e9; line-height: 1.5; margin-bottom: 12px; }
+        .community-links-grid { display: flex; flex-direction: column; gap: 8px; }
+        .community-link-btn { display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; font-size: 0.82rem; font-weight: 600; }
+        .community-link-btn:hover { background: rgba(42, 171, 238, 0.18); border-color: var(--tg-blue); }
+        .community-link-left { display: flex; align-items: center; gap: 10px; }
+        .typing-bar { padding: 4px 16px; font-size: 0.72rem; color: var(--tg-blue); font-weight: 600; display: none; background: var(--tg-surface); align-items: center; gap: 6px; flex-shrink: 0; }
+        .typing-dots span { animation: blink 1.2s infinite; display: inline-block; }
         .typing-dots span:nth-child(2) { animation-delay: .2s; }
         .typing-dots span:nth-child(3) { animation-delay: .4s; }
         @keyframes blink { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
+        .tg-bottom-bar { background: var(--tg-surface); padding: 8px 12px; display: flex; align-items: center; gap: 8px; border-top: 1px solid var(--chat-border); flex-shrink: 0; }
+        .tg-input { flex: 1; min-width: 0; padding: 10px 16px; border-radius: 22px; border: 1px solid rgba(255,255,255,0.12); outline: none; font-size: 0.88rem; background: #0e1621; color: #fff; }
+        .tg-send-btn { background: var(--tg-blue); color: #fff; width: 40px; height: 40px; border-radius: 50%; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        #user-status-banner { display: none; padding: 10px 16px; background: #2c1214; color: #ff7675; font-size: 0.8rem; text-align: center; font-weight: 600; border-top: 1px solid rgba(255, 118, 117, 0.2); }
 
-        .tg-bottom-bar {
-            background: var(--tg-surface);
-            padding: 8px 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border-top: 1px solid var(--chat-border);
-            flex-shrink: 0;
-        }
-        .tg-input {
-            flex: 1;
-            min-width: 0;
-            padding: 10px 16px;
-            border-radius: 22px;
-            border: 1px solid rgba(255,255,255,0.12);
-            outline: none;
-            font-size: 0.88rem;
-            background: #0e1621;
-            color: #fff;
-            transition: border-color .2s;
-        }
-        .tg-input:focus { border-color: var(--tg-blue); }
-        .tg-send-btn {
-            background: var(--tg-blue);
-            color: #fff;
-            width: 40px;
-            height: 40px;
-            min-width: 40px;
-            border-radius: 50%;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1rem;
-            box-shadow: 0 4px 12px rgba(42, 171, 238, 0.3);
-            transition: transform .15s, background .2s;
-            flex-shrink: 0;
-        }
-        .tg-send-btn:active { transform: scale(0.92); }
-
-        #user-status-banner {
-            display: none;
-            padding: 10px 16px;
-            background: #2c1214;
-            color: #ff7675;
-            font-size: 0.8rem;
-            text-align: center;
-            font-weight: 600;
-            border-top: 1px solid rgba(255, 118, 117, 0.2);
-        }
-
-        /* SUPPORT DESK MODALS */
-        .support-modal-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.75);
-            backdrop-filter: blur(6px);
-            z-index: 10000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .support-modal-box {
-            background: var(--tg-surface);
-            border: 1px solid var(--chat-border);
-            border-radius: 20px;
-            width: 100%;
-            max-width: 400px;
-            max-height: 85vh;
-            overflow-y: auto;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            color: #fff;
-        }
+        .support-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(6px); z-index: 10000; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .support-modal-box { background: var(--tg-surface); border: 1px solid var(--chat-border); border-radius: 20px; width: 100%; max-width: 400px; max-height: 85vh; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; color: #fff; }
     </style>
 </head>
 <body class="max-w-md mx-auto relative bg-[#f8fafc] min-h-screen text-[#0f172a]">
 
     <div id="toast-container" class="toast-container"></div>
 
-    <!-- ================= FLOATING TELEGRAM LIVE SUPPORT BUTTON (EVERYWHERE ON SHOP) ================= -->
+    <!-- FLOATING TELEGRAM LIVE SUPPORT BUTTON -->
     <button onclick="openSupportDeskModal()" class="floating-support-btn" title="লাইভ কাস্টমার সাপোর্ট">
         <i class="fab fa-telegram-plane text-2xl"></i>
         <div class="online-ping"></div>
     </button>
 
-    <!-- ================= ADVANCED ECOSYSTEM LOADER (CIRCULAR GMAIL WITH ORBITING ICONS) ================= -->
+    <!-- ADVANCED ECOSYSTEM LOADER -->
     <div id="loader" class="select-none text-white">
         <div class="loader-hub mb-3">
-            <!-- INNER STATIC GLOW -->
             <div class="orbit-inner-glow"></div>
-
-            <!-- ROTATING ORBIT TRACK: TELEGRAM, EMAILS & SOCIAL ICONS REVOLVING SMOOTHLY -->
             <div class="orbiting-track">
-                <!-- 1. TOP: GMAIL -->
                 <div class="orbit-item orbit-pos-1">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none">
-                        <path d="M20 4H4C2.9 4 2 4.9 2 6L12 13L22 6C22 4.9 21.1 4 20 4Z" fill="#EA4335"/>
-                        <path d="M2 6V18C2 19.1 2.9 20 4 20H6V9.5L2 6.5V6Z" fill="#4285F4"/>
-                        <path d="M22 6V18C22 19.1 21.1 20 20 20H18V9.5L22 6.5V6Z" fill="#34A853"/>
-                        <path d="M6 20H18V13.5L12 9L6 13.5V20Z" fill="#FBBC05" opacity="0.4"/>
-                    </svg>
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none"><path d="M20 4H4C2.9 4 2 4.9 2 6L12 13L22 6C22 4.9 21.1 4 20 4Z" fill="#EA4335"/><path d="M2 6V18C2 19.1 2.9 20 4 20H6V9.5L2 6.5V6Z" fill="#4285F4"/><path d="M22 6V18C22 19.1 21.1 20 20 20H18V9.5L22 6.5V6Z" fill="#34A853"/><path d="M6 20H18V13.5L12 9L6 13.5V20Z" fill="#FBBC05" opacity="0.4"/></svg>
                 </div>
-
-                <!-- 2. TOP RIGHT: OUTLOOK -->
                 <div class="orbit-item orbit-pos-2">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none">
-                        <rect x="3" y="4" width="18" height="16" rx="3" fill="#0078D4"/>
-                        <path d="M3 7L12 13L21 7" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/>
-                    </svg>
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="3" fill="#0078D4"/><path d="M3 7L12 13L21 7" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/></svg>
                 </div>
-
-                <!-- 3. BOTTOM RIGHT: DISCORD -->
                 <div class="orbit-item orbit-pos-3">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="#5865F2">
-                        <path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.894.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
-                    </svg>
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="#5865F2"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.894.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
                 </div>
-
-                <!-- 4. BOTTOM: X / TWITTER -->
                 <div class="orbit-item orbit-pos-4">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="#ffffff">
-                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                    </svg>
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="#ffffff"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                 </div>
-
-                <!-- 5. BOTTOM LEFT: YAHOO MAIL -->
                 <div class="orbit-item orbit-pos-5">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="#6001D2">
-                        <rect width="24" height="24" rx="12" fill="#6001D2"/>
-                        <path d="M7 6L11 13V18H13V13L17 6H14.8L12 11.2L9.2 6H7Z" fill="#ffffff"/>
-                    </svg>
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="#6001D2"><rect width="24" height="24" rx="12" fill="#6001D2"/><path d="M7 6L11 13V18H13V13L17 6H14.8L12 11.2L9.2 6H7Z" fill="#ffffff"/></svg>
                 </div>
-
-                <!-- 6. TOP LEFT: TELEGRAM -->
                 <div class="orbit-item orbit-pos-6">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="#29B6F6">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .37z"/>
-                    </svg>
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="#29B6F6"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .37z"/></svg>
                 </div>
             </div>
-
-            <!-- CENTER BRAND BADGE: 100% CIRCLE, NON-ROTATING, WITH AUTHENTIC GMAIL EMBLEM -->
             <div class="center-circle-brand">
                 <div class="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center mb-1 shadow-inner border border-white/20">
-                    <!-- Standard Gmail Icon inside -->
-                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none">
-                        <path d="M20 4H4C2.9 4 2 4.9 2 6L12 13L22 6C22 4.9 21.1 4 20 4Z" fill="#EA4335"/>
-                        <path d="M2 6V18C2 19.1 2.9 20 4 20H6V9.5L2 6.5V6Z" fill="#4285F4"/>
-                        <path d="M22 6V18C22 19.1 21.1 20 20 20H18V9.5L22 6.5V6Z" fill="#34A853"/>
-                        <path d="M6 20H18V13.5L12 9L6 13.5V20Z" fill="#FBBC05" opacity="0.3"/>
-                    </svg>
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none"><path d="M20 4H4C2.9 4 2 4.9 2 6L12 13L22 6C22 4.9 21.1 4 20 4Z" fill="#EA4335"/><path d="M2 6V18C2 19.1 2.9 20 4 20H6V9.5L2 6.5V6Z" fill="#4285F4"/><path d="M22 6V18C22 19.1 21.1 20 20 20H18V9.5L22 6.5V6Z" fill="#34A853"/><path d="M6 20H18V13.5L12 9L6 13.5V20Z" fill="#FBBC05" opacity="0.3"/></svg>
                 </div>
                 <span class="font-black text-xs tracking-wider brand-text-styled leading-none">ACC X</span>
                 <span class="text-[8.5px] font-extrabold text-sky-200 uppercase tracking-widest mt-0.5">SHOP</span>
             </div>
         </div>
-
         <div class="text-center space-y-1 z-10 mt-2">
             <h1 class="font-black text-2xl tracking-widest text-white brand-text-styled">ACC X SHOP</h1>
             <p class="text-[11px] font-bold text-blue-400 tracking-wider uppercase">Verified Emails & Digital Accounts</p>
-            
             <div class="flex items-center justify-center gap-2 pt-3">
                 <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
                 <span class="text-xs text-slate-300 font-medium">Connecting Secure Server...</span>
@@ -971,15 +563,13 @@
     <!-- MAIN APP WRAPPER -->
     <div id="app-container" class="min-h-screen flex-col main-page">
 
-        <!-- HEADER (MENU ON LEFT, STATIC CLEAN CIRCLE ICON & STYLISH BRAND TEXT) -->
+        <!-- HEADER -->
         <header class="main-header flex items-center justify-between">
             <div class="flex items-center gap-2.5">
-                <!-- HEADER MENU (HAMBURGER) ICON ON LEFT -->
                 <button onclick="toggleSideMenu(true)" class="bg-white/10 p-2 rounded-xl text-white hover:bg-white/20 active:scale-95 transition shadow-sm" title="মেনু">
                     <i data-lucide="menu" class="w-5 h-5"></i>
                 </button>
 
-                <!-- BRAND LOGO: CLEAN STATIC CIRCLE WITH GMAIL EMBLEM -->
                 <div class="flex items-center gap-2.5 cursor-pointer" onclick="navigateTo('home-page')">
                     <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-blue-600 via-indigo-600 to-sky-500 flex items-center justify-center shadow-md border border-white/30">
                         <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none">
@@ -996,13 +586,11 @@
             </div>
 
             <div class="flex items-center gap-2">
-                <!-- WALLET PILL -->
                 <div id="header-balance-area" class="wallet-pill flex items-center gap-1.5 cursor-pointer" onclick="navigateTo('pay-page')" title="ডিপোজিট">
                     <i data-lucide="wallet" class="w-3.5 h-3.5 text-blue-200"></i>
                     <span id="header-coin-balance" class="font-black text-xs text-white">৳0.00</span>
                 </div>
 
-                <!-- NOTIFICATION BUTTON -->
                 <button id="header-notif-btn" onclick="toggleNotificationModal()" class="relative bg-white/10 p-2 rounded-xl text-white hover:bg-white/20 transition shadow-sm" title="নোটিফিকেশন">
                     <i data-lucide="bell" class="w-4 h-4"></i>
                     <span id="notif-badge" class="absolute -top-1 -right-1 bg-red-500 border border-white text-white text-[9px] font-black px-1.5 py-0.2 rounded-full hidden animate-pulse shadow-sm">0</span>
@@ -1010,7 +598,7 @@
             </div>
         </header>
 
-        <!-- SIDE MENU DRAWER (FROM LEFT) -->
+        <!-- SIDE MENU DRAWER -->
         <div id="side-drawer-overlay" class="hidden fixed inset-0 z-[80]" onclick="toggleSideMenu(false)"></div>
         <div id="side-drawer" class="fixed top-0 bottom-0 w-72 bg-white z-[85] p-5 flex flex-col shadow-2xl overflow-y-auto">
             <div class="flex items-center justify-between pb-4 border-b border-gray-100 mb-4">
@@ -1026,10 +614,14 @@
             </div>
 
             <div class="space-y-2 flex-grow">
-                <div class="text-[11px] font-extrabold text-gray-400 uppercase tracking-wider px-2 pt-1">Support Desk</div>
+                <div class="text-[11px] font-extrabold text-gray-400 uppercase tracking-wider px-2 pt-1">Support & Rewards</div>
                 <button onclick="toggleSideMenu(false); openSupportDeskModal();" class="w-full flex items-center gap-3 p-3 rounded-2xl bg-sky-50 text-sky-700 hover:bg-sky-100 transition font-bold text-xs border border-sky-200">
                     <div class="p-2 rounded-xl bg-[#2AABEE] text-white"><i class="fab fa-telegram-plane"></i></div>
                     <span>লাইভ কাস্টমার সাপোর্ট</span>
+                </button>
+                <button onclick="toggleSideMenu(false); navigateTo('refer-page');" class="w-full flex items-center gap-3 p-3 rounded-2xl bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition font-bold text-xs border border-indigo-200">
+                    <div class="p-2 rounded-xl bg-indigo-600 text-white"><i data-lucide="gift" class="w-4 h-4"></i></div>
+                    <span>রেফার অ্যান্ড আর্ন (Refer & Earn)</span>
                 </button>
 
                 <div class="text-[11px] font-extrabold text-gray-400 uppercase tracking-wider px-2 pt-2">Wallet & Funds</div>
@@ -1071,7 +663,7 @@
         <!-- MAIN CONTENT AREA -->
         <main class="flex-grow pb-28">
 
-            <!-- HOME PAGE -->
+            <!-- 1. HOME PAGE -->
             <div id="home-page" class="p-4 space-y-4 sub-page">
                 <div class="grid grid-cols-3 gap-2" id="category-filter-grid"></div>
 
@@ -1089,7 +681,83 @@
                 </div>
             </div>
 
-            <!-- DEPOSIT PAGE -->
+            <!-- 2. REFERRAL DASHBOARD PAGE -->
+            <div id="refer-page" class="p-4 space-y-4 sub-page">
+                <div class="bg-gradient-to-br from-indigo-950 via-blue-900 to-slate-950 p-5 rounded-3xl text-white shadow-xl relative overflow-hidden border border-blue-500/20">
+                    <div class="relative z-10 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-black uppercase tracking-wider border border-emerald-400/30 inline-flex items-center gap-1">
+                                <i data-lucide="zap" class="w-3 h-3"></i> 1st Deposit Bonus
+                            </span>
+                            <span id="refer-rate-badge" class="text-[11px] font-black text-amber-400 bg-amber-400/10 px-2.5 py-0.5 rounded-lg border border-amber-400/20">5% বোনাস</span>
+                        </div>
+                        <h2 class="text-xl font-black tracking-tight text-white">Refer & Earn Program</h2>
+                        <p class="text-xs text-blue-200" id="refer-desc-text">আপনার বন্ধুদের রেফার করুন। আপনার লিংকে যুক্ত হয়ে বন্ধু প্রথমবার যেকোনো পরিমাণ ডিপোজিট করলেই আপনি পেয়ে যাবেন সরাসরি 5% বোনাস!</p>
+                    </div>
+                </div>
+
+                <!-- 3 Stats Cards -->
+                <div class="grid grid-cols-3 gap-2 text-center">
+                    <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
+                        <p class="text-[9.5px] font-extrabold text-slate-400 uppercase">মোট রেফার</p>
+                        <p id="ref-stat-total" class="text-base font-black text-slate-800 mt-1">0</p>
+                    </div>
+                    <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
+                        <p class="text-[9.5px] font-extrabold text-slate-400 uppercase">ডিপোজিটকারী</p>
+                        <p id="ref-stat-active" class="text-base font-black text-emerald-600 mt-1">0</p>
+                    </div>
+                    <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
+                        <p class="text-[9.5px] font-extrabold text-slate-400 uppercase">মোট আয়</p>
+                        <p id="ref-stat-earned" class="text-base font-black text-blue-600 mt-1">৳0.00</p>
+                    </div>
+                </div>
+
+                <!-- Referral Link Box -->
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black text-slate-700">আপনার ব্যক্তিগত রেফারেল লিংক:</span>
+                        <span class="text-[10px] text-blue-600 font-bold bg-blue-50 px-2 py-0.5 rounded-md" id="refer-pill-bonus">Instant Commission</span>
+                    </div>
+
+                    <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex items-center justify-between">
+                        <span class="text-[11px] font-mono text-slate-600 truncate mr-2 select-all" id="dedicated-ref-link-display">https://t.me/Gmail_HUB7bot/buy?startapp=000</span>
+                        <button onclick="copyReferralLink()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold flex items-center gap-1 active:scale-95 transition">
+                            <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                            <span>Copy</span>
+                        </button>
+                    </div>
+
+                    <button onclick="shareReferralLinkTelegram()" class="w-full py-3 bg-[#0088cc] hover:bg-[#0077b5] text-white font-extrabold text-xs rounded-xl flex items-center justify-center gap-2 shadow transition active:scale-98">
+                        <i data-lucide="send" class="w-4 h-4"></i>
+                        <span>টেলিগ্রামে বন্ধুদের সাথে শেয়ার করুন (Share Link)</span>
+                    </button>
+                </div>
+
+                <!-- Rules Card -->
+                <div class="bg-blue-50/70 p-4 rounded-2xl border border-blue-200 text-xs text-slate-700 space-y-1.5">
+                    <h4 class="font-black text-blue-900 flex items-center gap-1.5 text-xs">
+                        <i data-lucide="info" class="w-4 h-4 text-blue-600"></i>
+                        <span>রেফার করার নিয়মাবলী:</span>
+                    </h4>
+                    <p>১. আপনার রেফার লিংক কপি করে বন্ধুদের সাথে শেয়ার করুন।</p>
+                    <p>২. আপনার রেফার করা বন্ধু অ্যাকাউন্টে প্রথমবার টাকা ডিপোজিট করলেই তার পরিমাণের নির্ধারিত শতাংশ (ডিফল্ট ৫%) সরাসরি আপনার ব্যালেন্সে যোগ হবে।</p>
+                    <p>৩. উপার্জিত ব্যালেন্স দিয়ে সেবা ক্রয় করতে পারবেন অথবা অন্য অ্যাকাউন্টে ট্রান্সফার করতে পারবেন।</p>
+                </div>
+
+                <!-- Referred Users List -->
+                <div class="space-y-2.5 pt-1">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xs font-black uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+                            <i data-lucide="users" class="w-4 h-4 text-blue-600"></i>
+                            <span>রেফার করা ইউজারদের তালিকা</span>
+                        </h3>
+                        <span class="text-[10.5px] text-slate-400 font-bold" id="ref-list-count-badge">০ জন</span>
+                    </div>
+                    <div id="referred-users-list-container" class="space-y-2.5 min-h-[120px]"></div>
+                </div>
+            </div>
+
+            <!-- 3. DEPOSIT PAGE -->
             <div id="pay-page" class="p-4 space-y-4 sub-page">
                 <div id="deposit-status-banner" class="hidden p-3.5 rounded-2xl text-xs font-semibold flex items-center justify-between transition-all duration-300">
                     <div class="flex items-center gap-2" id="deposit-status-banner-content"></div>
@@ -1098,7 +766,6 @@
                     </button>
                 </div>
 
-                <!-- FINTECH WALLET CARD -->
                 <div class="bg-gradient-to-br from-[#0b1329] via-[#111f44] to-[#1e3a8a] p-6 rounded-3xl text-white shadow-xl relative overflow-hidden border border-white/10">
                     <div class="absolute -right-8 -top-8 w-40 h-40 bg-blue-500/20 rounded-full blur-3xl pointer-events-none"></div>
                     <div class="relative z-10 flex items-center justify-between">
@@ -1116,7 +783,6 @@
                     </div>
                 </div>
 
-                <!-- PAYMENT FORM CARD -->
                 <div class="bg-white p-5 rounded-3xl border border-slate-200/90 shadow-sm space-y-4">
                     <div class="flex items-center justify-between bg-slate-50 p-2.5 px-3.5 rounded-2xl border border-slate-200/80">
                         <span class="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Supported Methods</span>
@@ -1181,7 +847,7 @@
                 </div>
             </div>
 
-            <!-- ORDERS PAGE -->
+            <!-- 4. ORDERS PAGE -->
             <div id="orders-page" class="p-4 space-y-4 sub-page">
                 <div class="flex items-center justify-between border-b border-gray-200 pb-3">
                     <div>
@@ -1200,7 +866,7 @@
                 <div id="orders-purchase-history" class="space-y-3 min-h-[200px]"></div>
             </div>
 
-            <!-- PROFILE PAGE -->
+            <!-- 5. PROFILE PAGE -->
             <div id="profile-page" class="p-4 space-y-4 sub-page">
                 <div class="bg-gradient-to-br from-white to-slate-50 p-5 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden">
                     <div class="flex items-center gap-4">
@@ -1220,27 +886,25 @@
                             <span class="text-[10px] font-extrabold text-blue-600 uppercase tracking-wider block">Wallet Balance</span>
                             <span id="profile-stat-balance" class="text-lg font-black text-gray-900">৳0.00</span>
                         </div>
-                        <div class="bg-purple-50/60 p-3 rounded-2xl border border-purple-100 flex flex-col justify-center cursor-pointer" onclick="navigateTo('features-page')">
-                            <span class="text-[10px] font-extrabold text-purple-600 uppercase tracking-wider block">Transfer Fund</span>
-                            <span class="text-xs font-black text-purple-700 flex items-center gap-1 mt-0.5">Send Balance <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></span>
+                        <div class="bg-indigo-50/60 p-3 rounded-2xl border border-indigo-100 flex flex-col justify-center cursor-pointer" onclick="navigateTo('refer-page')">
+                            <span class="text-[10px] font-extrabold text-indigo-600 uppercase tracking-wider block">Refer & Earn</span>
+                            <span class="text-xs font-black text-indigo-700 flex items-center gap-1 mt-0.5">Bonus 5% <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></span>
                         </div>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-2.5">
-                    <button onclick="navigateTo('pay-page')" class="p-3.5 bg-white rounded-2xl border border-gray-200 shadow-sm flex items-center gap-3 text-left hover:border-blue-400 transition">
-                        <div class="p-2.5 rounded-xl bg-blue-50 text-blue-600"><i data-lucide="plus-circle" class="w-5 h-5"></i></div>
-                        <div>
-                            <span class="text-xs font-black text-gray-800 block">Deposit</span>
-                            <span class="text-[10px] text-gray-400 font-semibold">Add Money</span>
-                        </div>
+                <div class="grid grid-cols-3 gap-2">
+                    <button onclick="navigateTo('pay-page')" class="p-3 bg-white rounded-2xl border border-gray-200 shadow-sm flex flex-col items-center text-center hover:border-blue-400 transition">
+                        <div class="p-2 rounded-xl bg-blue-50 text-blue-600 mb-1"><i data-lucide="plus-circle" class="w-4 h-4"></i></div>
+                        <span class="text-[11px] font-black text-gray-800">Deposit</span>
                     </button>
-                    <button onclick="navigateTo('features-page')" class="p-3.5 bg-white rounded-2xl border border-gray-200 shadow-sm flex items-center gap-3 text-left hover:border-orange-400 transition">
-                        <div class="p-2.5 rounded-xl bg-orange-50 text-orange-600"><i data-lucide="arrow-left-right" class="w-5 h-5"></i></div>
-                        <div>
-                            <span class="text-xs font-black text-gray-800 block">Transfer</span>
-                            <span class="text-[10px] text-gray-400 font-semibold">Send P2P</span>
-                        </div>
+                    <button onclick="navigateTo('features-page')" class="p-3 bg-white rounded-2xl border border-gray-200 shadow-sm flex flex-col items-center text-center hover:border-orange-400 transition">
+                        <div class="p-2 rounded-xl bg-orange-50 text-orange-600 mb-1"><i data-lucide="arrow-left-right" class="w-4 h-4"></i></div>
+                        <span class="text-[11px] font-black text-gray-800">Transfer</span>
+                    </button>
+                    <button onclick="navigateTo('refer-page')" class="p-3 bg-white rounded-2xl border border-gray-200 shadow-sm flex flex-col items-center text-center hover:border-indigo-400 transition">
+                        <div class="p-2 rounded-xl bg-indigo-50 text-indigo-600 mb-1"><i data-lucide="gift" class="w-4 h-4"></i></div>
+                        <span class="text-[11px] font-black text-gray-800">Refer</span>
                     </button>
                 </div>
 
@@ -1250,7 +914,7 @@
                 </div>
             </div>
 
-            <!-- FEATURES / WALLET TRANSFERS PAGE -->
+            <!-- 6. FEATURES / WALLET TRANSFERS PAGE -->
             <div id="features-page" class="p-4 space-y-5 sub-page">
                 <div class="flex items-center gap-3 mb-1">
                     <button onclick="navigateTo('home-page')" class="p-2 rounded-xl bg-white border border-gray-200">
@@ -1346,6 +1010,12 @@
                 </div>
                 <span>Home</span>
             </div>
+            <div class="nav-item" data-page="refer-page" onclick="navigateTo('refer-page')">
+                <div class="nav-icon-wrapper flex items-center justify-center">
+                    <i data-lucide="gift" class="w-5 h-5"></i>
+                </div>
+                <span>Refer</span>
+            </div>
             <div class="nav-item" data-page="pay-page" onclick="navigateTo('pay-page')">
                 <div class="nav-icon-wrapper flex items-center justify-center">
                     <i data-lucide="coins" class="w-5 h-5"></i>
@@ -1368,12 +1038,10 @@
 
     </div>
 
-    <!-- ================= FULLY INTEGRATED SUPPORT DESK OVERLAY ================= -->
+    <!-- SUPPORT DESK OVERLAY -->
     <div id="support-desk-overlay">
-        <!-- Support Desk Top Bar -->
         <div class="tg-top-bar">
             <button id="btn-back" class="tg-back-btn" onclick="handleSupportBack()"><i class="fas fa-arrow-left"></i></button>
-            
             <div class="tg-chat-user" onclick="handleHeaderClick()">
                 <div class="tg-avatar-wrap">
                     <img id="support-header-img" src="https://i.postimg.cc/vmSBzy63/file-00000000eb4c81faa545e57c85285455.png" alt="Avatar">
@@ -1404,15 +1072,12 @@
             </div>
         </div>
 
-        <!-- Admin Search Input -->
         <div id="admin-search-bar" class="search-box">
             <input type="text" id="admin-search-input" placeholder="ব্যবহারকারীর নাম বা আইডি দিয়ে খুঁজুন..." oninput="filterInbox()">
         </div>
 
-        <!-- Admin Inbox View -->
         <div id="admin-inbox-view"></div>
 
-        <!-- Messages Area -->
         <div class="tg-chat-body" id="chat-messages">
             <div class="msg-row admin">
                 <img src="https://i.postimg.cc/vmSBzy63/file-00000000eb4c81faa545e57c85285455.png" class="msg-avatar" alt="Admin">
@@ -1423,16 +1088,13 @@
             </div>
         </div>
 
-        <!-- Typing Indicator -->
         <div id="typing-box" class="typing-bar">
             <i class="fas fa-pencil-alt"></i> <span id="typing-user">এডমিন</span> লিখছেন
             <div class="typing-dots"><span>.</span><span>.</span><span>.</span></div>
         </div>
 
-        <!-- User Notice / Block Banner -->
         <div id="user-status-banner">আপনার অ্যাকাউন্টটি সাময়িকভাবে বার্তা প্রেরণের জন্য নিষিদ্ধ করা হয়েছে।</div>
 
-        <!-- Bottom Input Bar -->
         <div class="tg-bottom-bar" id="support-input-bar">
             <input type="text" id="chat-text-input" class="tg-input" placeholder="মেসেজ লিখুন..." oninput="handleTypingEvent()" onkeydown="if(event.key==='Enter') sendSupportMessage()">
             <button class="tg-send-btn" onclick="sendSupportMessage()" title="Send">
@@ -1441,7 +1103,7 @@
         </div>
     </div>
 
-    <!-- Modal 1: User Profile & Moderation (Admin Only) -->
+    <!-- MODALS -->
     <div id="admin-user-modal" class="support-modal-overlay">
         <div class="support-modal-box">
             <div class="flex items-center justify-between pb-2 border-b border-white/10">
@@ -1480,7 +1142,6 @@
         </div>
     </div>
 
-    <!-- Modal 2: Manage Official Social Links (Admin Only) -->
     <div id="admin-links-modal" class="support-modal-overlay">
         <div class="support-modal-box">
             <div class="flex items-center justify-between pb-2 border-b border-white/10">
@@ -1515,7 +1176,6 @@
         </div>
     </div>
 
-    <!-- NOTIFICATION MODAL -->
     <div id="notification-modal" class="hidden fixed inset-0 bg-[#f8fafc] z-[75] flex flex-col p-4 overflow-hidden">
         <div class="flex items-center justify-between bg-white p-4 rounded-2xl border border-gray-200 shadow-sm mb-4">
             <div class="flex items-center gap-2.5">
@@ -1534,7 +1194,6 @@
         <div id="notification-list-container" class="space-y-3 flex-grow overflow-y-auto pb-10"></div>
     </div>
 
-    <!-- INSTANT BUY NOW MODAL -->
     <div id="buy-now-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
         <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 relative text-center shadow-2xl">
             <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto">
@@ -1567,7 +1226,6 @@
         </div>
     </div>
 
-    <!-- ORDER NOW (MANUAL PRE-ORDER) CONFIRMATION MODAL -->
     <div id="manual-order-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
         <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 relative text-center shadow-2xl">
             <div class="w-14 h-14 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mx-auto">
@@ -1600,7 +1258,6 @@
         </div>
     </div>
 
-    <!-- GATEWAY PAYMENT SUCCESS MODAL -->
     <div id="gateway-success-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[85] p-4 backdrop-blur-sm">
         <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 text-center shadow-2xl">
             <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
@@ -1621,7 +1278,6 @@
         </div>
     </div>
 
-    <!-- REPLACE / REPORT REQUEST MODAL -->
     <div id="replace-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[75] p-4 backdrop-blur-sm">
         <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 relative text-center">
             <div class="w-14 h-14 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto">
@@ -1644,7 +1300,6 @@
         </div>
     </div>
 
-    <!-- PURCHASE SUCCESS MODAL -->
     <div id="purchase-success-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
         <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-4 relative text-center max-h-[90vh] flex flex-col shadow-2xl">
             <button onclick="document.getElementById('purchase-success-modal').classList.add('hidden')" class="absolute top-4 right-4 p-1 rounded-full bg-gray-100">
@@ -1780,7 +1435,6 @@
                 currentUserTg = { id: storedGuestId, first_name: "Guest", username: `user_${storedGuestId.slice(-4)}` };
             }
 
-            // Expose globally for support desk
             window.activeUserGlobalTg = currentUserTg;
 
             lucide.createIcons();
@@ -1791,7 +1445,6 @@
             checkAndRefundExpiredOrders();
             startCountdownTimerRoutine();
 
-            // Initialize the embedded support desk
             if (window.initSupportDesk) {
                 window.initSupportDesk();
             }
@@ -1808,25 +1461,41 @@
             const userRef = doc(db, "users", tgChatId);
             let userSnap = await getDoc(userRef);
 
+            // Check Telegram Start Param for Referral
+            const startParam = window.Telegram?.WebApp?.initDataUnsafe?.start_param || "";
+            let inviterId = null;
+            if (startParam && startParam.startsWith('ref_')) {
+                inviterId = startParam.replace('ref_', '');
+            } else if (startParam && /^\d+$/.test(startParam)) {
+                inviterId = startParam;
+            }
+
+            const fullName = `${currentUserTg.first_name || ''} ${currentUserTg.last_name || ''}`.trim() || `User ${tgChatId}`;
+
             if (userSnap.exists()) {
                 userData = userSnap.data();
                 await updateDoc(userRef, {
-                    name: `${currentUserTg.first_name || ''} ${currentUserTg.last_name || ''}`.trim() || userData.name || `User ${tgChatId}`,
+                    name: fullName || userData.name,
                     photo_url: currentUserTg.photo_url || userData.photo_url || null,
                     lastSeen: serverTimestamp()
                 });
             } else {
-                const userName = `${currentUserTg.first_name || ''} ${currentUserTg.last_name || ''}`.trim() || `User ${tgChatId}`;
                 userData = {
                     tgChatId: tgChatId,
-                    name: userName,
+                    name: fullName,
                     username: currentUserTg.username || null,
                     photo_url: currentUserTg.photo_url || null,
                     balance: 0,
+                    hasEverDeposited: false,
+                    referredBy: (inviterId && inviterId !== tgChatId) ? inviterId : null,
                     createdAt: serverTimestamp()
                 };
                 await setDoc(userRef, userData);
             }
+
+            const refLink = `https://t.me/Gmail_HUB7bot/buy?startapp=${userData.tgChatId}`;
+            const refEl = document.getElementById('dedicated-ref-link-display');
+            if (refEl) refEl.textContent = refLink;
 
             await fetchAppConfig();
             await loadUserNotifications();
@@ -1850,6 +1519,13 @@
                     const el = document.getElementById('drawer-wa-support');
                     if (el) el.href = appConfig.whatsappSupportUrl;
                 }
+
+                // Configurable Referral Bonus Percentage
+                const refBonusPercent = appConfig.referralCommissionPercent !== undefined ? appConfig.referralCommissionPercent : 5;
+                const rateBadge = document.getElementById('refer-rate-badge');
+                if (rateBadge) rateBadge.textContent = `${refBonusPercent}% বোনাস`;
+                const refDesc = document.getElementById('refer-desc-text');
+                if (refDesc) refDesc.textContent = `আপনার বন্ধুদের রেফার করুন। আপনার লিংকে যুক্ত হয়ে বন্ধু প্রথমবার যেকোনো পরিমাণ ডিপোজিট করলেই আপনি পেয়ে যাবেন সরাসরি ${refBonusPercent}% বোনাস!`;
 
                 renderDynamicCategories();
                 renderDynamicOfficialLinks();
@@ -1882,6 +1558,100 @@
             `).join('');
             lucide.createIcons();
         }
+
+        // ========================================================
+        // REFERRAL PAGE LOGIC & 5% BONUS SYSTEM
+        // ========================================================
+        async function loadReferralPageData() {
+            if (!userData) return;
+            const tgId = String(userData.tgChatId);
+            const container = document.getElementById('referred-users-list-container');
+            container.innerHTML = `<div class="flex justify-center p-6"><div class="premium-loader-spinner"></div></div>`;
+
+            try {
+                const q = query(collection(db, "users"), where("referredBy", "==", tgId));
+                const snap = await getDocs(q);
+
+                const totalRefs = snap.size;
+                let activeDepositors = 0;
+                const referredUsers = [];
+
+                snap.forEach(docSnap => {
+                    const data = docSnap.data();
+                    if (data.hasEverDeposited) activeDepositors++;
+                    referredUsers.push(data);
+                });
+
+                // Calculate total earnings from referral bonuses log
+                let totalEarned = 0;
+                try {
+                    const refBonusQuery = query(collection(db, "referral_bonuses"), where("inviterId", "==", tgId));
+                    const bonusSnap = await getDocs(refBonusQuery);
+                    bonusSnap.forEach(bDoc => {
+                        totalEarned += (bDoc.data().bonusAmount || 0);
+                    });
+                } catch(err) {}
+
+                document.getElementById('ref-stat-total').textContent = String(totalRefs);
+                document.getElementById('ref-stat-active').textContent = String(activeDepositors);
+                document.getElementById('ref-stat-earned').textContent = `৳${totalEarned.toFixed(2)}`;
+                document.getElementById('ref-list-count-badge').textContent = `${totalRefs} জন`;
+
+                if (referredUsers.length === 0) {
+                    container.innerHTML = `<div class="bg-white p-6 rounded-2xl border text-center text-xs text-slate-400 font-semibold">আপনার রেফার লিংকে এখনো কেউ জয়েন করেনি।</div>`;
+                    return;
+                }
+
+                container.innerHTML = referredUsers.map(user => {
+                    const isDepositor = user.hasEverDeposited === true;
+                    return `
+                    <div class="bg-white p-3.5 rounded-2xl border border-slate-200 flex items-center justify-between text-xs shadow-sm">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-9 h-9 rounded-full ${isDepositor ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600'} flex items-center justify-center font-bold">
+                                <i data-lucide="${isDepositor ? 'user-check' : 'user'}" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-black text-slate-800">${user.name || 'User'}</h4>
+                                <span class="text-[10px] font-mono text-slate-400">ID: ${user.tgChatId}</span>
+                            </div>
+                        </div>
+                        <div>
+                            ${isDepositor ? `
+                                <span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-[10.5px] font-black flex items-center gap-1">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Deposited (Active)
+                                </span>
+                            ` : `
+                                <span class="px-2.5 py-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-lg text-[10.5px] font-bold">
+                                    No Deposit Yet
+                                </span>
+                            `}
+                        </div>
+                    </div>`;
+                }).join('');
+                lucide.createIcons();
+            } catch(e) {
+                container.innerHTML = `<div class="text-xs text-red-500 text-center p-4">ডাটা লোড করতে সমস্যা হয়েছে</div>`;
+            }
+        }
+
+        window.copyReferralLink = function() {
+            const link = `https://t.me/Gmail_HUB7bot/buy?startapp=${userData?.tgChatId || ''}`;
+            navigator.clipboard.writeText(link).then(() => {
+                showToast("রেফারেল লিংক কপি হয়েছে!", "success");
+            });
+        };
+
+        window.shareReferralLinkTelegram = function() {
+            const link = `https://t.me/Gmail_HUB7bot/buy?startapp=${userData?.tgChatId || ''}`;
+            const bonus = appConfig.referralCommissionPercent !== undefined ? appConfig.referralCommissionPercent : 5;
+            const text = `🔥 জয়েন করুন এবং প্রথম ডিপোজিটে ${bonus}% রেফারেল বোনাস উপার্জন করুন!`;
+            const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(text)}`;
+            if (window.Telegram?.WebApp?.openTelegramLink) {
+                window.Telegram.WebApp.openTelegramLink(shareUrl);
+            } else {
+                window.open(shareUrl, '_blank');
+            }
+        };
 
         // --- PAYMENT & DEPOSIT LOGIC ---
         window.setAutoQuickAmount = function(val) {
@@ -2039,6 +1809,18 @@
                     const depSnap = await transaction.get(depositRef);
                     if (depSnap.exists()) return;
 
+                    const userSnap = await transaction.get(userRef);
+                    const currentUData = userSnap.data() || {};
+                    const isFirstDeposit = !currentUData.hasEverDeposited;
+
+                    let inviterRef = null;
+                    let inviterSnap = null;
+                    if (isFirstDeposit && currentUData.referredBy) {
+                        inviterRef = doc(db, "users", String(currentUData.referredBy));
+                        inviterSnap = await transaction.get(inviterRef);
+                    }
+
+                    // 1. Record Deposit
                     transaction.set(depositRef, {
                         userId: tgChatId,
                         userName: userData.name,
@@ -2051,9 +1833,34 @@
                         requestedAt: serverTimestamp()
                     });
 
+                    // 2. Update User's Balance
                     transaction.update(userRef, {
-                        balance: increment(depositAmount)
+                        balance: increment(depositAmount),
+                        hasEverDeposited: true
                     });
+
+                    // 3. Referral Bonus (First Deposit Only)
+                    if (isFirstDeposit && inviterRef && inviterSnap && inviterSnap.exists()) {
+                        const commissionRate = (appConfig.referralCommissionPercent !== undefined ? appConfig.referralCommissionPercent : 5) / 100;
+                        const bonusAmount = parseFloat((depositAmount * commissionRate).toFixed(2));
+
+                        if (bonusAmount > 0) {
+                            transaction.update(inviterRef, {
+                                balance: increment(bonusAmount)
+                            });
+
+                            const bonusLogRef = doc(collection(db, "referral_bonuses"));
+                            transaction.set(bonusLogRef, {
+                                inviterId: String(currentUData.referredBy),
+                                depositorId: tgChatId,
+                                depositAmount: depositAmount,
+                                bonusRatePercent: commissionRate * 100,
+                                bonusAmount: bonusAmount,
+                                transactionId: txid,
+                                createdAt: serverTimestamp()
+                            });
+                        }
+                    }
                 });
 
                 await addDoc(collection(db, "users", tgChatId, "notifications"), {
@@ -2278,6 +2085,7 @@
 
             const routes = {
                 'home-page': renderProductsBySelection,
+                'refer-page': loadReferralPageData,
                 'pay-page': updateUI,
                 'orders-page': loadOrdersHistory,
                 'features-page': loadFeaturesPage,
@@ -2646,8 +2454,7 @@
             activeManualModalData.qty = val;
             updateManualModalPriceDisplay();
         };
-
-        window.handleConfirmManualOrder = async function() {
+window.handleConfirmManualOrder = async function() {
             if (!activeManualModalData) return;
             const { product, unitPrice, timeoutMinutes, qty } = activeManualModalData;
             const totalPrice = unitPrice * qty;
@@ -3156,7 +2963,6 @@
                 <path d="M9.3 12.2l1.9 1.9 4.3-4.3" stroke="#ffffff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>`;
 
-        // Firebase Realtime DB Config for Support
         const supportFirebaseConfig = {
             apiKey: "AIzaSyAsENiikJ5YQ1F8UHrixdJVEINAhO4PG30",
             authDomain: "bot2-3d8bc.firebaseapp.com",
