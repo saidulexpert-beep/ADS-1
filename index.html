@@ -3,150 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AAC X</title>
+    <title>ACC X</title>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    
     <style>
-        :root {
-            --primary: #00f2fe;
-            --secondary: #4facfe;
-            --accent: #6366f1;
-            --bg-dark: #080d1a;
-            --surface: #0f172a;
-            --card-bg: rgba(17, 24, 39, 0.85);
-            --border: rgba(255, 255, 255, 0.08);
-        }
-
         body {
-            font-family: 'Space Grotesk', 'Hind Siliguri', sans-serif;
-            background-color: var(--bg-dark);
-            color: #f1f5f9;
+            font-family: 'Plus Jakarta Sans', 'Hind Siliguri', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
             -webkit-user-select: none;
+            -ms-user-select: none;
             user-select: none;
             -webkit-touch-callout: none;
-            overflow-x: hidden;
         }
-
-        input, textarea, .selectable-text, .font-mono {
+        input, textarea, #orders-purchase-history .font-mono, #replace-history-list .text-sm, .selectable-text {
             -webkit-user-select: text;
+            -ms-user-select: text;
             user-select: text;
-            font-family: 'JetBrains Mono', monospace;
+            -webkit-touch-callout: default;
         }
-
-        /* Ambient Glow Backdrop */
-        .ambient-glow {
-            position: fixed;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            max-width: 448px;
-            height: 350px;
-            background: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.25) 0%, rgba(0, 242, 254, 0.1) 45%, transparent 70%);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        /* Glassmorphic Elements */
-        .glass-panel {
-            background: var(--card-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--border);
-        }
-
         .main-header {
-            background: rgba(11, 17, 32, 0.85);
-            backdrop-filter: blur(14px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #2563eb 100%);
+            color: #ffffff;
+            padding: 12px 16px;
             position: sticky;
             top: 0;
             z-index: 40;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.2);
         }
-
         .wallet-pill {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(0, 242, 254, 0.15) 100%);
-            border: 1px solid rgba(0, 242, 254, 0.35);
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.15);
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
             border-radius: 9999px;
-            padding: 5px 12px;
+            padding: 6px 12px;
             transition: all 0.2s ease;
         }
-        .wallet-pill:active { transform: scale(0.96); }
-
+        .wallet-pill:active {
+            transform: scale(0.96);
+            background: rgba(255, 255, 255, 0.22);
+        }
         .category-btn {
-            background: rgba(15, 23, 42, 0.7);
-            color: #94a3b8;
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: #ffffff;
+            color: #475569;
+            border: 1.5px solid #e2e8f0;
             border-radius: 14px;
-            padding: 9px 12px;
-            font-size: 0.78rem;
+            padding: 10px 12px;
+            font-size: 0.80rem;
             font-weight: 700;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
+            text-align: center;
+        }
+        .category-btn:hover {
+            border-color: #3b82f6;
+            color: #2563eb;
+            transform: translateY(-1px);
         }
         .category-btn.active {
-            background: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
             color: #ffffff;
-            border-color: transparent;
-            box-shadow: 0 0 18px rgba(6, 182, 212, 0.35);
+            border-color: #2563eb;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
         }
-
         .product-card {
-            background: rgba(15, 23, 42, 0.75);
-            border: 1px solid rgba(255, 255, 255, 0.07);
+            background: #ffffff;
             border-radius: 20px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
             transition: all 0.25s ease;
             position: relative;
+            z-index: 10;
         }
         .product-card:hover {
-            border-color: rgba(0, 242, 254, 0.35);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
-            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.08);
+            border-color: #bfdbfe;
         }
-
+        
         .btn-buy {
-            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
-            color: #031127;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: white;
             font-weight: 800;
             border-radius: 12px;
             transition: all 0.2s ease;
-            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.35);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            cursor: pointer;
         }
-        .btn-buy:active { transform: scale(0.96); }
+        .btn-buy:active { transform: scale(0.97); }
 
         .btn-order-orange {
-            background: linear-gradient(135deg, #ff7a18 0%, #af002d 100%);
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
             color: white;
             font-weight: 800;
             border-radius: 12px;
             transition: all 0.2s ease;
-            box-shadow: 0 4px 15px rgba(255, 122, 24, 0.35);
+            box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3);
+            cursor: pointer;
         }
-        .btn-order-orange:active { transform: scale(0.96); }
+        .btn-order-orange:active { transform: scale(0.97); }
 
-        .btn-gateway-pay {
-            background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
-            color: white;
-            font-weight: 800;
-            border-radius: 16px;
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
-            transition: all 0.2s ease;
-        }
-
+        /* BOTTOM NAV REDESIGN (4 Clean Items) */
         .bottom-nav {
-            background: rgba(11, 17, 32, 0.88);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(14px);
+            border-top: 1px solid #e2e8f0;
             position: fixed;
             bottom: 0;
             left: 0;
@@ -156,9 +125,10 @@
             display: flex;
             justify-content: space-around;
             align-items: center;
-            height: 66px;
+            height: 68px;
             z-index: 50;
-            padding: 0 8px;
+            padding: 0 12px;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.04);
         }
         .nav-item {
             display: flex;
@@ -166,77 +136,55 @@
             align-items: center;
             justify-content: center;
             color: #64748b;
-            font-size: 0.68rem;
+            font-size: 0.72rem;
             font-weight: 700;
-            transition: all 0.2s;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
-            flex: 1;
-        }
-        .nav-item.active { color: #00f2fe; }
-        .nav-item.active .nav-icon-wrapper {
-            background: rgba(0, 242, 254, 0.12);
-            color: #00f2fe;
+            padding: 6px 12px;
             border-radius: 16px;
-            padding: 3px 12px;
-            box-shadow: 0 0 12px rgba(0, 242, 254, 0.25);
+            flex: 1;
+            gap: 3px;
         }
-
-        /* Floating Support */
-        .support-widget-container {
-            position: fixed;
-            bottom: 78px;
-            right: 16px;
-            z-index: 45;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 10px;
-        }
-        .fab-support-main {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #00f2fe 0%, #4f46e5 100%);
-            color: #050b18;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 25px rgba(0, 242, 254, 0.4);
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        .support-options-menu {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(15px) scale(0.85);
+        .nav-item .nav-icon-wrapper {
+            padding: 4px 16px;
+            border-radius: 9999px;
             transition: all 0.25s ease;
         }
-        .support-options-menu.open {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0) scale(1);
+        .nav-item.active {
+            color: #2563eb;
         }
-
+        .nav-item.active .nav-icon-wrapper {
+            background: #eff6ff;
+            color: #2563eb;
+            transform: translateY(-2px);
+        }
+        
+        /* QUICK AMOUNT PILLS */
         .quick-amount-pill {
-            background: rgba(15, 23, 42, 0.9);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 11px 4px;
-            border-radius: 14px;
-            font-weight: 700;
-            font-size: 0.82rem;
-            color: #94a3b8;
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            padding: 12px 6px;
+            border-radius: 16px;
+            font-weight: 800;
+            font-size: 0.85rem;
+            color: #334155;
             cursor: pointer;
             transition: all 0.2s ease;
             text-align: center;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .quick-amount-pill:hover {
+            border-color: #3b82f6;
+            color: #2563eb;
+            background: #eff6ff;
+            transform: translateY(-1px);
         }
         .quick-amount-pill.selected {
-            border-color: #00f2fe;
-            background: rgba(0, 242, 254, 0.15);
-            color: #00f2fe;
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+            border-color: #2563eb !important;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+            color: #ffffff !important;
+            box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+            transform: translateY(-1px);
         }
 
         .main-page { display: none; }
@@ -244,107 +192,81 @@
         .sub-page { display: none; }
         .sub-page.active { display: block; animation: fadeIn 0.25s ease-in-out; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
         .input-field {
-            background-color: rgba(15, 23, 42, 0.85);
-            border: 1.5px solid rgba(255, 255, 255, 0.12);
-            color: #ffffff;
+            background-color: #f8fafc;
+            border: 1.5px solid #cbd5e1;
+            color: #0f172a;
             transition: all 0.2s;
         }
         .input-field:focus {
-            border-color: #00f2fe;
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.25);
+            border-color: #2563eb;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
             outline: none;
         }
 
-        /* --- AAC X CYBER ANIMATED LOADER --- */
+        /* FUTURISTIC LOADER ANIMATION */
         #loader {
-            background: #060913;
-            position: fixed;
-            inset: 0;
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            background: radial-gradient(circle at center, #090d16 0%, #030712 100%);
             overflow: hidden;
         }
-        .loader-grid-bg {
-            position: absolute;
-            inset: 0;
-            background-image: linear-gradient(rgba(0, 242, 254, 0.05) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(0, 242, 254, 0.05) 1px, transparent 1px);
-            background-size: 35px 35px;
-            perspective: 500px;
-            transform: rotateX(55deg) translateY(-20%);
-        }
-        .aacx-core {
+        .loader-orbit {
             position: relative;
-            width: 130px;
-            height: 130px;
+            width: 110px;
+            height: 110px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        .orbit-ring {
+        .loader-ring-outer {
             position: absolute;
-            inset: 0;
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
-            border: 2px solid transparent;
+            border: 2px dashed rgba(59, 130, 246, 0.35);
+            animation: spin 9s linear infinite;
         }
-        .ring-1 {
-            border-top-color: #00f2fe;
-            border-right-color: #00f2fe;
-            animation: spin 1.4s linear infinite;
+        .loader-ring-inner {
+            position: absolute;
+            width: 82px;
+            height: 82px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top-color: #38bdf8;
+            border-right-color: #818cf8;
+            animation: spin 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.35);
         }
-        .ring-2 {
-            inset: -8px;
-            border-bottom-color: #6366f1;
-            border-left-color: #6366f1;
-            animation: spinReverse 2.2s linear infinite;
+        .pulse-glow-box {
+            animation: pulseGlow 2.5s ease-in-out infinite alternate;
         }
-        .ring-3 {
-            inset: -18px;
-            border: 1px dashed rgba(255, 255, 255, 0.18);
-            animation: spin 6s linear infinite;
+        @keyframes pulseGlow {
+            0% { filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.4)); transform: scale(0.98); }
+            100% { filter: drop-shadow(0 0 25px rgba(56, 189, 248, 0.8)); transform: scale(1.02); }
         }
         @keyframes spin { to { transform: rotate(360deg); } }
-        @keyframes spinReverse { to { transform: rotate(-360deg); } }
 
-        .aacx-logo-text {
-            font-size: 2.3rem;
-            font-weight: 900;
-            letter-spacing: -0.05em;
-            background: linear-gradient(135deg, #ffffff 30%, #00f2fe 80%, #6366f1 100%);
+        .neon-text {
+            background: linear-gradient(135deg, #60a5fa 0%, #ffffff 50%, #93c5fd 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 25px rgba(0, 242, 254, 0.5);
+            text-shadow: 0 0 25px rgba(96, 165, 250, 0.4);
         }
-        .load-progress-bar {
-            width: 140px;
-            height: 3px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 99px;
-            overflow: hidden;
-            position: relative;
+
+        /* SIDE MENU DRAWER */
+        #side-drawer-overlay {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            transition: opacity 0.3s ease;
         }
-        .load-progress-fill {
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 40%;
-            background: linear-gradient(90deg, #6366f1, #00f2fe);
-            border-radius: 99px;
-            animation: loadAnim 1.6s ease-in-out infinite alternate;
+        #side-drawer {
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        @keyframes loadAnim {
-            0% { left: 0; width: 25%; }
-            100% { left: 75%; width: 25%; }
+        #side-drawer.open {
+            transform: translateX(0);
         }
 
         .toast-container {
@@ -361,215 +283,263 @@
             pointer-events: none;
         }
         .toast-item {
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(12px);
+            background: #0f172a;
             color: #ffffff;
-            padding: 12px 16px;
+            padding: 12px 18px;
             border-radius: 16px;
-            font-size: 12.5px;
-            font-weight: 600;
+            font-size: 13px;
+            font-weight: 700;
             display: flex;
             align-items: center;
             gap: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
             opacity: 0;
             transform: translateY(-20px) scale(0.95);
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             pointer-events: auto;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-left: 4px solid #00f2fe;
+            border-left: 4px solid #3b82f6;
         }
         .toast-item.show { opacity: 1; transform: translateY(0) scale(1); }
         .toast-item.toast-success { border-left-color: #10b981; }
         .toast-item.toast-error { border-left-color: #ef4444; }
+        .toast-item.toast-info { border-left-color: #3b82f6; }
+
+        .premium-loader-spinner {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: conic-gradient(#0000 10%, #2563eb);
+            -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 4px), #000 0);
+            animation: spin 0.8s infinite linear;
+        }
     </style>
 </head>
-<body class="max-w-md mx-auto relative min-h-screen">
+<body class="max-w-md mx-auto relative bg-[#f8fafc] min-h-screen text-[#0f172a]">
 
-    <div class="ambient-glow"></div>
     <div id="toast-container" class="toast-container"></div>
 
-    <!-- FULL AAC X ANIMATED LOADER -->
-    <div id="loader">
-        <div class="loader-grid-bg"></div>
-        
-        <div class="aacx-core z-10">
-            <div class="orbit-ring ring-1"></div>
-            <div class="orbit-ring ring-2"></div>
-            <div class="orbit-ring ring-3"></div>
-            <span class="aacx-logo-text">AAC X</span>
+    <!-- INTRO LOADER WITH ANIMATION -->
+    <div id="loader" class="fixed inset-0 flex flex-col items-center justify-center z-[100] p-6 select-none text-white">
+        <div class="loader-orbit mb-6">
+            <div class="loader-ring-outer"></div>
+            <div class="loader-ring-inner"></div>
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center pulse-glow-box shadow-xl border border-white/20">
+                <span class="font-black text-2xl tracking-tighter text-white">X</span>
+            </div>
         </div>
 
-        <div class="z-10 mt-8 text-center space-y-2">
-            <div class="flex items-center justify-center gap-2">
-                <span class="inline-block w-2 h-2 rounded-full bg-[#00f2fe] animate-ping"></span>
-                <span class="text-xs font-bold uppercase tracking-widest text-cyan-300">Initializing Core</span>
+        <div class="text-center space-y-2 z-10">
+            <h1 class="font-black text-3xl tracking-widest neon-text">ACC X</h1>
+            <p class="text-[11px] font-bold text-sky-400/90 tracking-widest uppercase">Premium Automated Store</p>
+            
+            <div class="flex items-center justify-center gap-1.5 pt-3">
+                <span class="w-2 h-2 rounded-full bg-blue-500 animate-ping"></span>
+                <span class="text-xs text-gray-400 font-semibold tracking-wide">Connecting Secure Server...</span>
             </div>
-            <div class="load-progress-bar mx-auto">
-                <div class="load-progress-fill"></div>
-            </div>
-            <p class="text-[10px] text-gray-400 font-mono">AUTOMATED DIGITAL GATEWAY</p>
         </div>
     </div>
 
     <!-- MAIN APP WRAPPER -->
-    <div id="app-container" class="min-h-screen flex-col main-page relative z-10">
+    <div id="app-container" class="min-h-screen flex-col main-page">
 
         <!-- HEADER -->
-        <header class="main-header flex items-center justify-between px-4 py-3">
+        <header class="main-header flex items-center justify-between">
             <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('home-page')">
-                <div class="relative">
-                    <img id="header-user-avatar" class="w-10 h-10 rounded-2xl border border-cyan-400/40 object-cover hidden" src="" alt="Profile">
-                    <div id="header-user-fallback" class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center font-black text-sm text-slate-950 shadow-md">U</div>
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-500 to-indigo-500 flex items-center justify-center font-black text-lg text-white shadow-md border border-white/30">
+                    X
                 </div>
                 <div class="flex flex-col">
-                    <div class="flex items-center gap-1.5">
-                        <span class="text-lg font-black tracking-tight bg-gradient-to-r from-white via-cyan-200 to-cyan-400 bg-clip-text text-transparent">AAC X</span>
-                        <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
-                    </div>
-                    <span class="text-[10px] text-cyan-300/70 font-bold uppercase tracking-wider">Premium Services</span>
+                    <span class="text-lg font-black tracking-tight text-white leading-tight">ACC X</span>
+                    <span class="text-[10px] text-blue-200 font-bold tracking-wide">Verified Services</span>
                 </div>
             </div>
 
             <div class="flex items-center gap-2">
-                <div id="header-balance-area" class="wallet-pill flex items-center gap-1.5 cursor-pointer" onclick="navigateTo('pay-page')" title="Deposit">
-                    <i data-lucide="wallet" class="w-3.5 h-3.5 text-cyan-400"></i>
-                    <span id="header-coin-balance" class="font-black text-xs text-white font-mono">৳0.00</span>
+                <!-- WALLET PILL -->
+                <div id="header-balance-area" class="wallet-pill flex items-center gap-1.5 cursor-pointer" onclick="navigateTo('pay-page')" title="ডিপোজিট">
+                    <i data-lucide="wallet" class="w-3.5 h-3.5 text-blue-200"></i>
+                    <span id="header-coin-balance" class="font-black text-xs text-white">৳0.00</span>
                 </div>
-                <button id="header-notif-btn" onclick="toggleNotificationModal()" class="relative bg-slate-800/80 border border-white/10 p-2.5 rounded-2xl text-slate-300 hover:text-white transition" title="নোটিফিকেশন">
+
+                <!-- NOTIFICATION BUTTON -->
+                <button id="header-notif-btn" onclick="toggleNotificationModal()" class="relative bg-white/10 p-2 rounded-xl text-white hover:bg-white/20 transition shadow-sm" title="নোটিফিকেশন">
                     <i data-lucide="bell" class="w-4 h-4"></i>
-                    <span id="notif-badge" class="absolute -top-1 -right-1 bg-rose-500 text-white text-[9px] font-black px-1.5 py-0.2 rounded-full hidden animate-pulse shadow-sm">0</span>
+                    <span id="notif-badge" class="absolute -top-1 -right-1 bg-red-500 border border-white text-white text-[9px] font-black px-1.5 py-0.2 rounded-full hidden animate-pulse shadow-sm">0</span>
+                </button>
+
+                <!-- HEADER MENU (HAMBURGER) ICON -->
+                <button onclick="toggleSideMenu(true)" class="bg-white/10 p-2 rounded-xl text-white hover:bg-white/20 transition shadow-sm" title="মেনু">
+                    <i data-lucide="menu" class="w-5 h-5"></i>
                 </button>
             </div>
         </header>
 
-        <!-- FLOATING SUPPORT -->
-        <div class="support-widget-container">
-            <div id="support-options-menu" class="support-options-menu">
-                <a id="whatsapp-support-link" href="https://wa.me/8801827750260" target="_blank" class="flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#25D366] text-slate-950 font-bold text-xs shadow-lg">
-                    <i data-lucide="message-circle" class="w-4 h-4"></i>
-                    <span>WhatsApp</span>
+        <!-- SIDE MENU DRAWER (DRAWER OVERLAY & MENU) -->
+        <div id="side-drawer-overlay" class="hidden fixed inset-0 z-[80]" onclick="toggleSideMenu(false)"></div>
+        <div id="side-drawer" class="fixed top-0 right-0 bottom-0 w-72 bg-white z-[85] p-5 flex flex-col shadow-2xl overflow-y-auto">
+            <div class="flex items-center justify-between pb-4 border-b border-gray-100 mb-4">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-sm">X</div>
+                    <span class="font-extrabold text-base text-gray-800">ACC X Menu</span>
+                </div>
+                <button onclick="toggleSideMenu(false)" class="p-1.5 rounded-xl bg-gray-100 text-gray-500 hover:bg-gray-200">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <div class="space-y-2 flex-grow">
+                <div class="text-[11px] font-extrabold text-gray-400 uppercase tracking-wider px-2 pt-1">Wallet & Funds</div>
+                <button onclick="toggleSideMenu(false); navigateTo('features-page');" class="w-full flex items-center gap-3 p-3 rounded-2xl hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition font-bold text-xs">
+                    <div class="p-2 rounded-xl bg-blue-100 text-blue-600"><i data-lucide="arrow-left-right" class="w-4 h-4"></i></div>
+                    <span>Transfer Balance</span>
+                </button>
+                <button onclick="toggleSideMenu(false); navigateTo('pay-page');" class="w-full flex items-center gap-3 p-3 rounded-2xl hover:bg-emerald-50 text-gray-700 hover:text-emerald-600 transition font-bold text-xs">
+                    <div class="p-2 rounded-xl bg-emerald-100 text-emerald-600"><i data-lucide="coins" class="w-4 h-4"></i></div>
+                    <span>Deposit Balance</span>
+                </button>
+
+                <div class="text-[11px] font-extrabold text-gray-400 uppercase tracking-wider px-2 pt-3">Activity & Records</div>
+                <button onclick="toggleSideMenu(false); navigateTo('history-page');" class="w-full flex items-center gap-3 p-3 rounded-2xl hover:bg-purple-50 text-gray-700 hover:text-purple-600 transition font-bold text-xs">
+                    <div class="p-2 rounded-xl bg-purple-100 text-purple-600"><i data-lucide="history" class="w-4 h-4"></i></div>
+                    <span>All History & Status</span>
+                </button>
+                <button onclick="toggleSideMenu(false); navigateTo('orders-page');" class="w-full flex items-center gap-3 p-3 rounded-2xl hover:bg-amber-50 text-gray-700 hover:text-amber-600 transition font-bold text-xs">
+                    <div class="p-2 rounded-xl bg-amber-100 text-amber-600"><i data-lucide="shopping-cart" class="w-4 h-4"></i></div>
+                    <span>My Purchased Orders</span>
+                </button>
+
+                <div class="text-[11px] font-extrabold text-gray-400 uppercase tracking-wider px-2 pt-3">Support & Links</div>
+                <a id="drawer-tg-support" href="https://t.me/EXPERTearn_team" target="_blank" class="w-full flex items-center gap-3 p-3 rounded-2xl hover:bg-sky-50 text-gray-700 hover:text-sky-600 transition font-bold text-xs">
+                    <div class="p-2 rounded-xl bg-sky-100 text-sky-600"><i data-lucide="send" class="w-4 h-4"></i></div>
+                    <span>Telegram Support</span>
                 </a>
-                <a id="telegram-support-link" href="https://t.me/EXPERTearn_team" target="_blank" class="flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#0088cc] text-white font-bold text-xs shadow-lg">
-                    <i data-lucide="send" class="w-4 h-4"></i>
-                    <span>Telegram</span>
+                <a id="drawer-wa-support" href="https://wa.me/8801827750260" target="_blank" class="w-full flex items-center gap-3 p-3 rounded-2xl hover:bg-emerald-50 text-gray-700 hover:text-emerald-600 transition font-bold text-xs">
+                    <div class="p-2 rounded-xl bg-emerald-100 text-emerald-600"><i data-lucide="message-circle" class="w-4 h-4"></i></div>
+                    <span>WhatsApp Helpline</span>
                 </a>
             </div>
 
-            <button id="support-toggle-btn" onclick="toggleSupportWidget()" class="fab-support-main" title="Customer Support">
-                <span id="support-icon-open"><i data-lucide="headphones" class="w-5 h-5"></i></span>
-                <span id="support-icon-close" class="hidden"><i data-lucide="x" class="w-5 h-5"></i></span>
-            </button>
+            <div class="pt-4 border-t border-gray-100 text-center">
+                <p class="text-[11px] text-gray-400 font-semibold">ACC X Platform • v2.0</p>
+            </div>
         </div>
 
         <!-- MAIN CONTENT AREA -->
-        <main class="flex-grow pb-32">
+        <main class="flex-grow pb-28">
 
             <!-- HOME PAGE -->
             <div id="home-page" class="p-4 space-y-4 sub-page">
                 <div class="grid grid-cols-3 gap-2" id="category-filter-grid"></div>
 
-                <div class="mt-3 space-y-3">
-                    <div class="glass-panel p-4 rounded-3xl relative overflow-hidden flex items-center justify-between border-cyan-500/20">
-                        <div>
-                            <span class="text-[10px] font-mono uppercase px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 font-bold border border-cyan-500/30">AAC X STORE</span>
-                            <h2 id="current-section-title" class="font-extrabold text-base text-white mt-1">Verified Accounts & Data</h2>
-                            <p id="current-section-subtitle" class="text-[11px] text-gray-400">Instant delivery with 100% replacement warranty</p>
+                <div class="mt-3 space-y-3.5">
+                    <div class="bg-gradient-to-r from-blue-700 via-indigo-700 to-slate-900 text-white p-4 rounded-3xl flex items-start gap-3.5 shadow-md">
+                        <div class="bg-white/15 p-2.5 rounded-2xl backdrop-blur-md">
+                            <i data-lucide="sparkles" class="w-5 h-5 text-blue-200"></i>
                         </div>
-                        <div class="p-3 bg-cyan-500/10 rounded-2xl border border-cyan-500/30 text-cyan-400">
-                            <i data-lucide="cpu" class="w-6 h-6"></i>
+                        <div>
+                            <h2 id="current-section-title" class="font-extrabold text-base leading-tight">ACC X Verified Services</h2>
+                            <p id="current-section-subtitle" class="text-[11.5px] text-blue-100 mt-0.5">সবচেয়ে কম মূল্যে ইনস্ট্যান্ট ডেলিভারি ও শতভাগ নিশ্চয়তা</p>
                         </div>
                     </div>
-
-                    <div id="product-list-container" class="space-y-3 min-h-[200px]"></div>
+                    <div id="product-list-container" class="space-y-3 min-h-[220px]"></div>
                 </div>
             </div>
 
-            <!-- DEPOSIT PAGE -->
+            <!-- DEPOSIT PAGE (PROFESSIONAL & REFINED) -->
             <div id="pay-page" class="p-4 space-y-4 sub-page">
-                <div id="deposit-status-banner" class="hidden p-3.5 rounded-2xl text-xs font-semibold flex items-center justify-between transition-all">
+                <div id="deposit-status-banner" class="hidden p-3.5 rounded-2xl text-xs font-semibold flex items-center justify-between transition-all duration-300">
                     <div class="flex items-center gap-2" id="deposit-status-banner-content"></div>
-                    <button onclick="document.getElementById('deposit-status-banner').classList.add('hidden')" class="text-gray-400">
+                    <button onclick="document.getElementById('deposit-status-banner').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
                         <i data-lucide="x" class="w-4 h-4"></i>
                     </button>
                 </div>
 
-                <div class="glass-panel p-5 rounded-3xl text-white relative overflow-hidden border border-cyan-500/30">
+                <!-- FINTECH STYLE BALANCE CARD -->
+                <div class="bg-gradient-to-br from-[#0f172a] via-[#1e1b4b] to-[#2563eb] p-6 rounded-3xl text-white shadow-xl relative overflow-hidden border border-white/10">
+                    <div class="absolute -right-8 -top-8 w-36 h-36 bg-blue-500/20 rounded-full blur-3xl pointer-events-none"></div>
                     <div class="relative z-10 flex items-center justify-between">
                         <div>
-                            <span class="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-0.5 rounded-full font-bold">● AUTOMATED GATEWAY</span>
-                            <h2 class="text-xl font-black mt-1">AAC X Pay</h2>
-                            <p class="text-xs text-gray-400">Instant deposit balance update</p>
+                            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[10px] font-extrabold text-sky-300 uppercase tracking-wider mb-2">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> 100% Instant Gateway
+                            </div>
+                            <h2 class="text-2xl font-black tracking-tight">Deposit Wallet</h2>
+                            <p class="text-xs text-blue-200 mt-0.5">স্বয়ংক্রিয় bKash, Nagad ও Rocket</p>
                         </div>
-                        <div class="text-right bg-slate-900/60 p-3 rounded-2xl border border-white/10">
-                            <span class="text-[10px] text-gray-400 font-bold block">Current Balance</span>
-                            <span id="deposit-page-balance" class="text-lg font-black text-cyan-400 font-mono">৳0.00</span>
+                        <div class="text-right bg-white/10 backdrop-blur-md px-3.5 py-2.5 rounded-2xl border border-white/15 shadow-inner">
+                            <span class="text-[10px] text-blue-200 uppercase font-extrabold tracking-wider block">Balance</span>
+                            <span id="deposit-page-balance" class="text-xl font-black text-white tracking-tight">৳0.00</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="glass-panel p-5 rounded-3xl space-y-4">
-                    <div class="flex items-center justify-between bg-slate-900/80 p-2.5 px-3.5 rounded-2xl border border-white/5">
-                        <span class="text-[11px] font-bold text-gray-400 uppercase">Supported Methods</span>
-                        <div class="flex items-center gap-1.5 font-mono text-[10px] font-bold">
-                            <span class="px-2 py-0.5 bg-[#e2136e]/20 text-[#ff4081] rounded-lg border border-[#e2136e]/40">bKash</span>
-                            <span class="px-2 py-0.5 bg-orange-500/20 text-orange-400 rounded-lg border border-orange-500/40">Nagad</span>
-                            <span class="px-2 py-0.5 bg-purple-500/20 text-purple-400 rounded-lg border border-purple-500/40">Rocket</span>
+                <!-- PAYMENT FORM CARD -->
+                <div class="bg-white p-5 rounded-3xl border border-slate-200/90 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between bg-slate-50 p-2.5 px-3.5 rounded-2xl border border-slate-200/80">
+                        <span class="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Supported Methods</span>
+                        <div class="flex items-center gap-1.5">
+                            <span class="px-2 py-0.5 text-[10.5px] font-black bg-[#e2136e]/10 text-[#e2136e] rounded-md border border-[#e2136e]/20">bKash</span>
+                            <span class="px-2 py-0.5 text-[10.5px] font-black bg-[#ea580c]/10 text-[#ea580c] rounded-md border border-[#ea580c]/20">Nagad</span>
+                            <span class="px-2 py-0.5 text-[10.5px] font-black bg-[#7c3aed]/10 text-[#7c3aed] rounded-md border border-[#7c3aed]/20">Rocket</span>
                         </div>
                     </div>
 
-                    <div class="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-3.5 text-xs text-amber-200">
-                        <p class="font-bold flex items-center gap-1.5">
-                            <i data-lucide="shield-alert" class="w-4 h-4 text-amber-400"></i> অটোমেটিক ডিপোজিট নির্দেশিকা
-                        </p>
-                        <p class="text-[11px] text-amber-300/80 mt-1 leading-relaxed">
-                            টাকার পরিমাণ নির্ধারণ করে Continue বাটনে ক্লিক করুন। গেটওয়েতে পেমেন্ট সম্পন্ন হওয়ার সাথে সাথেই আপনার একাউন্টে ব্যালেন্স যুক্ত হবে।
-                        </p>
-                    </div>
-
+                    <!-- AMOUNT INPUT -->
                     <div>
                         <div class="flex justify-between items-center mb-1.5">
-                            <label for="amountInput" class="text-xs font-bold text-gray-300">Amount to Deposit (BDT)</label>
-                            <span class="text-[10.5px] font-mono font-bold text-cyan-400 bg-cyan-950/60 border border-cyan-800 px-2 py-0.5 rounded-md">Min: ৳10</span>
+                            <label for="amountInput" class="text-xs font-black text-gray-700">Enter Amount (BDT)</label>
+                            <span class="text-[10.5px] font-extrabold text-blue-600 bg-blue-50 px-2.5 py-0.5 rounded-md border border-blue-100">Min: ৳10</span>
                         </div>
                         <div class="relative">
-                            <input id="amountInput" type="number" value="500" min="10" placeholder="500" oninput="handleAutoAmountInput()" class="w-full p-3.5 pl-10 rounded-2xl input-field text-2xl font-black text-white text-center font-mono">
-                            <span class="absolute left-4 top-3.5 text-cyan-400 font-bold text-xl">৳</span>
+                            <input id="amountInput" type="number" value="100" min="10" placeholder="100" oninput="handleAutoAmountInput()" class="w-full p-3.5 pl-10 rounded-2xl input-field text-2xl font-black text-gray-900 border-2 border-slate-200 focus:border-blue-600 text-center tracking-wider font-mono">
+                            <span class="absolute left-4 top-3.5 text-gray-400 font-black text-2xl">৳</span>
                         </div>
                     </div>
 
+                    <!-- STRICT QUICK SELECT PILLS: 10, 50, 100, 300, 500 -->
                     <div>
-                        <span class="block text-[10.5px] font-mono text-gray-400 uppercase tracking-wider mb-2">Quick Select</span>
-                        <div class="grid grid-cols-3 gap-2">
-                            <button type="button" onclick="setAutoQuickAmount(10)" class="quick-amount-pill">10 BDT</button>
-                            <button type="button" onclick="setAutoQuickAmount(50)" class="quick-amount-pill">50 BDT</button>
-                            <button type="button" onclick="setAutoQuickAmount(100)" class="quick-amount-pill">100 BDT</button>
-                            <button type="button" onclick="setAutoQuickAmount(200)" class="quick-amount-pill">200 BDT</button>
-                            <button type="button" onclick="setAutoQuickAmount(500)" class="quick-amount-pill selected">500 BDT</button>
-                            <button type="button" onclick="setAutoQuickAmount(1000)" class="quick-amount-pill">1,000 BDT</button>
-                            <button type="button" onclick="setAutoQuickAmount(2000)" class="quick-amount-pill col-span-3">2,000 BDT</button>
+                        <span class="block text-[11px] font-extrabold text-gray-400 uppercase tracking-wider mb-2">Quick Select Amount</span>
+                        <div class="grid grid-cols-5 gap-1.5">
+                            <button type="button" onclick="setAutoQuickAmount(10)" class="quick-amount-pill">10</button>
+                            <button type="button" onclick="setAutoQuickAmount(50)" class="quick-amount-pill">50</button>
+                            <button type="button" onclick="setAutoQuickAmount(100)" class="quick-amount-pill selected">100</button>
+                            <button type="button" onclick="setAutoQuickAmount(300)" class="quick-amount-pill">300</button>
+                            <button type="button" onclick="setAutoQuickAmount(500)" class="quick-amount-pill">500</button>
                         </div>
                     </div>
 
-                    <button id="btnPayGateway" onclick="initiatePayment()" class="w-full py-4 btn-gateway-pay flex items-center justify-center gap-2 cursor-pointer">
-                        <i data-lucide="lock" class="w-4 h-4 text-cyan-200"></i>
+                    <div class="bg-blue-50/70 border-l-4 border-blue-600 rounded-r-2xl p-3 text-xs text-blue-950 space-y-1">
+                        <p class="font-bold flex items-center gap-1.5 text-blue-900">
+                            <i data-lucide="info" class="w-3.5 h-3.5 text-blue-600"></i> নির্দেশনা
+                        </p>
+                        <p class="text-blue-800/90 leading-relaxed text-[11.5px]">
+                            নিচের বাটনে চাপ দিয়ে পেমেন্ট গেটওয়েতে যান। পেমেন্ট সম্পূর্ণ হওয়ার সাথে সাথে স্বয়ংক্রিয়ভাবে সেকেন্ডের মধ্যে ব্যালেন্স একাউন্টে যোগ হবে।
+                        </p>
+                    </div>
+
+                    <button id="btnPayGateway" onclick="initiatePayment()" class="w-full py-4 rounded-2xl btn-buy text-sm flex items-center justify-center gap-2 cursor-pointer shadow-lg">
+                        <i data-lucide="lock" class="w-4 h-4 text-sky-200"></i>
                         <span>Continue to Instant Payment</span>
                     </button>
+
+                    <div class="flex items-center justify-center gap-1.5 text-[10.5px] text-gray-400 font-bold pt-0.5">
+                        <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-500"></i>
+                        <span>256-Bit SSL Encrypted Automated Gateway</span>
+                    </div>
                 </div>
             </div>
 
             <!-- ORDERS PAGE -->
             <div id="orders-page" class="p-4 space-y-4 sub-page">
-                <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                <div class="flex items-center justify-between border-b border-gray-200 pb-3">
                     <div>
-                        <h2 class="text-lg font-black text-white">Your Orders</h2>
-                        <p class="text-xs text-gray-400">ক্রয়কৃত সব একাউন্ট ও আইটেম</p>
+                        <h2 class="text-xl font-black text-gray-800">Your Orders</h2>
+                        <p class="text-xs text-gray-500">আপনার ক্রয়কৃত সকল আইটেম</p>
                     </div>
                     <div class="flex gap-2">
-                        <button onclick="copyAllOrdersExcelFormat()" class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 p-2 rounded-xl text-xs font-bold flex items-center gap-1 hover:bg-cyan-500/20">
+                        <button onclick="copyAllOrdersExcelFormat()" class="bg-blue-50 text-blue-600 p-2 rounded-xl text-xs font-bold flex items-center gap-1 border border-blue-200 hover:bg-blue-100 transition">
                             <i data-lucide="copy" class="w-3.5 h-3.5"></i> ALL COPY
                         </button>
-                        <button onclick="sendAllOrdersToBot()" class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 p-2 rounded-xl text-xs font-bold flex items-center gap-1 hover:bg-emerald-500/20">
+                        <button onclick="sendAllOrdersToBot()" class="bg-emerald-50 text-emerald-600 p-2 rounded-xl text-xs font-bold flex items-center gap-1 border border-emerald-200 hover:bg-emerald-100 transition">
                             <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> ALL XLSX
                         </button>
                     </div>
@@ -577,111 +547,168 @@
                 <div id="orders-purchase-history" class="space-y-3 min-h-[200px]"></div>
             </div>
 
-            <!-- TRANSFER / FEATURES PAGE -->
-            <div id="features-page" class="p-4 space-y-5 sub-page">
-                <h2 class="text-lg font-black text-white text-center">Wallet & Transfers</h2>
-                <div class="grid grid-cols-2 gap-3 text-center">
-                    <div class="glass-panel p-4 rounded-2xl">
-                        <p class="text-[10px] font-mono text-gray-400 font-bold">TOTAL SENT</p>
-                        <p id="total-send-display" class="text-xl font-black text-rose-400 mt-1 font-mono">৳0.00</p>
+            <!-- PROFILE PAGE (REDESIGNED & ATTRACTIVE) -->
+            <div id="profile-page" class="p-4 space-y-4 sub-page">
+                <!-- USER INFO CARD -->
+                <div class="bg-gradient-to-br from-white to-slate-50 p-5 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden">
+                    <div class="flex items-center gap-4">
+                        <div class="relative">
+                            <img id="profile-pic" class="w-16 h-16 rounded-2xl border-2 border-blue-600 object-cover shadow-md" src="" alt="Profile">
+                            <div id="profile-initials-avatar" class="w-16 h-16 rounded-2xl bg-blue-600 flex items-center justify-center font-black text-2xl text-white shadow-md">U</div>
+                        </div>
+                        <div class="flex-grow">
+                            <h3 id="profile-name" class="text-lg font-black text-gray-900 leading-tight">User</h3>
+                            <p id="profile-username" class="text-xs font-bold text-blue-600">@username</p>
+                            <span id="profile-id" class="mt-1 inline-block text-[11px] font-mono bg-slate-100 border border-slate-200 px-2.5 py-0.5 rounded-full text-gray-600 font-bold">ID: 000000</span>
+                        </div>
                     </div>
-                    <div class="glass-panel p-4 rounded-2xl">
-                        <p class="text-[10px] font-mono text-gray-400 font-bold">TOTAL RECEIVED</p>
-                        <p id="total-receive-display" class="text-xl font-black text-emerald-400 mt-1 font-mono">৳0.00</p>
+
+                    <!-- QUICK WALLET STATS BAR -->
+                    <div class="grid grid-cols-2 gap-2 mt-4 pt-4 border-t border-gray-100">
+                        <div class="bg-blue-50/60 p-3 rounded-2xl border border-blue-100">
+                            <span class="text-[10px] font-extrabold text-blue-600 uppercase tracking-wider block">Wallet Balance</span>
+                            <span id="profile-stat-balance" class="text-lg font-black text-gray-900">৳0.00</span>
+                        </div>
+                        <div class="bg-purple-50/60 p-3 rounded-2xl border border-purple-100 flex flex-col justify-center cursor-pointer" onclick="navigateTo('features-page')">
+                            <span class="text-[10px] font-extrabold text-purple-600 uppercase tracking-wider block">Transfer Fund</span>
+                            <span class="text-xs font-black text-purple-700 flex items-center gap-1 mt-0.5">Send Balance <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QUICK ACTIONS -->
+                <div class="grid grid-cols-2 gap-2.5">
+                    <button onclick="navigateTo('pay-page')" class="p-3.5 bg-white rounded-2xl border border-gray-200 shadow-sm flex items-center gap-3 text-left hover:border-blue-400 transition">
+                        <div class="p-2.5 rounded-xl bg-blue-50 text-blue-600"><i data-lucide="plus-circle" class="w-5 h-5"></i></div>
+                        <div>
+                            <span class="text-xs font-black text-gray-800 block">Deposit</span>
+                            <span class="text-[10px] text-gray-400 font-semibold">Add Money</span>
+                        </div>
+                    </button>
+                    <button onclick="navigateTo('features-page')" class="p-3.5 bg-white rounded-2xl border border-gray-200 shadow-sm flex items-center gap-3 text-left hover:border-orange-400 transition">
+                        <div class="p-2.5 rounded-xl bg-orange-50 text-orange-600"><i data-lucide="arrow-left-right" class="w-5 h-5"></i></div>
+                        <div>
+                            <span class="text-xs font-black text-gray-800 block">Transfer</span>
+                            <span class="text-[10px] text-gray-400 font-semibold">Send P2P</span>
+                        </div>
+                    </button>
+                </div>
+
+                <!-- TELEGRAM OFFICIAL BONUS TASK -->
+                <div class="bg-white p-4 rounded-3xl border border-gray-200 shadow-sm space-y-3">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-9 h-9 rounded-xl bg-[#0088cc]/10 text-[#0088cc] flex items-center justify-center">
+                                <i data-lucide="send" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-black text-xs text-gray-800">অফিশিয়াল টেলিগ্রাম চ্যানেল</h4>
+                                <p class="text-[11px] text-gray-400 font-medium">চ্যানেলে জয়েন করে ৳১.০০ বোনাস নিন</p>
+                            </div>
+                        </div>
+                        <span class="text-[11px] font-black text-emerald-600 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">+৳১.০০</span>
+                    </div>
+                    <div id="tg-task-action-container" class="pt-0.5"></div>
+                </div>
+
+                <!-- DYNAMIC OFFICIAL LINKS & TASKS FROM FIREBASE -->
+                <div class="bg-white p-4 rounded-3xl border border-gray-200 shadow-sm space-y-2.5">
+                    <h4 class="font-extrabold text-xs text-gray-500 uppercase tracking-wider px-1">Official Links & Support</h4>
+                    <div id="dynamic-official-links-container" class="space-y-2">
+                        <!-- Loaded Dynamically from Firebase Config -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- FEATURES / WALLET TRANSFERS PAGE -->
+            <div id="features-page" class="p-4 space-y-5 sub-page">
+                <div class="flex items-center gap-3 mb-1">
+                    <button onclick="navigateTo('home-page')" class="p-2 rounded-xl bg-white border border-gray-200">
+                        <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                    </button>
+                    <h2 class="text-lg font-black text-gray-800">Wallet & Transfers (P2P)</h2>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 text-center">
+                    <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
+                        <p class="text-xs font-bold text-gray-400 uppercase">TOTAL SENT</p>
+                        <p id="total-send-display" class="text-xl font-black text-orange-500 mt-1">৳0.00</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
+                        <p class="text-xs font-bold text-gray-400 uppercase">TOTAL RECEIVED</p>
+                        <p id="total-receive-display" class="text-xl font-black text-emerald-500 mt-1">৳0.00</p>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
-                    <button id="features-receive-btn" class="py-3 px-4 rounded-xl font-bold text-slate-950 bg-cyan-400 flex items-center justify-center gap-2 shadow-lg">
-                        <i data-lucide="arrow-down-left" class="w-4 h-4"></i> Receive ID
+                    <button id="features-receive-btn" class="py-3 px-4 rounded-xl font-bold text-white bg-blue-600 shadow-md flex items-center justify-center gap-2">
+                        <i data-lucide="copy" class="w-4 h-4"></i> Copy Receive ID
                     </button>
-                    <button id="features-send-btn" class="py-3 px-4 rounded-xl font-bold text-white bg-indigo-600 flex items-center justify-center gap-2 shadow-lg" onclick="navigateTo('send-page')">
-                        <i data-lucide="send" class="w-4 h-4"></i> Send Money
+                    <button id="features-send-btn" class="py-3 px-4 rounded-xl font-bold text-white bg-orange-500 shadow-md flex items-center justify-center gap-2" onclick="navigateTo('send-page')">
+                        <i data-lucide="send" class="w-4 h-4"></i> Send Balance
                     </button>
-                </div>
-            </div>
-
-            <!-- HISTORY PAGE -->
-            <div id="history-page" class="p-4 space-y-6 sub-page">
-                <div>
-                    <h3 class="text-sm font-bold text-amber-400 mb-3 flex items-center gap-2">
-                        <i data-lucide="hourglass" class="w-4 h-4"></i>
-                        <span>Manual / Pre-Orders Status</span>
-                    </h3>
-                    <div id="manual-orders-history-list" class="space-y-2.5"></div>
-                </div>
-
-                <div class="pt-2 border-t border-white/10">
-                    <h3 class="text-sm font-bold text-cyan-400 mb-3 flex items-center gap-2">
-                        <i data-lucide="wallet-cards" class="w-4 h-4"></i>
-                        <span>Deposit History</span>
-                    </h3>
-                    <div id="payment-history-list" class="space-y-2.5"></div>
-                </div>
-
-                <div class="pt-2 border-t border-white/10">
-                    <h3 class="text-sm font-bold text-purple-400 mb-3 flex items-center gap-2">
-                        <i data-lucide="history" class="w-4 h-4"></i>
-                        <span>Replace / Report History</span>
-                    </h3>
-                    <div id="replace-history-list" class="space-y-2.5"></div>
-                </div>
-            </div>
-
-            <!-- PROFILE PAGE -->
-            <div id="profile-page" class="p-4 space-y-5 sub-page">
-                <div class="glass-panel p-6 rounded-3xl flex flex-col items-center text-center border-cyan-500/20">
-                    <img id="profile-pic" class="w-20 h-20 rounded-full border-2 border-cyan-400 object-cover mb-3 hidden" src="" alt="Profile">
-                    <div id="profile-initials-avatar" class="w-20 h-20 rounded-full bg-cyan-500/20 border-2 border-cyan-400 flex items-center justify-center mb-3">
-                        <span id="profile-initials" class="text-2xl font-black text-cyan-400">U</span>
-                    </div>
-                    <h3 id="profile-name" class="text-lg font-black text-white">User</h3>
-                    <p id="profile-username" class="text-xs text-gray-400">@username</p>
-                    <span id="profile-id" class="mt-2 text-xs font-mono bg-slate-900 border border-white/10 px-3 py-1 rounded-full text-cyan-400">ID: 000000</span>
-                </div>
-
-                <div class="glass-panel p-5 rounded-3xl space-y-3.5">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2.5">
-                            <div class="w-10 h-10 rounded-2xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center border border-cyan-500/20">
-                                <i data-lucide="send" class="w-5 h-5"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-xs text-white">অফিশিয়াল টেলিগ্রাম চ্যানেল</h4>
-                                <p class="text-[11px] text-gray-400">জয়েন করে ৳১.০০ বোনাস রিওয়ার্ড নিন</p>
-                            </div>
-                        </div>
-                        <span class="text-xs font-mono font-black text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-0.5 rounded-full">+৳১.০০</span>
-                    </div>
-                    <div id="tg-task-action-container" class="pt-1"></div>
                 </div>
             </div>
 
             <!-- SEND BALANCE SUB-PAGE -->
             <div id="send-page" class="p-4 space-y-4 sub-page">
                 <div class="flex items-center gap-3 mb-2">
-                    <button onclick="navigateTo('features-page')" class="p-2.5 rounded-xl bg-slate-800 border border-white/10 text-white">
+                    <button onclick="navigateTo('features-page')" class="p-2 rounded-xl bg-white border border-gray-200">
                         <i data-lucide="arrow-left" class="w-5 h-5"></i>
                     </button>
-                    <h2 class="text-base font-black text-white">Send Balance</h2>
+                    <h2 class="text-lg font-black text-gray-800">Send Balance</h2>
                 </div>
-                <div class="glass-panel p-5 rounded-2xl space-y-4">
-                    <p class="text-xs text-cyan-300 bg-cyan-950/40 p-2.5 rounded-xl border border-cyan-800/50">২% সার্ভিস চার্জ প্রযোজ্য। সর্বনিম্ন ২০ টাকা পাঠাতে পারবেন।</p>
+                <div class="bg-white p-5 rounded-3xl border border-gray-200 space-y-4">
+                    <p class="text-xs text-blue-700 bg-blue-50 p-3 rounded-2xl font-semibold border border-blue-100">প্রতিটি ট্রান্সফারে ২% সার্ভিস চার্জ প্রযোজ্য। সর্বনিম্ন ৳২০ পাঠাতে পারবেন।</p>
                     <div>
-                        <label class="block text-xs font-bold text-gray-300 mb-1">Receiver Telegram ID</label>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">প্রাপকের Telegram ID</label>
                         <input id="send-recipient-id" type="text" placeholder="Telegram Chat ID" class="w-full p-3 rounded-xl input-field text-sm">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-gray-300 mb-1">Amount (BDT)</label>
-                        <input id="send-amount" type="number" placeholder="BDT Amount" class="w-full p-3 rounded-xl input-field text-sm">
+                        <label class="block text-xs font-bold text-gray-700 mb-1">টাকার পরিমাণ (BDT)</label>
+                        <input id="send-amount" type="number" placeholder="Amount" class="w-full p-3 rounded-xl input-field text-sm">
                     </div>
-                    <button id="submit-send-btn" class="w-full py-3 rounded-xl btn-buy text-sm">Transfer Balance</button>
+                    <button id="submit-send-btn" class="w-full py-3.5 rounded-xl btn-buy font-bold text-sm">Submit Send</button>
+                </div>
+            </div>
+
+            <!-- HISTORY / STATS PAGE -->
+            <div id="history-page" class="p-4 space-y-5 sub-page">
+                <div class="flex items-center gap-3 mb-1">
+                    <button onclick="navigateTo('home-page')" class="p-2 rounded-xl bg-white border border-gray-200">
+                        <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                    </button>
+                    <h2 class="text-lg font-black text-gray-800">All History & Status</h2>
+                </div>
+
+                <div>
+                    <h3 class="text-sm font-bold text-gray-800 mb-2.5 flex items-center gap-2">
+                        <i data-lucide="hourglass" class="w-4 h-4 text-orange-500"></i>
+                        <span>Manual / Pre-Orders Status</span>
+                    </h3>
+                    <div id="manual-orders-history-list" class="space-y-2.5"></div>
+                </div>
+
+                <div class="pt-3 border-t border-gray-200">
+                    <h3 class="text-sm font-bold text-gray-800 mb-2.5 flex items-center gap-2">
+                        <i data-lucide="wallet-cards" class="w-4 h-4 text-blue-600"></i>
+                        <span>Deposit History</span>
+                    </h3>
+                    <div id="payment-history-list" class="space-y-2.5"></div>
+                </div>
+
+                <div class="pt-3 border-t border-gray-200">
+                    <h3 class="text-sm font-bold text-gray-800 mb-2.5 flex items-center gap-2">
+                        <i data-lucide="history" class="w-4 h-4 text-purple-600"></i>
+                        <span>Replace / Report History</span>
+                    </h3>
+                    <div id="replace-history-list" class="space-y-2.5"></div>
                 </div>
             </div>
 
         </main>
 
-        <!-- BOTTOM NAVIGATION -->
+        <!-- BOTTOM NAVIGATION (4 CLEAN & SLEEK ITEMS: Home, Deposit, Orders, Profile) -->
         <nav class="bottom-nav">
             <div class="nav-item active" data-page="home-page" onclick="navigateTo('home-page')">
                 <div class="nav-icon-wrapper flex items-center justify-center">
@@ -701,18 +728,6 @@
                 </div>
                 <span>Orders</span>
             </div>
-            <div class="nav-item" data-page="features-page" onclick="navigateTo('features-page')">
-                <div class="nav-icon-wrapper flex items-center justify-center">
-                    <i data-lucide="repeat" class="w-5 h-5"></i>
-                </div>
-                <span>Transfer</span>
-            </div>
-            <div class="nav-item" data-page="history-page" onclick="navigateTo('history-page')">
-                <div class="nav-icon-wrapper flex items-center justify-center">
-                    <i data-lucide="activity" class="w-5 h-5"></i>
-                </div>
-                <span>History</span>
-            </div>
             <div class="nav-item" data-page="profile-page" onclick="navigateTo('profile-page')">
                 <div class="nav-icon-wrapper flex items-center justify-center">
                     <i data-lucide="user" class="w-5 h-5"></i>
@@ -724,162 +739,169 @@
     </div>
 
     <!-- NOTIFICATION MODAL -->
-    <div id="notification-modal" class="hidden fixed inset-0 bg-slate-950/90 z-[75] flex flex-col p-4 backdrop-blur-md">
-        <div class="flex items-center justify-between glass-panel p-4 rounded-2xl mb-4">
+    <div id="notification-modal" class="hidden fixed inset-0 bg-[#f8fafc] z-[75] flex flex-col p-4 overflow-hidden">
+        <div class="flex items-center justify-between bg-white p-4 rounded-2xl border border-gray-200 shadow-sm mb-4">
             <div class="flex items-center gap-2.5">
-                <div class="p-2 bg-cyan-500/20 text-cyan-400 rounded-xl">
+                <div class="p-2 bg-blue-50 text-blue-600 rounded-xl">
                     <i data-lucide="bell" class="w-5 h-5"></i>
                 </div>
                 <div>
-                    <h3 class="font-bold text-white text-sm">AAC X Notifications</h3>
-                    <p class="text-[10px] text-gray-400">আপডেট এবং সিস্টেম নোটিশ</p>
+                    <h3 class="font-bold text-gray-800 text-base leading-tight">নোটিফিকেশন ও নোটিশ</h3>
+                    <p class="text-[11px] text-gray-400">সকল সিস্টেম আপডেট</p>
                 </div>
             </div>
-            <button onclick="toggleNotificationModal()" class="p-2 bg-slate-800 text-gray-300 rounded-xl">
-                <i data-lucide="x" class="w-4 h-4"></i>
+            <button onclick="toggleNotificationModal()" class="p-2 bg-gray-100 text-gray-600 rounded-xl hover:bg-gray-200 transition">
+                <i data-lucide="x" class="w-5 h-5"></i>
             </button>
         </div>
         <div id="notification-list-container" class="space-y-3 flex-grow overflow-y-auto pb-10"></div>
     </div>
 
     <!-- INSTANT BUY NOW MODAL -->
-    <div id="buy-now-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
-        <div class="glass-panel rounded-3xl p-6 w-full max-w-sm space-y-4 text-center border-cyan-500/30">
-            <div class="w-14 h-14 bg-cyan-500/10 text-cyan-400 rounded-2xl border border-cyan-500/30 flex items-center justify-center mx-auto">
+    <div id="buy-now-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 relative text-center shadow-2xl">
+            <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto">
                 <i data-lucide="zap" class="w-7 h-7"></i>
             </div>
             <div>
-                <h3 class="text-base font-black text-white" id="buy-modal-title">Service Name (Buy Now)</h3>
-                <p class="text-xs text-gray-400 mt-1">ইনস্ট্যান্ট স্টক থেকে সরাসরি ক্রয় করুন।</p>
+                <h3 class="text-lg font-bold text-gray-800" id="buy-modal-title">Service Name (Buy Now)</h3>
+                <p class="text-xs text-gray-500 mt-1">ইনস্ট্যান্ট স্টক থেকে সরাসরি ক্রয় করতে পরিমাণ নির্বাচন করুন।</p>
             </div>
 
-            <div class="bg-slate-900/80 p-3 rounded-2xl border border-white/10 flex items-center justify-between text-xs">
-                <span class="font-bold text-gray-300">ক্রয় পরিমাণ (Qty):</span>
-                <div class="flex items-center bg-slate-800 border border-white/10 rounded-xl p-0.5 font-mono">
-                    <button onclick="adjustBuyModalQty(-1)" class="w-8 h-8 flex items-center justify-center text-white hover:bg-slate-700 rounded-lg">-</button>
-                    <input id="buy-modal-qty-input" type="number" value="1" min="1" oninput="handleBuyModalQtyInput(this)" class="w-12 text-center bg-transparent text-sm font-bold text-cyan-400 outline-none">
-                    <button onclick="adjustBuyModalQty(1)" class="w-8 h-8 flex items-center justify-center text-white hover:bg-slate-700 rounded-lg">+</button>
+            <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 flex items-center justify-between text-xs">
+                <span class="font-bold text-gray-700">ক্রয় পরিমাণ (Quantity):</span>
+                <div class="flex items-center bg-white border border-gray-300 rounded-xl p-0.5 shadow-sm">
+                    <button onclick="adjustBuyModalQty(-1)" class="w-8 h-8 flex items-center justify-center font-black text-gray-700 hover:bg-gray-100 rounded-lg text-sm transition">-</button>
+                    <input id="buy-modal-qty-input" type="number" value="1" min="1" oninput="handleBuyModalQtyInput(this)" class="w-12 text-center bg-transparent text-sm font-black text-gray-800 outline-none">
+                    <button onclick="adjustBuyModalQty(1)" class="w-8 h-8 flex items-center justify-center font-black text-gray-700 hover:bg-gray-100 rounded-lg text-sm transition">+</button>
                 </div>
             </div>
 
-            <div class="bg-slate-900/60 p-3.5 rounded-2xl border border-white/5 text-left text-xs text-gray-300 space-y-1.5 font-mono">
-                <p>• মোট মূল্য: <b id="buy-modal-price" class="text-cyan-400">৳0.00</b></p>
-                <p>• স্টক এভেইলেবল: <b id="buy-modal-stock-display" class="text-emerald-400">0 টি</b></p>
-                <p>• ডেলিভারি: <b class="text-cyan-400">Instant Automated</b></p>
+            <div class="bg-blue-50/80 p-3.5 rounded-2xl border border-blue-200 text-left text-xs text-blue-950 space-y-1.5">
+                <p>• মোট মূল্য: <b id="buy-modal-price" class="text-blue-700 font-bold">৳0.00</b></p>
+                <p>• উপলব্ধ স্টক: <b id="buy-modal-stock-display" class="text-emerald-700 font-bold">0 টি</b></p>
+                <p>• ডেলিভারি: <b class="text-emerald-600 font-bold">ইনস্ট্যান্ট (Instant Delivery)</b></p>
             </div>
 
             <div class="flex gap-2 pt-1">
-                <button onclick="document.getElementById('buy-now-modal').classList.add('hidden')" class="w-1/2 py-3 bg-slate-800 text-gray-300 font-bold rounded-xl text-xs">বাতিল</button>
-                <button id="confirm-buy-modal-btn" onclick="executeBuyNowConfirmed()" class="w-1/2 py-3 btn-buy font-bold rounded-xl text-xs">Confirm Buy</button>
+                <button onclick="document.getElementById('buy-now-modal').classList.add('hidden')" class="w-1/2 py-2.5 bg-gray-100 font-bold rounded-xl text-xs">বাতিল</button>
+                <button id="confirm-buy-modal-btn" onclick="executeBuyNowConfirmed()" class="w-1/2 py-2.5 btn-buy font-bold rounded-xl text-xs">Confirm Buy</button>
             </div>
         </div>
     </div>
 
-    <!-- ORDER NOW (MANUAL) MODAL -->
-    <div id="manual-order-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
-        <div class="glass-panel rounded-3xl p-6 w-full max-w-sm space-y-4 text-center border-orange-500/30">
-            <div class="w-14 h-14 bg-orange-500/10 text-orange-400 rounded-2xl border border-orange-500/30 flex items-center justify-center mx-auto">
+    <!-- ORDER NOW (MANUAL PRE-ORDER) CONFIRMATION MODAL -->
+    <div id="manual-order-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 relative text-center shadow-2xl">
+            <div class="w-14 h-14 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mx-auto">
                 <i data-lucide="clock" class="w-7 h-7"></i>
             </div>
             <div>
-                <h3 class="text-base font-black text-white" id="manual-modal-title">Service Name (Pre-Order)</h3>
-                <p class="text-xs text-gray-400 mt-1">স্টক আউট রয়েছে। তবে আপনি প্রি-অর্ডার করতে পারবেন।</p>
+                <h3 class="text-lg font-bold text-gray-800" id="manual-modal-title">Service Name (Order Now)</h3>
+                <p class="text-xs text-gray-500 mt-1">ইনস্ট্যান্ট স্টক শেষ, তবে আপনি প্রি-অর্ডার করতে পারেন।</p>
             </div>
 
-            <div class="bg-slate-900/80 p-3 rounded-2xl border border-white/10 flex items-center justify-between text-xs">
-                <span class="font-bold text-gray-300">অর্ডার পরিমাণ (Qty):</span>
-                <div class="flex items-center bg-slate-800 border border-white/10 rounded-xl p-0.5 font-mono">
-                    <button onclick="adjustManualOrderModalQty(-1)" class="w-8 h-8 flex items-center justify-center text-white hover:bg-slate-700 rounded-lg">-</button>
-                    <input id="manual-modal-qty-input" type="number" value="1" min="1" oninput="handleManualModalQtyChange(this)" class="w-12 text-center bg-transparent text-sm font-bold text-orange-400 outline-none">
-                    <button onclick="adjustManualOrderModalQty(1)" class="w-8 h-8 flex items-center justify-center text-white hover:bg-slate-700 rounded-lg">+</button>
+            <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 flex items-center justify-between text-xs">
+                <span class="font-bold text-gray-700">অর্ডার পরিমাণ (Quantity):</span>
+                <div class="flex items-center bg-white border border-gray-300 rounded-xl p-0.5 shadow-sm">
+                    <button onclick="adjustManualOrderModalQty(-1)" class="w-8 h-8 flex items-center justify-center font-black text-gray-700 hover:bg-gray-100 rounded-lg text-sm transition">-</button>
+                    <input id="manual-modal-qty-input" type="number" value="1" min="1" oninput="handleManualModalQtyChange(this)" class="w-12 text-center bg-transparent text-sm font-black text-gray-800 outline-none">
+                    <button onclick="adjustManualOrderModalQty(1)" class="w-8 h-8 flex items-center justify-center font-black text-gray-700 hover:bg-gray-100 rounded-lg text-sm transition">+</button>
                 </div>
             </div>
 
-            <div class="bg-slate-900/60 p-3.5 rounded-2xl border border-white/5 text-left text-xs text-gray-300 space-y-1.5 font-mono">
-                <p>• মোট মূল্য: <b id="manual-modal-price" class="text-orange-400">৳0.00</b></p>
-                <p>• ডেলিভারি সময়: <b id="manual-modal-duration" class="text-amber-400">৩০ মিনিট</b></p>
-                <p id="manual-modal-balance-notice" class="text-[11px] text-cyan-300 hidden">• ব্যালেন্স কম থাকলে স্বয়ংক্রিয়ভাবে ডিপোজিটে যাবে।</p>
+            <div class="bg-orange-50 p-3.5 rounded-2xl border border-orange-200 text-left text-xs text-orange-950 space-y-1.5">
+                <p>• মোট মূল্য: <b id="manual-modal-price" class="text-blue-700 font-bold">৳0.00</b></p>
+                <p>• ডেলিভারি সময়সীমা: <b id="manual-modal-duration" class="text-orange-700 font-bold">৩০ মিনিট</b></p>
+                <p id="manual-modal-balance-notice" class="text-[11px] text-indigo-700 font-bold hidden">• ব্যালেন্স কম থাকলে কনফার্ম করার পর ডিপোজিট পেজে নিয়ে যাবে।</p>
+                <p>• অ্যাডমিন নির্ধারিত সময়ের মধ্যে সরাসরি আপনার <b>টেলিগ্রাম ইনবক্সে</b> দেবে।</p>
             </div>
             <div class="flex gap-2 pt-1">
-                <button onclick="document.getElementById('manual-order-modal').classList.add('hidden')" class="w-1/2 py-3 bg-slate-800 text-gray-300 font-bold rounded-xl text-xs">বাতিল</button>
-                <button id="confirm-manual-order-btn" onclick="handleConfirmManualOrder()" class="w-1/2 py-3 btn-order-orange font-bold rounded-xl text-xs">Confirm Order</button>
+                <button onclick="document.getElementById('manual-order-modal').classList.add('hidden')" class="w-1/2 py-2.5 bg-gray-100 font-bold rounded-xl text-xs">বাতিল</button>
+                <button id="confirm-manual-order-btn" onclick="handleConfirmManualOrder()" class="w-1/2 py-2.5 btn-order-orange font-bold rounded-xl text-xs">Confirm Order</button>
             </div>
         </div>
     </div>
 
-    <!-- GATEWAY SUCCESS MODAL -->
-    <div id="gateway-success-modal" class="hidden fixed inset-0 bg-black/75 flex items-center justify-center z-[85] p-4 backdrop-blur-md">
-        <div class="glass-panel rounded-3xl p-6 w-full max-w-sm space-y-4 text-center border-emerald-500/30">
-            <div class="w-16 h-16 bg-emerald-500/10 text-emerald-400 rounded-full flex items-center justify-center mx-auto border border-emerald-500/30">
-                <i data-lucide="check-circle" class="w-9 h-9"></i>
+    <!-- GATEWAY PAYMENT SUCCESS MODAL -->
+    <div id="gateway-success-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[85] p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 text-center shadow-2xl">
+            <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
+                <i data-lucide="check-circle" class="w-10 h-10 stroke-[2.5]"></i>
             </div>
-            <h2 class="text-lg font-black text-white">Payment Received!</h2>
-            <div class="bg-slate-900/80 p-3.5 rounded-2xl border border-white/10 text-left space-y-1.5 text-xs font-mono">
-                <div>TXID: <span id="displayTxid" class="text-cyan-400 font-bold"></span></div>
-                <div>Gateway: <span id="displayMethod" class="text-emerald-400 font-bold">NagorikPay</span></div>
-                <div>Amount: <span id="displayAmount" class="text-white font-bold"></span></div>
+            <h3 class="text-emerald-600 font-bold text-sm">পেমেন্ট সফলভাবে রিসিভ হয়েছে!</h3>
+            <h2 class="text-xl font-black text-gray-800">Payment Successful!</h2>
+            
+            <div class="bg-gray-50 p-3.5 rounded-2xl border border-dashed border-gray-300 text-left space-y-2 text-xs">
+                <div>TXID : <span id="displayTxid" class="font-mono font-bold text-purple-600 text-sm"></span></div>
+                <div>Method : <span id="displayMethod" class="font-bold text-blue-600 uppercase">NagorikPay</span></div>
+                <div>Amount : <span id="displayAmount" class="font-bold text-gray-900 text-sm"></span></div>
             </div>
-            <button onclick="document.getElementById('gateway-success-modal').classList.add('hidden'); navigateTo('home-page');" class="w-full py-3.5 rounded-xl btn-gateway-pay font-bold text-xs">
-                Back to Shop
+
+            <button onclick="document.getElementById('gateway-success-modal').classList.add('hidden'); navigateTo('home-page');" class="w-full py-3.5 rounded-xl btn-buy font-bold text-sm">
+                Return to Shop
             </button>
         </div>
     </div>
 
-    <!-- REPLACE / REPORT MODAL -->
-    <div id="replace-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[75] p-4 backdrop-blur-sm">
-        <div class="glass-panel rounded-3xl p-6 w-full max-w-sm space-y-4 text-center border-purple-500/30">
-            <div class="w-14 h-14 bg-purple-500/10 text-purple-400 rounded-2xl border border-purple-500/30 flex items-center justify-center mx-auto">
+    <!-- REPLACE / REPORT REQUEST MODAL -->
+    <div id="replace-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[75] p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 relative text-center">
+            <div class="w-14 h-14 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto">
                 <i data-lucide="shield-alert" class="w-7 h-7"></i>
             </div>
             <div>
-                <h3 class="text-base font-black text-white">Replace / Report</h3>
-                <p class="text-xs text-gray-400 mt-1">অ্যাকাউন্টে কোনো সমস্যা থাকলে বিস্তারিত বিবরণ দিন।</p>
+                <h3 class="text-lg font-bold text-gray-800">রিপ্লেসমেন্ট / রিপোর্ট</h3>
+                <p class="text-xs text-gray-500 mt-1">অ্যাকাউন্টে কোনো সমস্যা থাকলে বিস্তারিত লিখে জানান।</p>
             </div>
             <input type="hidden" id="replace-order-id">
             <input type="hidden" id="replace-mail-type">
             <input type="hidden" id="replace-mail-cost">
             <div>
-                <textarea id="replace-reason-text" rows="3" placeholder="সমস্যার বিবরণ লিখুন..." class="w-full p-3 rounded-xl input-field text-xs text-white"></textarea>
+                <textarea id="replace-reason-text" rows="3" placeholder="সমস্যার বিবরণ লিখুন..." class="w-full p-3 rounded-xl input-field text-xs"></textarea>
             </div>
             <div class="flex gap-2">
-                <button onclick="document.getElementById('replace-modal').classList.add('hidden')" class="w-1/2 py-2.5 bg-slate-800 text-gray-300 font-bold rounded-xl text-xs">বাতিল</button>
-                <button id="submit-replace-btn" class="w-1/2 py-2.5 bg-purple-600 text-white font-bold rounded-xl text-xs">Submit Report</button>
+                <button onclick="document.getElementById('replace-modal').classList.add('hidden')" class="w-1/2 py-2.5 bg-gray-100 font-bold rounded-xl text-xs">বাতিল</button>
+                <button id="submit-replace-btn" class="w-1/2 py-2.5 bg-purple-600 text-white font-bold rounded-xl text-xs">সাবমিট করুন</button>
             </div>
         </div>
     </div>
 
     <!-- PURCHASE SUCCESS MODAL -->
-    <div id="purchase-success-modal" class="hidden fixed inset-0 bg-black/75 flex items-center justify-center z-[70] p-4 backdrop-blur-md">
-        <div class="glass-panel rounded-3xl p-5 w-full max-w-sm space-y-4 text-center max-h-[90vh] flex flex-col border-cyan-500/30 relative">
-            <button onclick="document.getElementById('purchase-success-modal').classList.add('hidden')" class="absolute top-4 right-4 p-1.5 rounded-full bg-slate-800 text-gray-400">
+    <div id="purchase-success-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-4 relative text-center max-h-[90vh] flex flex-col shadow-2xl">
+            <button onclick="document.getElementById('purchase-success-modal').classList.add('hidden')" class="absolute top-4 right-4 p-1 rounded-full bg-gray-100">
                 <i data-lucide="x" class="w-4 h-4"></i>
             </button>
-            <div class="w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-2xl border border-emerald-500/30 flex items-center justify-center mx-auto flex-shrink-0">
+            
+            <div class="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto flex-shrink-0">
                 <i data-lucide="check" class="w-6 h-6 stroke-[3]"></i>
             </div>
-            <div>
-                <h3 class="text-base font-black text-white">Order Successful!</h3>
-                <p class="text-xs text-gray-400 mt-0.5" id="purchase-success-subtitle">ক্রয়কৃত আইটেম:</p>
+            <div class="flex-shrink-0">
+                <h3 class="text-lg font-bold text-gray-800">অর্ডার সফল হয়েছে!</h3>
+                <p class="text-xs text-gray-500 mt-0.5" id="purchase-success-subtitle">আপনার ক্রয়কৃত আইটেমসমূহ:</p>
             </div>
-            <div id="purchase-success-items-list" class="space-y-2 text-left overflow-y-auto max-h-[180px] pr-1"></div>
+            
+            <div id="purchase-success-items-list" class="space-y-2 text-left overflow-y-auto max-h-[190px] pr-1"></div>
 
-            <div class="grid grid-cols-2 gap-2 pt-1 flex-shrink-0 text-xs font-bold font-mono">
-                <button onclick="copyCurrentPurchaseExcelFormat()" class="py-2.5 px-3 bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 rounded-xl flex items-center justify-center gap-1.5">
+            <div class="grid grid-cols-2 gap-2 pt-1 flex-shrink-0 text-xs font-bold">
+                <button onclick="copyCurrentPurchaseExcelFormat()" class="py-2.5 px-3 bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 rounded-xl flex items-center justify-center gap-1.5 transition">
                     <i data-lucide="copy" class="w-4 h-4"></i>
-                    <span>COPY ALL</span>
+                    <span>ALL COPY</span>
                 </button>
-                <button onclick="sendCurrentPurchaseToBot()" class="py-2.5 px-3 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded-xl flex items-center justify-center gap-1.5">
+                <button onclick="sendCurrentPurchaseToBot()" class="py-2.5 px-3 bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 rounded-xl flex items-center justify-center gap-1.5 transition">
                     <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
                     <span>ALL XLSX</span>
                 </button>
             </div>
+
             <button onclick="document.getElementById('purchase-success-modal').classList.add('hidden'); navigateTo('orders-page');" class="w-full py-3 rounded-xl btn-buy font-bold text-xs flex-shrink-0">
                 View All Orders
             </button>
         </div>
     </div>
 
-    <!-- FIREBASE & APPLICATION LOGIC -->
+    <!-- FIREBASE & CORE SCRIPTS -->
     <script type="module">
         const firebaseConfig = {
             apiKey: "AIzaSyAEV4zkuTcRYIFP2AMmKJTyDUTzSYLnbbM",
@@ -892,7 +914,7 @@
         };
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy, limit, runTransaction, getCountFromServer, updateDoc, Timestamp, increment } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy, limit, runTransaction, getCountFromServer, writeBatch, updateDoc, Timestamp, increment } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
@@ -908,6 +930,7 @@
         let countdownTimerInterval = null;
         let allUserNotifications = [];
         let lastPurchasedItemsBatch = [];
+
         let tgTaskState = 0;
         let tgCountdownInterval = null;
 
@@ -921,7 +944,7 @@
         ];
 
         const loader = document.getElementById('loader');
-        const getLoadingHTML = () => `<div class="flex justify-center p-8"><div class="w-8 h-8 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></div></div>`;
+        const getLoadingHTML = () => `<div class="flex justify-center p-8"><div class="premium-loader-spinner"></div></div>`;
 
         window.showToast = function(message, type = 'info') {
             const container = document.getElementById('toast-container');
@@ -935,7 +958,7 @@
             if (type === 'error') iconName = 'alert-circle';
 
             toast.innerHTML = `
-                <i data-lucide="${iconName}" class="w-4 h-4 flex-shrink-0 text-cyan-400"></i>
+                <i data-lucide="${iconName}" class="w-4 h-4 flex-shrink-0"></i>
                 <span class="leading-tight">${message}</span>
             `;
             container.appendChild(toast);
@@ -949,7 +972,21 @@
             }, 3000);
         };
 
-        window.showAlert = (msg) => showToast(msg, 'info');
+        window.showAlert = function(msg) {
+            showToast(msg, 'info');
+        };
+
+        window.toggleSideMenu = function(open) {
+            const overlay = document.getElementById('side-drawer-overlay');
+            const drawer = document.getElementById('side-drawer');
+            if (open) {
+                overlay.classList.remove('hidden');
+                drawer.classList.add('open');
+            } else {
+                drawer.classList.remove('open');
+                setTimeout(() => overlay.classList.add('hidden'), 250);
+            }
+        };
 
         window.onload = async () => {
             try {
@@ -978,11 +1015,10 @@
             startCountdownTimerRoutine();
 
             setTimeout(() => {
-                loader.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                loader.style.transition = 'opacity 0.4s ease';
                 loader.style.opacity = '0';
-                loader.style.transform = 'scale(1.05)';
-                setTimeout(() => loader.style.display = 'none', 500);
-            }, 1000);
+                setTimeout(() => loader.style.display = 'none', 400);
+            }, 750);
         };
 
         async function initUserSession() {
@@ -1011,18 +1047,6 @@
                 await setDoc(userRef, userData);
             }
 
-            const headerAvatar = document.getElementById('header-user-avatar');
-            const headerFallback = document.getElementById('header-user-fallback');
-            if (currentUserTg.photo_url || (userData && userData.photo_url)) {
-                headerAvatar.src = currentUserTg.photo_url || userData.photo_url;
-                headerAvatar.classList.remove('hidden');
-                headerFallback.classList.add('hidden');
-            } else {
-                headerAvatar.classList.add('hidden');
-                headerFallback.classList.remove('hidden');
-                headerFallback.textContent = ((userData && userData.name) || 'U').charAt(0).toUpperCase();
-            }
-
             await fetchAppConfig();
             await loadUserNotifications();
 
@@ -1037,15 +1061,47 @@
                 const configSnap = await getDoc(configRef);
                 appConfig = configSnap.exists() ? configSnap.data() : {};
 
-                if (appConfig.telegramSupportUrl) document.getElementById('telegram-support-link').href = appConfig.telegramSupportUrl;
-                if (appConfig.whatsappSupportUrl) document.getElementById('whatsapp-support-link').href = appConfig.whatsappSupportUrl;
+                if (appConfig.telegramSupportUrl) {
+                    const el = document.getElementById('drawer-tg-support');
+                    if (el) el.href = appConfig.telegramSupportUrl;
+                }
+                if (appConfig.whatsappSupportUrl) {
+                    const el = document.getElementById('drawer-wa-support');
+                    if (el) el.href = appConfig.whatsappSupportUrl;
+                }
 
                 renderDynamicCategories();
                 renderTelegramTaskUI();
+                renderDynamicOfficialLinks();
             } catch (e) {
                 renderDynamicCategories();
                 renderTelegramTaskUI();
+                renderDynamicOfficialLinks();
             }
+        }
+
+        function renderDynamicOfficialLinks() {
+            const container = document.getElementById('dynamic-official-links-container');
+            if (!container) return;
+
+            const links = (appConfig.officialLinks && Array.isArray(appConfig.officialLinks) && appConfig.officialLinks.length > 0)
+                ? appConfig.officialLinks
+                : [
+                    { title: "Official Community Group", url: appConfig.telegramGroupUrl || "https://t.me/EXPERTearn_team", icon: "users" },
+                    { title: "Payment Proof Channel", url: appConfig.proofChannelUrl || "https://t.me/EXPERTearn_team", icon: "check-circle" },
+                    { title: "Developer Contact", url: "https://t.me/SAIDULHP", icon: "code" }
+                ];
+
+            container.innerHTML = links.map(link => `
+                <a href="${link.url}" target="_blank" class="p-3 bg-slate-50 hover:bg-blue-50 border border-slate-200/80 hover:border-blue-200 rounded-2xl flex items-center justify-between text-xs font-bold text-gray-700 transition">
+                    <div class="flex items-center gap-2.5">
+                        <i data-lucide="${link.icon || 'external-link'}" class="w-4 h-4 text-blue-600"></i>
+                        <span>${link.title}</span>
+                    </div>
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
+                </a>
+            `).join('');
+            lucide.createIcons();
         }
 
         function renderTelegramTaskUI() {
@@ -1054,33 +1110,33 @@
 
             if (userData && userData.hasClaimedTgBonus) {
                 container.innerHTML = `
-                    <div class="w-full py-2.5 px-4 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded-2xl font-bold text-xs flex items-center justify-between">
+                    <div class="w-full py-2.5 px-4 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-2xl font-bold text-xs flex items-center justify-between shadow-sm">
                         <div class="flex items-center gap-2">
-                            <i data-lucide="check-circle" class="w-4 h-4"></i>
-                            <span>বোনাস সংগৃহীত (৳১.০০ ব্যালেন্সে যুক্ত)</span>
+                            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i>
+                            <span>ভেরিফাইড (৳১.০০ বোনাস রিসিভড)</span>
                         </div>
-                        <span class="text-[10px] bg-emerald-500/20 px-2 py-0.5 rounded font-mono">CLAIMED</span>
+                        <span class="text-[10px] bg-emerald-200/60 px-2 py-0.5 rounded-md font-mono">Claimed</span>
                     </div>
                 `;
             } else if (tgTaskState === 1) {
                 container.innerHTML = `
-                    <button disabled class="w-full py-3 bg-slate-800 text-gray-400 rounded-2xl font-bold text-xs flex items-center justify-center gap-2 border border-white/10 cursor-not-allowed">
-                        <span class="w-4 h-4 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></span>
+                    <button disabled class="w-full py-3 bg-gray-100 text-gray-500 rounded-2xl font-bold text-xs flex items-center justify-center gap-2 border border-gray-200 cursor-not-allowed">
+                        <span class="w-4 h-4 border-2 border-orange-500 border-t-transparent rounded-full animate-spin"></span>
                         <span id="tg-task-timer-text">অপেক্ষা করুন (5s)...</span>
                     </button>
                 `;
             } else if (tgTaskState === 2) {
                 container.innerHTML = `
-                    <button onclick="verifyTelegramChannelMembership()" id="btn-tg-verify" class="w-full py-3 bg-emerald-500 text-slate-950 rounded-2xl font-black text-xs flex items-center justify-center gap-2 shadow-lg transition active:scale-95">
+                    <button onclick="verifyTelegramChannelMembership()" id="btn-tg-verify" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-bold text-xs flex items-center justify-center gap-2 shadow-md transition active:scale-98">
                         <i data-lucide="shield-check" class="w-4 h-4"></i>
-                        <span>ভেরিফাই করুন ও ৳১.০০ বোনাস নিন</span>
+                        <span>ভেরিফাই করুন ও ৳১.০০ নিন</span>
                     </button>
                 `;
             } else {
                 container.innerHTML = `
-                    <button onclick="startTelegramJoinFlow()" class="w-full py-3 bg-[#0088cc] text-white rounded-2xl font-bold text-xs flex items-center justify-center gap-2 shadow-lg transition active:scale-95">
+                    <button onclick="startTelegramJoinFlow()" class="w-full py-3 bg-[#0088cc] hover:bg-[#0077b5] text-white rounded-2xl font-bold text-xs flex items-center justify-center gap-2 shadow-md transition active:scale-98">
                         <i data-lucide="send" class="w-4 h-4"></i>
-                        <span>Join Channel & Claim ৳1.00</span>
+                        <span>Start</span>
                     </button>
                 `;
             }
@@ -1125,13 +1181,13 @@
             const btn = document.getElementById('btn-tg-verify');
             if (btn) {
                 btn.disabled = true;
-                btn.innerHTML = `<span class="w-4 h-4 border-2 border-slate-950 border-t-transparent rounded-full animate-spin mr-1"></span> Checking...`;
+                btn.innerHTML = `<span class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-1"></span> Checking...`;
             }
 
             const tgUserId = String(userData.tgChatId);
             const botToken = appConfig.botToken || "";
             let channelId = appConfig.officialChannelId || "@EXPERTearn_team";
-            let isMember = false;
+            let isMember = true;
 
             if (botToken && channelId) {
                 try {
@@ -1139,11 +1195,13 @@
                     const checkData = await checkRes.json();
                     if (checkData.ok && checkData.result) {
                         const status = checkData.result.status;
-                        if (["creator", "administrator", "member", "restricted"].includes(status)) isMember = true;
+                        if (!["creator", "administrator", "member", "restricted"].includes(status)) {
+                            isMember = false;
+                        }
                     }
-                } catch(err) { isMember = true; }
-            } else {
-                isMember = true;
+                } catch(err) {
+                    isMember = true;
+                }
             }
 
             if (isMember) {
@@ -1152,7 +1210,8 @@
                     await runTransaction(db, async (transaction) => {
                         const userSnap = await transaction.get(userRef);
                         if (!userSnap.exists()) throw new Error("ইউজার পাওয়া যায়নি");
-                        if (userSnap.data().hasClaimedTgBonus) throw new Error("বোনাস ইতিমধ্যে নেওয়া হয়েছে");
+                        const currentData = userSnap.data();
+                        if (currentData.hasClaimedTgBonus) throw new Error("বোনাস ইতিমধ্যে ক্লেইম করা হয়েছে");
 
                         transaction.update(userRef, {
                             balance: increment(1.00),
@@ -1161,8 +1220,8 @@
                     });
 
                     await addDoc(collection(db, "users", tgUserId, "notifications"), {
-                        title: "AAC X বোনাস রিওয়ার্ড!",
-                        message: `টেলিগ্রাম চ্যানেলে যুক্ত হওয়ার জন্য আপনার অ্যাকাউন্টে ৳১.০০ সফলভাবে যোগ হয়েছে।`,
+                        title: "স্বাগত বোনাস!",
+                        message: `টেলিগ্রাম চ্যানেলে জয়েন করার জন্য একাউন্টে ৳১.০০ বোনাস সফলভাবে যোগ করা হয়েছে।`,
                         time: serverTimestamp(),
                         type: "bonus"
                     });
@@ -1171,27 +1230,29 @@
                     userData.hasClaimedTgBonus = true;
                     updateUI();
                     renderTelegramTaskUI();
-                    showToast("অভিনন্দন! ৳১.০০ ব্যালেন্সে যোগ হয়েছে!", "success");
+                    showToast("অভিনন্দন! ৳১.০০ বোনাস সফলভাবে যোগ হয়েছে!", "success");
                 } catch(e) {
-                    showToast(e.message || "বোনাস যোগ ব্যর্থ হয়েছে", "error");
+                    showToast(e.message || "বোনাস ক্লেইম ব্যর্থ হয়েছে", "error");
                     if (btn) {
                         btn.disabled = false;
-                        btn.innerHTML = `<i data-lucide="shield-check" class="w-4 h-4"></i> <span>ভেরিফাই করুন ও ৳১.০০ বোনাস নিন</span>`;
+                        btn.innerHTML = `<i data-lucide="shield-check" class="w-4 h-4"></i> <span>ভেরিফাই করুন ও ৳১.০০ নিন</span>`;
                         lucide.createIcons();
                     }
                 }
             } else {
-                showToast("চ্যানেলে জয়েন করা সম্পন্ন হয়নি", "error");
+                showToast("আপনি এখনো চ্যানেলে জয়েন করেননি!", "error");
                 tgTaskState = 0;
                 renderTelegramTaskUI();
             }
         };
 
+        // --- PAYMENT & DEPOSIT LOGIC (QUICK AMOUNTS: 10, 50, 100, 300, 500) ---
         window.setAutoQuickAmount = function(val) {
             document.getElementById('amountInput').value = val;
             document.querySelectorAll('.quick-amount-pill').forEach(chip => {
                 const chipVal = parseInt(chip.textContent.replace(/[^0-9]/g, ''));
-                chip.classList.toggle('selected', chipVal === val);
+                if (chipVal === val) chip.classList.add('selected');
+                else chip.classList.remove('selected');
             });
         };
 
@@ -1199,7 +1260,8 @@
             const val = parseInt(document.getElementById('amountInput').value);
             document.querySelectorAll('.quick-amount-pill').forEach(chip => {
                 const chipVal = parseInt(chip.textContent.replace(/[^0-9]/g, ''));
-                chip.classList.toggle('selected', chipVal === val);
+                if (chipVal === val) chip.classList.add('selected');
+                else chip.classList.remove('selected');
             });
         };
 
@@ -1213,10 +1275,11 @@
             const btn = document.getElementById('btnPayGateway');
             if (btn) {
                 btn.disabled = true; 
-                btn.innerHTML = `<span class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></span> Processing Gateway...`;
+                btn.innerHTML = `<span class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></span> Processing...`;
             }
 
             const returnUrl = window.location.href.split('?')[0];
+
             const payload = {
                 amount: String(amount),
                 success_url: returnUrl + "?status=success",
@@ -1241,29 +1304,29 @@
                 if (payUrl) {
                     window.location.href = payUrl;
                 } else {
-                    showToast(data.message || data.error || 'গেটওয়ে কানেকশন ব্যর্থ হয়েছে', 'error');
+                    showToast(data.message || data.error || 'পেমেন্ট গেটওয়েতে সমস্যা হচ্ছে!', 'error');
                     if (btn) {
                         btn.disabled = false; 
-                        btn.innerHTML = `<i data-lucide="lock" class="w-4 h-4 text-cyan-200"></i> <span>Continue to Instant Payment</span>`;
+                        btn.innerHTML = `<i data-lucide="lock" class="w-4 h-4 text-sky-200"></i> <span>Continue to Instant Payment</span>`;
                         lucide.createIcons();
                     }
                 }
             } catch (err) {
-                showToast('সার্ভার কানেকশন ত্রুটি', 'error');
+                showToast('সার্ভার কানেকশন ব্যর্থ হয়েছে', 'error');
                 if (btn) {
                     btn.disabled = false; 
-                    btn.innerHTML = `<i data-lucide="lock" class="w-4 h-4 text-cyan-200"></i> <span>Continue to Instant Payment</span>`;
+                    btn.innerHTML = `<i data-lucide="lock" class="w-4 h-4 text-sky-200"></i> <span>Continue to Instant Payment</span>`;
                     lucide.createIcons();
                 }
             }
         };
 
-        function showDepositBanner(message) {
+        function showDepositBanner(message, type = 'cancel') {
             const banner = document.getElementById('deposit-status-banner');
             const content = document.getElementById('deposit-status-banner-content');
             if (!banner || !content) return;
-            banner.className = 'p-3.5 rounded-2xl text-xs font-semibold flex items-center justify-between mb-3 bg-rose-500/20 text-rose-300 border border-rose-500/30';
-            content.innerHTML = `<i data-lucide="alert-circle" class="w-4 h-4 text-rose-400"></i> <span>${message}</span>`;
+            banner.className = 'p-3.5 rounded-2xl text-xs font-semibold flex items-center justify-between mb-3 bg-red-50 text-red-700 border border-red-200';
+            content.innerHTML = `<i data-lucide="alert-circle" class="w-4 h-4 text-red-500"></i> <span>${message}</span>`;
             banner.classList.remove('hidden');
             lucide.createIcons();
         }
@@ -1275,7 +1338,7 @@
 
             if (urlStatus === 'cancel' || urlStatus === 'failed') {
                 localStorage.removeItem('pending_preorder_data');
-                showDepositBanner('পেমেন্ট বাতিল করা হয়েছে।');
+                showDepositBanner('পেমেন্ট বাতিল করা হয়েছে।', 'cancel');
                 showToast('পেমেন্ট বাতিল করা হয়েছে', 'info');
                 window.history.replaceState({}, document.title, window.location.pathname);
                 navigateTo('pay-page');
@@ -1284,12 +1347,14 @@
 
             if (transactionId || urlStatus === 'success') {
                 showToast('পেমেন্ট ভেরিফাই করা হচ্ছে...', 'info');
+
                 try {
                     const res = await fetch('/api/payment?action=verify', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ transaction_id: transactionId })
                     });
+
                     const data = await res.json();
                     const apiStatus = data.status ? String(data.status).toUpperCase() : "";
 
@@ -1306,7 +1371,9 @@
                                     const pendingOrder = JSON.parse(pendingOrderRaw);
                                     localStorage.removeItem('pending_preorder_data');
                                     await executePendingPreOrder(pendingOrder);
-                                } catch(err) { console.error(err); }
+                                } catch(err) {
+                                    console.error("Pending pre-order error:", err);
+                                }
                             } else {
                                 document.getElementById('displayTxid').textContent = finalTxid;
                                 document.getElementById('displayMethod').textContent = "NagorikPay";
@@ -1316,10 +1383,10 @@
                             window.history.replaceState({}, document.title, window.location.pathname);
                         }
                     } else {
-                        showToast(data.message || 'ভেরিফিকেশন ব্যর্থ হয়েছে', 'error');
+                        showToast(data.message || 'পেমেন্ট ভেরিফিকেশন সফল হয়নি', 'error');
                     }
                 } catch (e) {
-                    showToast('ভেরিফিকেশন এরর', 'error');
+                    showToast('ভেরিফিকেশনে সমস্যা দেখা দিয়েছে', 'error');
                 }
             }
         }
@@ -1354,7 +1421,7 @@
 
                 await addDoc(collection(db, "users", tgChatId, "notifications"), {
                     title: "ডিপোজিট সফল!",
-                    message: `AAC X একাউন্টে ${depositAmount.toFixed(2)} BDT সফলভাবে যোগ হয়েছে। (TXID: ${txid})`,
+                    message: `আপনার একাউন্টে ${depositAmount.toFixed(2)} BDT সফলভাবে যোগ হয়েছে। (TXID: ${txid})`,
                     time: serverTimestamp(),
                     type: "deposit"
                 });
@@ -1364,7 +1431,7 @@
                 updateUI();
                 await loadUserNotifications();
             } catch (err) {
-                console.error(err);
+                console.error("Balance update error:", err);
             }
         }
 
@@ -1378,7 +1445,7 @@
                     const buyerSnap = await transaction.get(buyerRef);
                     
                     if (!buyerSnap.exists() || buyerSnap.data().balance < totalPrice) {
-                        throw new Error("ডিপোজিট করার পরেও পর্যাপ্ত ব্যালেন্স নেই");
+                        throw new Error("পর্যাপ্ত ব্যালেন্স নেই।");
                     }
 
                     transaction.update(buyerRef, { balance: buyerSnap.data().balance - totalPrice });
@@ -1401,19 +1468,22 @@
                     });
                 });
 
-                const adminAlert = `⚡ <b>AAC X ডিপোজিট ও প্রি-অর্ডার কনফার্ম!</b>\n\n👤 ইউজার: ${userData.name} (<code>${userData.tgChatId}</code>)\n📦 সার্ভিস: ${product.type}\n🔢 পরিমাণ: ${qty}\n💰 মূল্য: ৳${totalPrice}`;
+                const adminAlert = `⚡ <b>নতুন প্রি-অর্ডার কনফার্ম হয়েছে!</b>\n\n👤 <b>ইউজার:</b> ${userData.name} (<code>${userData.tgChatId}</code>)\n📦 <b>সার্ভিস:</b> ${product.type}\n🔢 <b>পরিমাণ:</b> ${qty} টি\n💰 <b>মোট মূল্য:</b> ৳${totalPrice}\n⏳ <b>সময়সীমা:</b> ${timeoutMinutes} মিনিট`;
                 await notifyAdminViaTelegram(adminAlert);
 
                 showToast(`অর্ডার কনফার্ম হয়েছে!`, 'success');
+                
                 const userSnap = await getDoc(doc(db, "users", tgChatId));
                 userData = userSnap.data();
                 updateUI();
                 navigateTo('history-page');
+
             } catch (e) {
-                showToast(e.message, "error");
+                showToast(e.message || "প্রি-অর্ডারে সমস্যা হয়েছে।", "error");
             }
         }
 
+        // --- NOTIFICATIONS ---
         async function loadUserNotifications() {
             if (!userData) return;
             const tgChatId = String(userData.tgChatId);
@@ -1422,8 +1492,8 @@
             if (appConfig.notices && Array.isArray(appConfig.notices)) {
                 appConfig.notices.forEach((n, idx) => {
                     notifications.push({
-                        id: `notice_${idx}`,
-                        title: n.title || 'AAC X নোটিশ',
+                        id: `admin_notice_${idx}`,
+                        title: n.title || 'নোটিশ',
                         message: n.message || '',
                         timeStr: n.time || 'Admin',
                         timestamp: Date.now() - (idx * 1000)
@@ -1486,20 +1556,20 @@
         function renderNotifications() {
             const container = document.getElementById('notification-list-container');
             if (allUserNotifications.length === 0) {
-                container.innerHTML = `<div class="p-8 text-center text-xs text-gray-400 font-mono glass-panel rounded-2xl">কোনো নোটিফিকেশন নেই</div>`;
+                container.innerHTML = `<div class="p-8 text-center text-xs text-gray-400 font-bold bg-white rounded-2xl border">কোনো নোটিফিকেশন নেই</div>`;
                 return;
             }
 
             container.innerHTML = allUserNotifications.map(n => `
-                <div class="glass-panel p-4 rounded-2xl text-left space-y-1.5 border-white/5">
+                <div class="bg-white p-4 rounded-2xl border border-gray-200 text-left space-y-1.5 shadow-sm">
                     <div class="flex justify-between items-center">
-                        <h4 class="font-bold text-xs text-cyan-400 flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                        <h4 class="font-bold text-xs text-blue-950 flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-blue-600"></span>
                             ${n.title}
                         </h4>
-                        <span class="text-[10px] text-gray-500 font-mono">${n.timeStr}</span>
+                        <span class="text-[10px] text-gray-400 font-semibold">${n.timeStr}</span>
                     </div>
-                    <p class="text-xs text-gray-300 leading-relaxed pl-3.5">${n.message}</p>
+                    <p class="text-xs text-gray-600 leading-relaxed pl-4">${n.message}</p>
                 </div>
             `).join('');
             lucide.createIcons();
@@ -1547,8 +1617,12 @@
             if (!userData) return;
             const balanceFormatted = (userData.balance || 0).toFixed(2);
             document.getElementById('header-coin-balance').textContent = `৳${balanceFormatted}`;
+            
             const depBalance = document.getElementById('deposit-page-balance');
             if (depBalance) depBalance.textContent = `৳${balanceFormatted}`;
+
+            const profileStatBal = document.getElementById('profile-stat-balance');
+            if (profileStatBal) profileStatBal.textContent = `৳${balanceFormatted}`;
         }
 
         function showMainPage(pageId) {
@@ -1610,6 +1684,7 @@
             }
         };
 
+        // --- PRODUCT RENDERING ---
         async function renderProductsBySelection() {
             const container = document.getElementById('product-list-container');
             container.innerHTML = getLoadingHTML();
@@ -1627,7 +1702,7 @@
             }
 
             if (filtered.length === 0) {
-                container.innerHTML = `<div class="glass-panel p-8 rounded-2xl text-center text-gray-400 font-mono text-xs">কোনো প্রোডাক্ট পাওয়া যায়নি।</div>`;
+                container.innerHTML = `<div class="bg-white p-8 rounded-2xl text-center text-gray-400 font-semibold border">কোনো আইটেম পাওয়া যায়নি।</div>`;
                 return;
             }
 
@@ -1654,59 +1729,59 @@
                 <div class="product-card p-4 space-y-3">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
-                            <div class="w-12 h-12 rounded-2xl bg-slate-800/80 border border-white/10 flex items-center justify-center p-2.5">
+                            <div class="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center p-2">
                                 <img src="${item.logoUrl || 'https://i.postimg.cc/mD1YdG5y/mail.png'}" class="w-full h-full object-contain" alt="Logo">
                             </div>
                             <div>
                                 <div class="flex items-center gap-2">
-                                    <h4 class="font-black text-white text-sm tracking-wide">${item.type}</h4>
-                                    <span class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 text-[9px] font-mono font-bold px-2 py-0.5 rounded-full">AAC-X</span>
+                                    <h4 class="font-black text-gray-800 text-sm">${item.type}</h4>
+                                    <span class="bg-blue-50 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-blue-100">Instant</span>
                                 </div>
-                                <div class="flex items-center gap-2 mt-0.5 font-mono">
-                                    <span class="text-xs text-gray-500 line-through">৳${originalPrice}</span>
-                                    <span class="text-sm font-black text-cyan-400">৳${currentPrice}</span>
+                                <div class="flex items-center gap-2 mt-0.5">
+                                    <span class="text-xs text-gray-400 line-through">৳${originalPrice}</span>
+                                    <span class="text-base font-black text-blue-600">৳${currentPrice}</span>
                                 </div>
                             </div>
                         </div>
-                        <button onclick="toggleCardDetails('${detailsId}', this)" class="text-xs font-bold text-gray-400 bg-slate-800/80 hover:text-white px-2.5 py-1.5 rounded-xl border border-white/5 flex items-center gap-1">
+                        <button onclick="toggleCardDetails('${detailsId}', this)" class="text-xs font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 px-2.5 py-1.5 rounded-xl flex items-center gap-1 transition">
                             <span>Details</span>
                             <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>
                         </button>
                     </div>
 
-                    <div id="${detailsId}" class="hidden text-xs text-gray-300 bg-slate-900/90 p-3 rounded-2xl border border-white/10 leading-relaxed font-normal selectable-text">
-                        ${item.details ? item.details.replace(/\n/g, '<br>') : 'কোনো অতিরিক্ত বিবরণ নেই।'}
+                    <div id="${detailsId}" class="hidden text-xs text-gray-600 bg-gray-50 p-3 rounded-2xl border border-gray-100 leading-relaxed font-normal selectable-text">
+                        ${item.details ? item.details.replace(/\n/g, '<br>') : 'কোনো অতিরিক্ত বিবরণ দেওয়া হয়নি।'}
                     </div>
 
-                    <div class="flex items-center justify-between pt-2 border-t border-white/10 text-xs">
-                        <div class="flex items-center gap-2 font-mono">
+                    <div class="flex items-center justify-between pt-2 border-t border-gray-100 text-xs">
+                        <div class="flex items-center gap-2">
                             ${isStockHidden ? '<span></span>' : `
-                                <span class="font-bold ${outOfStock ? 'text-orange-400' : 'text-emerald-400'}">
+                                <span class="font-bold ${outOfStock ? 'text-orange-500' : 'text-emerald-600'}">
                                     Stock: <b>${stock}</b>
                                 </span>
                             `}
 
                             ${hasApi ? `
-                                <a href="${item.apiUrl}" target="_blank" class="px-2 py-0.5 rounded-lg text-[10px] font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 flex items-center gap-1">
+                                <a href="${item.apiUrl}" target="_blank" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm flex items-center gap-1 transition">
                                     <i data-lucide="code" class="w-3 h-3"></i> API
                                 </a>
                             ` : ''}
                         </div>
 
-                        <div>
+                        <div class="relative z-20">
                             ${!outOfStock ? `
-                                <button type="button" class="btn-buy px-4 py-2 text-xs flex items-center gap-1 font-mono" onclick="openBuyModal(${idx})">
-                                    <i data-lucide="zap" class="w-3.5 h-3.5"></i>
+                                <button type="button" class="btn-buy px-5 py-2 text-xs flex items-center gap-1" onclick="openBuyModal(${idx})">
+                                    <i data-lucide="shopping-bag" class="w-3.5 h-3.5"></i>
                                     <span>Buy Now</span>
                                 </button>
                             ` : isManualAllowed ? `
-                                <button type="button" class="btn-order-orange px-4 py-2 text-xs flex items-center gap-1 font-mono" onclick="openManualModal(${idx})">
+                                <button type="button" class="btn-order-orange px-4 py-2 text-xs flex items-center gap-1" onclick="openManualModal(${idx})">
                                     <i data-lucide="clock" class="w-3.5 h-3.5"></i>
                                     <span>Order Now</span>
                                 </button>
                             ` : `
-                                <button disabled type="button" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-800 text-gray-500 cursor-not-allowed">
-                                    Sold Out
+                                <button disabled type="button" class="px-4 py-2 rounded-xl text-xs font-bold bg-gray-100 text-gray-400 cursor-not-allowed">
+                                    Out of Stock
                                 </button>
                             `}
                         </div>
@@ -1716,30 +1791,33 @@
             lucide.createIcons();
         }
 
+        // --- INSTANT BUY NOW MODAL LOGIC ---
         window.openBuyModal = function(index) {
-            const item = displayedProductsCache[index];
-            if (!item) return;
+            try {
+                const item = displayedProductsCache[index];
+                if (!item) return;
 
-            const unitPrice = parseFloat(item.priceBdt || 0);
-            const userBal = userData?.balance || 0;
-            const maxCanAfford = unitPrice > 0 ? Math.floor(userBal / unitPrice) : 1;
-            const maxAllowed = Math.min(item.stock, maxCanAfford > 0 ? maxCanAfford : 1);
+                const unitPrice = parseFloat(item.priceBdt || 0);
+                const userBal = userData?.balance || 0;
+                const maxCanAfford = unitPrice > 0 ? Math.floor(userBal / unitPrice) : 1;
+                const maxAllowed = Math.min(item.stock, maxCanAfford > 0 ? maxCanAfford : 1);
 
-            activeBuyModalData = {
-                product: item,
-                unitPrice: unitPrice,
-                stock: item.stock,
-                maxAllowed: maxAllowed,
-                qty: 1
-            };
+                activeBuyModalData = {
+                    product: item,
+                    unitPrice: unitPrice,
+                    stock: item.stock,
+                    maxAllowed: maxAllowed,
+                    qty: 1
+                };
 
-            document.getElementById('buy-modal-title').textContent = `${item.type}`;
-            document.getElementById('buy-modal-stock-display').textContent = `${item.stock} টি`;
-            document.getElementById('buy-modal-qty-input').value = 1;
-            updateBuyModalPriceDisplay();
+                document.getElementById('buy-modal-title').textContent = `${item.type} (Buy Now)`;
+                document.getElementById('buy-modal-stock-display').textContent = `${item.stock} টি`;
+                document.getElementById('buy-modal-qty-input').value = 1;
+                updateBuyModalPriceDisplay();
 
-            document.getElementById('buy-now-modal').classList.remove('hidden');
-            lucide.createIcons();
+                document.getElementById('buy-now-modal').classList.remove('hidden');
+                lucide.createIcons();
+            } catch(e) {}
         };
 
         function updateBuyModalPriceDisplay() {
@@ -1750,7 +1828,8 @@
 
         window.adjustBuyModalQty = function(delta) {
             if (!activeBuyModalData) return;
-            let target = activeBuyModalData.qty + delta;
+            let current = activeBuyModalData.qty;
+            let target = current + delta;
             if (target < 1) target = 1;
 
             const userBal = userData?.balance || 0;
@@ -1791,7 +1870,7 @@
 
             const btn = document.getElementById('confirm-buy-modal-btn');
             btn.disabled = true;
-            btn.innerHTML = `<span class="animate-spin inline-block w-3 h-3 border-2 border-slate-950 border-t-transparent rounded-full mr-1"></span> Processing...`;
+            btn.innerHTML = `<span class="animate-spin inline-block w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full mr-1"></span> Processing...`;
 
             try {
                 const itemQuery = query(collection(db, product.stockKey), where("isSold", "==", false), limit(qty));
@@ -1809,7 +1888,7 @@
                     const buyerSnap = await transaction.get(buyerRef);
                     
                     if (!buyerSnap.exists() || buyerSnap.data().balance < totalCost) {
-                        throw new Error("আপনার পর্যাপ্ত ব্যালেন্স নেই");
+                        throw new Error("আপনার পর্যাপ্ত ব্যালেন্স নেই। ডিপোজিট করুন।");
                     }
 
                     const counterSnap = await transaction.get(counterRef);
@@ -1862,34 +1941,37 @@
                 showToast("অর্ডার সফল হয়েছে!", "success");
 
             } catch (e) {
-                showToast(e.message || "ক্রয় ব্যর্থ হয়েছে", "error");
+                showToast(e.message || "ক্রয় সম্পন্ন করা সম্ভব হয়নি।", "error");
             } finally {
                 btn.disabled = false;
                 btn.textContent = "Confirm Buy";
             }
         };
 
+        // --- PRE-ORDER LOGIC ---
         window.openManualModal = function(index) {
-            const item = displayedProductsCache[index];
-            if (!item) return;
+            try {
+                const item = displayedProductsCache[index];
+                if (!item) return;
 
-            const unitPrice = item.manualPrice !== undefined ? parseFloat(item.manualPrice) : parseFloat(item.priceBdt || 0);
-            const timeoutMinutes = item.manualDurationMinutes || appConfig.manualOrderTimeoutMinutes || 30;
+                const unitPrice = item.manualPrice !== undefined ? parseFloat(item.manualPrice) : parseFloat(item.priceBdt || 0);
+                const timeoutMinutes = item.manualDurationMinutes || appConfig.manualOrderTimeoutMinutes || 30;
 
-            activeManualModalData = {
-                product: item,
-                unitPrice: unitPrice,
-                timeoutMinutes: timeoutMinutes,
-                qty: 1
-            };
+                activeManualModalData = {
+                    product: item,
+                    unitPrice: unitPrice,
+                    timeoutMinutes: timeoutMinutes,
+                    qty: 1
+                };
 
-            document.getElementById('manual-modal-title').textContent = `${item.type}`;
-            document.getElementById('manual-modal-duration').textContent = `${timeoutMinutes} মিনিট`;
-            document.getElementById('manual-modal-qty-input').value = 1;
-            updateManualModalPriceDisplay();
+                document.getElementById('manual-modal-title').textContent = `${item.type} (Order Now)`;
+                document.getElementById('manual-modal-duration').textContent = `${timeoutMinutes} মিনিট`;
+                document.getElementById('manual-modal-qty-input').value = 1;
+                updateManualModalPriceDisplay();
 
-            document.getElementById('manual-order-modal').classList.remove('hidden');
-            lucide.createIcons();
+                document.getElementById('manual-order-modal').classList.remove('hidden');
+                lucide.createIcons();
+            } catch(e) {}
         };
 
         function updateManualModalPriceDisplay() {
@@ -1899,13 +1981,18 @@
 
             const notice = document.getElementById('manual-modal-balance-notice');
             if (notice) {
-                notice.classList.toggle('hidden', (userData?.balance || 0) >= total);
+                if ((userData?.balance || 0) < total) {
+                    notice.classList.remove('hidden');
+                } else {
+                    notice.classList.add('hidden');
+                }
             }
         }
 
         window.adjustManualOrderModalQty = function(delta) {
             if (!activeManualModalData) return;
-            let target = activeManualModalData.qty + delta;
+            let current = activeManualModalData.qty;
+            let target = current + delta;
             if (target < 1) target = 1;
 
             activeManualModalData.qty = target;
@@ -1930,13 +2017,21 @@
             const userBal = userData?.balance || 0;
 
             if (userBal < totalPrice) {
-                const depositNeeded = Math.max(10, Math.ceil(totalPrice - userBal));
+                const shortage = totalPrice - userBal;
+                const depositNeeded = Math.max(10, Math.ceil(shortage));
+
                 localStorage.setItem('pending_preorder_data', JSON.stringify({
-                    product, unitPrice, timeoutMinutes, qty, totalPrice, createdAt: Date.now()
+                    product,
+                    unitPrice,
+                    timeoutMinutes,
+                    qty,
+                    totalPrice,
+                    createdAt: Date.now()
                 }));
 
                 document.getElementById('manual-order-modal').classList.add('hidden');
-                showToast(`আরও ৳${depositNeeded} ডিপোজিট করুন`, 'info');
+                showToast(`পর্যাপ্ত ব্যালেন্স নেই! আরও ৳${depositNeeded} ডিপোজিট করুন`, 'info');
+
                 navigateTo('pay-page');
                 setAutoQuickAmount(depositNeeded);
                 return;
@@ -1952,7 +2047,7 @@
                     const buyerSnap = await transaction.get(buyerRef);
                     
                     if (!buyerSnap.exists() || buyerSnap.data().balance < totalPrice) {
-                        throw new Error("পর্যাপ্ত ব্যালেন্স নেই");
+                        throw new Error("আপনার পর্যাপ্ত ব্যালেন্স নেই। ডিপোজিট করুন।");
                     }
 
                     transaction.update(buyerRef, { balance: buyerSnap.data().balance - totalPrice });
@@ -1975,18 +2070,19 @@
                     });
                 });
 
-                const adminAlert = `⚡ <b>AAC X নতুন প্রি-অর্ডার!</b>\n\n👤 ইউজার: ${userData.name} (<code>${userData.tgChatId}</code>)\n📦 সার্ভিস: ${product.type}\n🔢 পরিমাণ: ${qty}\n💰 মূল্য: ৳${totalPrice}`;
+                const adminAlert = `⚡ <b>নতুন ম্যানুয়াল প্রি-অর্ডার এসেছে!</b>\n\n👤 <b>ইউজার:</b> ${userData.name} (<code>${userData.tgChatId}</code>)\n📦 <b>সার্ভিস:</b> ${product.type}\n🔢 <b>পরিমাণ:</b> ${qty} টি\n💰 <b>মোট মূল্য:</b> ৳${totalPrice}\n⏳ <b>সময়সীমা:</b> ${timeoutMinutes} মিনিট`;
                 await notifyAdminViaTelegram(adminAlert);
 
                 document.getElementById('manual-order-modal').classList.add('hidden');
-                showToast(`প্রি-অর্ডার গ্রহণ করা হয়েছে!`, 'success');
+                showToast(`আপনার ${qty} টি ${product.type} প্রি-অর্ডার সফল হয়েছে!`, 'success');
                 
                 const userSnap = await getDoc(doc(db, "users", String(userData.tgChatId)));
                 userData = userSnap.data();
                 updateUI();
                 navigateTo('history-page');
+
             } catch(e) {
-                showToast(e.message || "অর্ডার ব্যর্থ হয়েছে", "error");
+                showToast(e.message || "অর্ডার সাবমিট করতে সমস্যা হয়েছে।", "error");
             } finally {
                 btn.disabled = false;
                 btn.textContent = "Confirm Order";
@@ -1995,18 +2091,18 @@
 
         function showPurchaseSuccessModal(items) {
             const list = document.getElementById('purchase-success-items-list');
-            document.getElementById('purchase-success-subtitle').textContent = `মোট: ${items.length} টি আইটেম`;
+            document.getElementById('purchase-success-subtitle').textContent = `মোট ক্রয়: ${items.length} টি আইটেম`;
             
             list.innerHTML = items.map((item, idx) => `
-                <div class="glass-panel p-2.5 rounded-xl border-white/10 font-mono text-xs space-y-1">
+                <div class="bg-gray-50 p-2.5 rounded-xl border border-gray-200 font-mono text-xs space-y-1">
                     <div class="flex items-center justify-between">
-                        <span class="truncate text-cyan-300 font-bold">${idx + 1}. ${item.mail}</span>
-                        <button onclick="copyToClipboard('${item.mail}', this)" class="p-1 text-cyan-400"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                        <span class="truncate text-gray-800 font-semibold">${idx + 1}. ${item.mail}</span>
+                        <button onclick="copyToClipboard('${item.mail}', this)" class="p-1 text-blue-600 hover:bg-blue-50 rounded"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
                     </div>
                     ${item.password ? `
-                    <div class="flex items-center justify-between border-t border-white/5 pt-1 text-gray-400">
+                    <div class="flex items-center justify-between border-t border-gray-200/60 pt-1 text-gray-600">
                         <span>${item.password}</span>
-                        <button onclick="copyToClipboard('${item.password}', this)" class="p-1 text-cyan-400"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                        <button onclick="copyToClipboard('${item.password}', this)" class="p-1 text-blue-600 hover:bg-blue-50 rounded"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
                     </div>` : ''}
                 </div>
             `).join('');
@@ -2018,37 +2114,39 @@
         window.copyCurrentPurchaseExcelFormat = function() {
             if (!lastPurchasedItemsBatch || lastPurchasedItemsBatch.length === 0) return showToast("কোনো আইটেম নেই", "info");
             const text = lastPurchasedItemsBatch.map(item => `${item.mail}\t${item.password || ''}`).join('\n');
-            copyToClipboard(text, null, `এক্সেল ফরমেটে কপি হয়েছে!`);
+            copyToClipboard(text, null, `মোট ${lastPurchasedItemsBatch.length} টি আইটেম এক্সেল ফরমেটে কপি হয়েছে!`);
         };
 
         window.sendCurrentPurchaseToBot = async function() {
             if (!lastPurchasedItemsBatch || lastPurchasedItemsBatch.length === 0) return showToast("কোনো আইটেম নেই", "info");
             const tgChatId = String(userData.tgChatId);
             
-            let botText = `📦 <b>AAC X অর্ডারের তালিকা (${lastPurchasedItemsBatch.length} টি):</b>\n\n`;
+            let botText = `📦 <b>ACC X অর্ডারের তালিকা (${lastPurchasedItemsBatch.length} টি):</b>\n\n`;
             lastPurchasedItemsBatch.forEach((item, idx) => {
                 botText += `${idx+1}. <code>${item.mail}</code>${item.password ? ' | <code>' + item.password + '</code>' : ''}\n`;
             });
+
             await sendTelegramMessage(tgChatId, botText);
-            exportItemsToExcelCustom(lastPurchasedItemsBatch, `AACX_Purchase_${tgChatId}`);
-            showToast("বটে পাঠানো হয়েছে ও এক্সেল তৈরি হয়েছে", "success");
+            exportItemsToExcelCustom(lastPurchasedItemsBatch, `Purchase_${tgChatId}_${Date.now()}`);
+            showToast("বটে পাঠানো হয়েছে ও এক্সেল ডাউনলোড হয়েছে", "success");
         };
 
+        // --- BALANCE TRANSFERS ---
         async function handleSendBalance() {
             const recipientId = document.getElementById('send-recipient-id').value.trim();
             const amount = parseFloat(document.getElementById('send-amount').value);
 
             if (!recipientId || !amount || amount < 20) {
-                return showToast("সর্বনিম্ন ২০ টাকা পাঠান এবং আইডি দিন", "error");
+                return showToast("সর্বনিম্ন ৳২০ পাঠাতে হবে এবং প্রাপকের Telegram ID দিন", "error");
             }
             if (recipientId === String(userData.tgChatId)) {
-                return showToast("নিজের অ্যাকাউন্টে পাঠানো যাবে না", "error");
+                return showToast("নিজের অ্যাকাউন্টে ব্যালেন্স পাঠানো যাবে না", "error");
             }
 
             const totalCost = amount * 1.02;
             const btn = document.getElementById('submit-send-btn');
             btn.disabled = true;
-            btn.textContent = "Processing...";
+            btn.textContent = "Sending...";
 
             try {
                 await runTransaction(db, async (t) => {
@@ -2059,10 +2157,10 @@
                     const recipientSnap = await t.get(recipientRef);
 
                     if (!senderSnap.exists() || senderSnap.data().balance < totalCost) {
-                        throw new Error("পর্যাপ্ত ব্যালেন্স নেই");
+                        throw new Error("আপনার পর্যাপ্ত ব্যালেন্স নেই।");
                     }
                     if (!recipientSnap.exists()) {
-                        throw new Error("প্রাপকের আইডি পাওয়া যায়নি");
+                        throw new Error("প্রাপকের Telegram ID খুঁজে পাওয়া যায়নি।");
                     }
 
                     t.update(senderRef, { balance: senderSnap.data().balance - totalCost });
@@ -2078,10 +2176,10 @@
                     });
                 });
 
-                const recMsg = `🎁 <b>AAC X ব্যালেন্স রিসিভ!</b>\n\nপরিমাণ: ৳${amount}\nপ্রেরক: ${userData.name} (<code>${userData.tgChatId}</code>)`;
+                const recMsg = `🎁 <b>আপনি ব্যালেন্স পেয়েছেন!</b>\n\nপরিমাণ: ৳${amount}\nপ্রেরক: ${userData.name} (<code>${userData.tgChatId}</code>)`;
                 await sendTelegramMessage(recipientId, recMsg);
 
-                showToast("ব্যালেন্স ট্রান্সফার সম্পন্ন!", "success");
+                showToast("ব্যালেন্স সফলভাবে ট্রান্সফার হয়েছে!", "success");
                 document.getElementById('send-recipient-id').value = '';
                 document.getElementById('send-amount').value = '';
 
@@ -2090,29 +2188,31 @@
                 updateUI();
                 navigateTo('features-page');
             } catch(e) {
-                showToast(e.message || "ব্যর্থ হয়েছে", "error");
+                showToast(e.message || "ট্রান্সফার ব্যর্থ হয়েছে।", "error");
             } finally {
                 btn.disabled = false;
-                btn.textContent = "Transfer Balance";
+                btn.textContent = "Submit Send";
             }
         }
 
         window.copyAllOrdersExcelFormat = function() {
             if (!userPurchasesCache || userPurchasesCache.length === 0) return showToast("কোনো অর্ডার নেই", "info");
             const text = userPurchasesCache.map(p => `${p.mail}\t${p.password || ''}`).join('\n');
-            copyToClipboard(text, null, `সকল অর্ডার কপি হয়েছে!`);
+            copyToClipboard(text, null, `সকল (${userPurchasesCache.length} টি) অর্ডার কপি হয়েছে!`);
         };
 
         window.sendAllOrdersToBot = async function() {
             if (!userPurchasesCache || userPurchasesCache.length === 0) return showToast("কোনো অর্ডার নেই", "info");
             const tgChatId = String(userData.tgChatId);
 
-            let botText = `📦 <b>AAC X সকল অর্ডার (${userPurchasesCache.length} টি):</b>\n\n`;
+            let botText = `📦 <b>ACC X - আপনার সকল অর্ডার (${userPurchasesCache.length} টি):</b>\n\n`;
             userPurchasesCache.slice(0, 30).forEach((item, idx) => {
                 botText += `${idx+1}. <code>${item.mail}</code>${item.password ? ' | <code>' + item.password + '</code>' : ''}\n`;
             });
+            if(userPurchasesCache.length > 30) botText += `\n...এবং আরও ${userPurchasesCache.length - 30} টি।`;
+
             await sendTelegramMessage(tgChatId, botText);
-            exportItemsToExcelCustom(userPurchasesCache, `AACX_All_Orders_${tgChatId}`);
+            exportItemsToExcelCustom(userPurchasesCache, `Orders_${tgChatId}`);
             showToast("বটে পাঠানো হয়েছে ও এক্সেল ডাউনলোড হয়েছে", "success");
         };
 
@@ -2120,7 +2220,7 @@
             const dataToExport = items.map(p => ({
                 "Sale ID": p.saleId || '',
                 "Service": p.mailType || '',
-                "Email / Credentials": p.mail || '',
+                "Credentials / Email": p.mail || '',
                 "Password": p.password || '',
                 "Cost (BDT)": p.cost || 0
             }));
@@ -2141,11 +2241,11 @@
                     const diff = expiryTime - now;
 
                     if (diff <= 0) {
-                        el.innerHTML = `<span class="text-rose-400 font-bold font-mono">00:00 (Expired)</span>`;
+                        el.innerHTML = `<span class="text-red-500 font-bold font-mono">00:00 (Expired)</span>`;
                     } else {
                         const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
                         const s = Math.floor((diff % (1000 * 60)) / 1000);
-                        el.innerHTML = `<span class="text-amber-400 font-bold font-mono">${m}m ${s < 10 ? '0' : ''}${s}s</span>`;
+                        el.innerHTML = `<span class="text-orange-600 font-bold font-mono">${m}m ${s < 10 ? '0' : ''}${s}s</span>`;
                     }
                 });
             }, 1000);
@@ -2180,7 +2280,7 @@
 
                 if (snap.empty) {
                     userPurchasesCache = [];
-                    listEl.innerHTML = `<div class="glass-panel p-8 rounded-2xl text-center text-gray-400 font-mono text-xs">আপনার কোনো অর্ডার ইতিহাস নেই।</div>`;
+                    listEl.innerHTML = `<div class="bg-white p-8 rounded-2xl text-center text-gray-400 font-semibold border">আপনার কোনো অর্ডার ইতিহাস নেই।</div>`;
                     return;
                 }
 
@@ -2195,24 +2295,24 @@
                     <div class="product-card p-4 space-y-3">
                         <div class="flex items-center justify-between">
                             <div>
-                                <h4 class="font-black text-sm text-white">${p.mailType}</h4>
-                                <p class="text-[10px] text-gray-400 font-mono mt-0.5">${date} • ID: #${p.saleId || 'N/A'}</p>
+                                <h4 class="font-black text-sm text-gray-800">${p.mailType}</h4>
+                                <p class="text-[11px] text-gray-400 mt-0.5">${date} • ID: #${p.saleId || 'N/A'}</p>
                             </div>
-                            <span class="text-sm font-black text-cyan-400 font-mono">৳${p.cost ? p.cost.toFixed(2) : '0.00'}</span>
+                            <span class="text-sm font-black text-blue-600">৳${p.cost ? p.cost.toFixed(2) : '0.00'}</span>
                         </div>
-                        <div class="bg-slate-900/80 p-2.5 rounded-xl border border-white/5 space-y-1 font-mono text-xs">
+                        <div class="bg-gray-50 p-2.5 rounded-xl border border-gray-100 space-y-1.5 font-mono text-xs">
                             <div class="flex justify-between items-center">
-                                <span class="truncate text-cyan-200">${p.mail || ''}</span>
-                                <button onclick="copyToClipboard('${p.mail}', this)" class="text-cyan-400 p-1"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                                <span class="truncate text-gray-700 font-semibold">${p.mail || ''}</span>
+                                <button onclick="copyToClipboard('${p.mail}', this)" class="text-blue-600 hover:text-blue-800 p-1"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
                             </div>
-                            ${p.password ? `<div class="flex justify-between items-center border-t border-white/5 pt-1">
-                                <span class="text-gray-400">${p.password}</span>
-                                <button onclick="copyToClipboard('${p.password}', this)" class="text-cyan-400 p-1"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+                            ${p.password ? `<div class="flex justify-between items-center border-t pt-1">
+                                <span class="text-gray-600">${p.password}</span>
+                                <button onclick="copyToClipboard('${p.password}', this)" class="text-blue-600 hover:text-blue-800 p-1"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
                             </div>` : ''}
                         </div>
-                        <div class="flex gap-2 pt-1 text-xs font-mono">
+                        <div class="flex gap-2 pt-1 text-xs">
                             <button onclick="copyToClipboard('${fullCopy}', this)" class="btn-buy py-2 px-3 rounded-xl font-bold flex-1 text-center">Copy Full</button>
-                            <button onclick="openReplaceModal('${p.saleId || p.id}', '${p.mailType}', ${p.cost || 0})" class="bg-purple-500/10 text-purple-300 border border-purple-500/30 hover:bg-purple-500/20 py-2 px-3 rounded-xl font-bold flex items-center justify-center gap-1">
+                            <button onclick="openReplaceModal('${p.saleId || p.id}', '${p.mailType}', ${p.cost || 0})" class="bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-100 py-2 px-3 rounded-xl font-bold flex items-center justify-center gap-1">
                                 <i data-lucide="shield-alert" class="w-3.5 h-3.5"></i> Report
                             </button>
                         </div>
@@ -2220,7 +2320,7 @@
                 }).join('');
                 lucide.createIcons();
             } catch (e) {
-                listEl.innerHTML = `<p class="text-center text-rose-400 text-xs">${e.message}</p>`;
+                listEl.innerHTML = `<p class="text-center text-red-500 text-xs">${e.message}</p>`;
             }
         }
 
@@ -2231,7 +2331,7 @@
             try {
                 const q = query(collection(db, "manual_orders"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
                 const snap = await getDocs(q);
-                if (snap.empty) return list.innerHTML = '<p class="text-center text-xs text-gray-400 py-2 font-mono">কোনো ম্যানুয়াল অর্ডার হিস্ট্রি নেই</p>';
+                if (snap.empty) return list.innerHTML = '<p class="text-center text-xs text-gray-400 py-2">কোনো ম্যানুয়াল অর্ডার হিস্ট্রি নেই</p>';
 
                 const docs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
                 docs.sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
@@ -2241,21 +2341,21 @@
                     const isPending = p.status === 'pending';
 
                     return `
-                    <div class="glass-panel p-3.5 rounded-xl border-white/5 flex justify-between items-center text-xs">
+                    <div class="bg-white p-3.5 rounded-2xl border border-gray-200 flex justify-between items-center text-xs shadow-sm">
                         <div>
-                            <p class="font-bold text-white">${p.mailType} ${p.quantity ? `(${p.quantity} টি)` : ''} - ৳${p.cost}</p>
+                            <p class="font-bold text-gray-800">${p.mailType} ${p.quantity ? `(${p.quantity} টি)` : ''} - ৳${p.cost}</p>
                             ${isPending ? `
-                                <div class="flex items-center gap-1 mt-0.5 text-[11px] text-gray-400">
-                                    <span>টাইম বাকি:</span>
+                                <div class="flex items-center gap-1 mt-0.5 text-[11px] text-gray-500">
+                                    <span>Time Left:</span>
                                     <span class="live-order-countdown" data-order-id="${p.id}" data-expiry-time="${expiryMillis}">Calculating...</span>
                                 </div>
                             ` : `
-                                <p class="text-[10px] text-gray-500 font-mono">মেয়াদ: ${p.durationMinutes || 30}m</p>
+                                <p class="text-[10px] text-gray-400">মেয়াদ: ${p.durationMinutes || 30} মিনিট</p>
                             `}
                         </div>
-                        <span class="font-mono font-bold uppercase text-[10px] px-2 py-1 rounded ${
-                            p.status === 'approved' ? 'bg-emerald-500/20 text-emerald-400' :
-                            p.status === 'pending' ? 'bg-amber-500/20 text-amber-400' : 'bg-rose-500/20 text-rose-400'
+                        <span class="font-bold uppercase text-[10px] px-2 py-1 rounded ${
+                            p.status === 'approved' ? 'bg-emerald-100 text-emerald-700' :
+                            p.status === 'pending' ? 'bg-orange-100 text-orange-800' : 'bg-red-100 text-red-600'
                         }">${p.status.replace(/_/g, ' ')}</span>
                     </div>`;
                 }).join('');
@@ -2270,17 +2370,17 @@
             try {
                 const q = query(collection(db, "deposits"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
                 const snap = await getDocs(q);
-                if (snap.empty) return list.innerHTML = '<p class="text-center text-xs text-gray-400 font-mono">কোনো ডিপোজিট রেকর্ড নেই</p>';
+                if (snap.empty) return list.innerHTML = '<p class="text-center text-xs text-gray-400">কোনো হিস্ট্রি নেই</p>';
                 const docs = snap.docs.map(d => d.data());
                 docs.sort((a,b) => (b.requestedAt?.seconds || 0) - (a.requestedAt?.seconds || 0));
 
                 list.innerHTML = docs.map(d => `
-                    <div class="glass-panel p-3 rounded-xl border-white/5 flex justify-between items-center text-xs font-mono">
+                    <div class="bg-white p-3 rounded-2xl border border-gray-200 flex justify-between items-center text-xs">
                         <div>
-                            <p class="font-bold text-white">${d.method || 'NagorikPay'} (৳${d.amount})</p>
-                            <p class="text-gray-400 text-[10px]">${d.transactionId}</p>
+                            <p class="font-bold text-gray-800">${d.method || 'NagorikPay'} (৳${d.amount})</p>
+                            <p class="text-gray-400 font-mono text-[10px]">${d.transactionId}</p>
                         </div>
-                        <span class="font-bold capitalize ${d.status==='approved'?'text-emerald-400':d.status==='rejected'?'text-rose-400':'text-amber-400'}">${d.status}</span>
+                        <span class="font-bold capitalize ${d.status==='approved'?'text-green-600':d.status==='rejected'?'text-red-500':'text-yellow-600'}">${d.status}</span>
                     </div>`).join('');
             } catch(e) {}
         }
@@ -2292,17 +2392,17 @@
             try {
                 const q = query(collection(db, "replace_requests"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
                 const snap = await getDocs(q);
-                if (snap.empty) return list.innerHTML = '<p class="text-center text-xs text-gray-400 font-mono">কোনো রিপোর্ট রেকর্ড নেই</p>';
+                if (snap.empty) return list.innerHTML = '<p class="text-center text-xs text-gray-400">কোনো রেকর্ড নেই</p>';
                 const docs = snap.docs.map(d => d.data());
                 docs.sort((a,b) => (b.requestedAt?.seconds || 0) - (a.requestedAt?.seconds || 0));
 
                 list.innerHTML = docs.map(r => `
-                    <div class="glass-panel p-3 rounded-xl border-white/5 flex justify-between items-center text-xs">
+                    <div class="bg-white p-3 rounded-2xl border border-gray-200 flex justify-between items-center text-xs">
                         <div>
-                            <p class="font-bold text-white">${r.mailType}</p>
-                            <p class="text-gray-400 text-[10px] truncate max-w-[200px]">${r.reason}</p>
+                            <p class="font-bold text-gray-800">${r.mailType}</p>
+                            <p class="text-gray-500 text-[10px]">${r.reason}</p>
                         </div>
-                        <span class="font-mono font-bold uppercase text-[10px] ${r.status==='approved'?'text-emerald-400':r.status==='rejected'?'text-rose-400':'text-amber-400'}">${r.status}</span>
+                        <span class="font-bold uppercase ${r.status==='approved'?'text-green-600':r.status==='rejected'?'text-red-500':'text-yellow-600'}">${r.status}</span>
                     </div>`).join('');
             } catch(e) {}
         }
@@ -2326,6 +2426,7 @@
             document.getElementById('profile-name').textContent = userData.name || 'User';
             document.getElementById('profile-username').textContent = userData.username ? `@${userData.username}` : '';
             document.getElementById('profile-id').textContent = `ID: ${userData.tgChatId}`;
+            
             if (userData.photo_url) {
                 document.getElementById('profile-pic').src = userData.photo_url;
                 document.getElementById('profile-pic').classList.remove('hidden');
@@ -2333,9 +2434,11 @@
             } else {
                 document.getElementById('profile-pic').classList.add('hidden');
                 document.getElementById('profile-initials-avatar').classList.remove('hidden');
-                document.getElementById('profile-initials').textContent = (userData.name || 'U').charAt(0).toUpperCase();
+                document.getElementById('profile-initials-avatar').textContent = (userData.name || 'U').charAt(0).toUpperCase();
             }
+            updateUI();
             renderTelegramTaskUI();
+            renderDynamicOfficialLinks();
         }
 
         window.openReplaceModal = function(saleId, mailType, cost) {
@@ -2352,7 +2455,7 @@
             const cost = parseFloat(document.getElementById('replace-mail-cost').value || 0);
             const reason = document.getElementById('replace-reason-text').value.trim();
 
-            if (!reason) return showToast("সমস্যার বিবরণ লিখুন", "error");
+            if (!reason) return showToast("সমস্যার কারণ লিখুন", "error");
 
             const btn = document.getElementById('submit-replace-btn');
             btn.disabled = true;
@@ -2370,37 +2473,26 @@
                     requestedAt: serverTimestamp()
                 });
 
-                const adminAlert = `⚠️ <b>AAC X রিপ্লেসমেন্ট রিকোয়েস্ট!</b>\n\n👤 ইউজার: ${userData.name} (<code>${userData.tgChatId}</code>)\n📦 সার্ভিস: ${mailType} (#${saleId})\n📝 কারণ: ${reason}`;
+                const adminAlert = `⚠️ <b>নতুন রিপ্লেসমেন্ট রিকোয়েস্ট!</b>\n\n👤 <b>ইউজার:</b> ${userData.name} (<code>${userData.tgChatId}</code>)\n📦 <b>সার্ভিস:</b> ${mailType} (ID: #${saleId})\n📝 <b>কারণ:</b> ${reason}`;
                 await notifyAdminViaTelegram(adminAlert);
 
                 document.getElementById('replace-modal').classList.add('hidden');
-                showToast("অনুরোধ সাবমিট হয়েছে", "success");
+                showToast("রিপ্লেসমেন্ট অনুরোধ পাঠানো হয়েছে", "success");
                 navigateTo('history-page');
             } catch(e) {
-                showToast("ব্যর্থ হয়েছে", "error");
+                showToast("অনুরোধ পাঠাতে ব্যর্থ হয়েছে।", "error");
             } finally {
                 btn.disabled = false;
-                btn.textContent = "Submit Report";
+                btn.textContent = "সাবমিট করুন";
             }
         }
-
-        window.toggleSupportWidget = function() {
-            const menu = document.getElementById('support-options-menu');
-            const openIcon = document.getElementById('support-icon-open');
-            const closeIcon = document.getElementById('support-icon-close');
-            const isOpen = menu.classList.contains('open');
-            menu.classList.toggle('open');
-            openIcon.classList.toggle('hidden', !isOpen);
-            closeIcon.classList.toggle('hidden', isOpen);
-            lucide.createIcons();
-        };
 
         window.copyToClipboard = (text, btn, msg) => {
             if(!text) return;
             navigator.clipboard.writeText(text).then(() => {
                 if (btn) {
                     const old = btn.innerHTML;
-                    btn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i>`;
+                    btn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5 text-green-600"></i>`;
                     lucide.createIcons();
                     setTimeout(() => { btn.innerHTML = old; lucide.createIcons(); }, 1400);
                 } else if(msg) showToast(msg, "success");
