@@ -1,1635 +1,443 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CLOUD INTERNATIONAL</title>
+    <title>Social Smm Shop - Payment & Auth</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Hind+Siliguri:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
-    <!-- Support Chat Firebase Realtime SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
     <style>
-        body {
-            font-family: 'Plus Jakarta Sans', 'Hind Siliguri', sans-serif;
-            background-color: #f8fafc;
-            color: #0f172a;
-            -webkit-user-select: none;
-            user-select: none;
+        :root {
+            --theme-color: #e2136e; 
+            --brand-purple: #7854f7;
+            --brand-blue: #3b5bfd;
+            --text-dark: #1e293b;
+            --text-gray: #64748b;
         }
-
-        .mono-font { font-family: 'Space Grotesk', monospace; }
-
-        input, textarea, select, .selectable-text {
-            -webkit-user-select: text;
-            user-select: text;
-        }
-
-        .global-header {
-            background: linear-gradient(135deg, #09101d 0%, #0f172a 50%, #1e293b 100%);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            position: sticky;
-            top: 0;
-            z-index: 45;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
-        }
-
-        .balance-glass-pill {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            backdrop-filter: blur(12px);
-            border-radius: 9999px;
-            padding: 5px 12px;
-            transition: all 0.2s ease;
-        }
-        .balance-glass-pill:active { transform: scale(0.96); background: rgba(255, 255, 255, 0.15); }
-
-        .category-btn {
-            background: #ffffff;
-            color: #475569;
-            border: 1px solid #e2e8f0;
-            border-radius: 14px;
-            padding: 8px 10px;
-            font-size: 0.78rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-            transition: all 0.2s ease;
-            cursor: pointer;
-            text-align: center;
-        }
-        .category-btn.active {
-            background: #0284c7;
-            color: #ffffff;
-            border-color: #0284c7;
-            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
-        }
-
-        .product-card {
-            background: #ffffff;
-            border-radius: 18px;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
-            transition: all 0.25s ease;
-        }
-        .product-card:hover {
-            box-shadow: 0 10px 25px rgba(2, 132, 199, 0.1);
-            border-color: #7dd3fc;
-        }
-
-        .btn-buy {
-            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
-            color: white;
-            font-weight: 700;
-            border-radius: 12px;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
-            cursor: pointer;
-        }
-        .btn-buy:active { transform: scale(0.96); }
-
-        .btn-order-orange {
-            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
-            color: white;
-            font-weight: 700;
-            border-radius: 12px;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(234, 88, 12, 0.25);
-            cursor: pointer;
-        }
-        .btn-order-orange:active { transform: scale(0.96); }
-
-        .btn-gateway-pay {
-            background: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%);
-            color: white;
-            font-weight: 800;
-            border-radius: 16px;
-            transition: all 0.25s ease;
-            box-shadow: 0 8px 25px rgba(2, 132, 199, 0.35);
-        }
-
-        .quick-amount-pill {
-            background: #ffffff;
-            border: 1.5px solid #e2e8f0;
-            padding: 11px 6px;
-            border-radius: 16px;
-            font-weight: 800;
-            font-size: 0.82rem;
-            color: #334155;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-align: center;
-        }
-        .quick-amount-pill.selected {
-            border-color: #0284c7 !important;
-            background: #0284c7 !important;
-            color: #ffffff !important;
-            box-shadow: 0 6px 18px rgba(2, 132, 199, 0.35);
-        }
-
-        /* FLOATING BOTTOM NAVIGATION */
-        .bottom-nav-container {
-            position: fixed;
-            bottom: 12px;
-            left: 12px;
-            right: 12px;
-            max-width: 424px;
-            margin: 0 auto;
-            z-index: 50;
-        }
-        .bottom-nav {
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 24px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            height: 62px;
-            padding: 4px 6px;
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
-        }
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: #94a3b8;
-            font-size: 0.68rem;
-            font-weight: 700;
-            transition: all 0.25s ease;
-            cursor: pointer;
-            flex: 1;
-        }
-        .nav-item.active { color: #38bdf8; }
-        .nav-item.active .nav-icon-wrapper {
-            background: rgba(56, 189, 248, 0.15);
-            color: #38bdf8;
-            transform: translateY(-2px);
-            border-radius: 14px;
-            padding: 3px 12px;
-        }
-        .nav-icon-wrapper { display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
-
-        .sub-page { display: none; }
-        .sub-page.active { display: block; animation: fadeIn 0.25s ease-in-out; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', 'Hind Siliguri', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: linear-gradient(135deg, #818cf8 0%, #a78bfa 100%); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 16px 10px; }
+        .payment-modal { width: 100%; max-width: 395px; background: #ffffff; border-radius: 24px; box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.2); overflow: hidden; position: relative; min-height: 650px; display: flex; flex-direction: column; }
+        .step-container { display: none; flex-direction: column; width: 100%; height: 100%; animation: fadeIn 0.25s ease-in-out; flex: 1; }
+        .step-container.active { display: flex; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .auth-container { padding: 30px 24px; display: flex; flex-direction: column; justify-content: center; flex: 1; }
+        .auth-title { font-size: 24px; font-weight: 800; color: var(--text-dark); text-align: center; margin-bottom: 6px; }
+        .auth-sub { font-size: 13.5px; color: var(--text-gray); text-align: center; margin-bottom: 24px; }
+        .auth-form-group { margin-bottom: 14px; text-align: left; }
+        .auth-form-group label { display: block; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 6px; }
+        .auth-input { width: 100%; padding: 13px 16px; font-size: 14.5px; border: 1.5px solid #cbd5e1; border-radius: 12px; outline: none; transition: 0.2s; }
+        .auth-input:focus { border-color: var(--brand-purple); box-shadow: 0 0 0 3px rgba(120, 84, 247, 0.15); }
+        .auth-toggle-link { text-align: center; margin-top: 18px; font-size: 13.5px; color: var(--text-gray); }
+        .auth-toggle-link span { color: var(--brand-purple); font-weight: 700; cursor: pointer; text-decoration: underline; }
 
-        /* PREMIER INTRO LOADER */
-        #loader {
-            background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
-            position: fixed;
-            inset: 0;
-            z-index: 150;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            transition: opacity 0.4s ease;
-        }
-        .orbit-spinner { position: relative; width: 85px; height: 85px; }
-        .orbit-circle {
-            position: absolute;
-            inset: 0;
-            border-radius: 50%;
-            border: 2px solid transparent;
-            border-top-color: #38bdf8;
-            animation: spinOrbit 1.4s linear infinite;
-        }
-        .orbit-circle:nth-child(2) { inset: 8px; border-top-color: #818cf8; animation-duration: 2s; animation-direction: reverse; }
-        .orbit-circle:nth-child(3) { inset: 16px; border-top-color: #34d399; animation-duration: 1.1s; }
-        @keyframes spinOrbit { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .landing-header { width: 100%; background: #ffffff; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; }
+        .header-balance-box { display: flex; flex-direction: column; }
+        .header-balance-box .b-title { font-size: 11px; font-weight: 700; color: var(--text-gray); text-transform: uppercase; }
+        .header-balance-box .b-val { font-size: 18px; font-weight: 800; color: #10b981; }
+        .header-right-actions { display: flex; align-items: center; gap: 8px; }
+        .header-icon-btn { width: 38px; height: 38px; border-radius: 50%; background: #f8fafc; border: 1px solid #e2e8f0; color: #475569; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; font-size: 15px; }
+        .header-icon-btn .notif-dot { position: absolute; top: 8px; right: 9px; width: 8px; height: 8px; background: #ef4444; border-radius: 50%; display: none; } 
 
-        .brand-shimmer {
-            background: linear-gradient(90deg, #38bdf8 0%, #ffffff 50%, #818cf8 100%);
-            background-size: 200% auto;
-            color: transparent;
-            -webkit-background-clip: text;
-            animation: textShimmer 2.2s linear infinite;
-        }
-        @keyframes textShimmer { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+        .step-1-content { padding: 20px 24px 24px; display: flex; flex-direction: column; align-items: center; text-align: center; flex: 1; }
+        .main-avatar-wrap { width: 85px; height: 85px; border-radius: 24px; background: #050b14; border: 2.5px solid #38bdf8; box-shadow: 0 10px 25px rgba(56, 189, 248, 0.35); overflow: hidden; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; }
+        .main-avatar-wrap img { width: 100%; height: 100%; object-fit: cover; }
+        .shop-heading { font-size: 20px; font-weight: 800; color: #1e293b; letter-spacing: -0.5px; }
+        .user-email-badge { font-size: 12px; color: var(--brand-purple); font-weight: 700; background: #f5f3ff; padding: 4px 10px; border-radius: 20px; margin-top: 4px; }
+        .line-sep { width: 100%; height: 1px; background: #f1f5f9; margin: 12px 0; }
+        .note-card { background-color: #fffdf0; border-left: 4.5px solid #f59e0b; border-radius: 6px 14px 14px 6px; padding: 10px 14px; text-align: left; margin-bottom: 14px; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.06); }
+        .note-card h5 { color: #92400e; font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+        .note-card p { font-size: 11.5px; color: #78350f; line-height: 1.4; }
+        
+        .input-box-wrap { width: 100%; text-align: left; margin-bottom: 12px; }
+        .input-box-wrap label { display: block; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 5px; }
+        .amount-field { width: 100%; padding: 11px 14px; font-size: 15px; font-weight: 600; color: #1e293b; border: 1.5px solid #cbd5e1; border-radius: 12px; outline: none; transition: all 0.2s ease; }
+        .amount-field:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15); }
+        .amount-field.number-bold { text-align: center; font-size: 17px; font-weight: 700; border-color: #60a5fa; }
 
-        /* FLOATING TELEGRAM LIVE SUPPORT BUTTON */
-        .floating-telegram-btn {
-            position: fixed;
-            bottom: 84px;
-            right: 18px;
-            width: 54px;
-            height: 54px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%);
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.55rem;
-            box-shadow: 0 8px 25px rgba(2, 132, 199, 0.45);
-            z-index: 60;
-            cursor: pointer;
-            border: 2px solid rgba(255, 255, 255, 0.35);
-        }
-        .floating-support-badge {
-            position: absolute;
-            top: -2px;
-            right: -2px;
-            background: #ef4444;
-            color: white;
-            font-size: 10px;
-            font-weight: 900;
-            padding: 2px 6px;
-            border-radius: 9999px;
-            border: 2px solid #ffffff;
-            display: none;
-        }
+        .btn-continue-gradient { width: 100%; background: linear-gradient(135deg, var(--brand-purple) 0%, #4f46e5 100%); color: #ffffff; border: none; padding: 15px; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 8px 20px rgba(120, 84, 247, 0.35); transition: 0.2s transform; margin-top: 8px;}
+        .btn-continue-gradient:disabled { opacity: 0.7; cursor: not-allowed; }
 
-        /* SUPPORT MODAL DESK */
-        #support-modal-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 120;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(8px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-        #support-chat-wrapper {
-            width: 100%;
-            max-width: 480px;
-            height: 100vh;
-            height: 100dvh;
-            background: #0e1621;
-            color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            font-family: 'Poppins', sans-serif;
-        }
+        .success-wrapper { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px; text-align: center; }
+        .success-icon { font-size: 65px; color: #10b981; margin-bottom: 12px; animation: scaleIn 0.4s ease-out; }
+        .success-title { font-size: 22px; font-weight: 800; color: #1e293b; margin-bottom: 6px; }
+        .success-msg { font-size: 14.5px; color: #64748b; margin-bottom: 24px; line-height: 1.5; }
+        .txid-box { background: #f8fafc; padding: 16px 20px; border-radius: 12px; border: 1px dashed #cbd5e1; font-size: 15px; color: #334155; margin-bottom: 28px; width: 100%; text-align: left; }
+        .txid-box div { margin-bottom: 8px; }
+        .txid-box span { font-weight: 700; color: var(--text-dark); }
+        .txid-box .highlight-txid { color: var(--brand-purple); font-family: monospace; font-size: 15px; word-break: break-all; }
+        @keyframes scaleIn { 0% { transform: scale(0); } 80% { transform: scale(1.2); } 100% { transform: scale(1); } }
 
-        .tg-top-bar {
-            background: #17212b;
-            color: #fff;
-            padding: 10px 14px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            flex-shrink: 0;
-        }
-        .tg-exit-btn {
-            background: rgba(255, 255, 255, 0.08);
-            color: #fff;
-            width: 36px;
-            height: 36px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-        .tg-avatar-wrap img { 
-            width: 40px; 
-            height: 40px; 
-            border-radius: 50%; 
-            object-fit: cover; 
-            border: 2px solid #0284c7; 
-        }
+        .toast-popup { position: absolute; top: 20px; left: 50%; transform: translateX(-50%) translateY(-30px); background: #1e293b; color: #ffffff; padding: 12px 20px; border-radius: 20px; font-size: 13.5px; font-weight: 600; opacity: 0; pointer-events: none; transition: 0.3s all; z-index: 999; box-shadow: 0 4px 12px rgba(0,0,0,0.2); width: 85%; text-align: center; line-height: 1.4;}
+        .toast-popup.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-        .tg-chat-body {
-            flex: 1;
-            padding: 16px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            background: radial-gradient(circle at 50% 20%, #172435 0%, #0a1017 100%);
-        }
-        .msg-row { display: flex; align-items: flex-end; gap: 8px; width: 100%; }
-        .msg-row.admin { justify-content: flex-start; }
-        .msg-row.user { justify-content: flex-end; }
-        .msg-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
-        .msg-bubble {
-            max-width: 86%;
-            padding: 11px 14px;
-            border-radius: 16px;
-            font-size: 0.86rem;
-            line-height: 1.45;
-            color: #fff;
-            word-break: break-word;
-        }
-        .msg-row.admin .msg-bubble { background: #1e2c3a; border-bottom-left-radius: 4px; }
-        .msg-row.user .msg-bubble { background: #0284c7; border-bottom-right-radius: 4px; }
-        .msg-time { font-size: 0.65rem; color: rgba(255,255,255,0.6); text-align: right; margin-top: 4px; }
-
-        .tg-bottom-bar {
-            background: #17212b;
-            padding: 8px 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border-top: 1px solid rgba(255,255,255,0.08);
-            flex-shrink: 0;
-        }
-        .tg-input {
-            flex: 1;
-            padding: 10px 16px;
-            border-radius: 22px;
-            border: 1px solid rgba(255,255,255,0.12);
-            outline: none;
-            font-size: 0.88rem;
-            background: #0e1621;
-            color: #fff;
-        }
-        .tg-send-btn {
-            background: #0284c7;
-            color: #fff;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-        .toast-container {
-            position: fixed;
-            top: 16px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            width: 90%;
-            max-width: 380px;
-            pointer-events: none;
-        }
-        .toast-item {
-            background: #0f172a;
-            color: #ffffff;
-            padding: 12px 16px;
-            border-radius: 16px;
-            font-size: 13px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
-            opacity: 0;
-            transform: translateY(-20px) scale(0.95);
-            transition: all 0.3s ease;
-            pointer-events: auto;
-            border-left: 4px solid #0284c7;
-        }
-        .toast-item.show { opacity: 1; transform: translateY(0) scale(1); }
-        .toast-item.toast-success { border-left-color: #10b981; }
-        .toast-item.toast-error { border-left-color: #ef4444; }
+        .notif-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: none; flex-direction: column; justify-content: flex-end; opacity: 0; transition: 0.3s opacity; }
+        .notif-overlay.show { display: flex; opacity: 1; }
+        .notif-modal-content { background: #ffffff; width: 100%; height: 80%; border-radius: 24px 24px 0 0; display: flex; flex-direction: column; transform: translateY(100%); transition: 0.3s transform; }
+        .notif-overlay.show .notif-modal-content { transform: translateY(0); }
+        .notif-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; border-bottom: 1px solid #f1f5f9; }
+        .notif-header h3 { font-size: 18px; font-weight: 700; color: #1e293b; }
+        .notif-header button { background: none; border: none; font-size: 20px; color: #64748b; cursor: pointer; }
+        .notif-list { padding: 16px 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+        .notif-item { padding: 14px; border-radius: 12px; background: #f8fafc; border-left: 4px solid var(--text-gray); font-size: 14px; color: #334155; line-height: 1.5; }
+        .notif-item.unread { font-weight: 700; background: #f0fdf4; border-left-color: #10b981; }
+        .notif-time { font-size: 11.5px; color: #94a3b8; margin-top: 6px; display: block; font-weight: 500;}
     </style>
 </head>
+<body>
 
-<body class="max-w-md mx-auto relative bg-[#f8fafc] min-h-screen text-[#0f172a]">
+<div class="payment-modal">
+    <div id="toastNotification" class="toast-popup"></div>
 
-    <!-- TOAST CONTAINER -->
-    <div id="toast-container" class="toast-container"></div>
-
-    <!-- PREMIER ANIMATED INTRO LOADER -->
-    <div id="loader">
-        <div class="orbit-spinner mb-6">
-            <div class="orbit-circle"></div>
-            <div class="orbit-circle"></div>
-            <div class="orbit-circle"></div>
-            <div class="absolute inset-0 flex items-center justify-center">
-                <i data-lucide="cloud" class="w-8 h-8 text-sky-400 animate-pulse"></i>
+    <div id="notifModal" class="notif-overlay">
+        <div class="notif-modal-content">
+            <div class="notif-header">
+                <h3>নোটিফিকেশন</h3>
+                <button onclick="closeNotifModal()"><i class="fa-solid fa-xmark"></i></button>
             </div>
+            <div id="notifList" class="notif-list"></div>
         </div>
+    </div>
 
-        <div class="text-center space-y-2 px-6">
-            <h1 class="font-black text-2xl tracking-wider brand-shimmer">CLOUD INTERNATIONAL</h1>
-            <p class="text-xs text-slate-400 font-medium">Global Cloud & Verified Accounts Gateway</p>
+    <!-- AUTH -->
+    <div id="step-auth" class="step-container">
+        <div class="auth-container">
+            <h2 class="auth-title" id="authTitle">লগইন করুন</h2>
+            <p class="auth-sub" id="authSub">ডিপোজিট সম্পন্ন করতে একাউন্টে প্রবেশ করুন</p>
             
-            <div class="w-44 h-1.5 bg-slate-800 rounded-full mx-auto overflow-hidden mt-4">
-                <div class="h-full bg-gradient-to-r from-sky-400 to-indigo-500 rounded-full animate-[pulse_1s_infinite] w-3/4"></div>
+            <div class="auth-form-group">
+                <label>Email Address</label>
+                <input type="email" id="authEmail" class="auth-input" placeholder="example@mail.com">
+            </div>
+            <div class="auth-form-group">
+                <label>Password</label>
+                <input type="password" id="authPassword" class="auth-input" placeholder="••••••••">
             </div>
 
-            <div class="flex items-center justify-center gap-2 pt-3 text-[11px] text-slate-500 font-semibold">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span> 256-Bit SSL Encrypted
-            </div>
-        </div>
-    </div>
-
-    <!-- FLOATING TELEGRAM LIVE SUPPORT BUTTON -->
-    <div id="floating-support-btn" class="floating-telegram-btn" onclick="openSupportModal()" title="Live Support">
-        <i class="fab fa-telegram-plane"></i>
-        <span id="floating-support-badge" class="floating-support-badge">0</span>
-    </div>
-
-    <!-- SUPPORT CHAT DESK MODAL -->
-    <div id="support-modal-overlay">
-        <div id="support-chat-wrapper">
-            <div class="tg-top-bar">
-                <button class="tg-exit-btn" onclick="closeSupportModal()" title="Back">
-                    <i data-lucide="arrow-left" class="w-5 h-5 text-white"></i>
-                </button>
-                <div class="flex items-center gap-2.5 flex-1">
-                    <div class="tg-avatar-wrap">
-                        <img src="https://i.postimg.cc/vmSBzy63/file-00000000eb4c81faa545e57c85285455.png" alt="Avatar">
-                    </div>
-                    <div>
-                        <h4 class="text-xs font-black text-white flex items-center gap-1">CLOUD Support Desk</h4>
-                        <p class="text-[10px] text-sky-400 font-bold">Online 24/7</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tg-chat-body" id="chat-messages">
-                <div class="msg-row admin">
-                    <img src="https://i.postimg.cc/vmSBzy63/file-00000000eb4c81faa545e57c85285455.png" class="msg-avatar" alt="Admin">
-                    <div class="msg-bubble">
-                        Hello! Welcome to <b>CLOUD INTERNATIONAL Support</b>. How can we help you today?
-                        <div class="msg-time">Official Desk</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tg-bottom-bar">
-                <input type="text" id="chat-text-input" class="tg-input" placeholder="Type a message..." onkeydown="if(event.key==='Enter') sendSupportMessage()">
-                <button class="tg-send-btn" onclick="sendSupportMessage()" title="Send">
-                    <i class="fas fa-paper-plane"></i>
-                </button>
+            <button class="btn-continue-gradient" id="btnAuthSubmit" onclick="handleAuthAction()" style="margin-top: 10px;">
+                Login
+            </button>
+            <div class="auth-toggle-link">
+                <span id="authToggleText" onclick="toggleAuthMode()">নতুন একাউন্ট তৈরি করুন</span>
             </div>
         </div>
     </div>
 
-    <!-- MAIN APP WRAPPER -->
-    <div id="app-container" class="min-h-screen flex flex-col">
-
-        <!-- GLOBAL HEADER -->
-        <header class="global-header px-4 py-3 flex items-center justify-between text-white">
-            <div class="flex items-center gap-2.5 cursor-pointer" onclick="navigateTo('home-page')">
-                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center shadow-md">
-                    <i data-lucide="cloud" class="w-5 h-5 text-white"></i>
-                </div>
-                <div>
-                    <h2 class="font-black text-sm tracking-tight leading-tight">CLOUD INTL</h2>
-                    <div class="flex items-center gap-1.5 text-[10px] text-sky-300 font-bold">
-                        <span id="header-country-flag">🌐</span>
-                        <span id="header-country-name">Global</span>
-                    </div>
-                </div>
+    <!-- MAIN DASHBOARD -->
+    <div id="step-1" class="step-container active">
+        <div class="landing-header">
+            <div class="header-balance-box">
+                <span class="b-title">Current Balance</span>
+                <span class="b-val" id="userBalanceDisplay">0.00 BDT</span>
             </div>
-
-            <div class="flex items-center gap-2">
-                <!-- BALANCE WITH DUAL USDT / BDT CONVERSION -->
-                <div onclick="toggleDisplayCurrency()" class="balance-glass-pill flex items-center gap-1.5 cursor-pointer" title="Click to Switch Currency">
-                    <i data-lucide="wallet" class="w-3.5 h-3.5 text-amber-300"></i>
-                    <span id="header-balance-view" class="font-black text-xs text-white mono-font">$0.00</span>
+            <div class="header-right-actions">
+                <div class="header-icon-btn" onclick="openNotifModal()" title="Notifications">
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="notif-dot"></span>
                 </div>
-            </div>
-        </header>
-
-        <!-- MAIN VIEWPORT -->
-        <main class="flex-grow pb-24">
-
-            <!-- 1. SHOP PAGE -->
-            <div id="home-page" class="p-4 space-y-4 sub-page active">
-                <!-- TRUST ACTIVITY STATS -->
-                <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 p-4 rounded-2xl text-white border border-white/10 shadow-lg space-y-3">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                            <span class="text-xs font-black uppercase tracking-wider text-emerald-400">GLOBAL CLOUD NETWORK</span>
-                        </div>
-                        <span class="text-[10px] font-bold bg-white/10 px-2 py-0.5 rounded text-sky-300">Uptime 99.98%</span>
-                    </div>
-
-                    <div class="grid grid-cols-3 gap-2 pt-1 text-center border-t border-white/10">
-                        <div class="bg-white/5 p-2 rounded-xl border border-white/5">
-                            <p class="text-[9px] uppercase font-bold text-slate-400">TOTAL USERS</p>
-                            <p class="text-xs font-black text-sky-300 mono-font mt-0.5">38,450+</p>
-                        </div>
-                        <div class="bg-white/5 p-2 rounded-xl border border-white/5">
-                            <p class="text-[9px] uppercase font-bold text-slate-400">ACTIVE TODAY</p>
-                            <p class="text-xs font-black text-emerald-300 mono-font mt-0.5">2,180+</p>
-                        </div>
-                        <div class="bg-white/5 p-2 rounded-xl border border-white/5">
-                            <p class="text-[9px] uppercase font-bold text-slate-400">DAILY TRANSACTIONS</p>
-                            <p class="text-xs font-black text-amber-300 mono-font mt-0.5">$14,890+</p>
-                        </div>
-                    </div>
+                <div class="header-icon-btn" onclick="logoutUser()" title="Logout">
+                    <i class="fa-solid fa-right-from-bracket" style="color: #ef4444;"></i>
                 </div>
-
-                <!-- CATEGORIES -->
-                <div class="grid grid-cols-3 gap-2" id="category-filter-grid"></div>
-
-                <!-- PRODUCT CARDS -->
-                <div class="space-y-3" id="product-list-container"></div>
-            </div>
-
-            <!-- 2. DEPOSIT / ADD FUNDS PAGE -->
-            <div id="pay-page" class="p-4 space-y-4 sub-page">
-                <div class="bg-gradient-to-r from-sky-600 to-indigo-700 p-5 rounded-3xl text-white shadow-xl flex items-center justify-between">
-                    <div>
-                        <span class="px-2.5 py-0.5 rounded-full bg-white/20 text-white text-[10px] font-black uppercase">Instant Deposit</span>
-                        <h3 class="text-xl font-black mt-1">Add Funds / Deposit</h3>
-                        <p class="text-xs text-sky-100">Binance / Crypto & Local Gateways</p>
-                    </div>
-                    <div class="text-right bg-white/10 p-3 rounded-2xl border border-white/15">
-                        <span class="text-[10px] text-sky-200 uppercase font-bold block">Balance</span>
-                        <span id="deposit-page-balance" class="text-lg font-black text-white mono-font">$0.00</span>
-                    </div>
-                </div>
-
-                <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-4">
-                    <div>
-                        <div class="flex justify-between items-center mb-1.5">
-                            <label class="text-xs font-black text-slate-700">Amount (BDT / USD)</label>
-                            <span class="text-[10.5px] font-bold text-sky-600 bg-sky-50 px-2 py-0.5 rounded-md border">Min: ৳10</span>
-                        </div>
-                        <div class="relative">
-                            <input id="amountInput" type="number" step="1" value="50" min="10" oninput="handleDepositAmountChange(this.value)" class="w-full p-3.5 pl-10 rounded-2xl border-2 border-sky-100 text-xl font-black text-slate-800 mono-font outline-none focus:border-sky-500">
-                            <span class="absolute left-4 top-3.5 text-slate-400 font-black text-lg">৳</span>
-                        </div>
-                        <p class="text-[11px] text-slate-400 mt-1 font-medium" id="deposit-usd-eq">≈ $0.42 USDT</p>
-                    </div>
-
-                    <div>
-                        <span class="block text-[11px] font-extrabold text-slate-400 uppercase mb-2">Quick Select</span>
-                        <div class="grid grid-cols-3 gap-2">
-                            <button type="button" onclick="setQuickDepositAmount(10)" class="quick-amount-pill">10 BDT</button>
-                            <button type="button" onclick="setQuickDepositAmount(50)" class="quick-amount-pill selected">50 BDT</button>
-                            <button type="button" onclick="setQuickDepositAmount(100)" class="quick-amount-pill">100 BDT</button>
-                            <button type="button" onclick="setQuickDepositAmount(200)" class="quick-amount-pill">200 BDT</button>
-                            <button type="button" onclick="setQuickDepositAmount(500)" class="quick-amount-pill">500 BDT</button>
-                            <button type="button" onclick="setQuickDepositAmount(1000)" class="quick-amount-pill">1,000 BDT</button>
-                        </div>
-                    </div>
-
-                    <button onclick="initiatePayment()" class="w-full py-4 rounded-2xl btn-gateway-pay text-sm flex items-center justify-center gap-2 cursor-pointer shadow-lg">
-                        <i data-lucide="lock" class="w-4 h-4 text-amber-300"></i>
-                        <span>Continue to Instant Payment</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- 3. REFER & CASHBACK PAGE -->
-            <div id="refer-page" class="p-4 space-y-4 sub-page">
-                <div class="bg-gradient-to-br from-indigo-900 via-sky-900 to-slate-900 p-5 rounded-3xl text-white shadow-xl relative overflow-hidden border border-sky-500/20">
-                    <div class="space-y-2">
-                        <div class="flex items-center justify-between">
-                            <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-black uppercase">Instant Reward</span>
-                            <span class="text-[11px] font-black text-amber-400 bg-amber-400/10 px-2.5 py-0.5 rounded-lg border border-amber-400/20">৳10/Refer + 1.5% Cashback</span>
-                        </div>
-                        <h2 class="text-xl font-black">Refer & Earn Program</h2>
-                        <p class="text-xs text-sky-200">
-                            Invite friends to join. Earn ৳10 instant reward plus 1.5% lifetime cashback whenever they make a deposit!
-                        </p>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-3 gap-2 text-center">
-                    <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
-                        <p class="text-[9.5px] font-extrabold text-slate-400 uppercase">Total Refer</p>
-                        <p id="ref-stat-total" class="text-base font-black text-slate-800 mono-font mt-1">0</p>
-                    </div>
-                    <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
-                        <p class="text-[9.5px] font-extrabold text-slate-400 uppercase">Cashback Earn</p>
-                        <p id="ref-stat-cashback" class="text-base font-black text-amber-600 mono-font mt-1">$0.00</p>
-                    </div>
-                    <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
-                        <p class="text-[9.5px] font-extrabold text-slate-400 uppercase">Total Earned</p>
-                        <p id="ref-stat-earned" class="text-base font-black text-sky-600 mono-font mt-1">$0.00</p>
-                    </div>
-                </div>
-
-                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-3">
-                    <span class="text-xs font-black text-slate-700 block">Your Referral Link:</span>
-                    <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex items-center justify-between">
-                        <span class="text-[11px] font-mono text-slate-600 truncate mr-2 select-all" id="dedicated-ref-link-display">Loading link...</span>
-                        <button onclick="copyReferralLink()" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-bold flex items-center gap-1">
-                            <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy
-                        </button>
-                    </div>
-
-                    <button onclick="shareReferralLinkTelegram()" class="w-full py-3 bg-[#0088cc] hover:bg-[#0077b5] text-white font-extrabold text-xs rounded-xl flex items-center justify-center gap-2 shadow">
-                        <i data-lucide="send" class="w-4 h-4"></i> Share on Telegram
-                    </button>
-                </div>
-            </div>
-
-            <!-- 4. ORDERS PAGE -->
-            <div id="orders-page" class="p-4 space-y-4 sub-page">
-                <div class="flex items-center justify-between border-b border-slate-200 pb-3">
-                    <div>
-                        <h2 class="text-lg font-black text-slate-800">Your Orders</h2>
-                        <p class="text-[10.5px] text-slate-500">Purchased accounts credentials</p>
-                    </div>
-                    <div class="flex gap-1.5">
-                        <button onclick="copyAllOrdersExcelFormat()" class="bg-sky-50 text-sky-600 p-2 rounded-xl text-xs font-bold flex items-center gap-1 border border-sky-200">
-                            <i data-lucide="copy" class="w-3.5 h-3.5"></i> ALL COPY
-                        </button>
-                        <button onclick="downloadOrdersXlsx()" class="bg-emerald-50 text-emerald-600 p-2 rounded-xl text-xs font-bold flex items-center gap-1 border border-emerald-200">
-                            <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> XLSX
-                        </button>
-                    </div>
-                </div>
-
-                <div id="orders-purchase-history" class="space-y-3 min-h-[200px]"></div>
-            </div>
-
-            <!-- 5. PROFILE & SETTINGS (LANGUAGE & COUNTRY SELECTOR) -->
-            <div id="profile-page" class="p-4 space-y-4 sub-page">
-                <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 p-5 rounded-3xl text-white shadow-xl space-y-4">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-xs font-bold border border-white/20">
-                            <span id="profile-flag">🌐</span>
-                            <span id="profile-country-txt">Detecting...</span>
-                        </div>
-                        <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-400/30">Verified User</span>
-                    </div>
-
-                    <!-- TELEGRAM USER PROFILE INFO -->
-                    <div class="flex items-center gap-3.5">
-                        <div class="w-14 h-14 rounded-2xl bg-sky-600 text-white flex items-center justify-center font-black text-xl overflow-hidden border border-white/20">
-                            <img id="profile-avatar-img" class="w-full h-full object-cover hidden" alt="">
-                            <span id="profile-initials">U</span>
-                        </div>
-                        <div class="overflow-hidden">
-                            <h3 id="profile-name" class="text-base font-extrabold text-white truncate">User Name</h3>
-                            <p id="profile-username" class="text-xs text-slate-400 font-medium truncate">@username</p>
-                            <span id="profile-id" class="text-[11px] font-mono text-sky-300 block mt-0.5">ID: 00000000</span>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-2 pt-2 border-t border-white/10">
-                        <div class="bg-white/5 p-2.5 rounded-2xl border border-white/5 text-center">
-                            <span class="text-[10px] font-bold text-slate-400 uppercase">USDT BALANCE</span>
-                            <p id="profile-usdt-balance" class="text-base font-black text-sky-300 mono-font mt-0.5">$0.00</p>
-                        </div>
-                        <div class="bg-white/5 p-2.5 rounded-2xl border border-white/5 text-center">
-                            <span class="text-[10px] font-bold text-slate-400 uppercase">BDT EQUIVALENT</span>
-                            <p id="profile-bdt-balance" class="text-base font-black text-emerald-400 mono-font mt-0.5">৳0.00</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- PREFERENCES: LANGUAGE & COUNTRY SELECTOR -->
-                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-3">
-                    <h3 class="text-xs font-black uppercase text-slate-700 flex items-center gap-2">
-                        <i data-lucide="globe" class="w-4 h-4 text-sky-600"></i> Regional Preferences
-                    </h3>
-
-                    <div class="grid grid-cols-2 gap-2">
-                        <!-- LANGUAGE SELECTION -->
-                        <div>
-                            <label class="block text-[11px] font-bold text-slate-500 mb-1">Language (ভাষা)</label>
-                            <select id="lang-select-box" onchange="changeLanguageManually(this.value)" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 outline-none">
-                                <option value="en">English (US)</option>
-                                <option value="bn">বাংলা (Bengali)</option>
-                            </select>
-                        </div>
-
-                        <!-- COUNTRY SELECTION -->
-                        <div>
-                            <label class="block text-[11px] font-bold text-slate-500 mb-1">Country (দেশ)</label>
-                            <select id="country-select-box" onchange="changeCountryManually(this.value)" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 outline-none">
-                                <option value="US">🇺🇸 United States</option>
-                                <option value="BD">🇧🇩 Bangladesh</option>
-                                <option value="GB">🇬🇧 United Kingdom</option>
-                                <option value="AE">🇦🇪 UAE / Dubai</option>
-                                <option value="IN">🇮🇳 India</option>
-                                <option value="CA">🇨🇦 Canada</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ACTIONS -->
-                <div class="bg-white p-2 rounded-2xl border border-slate-200 shadow-sm divide-y divide-slate-100 text-xs font-bold">
-                    <button onclick="navigateTo('pay-page')" class="w-full p-3 flex items-center justify-between hover:bg-slate-50 rounded-xl transition">
-                        <div class="flex items-center gap-2.5">
-                            <div class="p-1.5 bg-emerald-50 text-emerald-600 rounded-lg"><i data-lucide="wallet" class="w-4 h-4"></i></div>
-                            <span>Add Funds / Deposit</span>
-                        </div>
-                        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
-                    </button>
-
-                    <button onclick="openSupportModal()" class="w-full p-3 flex items-center justify-between hover:bg-slate-50 rounded-xl transition text-sky-700">
-                        <div class="flex items-center gap-2.5">
-                            <div class="p-1.5 bg-sky-100 text-sky-600 rounded-lg"><i class="fab fa-telegram"></i></div>
-                            <span>Live Telegram Support Desk (24/7)</span>
-                        </div>
-                        <i data-lucide="chevron-right" class="w-4 h-4 text-sky-400"></i>
-                    </button>
-
-                    <button onclick="showPolicyModal()" class="w-full p-3 flex items-center justify-between hover:bg-slate-50 rounded-xl transition">
-                        <div class="flex items-center gap-2.5">
-                            <div class="p-1.5 bg-slate-100 text-slate-600 rounded-lg"><i data-lucide="shield-check" class="w-4 h-4"></i></div>
-                            <span>Replacement Policy</span>
-                        </div>
-                        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
-                    </button>
-                </div>
-            </div>
-
-        </main>
-
-        <!-- FLOATING BOTTOM NAVIGATION (WORK & WITHDRAW REMOVED) -->
-        <div class="bottom-nav-container">
-            <nav class="bottom-nav">
-                <div class="nav-item active" data-page="home-page" onclick="navigateTo('home-page')">
-                    <div class="nav-icon-wrapper">
-                        <i data-lucide="layout-grid" class="w-5 h-5"></i>
-                    </div>
-                    <span id="nav-lbl-shop">Shop</span>
-                </div>
-                <div class="nav-item" data-page="pay-page" onclick="navigateTo('pay-page')">
-                    <div class="nav-icon-wrapper">
-                        <i data-lucide="wallet" class="w-5 h-5"></i>
-                    </div>
-                    <span id="nav-lbl-deposit">Deposit</span>
-                </div>
-                <div class="nav-item" data-page="refer-page" onclick="navigateTo('refer-page')">
-                    <div class="nav-icon-wrapper">
-                        <i data-lucide="gift" class="w-5 h-5"></i>
-                    </div>
-                    <span id="nav-lbl-refer">Refer</span>
-                </div>
-                <div class="nav-item" data-page="orders-page" onclick="navigateTo('orders-page')">
-                    <div class="nav-icon-wrapper">
-                        <i data-lucide="shopping-bag" class="w-5 h-5"></i>
-                    </div>
-                    <span id="nav-lbl-orders">Orders</span>
-                </div>
-                <div class="nav-item" data-page="profile-page" onclick="navigateTo('profile-page')">
-                    <div class="nav-icon-wrapper">
-                        <i data-lucide="user" class="w-5 h-5"></i>
-                    </div>
-                    <span id="nav-lbl-profile">Profile</span>
-                </div>
-            </nav>
-        </div>
-
-    </div>
-
-    <!-- BUY NOW MODAL -->
-    <div id="buy-now-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
-        <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 relative text-center shadow-2xl">
-            <div class="w-14 h-14 bg-sky-100 text-sky-600 rounded-full flex items-center justify-center mx-auto">
-                <i data-lucide="zap" class="w-7 h-7"></i>
-            </div>
-            <div>
-                <h3 class="text-base font-bold text-slate-800" id="buy-modal-title">Service Name</h3>
-                <p class="text-xs text-slate-500 mt-1">Select quantity to instant dispatch.</p>
-            </div>
-
-            <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 flex items-center justify-between text-xs">
-                <span class="font-bold text-slate-700">Quantity:</span>
-                <div class="flex items-center bg-white border border-slate-300 rounded-xl p-0.5 shadow-sm">
-                    <button onclick="adjustBuyModalQty(-1)" class="w-8 h-8 flex items-center justify-center font-black text-slate-700 hover:bg-slate-100 rounded-lg text-sm">-</button>
-                    <input id="buy-modal-qty-input" type="number" step="1" value="1" min="1" oninput="handleBuyModalQtyInput(this)" class="w-12 text-center bg-transparent text-sm font-black text-slate-800 outline-none">
-                    <button onclick="adjustBuyModalQty(1)" class="w-8 h-8 flex items-center justify-center font-black text-slate-700 hover:bg-slate-100 rounded-lg text-sm">+</button>
-                </div>
-            </div>
-
-            <div class="bg-sky-50/80 p-3.5 rounded-2xl border border-sky-200 text-left text-xs text-sky-950 space-y-1.5">
-                <p>• Total Cost: <b id="buy-modal-price" class="text-sky-700 font-bold">$0.00 / ৳0.00</b></p>
-                <p>• In Stock: <b id="buy-modal-stock-display" class="text-emerald-700 font-bold">0 pcs</b></p>
-                <p>• Delivery: <b class="text-emerald-600 font-bold">Instant Dispatch</b></p>
-            </div>
-
-            <div class="flex gap-2 pt-1">
-                <button onclick="document.getElementById('buy-now-modal').classList.add('hidden')" class="w-1/2 py-2.5 bg-slate-100 font-bold rounded-xl text-xs">Cancel</button>
-                <button id="confirm-buy-modal-btn" onclick="executeBuyNowConfirmed()" class="w-1/2 py-2.5 btn-buy font-bold rounded-xl text-xs">Confirm Buy</button>
             </div>
         </div>
-    </div>
 
-    <!-- PRE-ORDER MODAL -->
-    <div id="manual-order-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
-        <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 relative text-center shadow-2xl">
-            <div class="w-14 h-14 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mx-auto">
-                <i data-lucide="clock" class="w-7 h-7"></i>
-            </div>
-            <div>
-                <h3 class="text-base font-bold text-slate-800" id="manual-modal-title">Pre-Order</h3>
-                <p class="text-xs text-slate-500 mt-1">Currently instant stock is empty, but you can pre-order.</p>
-            </div>
-
-            <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 flex items-center justify-between text-xs">
-                <span class="font-bold text-slate-700">Quantity:</span>
-                <div class="flex items-center bg-white border border-slate-300 rounded-xl p-0.5 shadow-sm">
-                    <button onclick="adjustManualOrderModalQty(-1)" class="w-8 h-8 flex items-center justify-center font-black text-slate-700 hover:bg-slate-100 rounded-lg text-sm">-</button>
-                    <input id="manual-modal-qty-input" type="number" step="1" value="1" min="1" oninput="handleManualModalQtyChange(this)" class="w-12 text-center bg-transparent text-sm font-black text-slate-800 outline-none">
-                    <button onclick="adjustManualOrderModalQty(1)" class="w-8 h-8 flex items-center justify-center font-black text-slate-700 hover:bg-slate-100 rounded-lg text-sm">+</button>
-                </div>
-            </div>
-
-            <div class="bg-orange-50 p-3.5 rounded-2xl border border-orange-200 text-left text-xs text-orange-950 space-y-1.5">
-                <p>• Total Cost: <b id="manual-modal-price" class="text-sky-700 font-bold">$0.00 / ৳0.00</b></p>
-                <p>• Delivery Window: <b id="manual-modal-duration" class="text-orange-700 font-bold">30 Minutes</b></p>
-            </div>
-
-            <div class="flex gap-2 pt-1">
-                <button onclick="document.getElementById('manual-order-modal').classList.add('hidden')" class="w-1/2 py-2.5 bg-slate-100 font-bold rounded-xl text-xs">Cancel</button>
-                <button id="confirm-manual-order-btn" onclick="handleConfirmManualOrder()" class="w-1/2 py-2.5 btn-order-orange font-bold rounded-xl text-xs">Confirm Order</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- PURCHASE SUCCESS MODAL -->
-    <div id="purchase-success-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[70] p-4 backdrop-blur-sm">
-        <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-4 relative text-center max-h-[90vh] flex flex-col shadow-2xl">
-            <div class="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto flex-shrink-0">
-                <i data-lucide="check" class="w-6 h-6 stroke-[3]"></i>
-            </div>
-            <div>
-                <h3 class="text-lg font-bold text-slate-800">Order Completed!</h3>
-                <p class="text-xs text-slate-500 mt-0.5" id="purchase-success-subtitle">Your credentials:</p>
+        <div class="step-1-content">
+            <div class="main-avatar-wrap">
+                <img src="https://i.ibb.co/r2q5RcBg/x.jpg" alt="Logo" onerror="this.src='https://via.placeholder.com/110'">
             </div>
             
-            <div id="purchase-success-items-list" class="space-y-2 text-left overflow-y-auto max-h-[190px] pr-1"></div>
-
-            <div class="grid grid-cols-2 gap-2 pt-1 text-xs font-bold">
-                <button onclick="copyCurrentPurchaseExcelFormat()" class="py-2.5 px-3 bg-sky-50 text-sky-700 border border-sky-200 hover:bg-sky-100 rounded-xl flex items-center justify-center gap-1.5">
-                    <i data-lucide="copy" class="w-4 h-4"></i> Copy All
-                </button>
-                <button onclick="document.getElementById('purchase-success-modal').classList.add('hidden'); navigateTo('orders-page');" class="py-2.5 px-3 btn-buy rounded-xl">
-                    View Orders
-                </button>
+            <h2 class="shop-heading">Social Smm Shop</h2>
+            <div class="user-email-badge" id="userEmailBadge">user@mail.com</div>
+            <div class="line-sep"></div>
+            <div class="note-card">
+                <h5>Payment Note</h5>
+                <p>বিকাশ, নগদ ও রকেটের মাধ্যমে ইনস্ট্যান্ট অটোমেটিক ব্যালেন্স এড করতে পরিমাণ লিখে Continue বাটনে ক্লিক করুন।</p>
             </div>
+
+            <div class="input-box-wrap">
+                <label for="amountInput">টাকার পরিমাণ (BDT)</label>
+                <input type="number" id="amountInput" class="amount-field number-bold" value="100" placeholder="100" min="10">
+            </div>
+
+            <div class="input-box-wrap">
+                <label for="phoneInput">আপনার মোবাইল নম্বর</label>
+                <input type="tel" id="phoneInput" class="amount-field" placeholder="017XXXXXXXX" value="01700000000">
+            </div>
+
+            <button id="btnPayGateway" class="btn-continue-gradient" onclick="initiatePayment()">
+                <i class="fa-solid fa-lock" style="color: #facc15;"></i> Continue to Payment
+            </button>
         </div>
     </div>
 
-    <!-- POLICY MODAL -->
-    <div id="policy-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[90] p-4 backdrop-blur-sm">
-        <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-3.5 text-center shadow-2xl">
-            <div class="w-12 h-12 bg-sky-50 text-sky-600 rounded-2xl flex items-center justify-center mx-auto">
-                <i data-lucide="shield-alert" class="w-6 h-6"></i>
+    <!-- SUCCESS -->
+    <div id="step-5" class="step-container">
+        <div class="success-wrapper">
+            <i class="fa-solid fa-circle-check success-icon"></i>
+            <h3 style="color: #10b981; font-size: 18px; font-weight: 700; margin-bottom: 4px;">পেমেন্ট সফল হয়েছে!</h3>
+            <h2 class="success-title">Payment Successful!</h2>
+            <p class="success-msg">আপনার ডিপোজিট সফলভাবে ভেরিফাই করে ব্যালেন্স যোগ করা হয়েছে।</p>
+            
+            <div class="txid-box">
+                <div>TXID : <span class="highlight-txid" id="displayTxid"></span></div>
+                <div>Amount : <span id="displayAmount"></span></div>
             </div>
-            <h3 class="text-base font-extrabold text-slate-800">Replacement & Support Policy</h3>
-            <div class="text-xs text-slate-600 text-left space-y-2 max-h-60 overflow-y-auto leading-relaxed bg-slate-50 p-3 rounded-2xl border border-slate-100">
-                <p>1. If any account is invalid upon purchase, please report within 15 minutes.</p>
-                <p>2. Pre-orders and replacement history will be maintained for 10 hours.</p>
-                <p>3. Successful purchase logs are stored for 48 hours.</p>
-            </div>
-            <button onclick="document.getElementById('policy-modal').classList.add('hidden')" class="w-full py-2.5 bg-sky-600 text-white font-bold rounded-xl text-xs">Understood</button>
+            
+            <button class="btn-continue-gradient" onclick="changeStep(1)">
+                Return to Shop
+            </button>
         </div>
     </div>
+</div>
 
-    <!-- ======================================================== -->
-    <!-- REALTIME FIREBASE SUPPORT DESK LOGIC                     -->
-    <!-- ======================================================== -->
-    <script>
-        const OFFICIAL_ADMIN_ID = "7358825471";
-        const OFFICIAL_LOGO = "https://i.postimg.cc/vmSBzy63/file-00000000eb4c81faa545e57c85285455.png";
-        const OFFICIAL_TITLE = "CLOUD INTL Support";
+<script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAEV4zkuTcRYIFP2AMmKJTyDUTzSYLnbbM",
+      authDomain: "used-mail-shop.firebaseapp.com",
+      databaseURL: "https://used-mail-shop-default-rtdb.firebaseio.com",
+      projectId: "used-mail-shop",
+      storageBucket: "used-mail-shop.firebasestorage.app",
+      messagingSenderId: "251382358623",
+      appId: "1:251382358623:web:a567a9349d1fd87277b1ea"
+    };
 
-        const supportFirebaseConfig = {
-            apiKey: "AIzaSyAsENiikJ5YQ1F8UHrixdJVEINAhO4PG30",
-            authDomain: "bot2-3d8bc.firebaseapp.com",
-            databaseURL: "https://bot2-3d8bc-default-rtdb.firebaseio.com",
-            projectId: "bot2-3d8bc",
-            storageBucket: "bot2-3d8bc.firebasestorage.app",
-            messagingSenderId: "77444577377",
-            appId: "1:77444577377:web:05a9910049d166878d5220"
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
+    const auth = firebase.auth();
+    const database = firebase.database();
+
+    let currentUser = null;
+    let isRegisterMode = false;
+
+    // আপনার TZ SMMPAY API Key
+    const TZ_API_KEY = 'IBqczPjssNoCKEP2';
+
+    function toggleAuthMode() {
+        isRegisterMode = !isRegisterMode;
+        document.getElementById('authTitle').textContent = isRegisterMode ? "একাউন্ট খুলুন" : "লগইন করুন";
+        document.getElementById('authSub').textContent = isRegisterMode ? "আপনার ইমেইল ও পাসওয়ার্ড দিয়ে রেজিস্টার করুন" : "ডিপোজিট সম্পন্ন করতে একাউন্টে প্রবেশ করুন";
+        document.getElementById('btnAuthSubmit').textContent = isRegisterMode ? "Register" : "Login";
+        document.getElementById('authToggleText').textContent = isRegisterMode ? "আগে থেকেই একাউন্ট আছে? লগইন করুন" : "নতুন একাউন্ট তৈরি করুন";
+    }
+
+    function handleAuthAction() {
+        const email = document.getElementById('authEmail').value.trim();
+        const password = document.getElementById('authPassword').value.trim();
+
+        if(!email || !password) return showToastPopup('ইমেইল ও পাসওয়ার্ড প্রদান করুন');
+
+        const btn = document.getElementById('btnAuthSubmit');
+        const originalText = btn.textContent;
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
+        btn.disabled = true;
+
+        if (isRegisterMode) {
+            auth.createUserWithEmailAndPassword(email, password).then(userCredential => {
+                database.ref(`users/${userCredential.user.uid}`).set({ email: email, balance: 0, createdAt: firebase.database.ServerValue.TIMESTAMP });
+                showToastPopup('একাউন্ট তৈরি হয়েছে!');
+                btn.innerHTML = originalText; btn.disabled = false;
+            }).catch(err => { showToastPopup(err.message); btn.innerHTML = originalText; btn.disabled = false; });
+        } else {
+            auth.signInWithEmailAndPassword(email, password).catch(err => { showToastPopup('লগইন ব্যর্থ হয়েছে।'); btn.innerHTML = originalText; btn.disabled = false; });
+        }
+    }
+
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            currentUser = user;
+            document.getElementById('userEmailBadge').textContent = user.email;
+            listenUserData(user.uid);
+            listenForNotifications(user.uid); 
+            
+            changeStep(1); 
+            checkReturnPaymentStatus(); 
+        } else {
+            currentUser = null;
+            changeStep('auth');
+        }
+    });
+
+    function listenUserData(uid) {
+        database.ref(`users/${uid}/balance`).on('value', snapshot => {
+            const balance = snapshot.val() || 0;
+            document.getElementById('userBalanceDisplay').textContent = `${parseFloat(balance).toFixed(2)} BDT`;
+        });
+    }
+
+    // TZ SMMPAY এর মাধ্যমে পেমেন্ট তৈরি
+    async function initiatePayment() {
+        if (!currentUser) return showToastPopup('প্রথমে লগইন করুন');
+        const amount = document.getElementById('amountInput').value.trim();
+        const phone = document.getElementById('phoneInput').value.trim();
+
+        if (!amount || parseFloat(amount) <= 0) return showToastPopup('সঠিক এমাউন্ট লিখুন');
+        if (!phone || phone.length < 11) return showToastPopup('সঠিক ১১ ডিজিটের ফোন নম্বর দিন');
+
+        const btn = document.getElementById('btnPayGateway');
+        btn.disabled = true; 
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Loading Gateway...';
+
+        const returnUrl = window.location.href.split('?')[0];
+
+        const payload = {
+            api_key: TZ_API_KEY,
+            cus_name: currentUser.email.split('@')[0],
+            cus_email: currentUser.email,
+            cus_number: phone,
+            amount: parseFloat(amount),
+            success_url: returnUrl + `?status=success&amount=${amount}&uid=${currentUser.uid}`,
+            cancel_url: returnUrl + "?status=cancel",
+            callback_url: returnUrl + "?status=callback"
         };
-        const supportApp = firebase.initializeApp(supportFirebaseConfig, "supportAppInstance");
-        const supportDb = supportApp.database();
 
-        let supportTgUser = { id: '6954647230', first_name: 'Guest User' };
+        try {
+            const res = await fetch('https://tzsmmpay.com/api/payment/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+            
+            const data = await res.json();
+            
+            // বিভিন্ন সম্ভাব্য রেসপন্স থেকে পেমেন্ট লিংক বের করা
+            let payUrl = data.payment_url || data.url || (data.data && data.data.payment_url) || (data.data && data.data.url);
 
-        function openSupportModal() {
-            document.getElementById('support-modal-overlay').style.display = 'flex';
-            loadSupportChat();
-            if (window.lucide) lucide.createIcons();
+            if (payUrl) {
+                window.location.href = payUrl;
+            } else {
+                showToastPopup(data.message || data.error || 'পেমেন্ট গেটওয়েতে সমস্যা হচ্ছে!');
+                btn.disabled = false; 
+                btn.innerHTML = '<i class="fa-solid fa-lock" style="color: #facc15;"></i> Continue to Payment';
+            }
+        } catch (err) {
+            console.error(err);
+            showToastPopup('সার্ভার কানেকশন ব্যর্থ হয়েছে। CORS বা নেটওয়ার্ক সমস্যা হতে পারে।');
+            btn.disabled = false; 
+            btn.innerHTML = '<i class="fa-solid fa-lock" style="color: #facc15;"></i> Continue to Payment';
         }
+    }
 
-        function closeSupportModal() {
-            document.getElementById('support-modal-overlay').style.display = 'none';
+    // গেটওয়ে থেকে ফিরে আসার পর ব্যালেন্স যোগ করার লজিক
+    async function checkReturnPaymentStatus() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const transactionId = urlParams.get('transaction_id') || urlParams.get('transactionId') || urlParams.get('txid') || ('TXN' + Date.now());
+        const urlStatus = urlParams.get('status');
+        const depositAmount = parseFloat(urlParams.get('amount') || urlParams.get('paymentAmount') || 0);
+
+        if (urlStatus === 'success' && depositAmount > 0) {
+            showToastPopup('পেমেন্ট সফল! ব্যালেন্স আপডেট করা হচ্ছে...');
+            
+            savePaymentAndUpdateBalance(depositAmount, transactionId);
+            
+            document.getElementById('displayTxid').textContent = transactionId;
+            document.getElementById('displayAmount').textContent = depositAmount + " BDT";
+            changeStep(5);
+            window.history.replaceState({}, document.title, window.location.pathname);
+        } else if (urlStatus === 'cancel') {
+            showToastPopup('পেমেন্ট বাতিল করা হয়েছে');
+            window.history.replaceState({}, document.title, window.location.pathname);
         }
+    }
 
-        function loadSupportChat() {
-            const myId = supportTgUser.id;
-            supportDb.ref('support_chats/' + myId).on('value', snap => {
-                const body = document.getElementById('chat-messages');
-                body.innerHTML = `
-                    <div class="msg-row admin">
-                        <img src="${OFFICIAL_LOGO}" class="msg-avatar" alt="Admin">
-                        <div class="msg-bubble">
-                            Hello! Welcome to <b>${OFFICIAL_TITLE}</b>. How may we help you?
-                            <div class="msg-time">Official Desk</div>
-                        </div>
-                    </div>`;
+    function savePaymentAndUpdateBalance(depositAmount, txid) {
+        if (!currentUser) return;
+        const uid = currentUser.uid;
 
-                if (snap.exists()) {
-                    snap.forEach(c => {
-                        const m = c.val();
-                        const isMsgFromAdmin = m.sender === 'admin';
-                        const avatar = isMsgFromAdmin ? OFFICIAL_LOGO : (supportTgUser.photo_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${myId}`);
-
-                        body.innerHTML += `
-                            <div class="msg-row ${isMsgFromAdmin ? 'admin' : 'user'}">
-                                ${isMsgFromAdmin ? `<img src="${avatar}" class="msg-avatar">` : ''}
-                                <div class="msg-bubble">
-                                    ${m.text}
-                                    <div class="msg-time">${m.time || ''}</div>
-                                </div>
-                                ${!isMsgFromAdmin ? `<img src="${avatar}" class="msg-avatar">` : ''}
-                            </div>`;
+        const txRef = database.ref(`users/${uid}/deposits/${txid}`);
+        txRef.once('value', snapshot => {
+            if (!snapshot.exists()) {
+                txRef.set({
+                    txid: txid,
+                    amount: depositAmount,
+                    gateway: 'TZSMMPAY',
+                    timestamp: firebase.database.ServerValue.TIMESTAMP
+                }).then(() => {
+                    database.ref(`users/${uid}/balance`).transaction(currentBalance => {
+                        return (currentBalance || 0) + depositAmount;
                     });
-                    body.scrollTop = body.scrollHeight;
-                }
-            });
-        }
 
-        async function sendSupportMessage() {
-            const input = document.getElementById('chat-text-input');
-            const text = input.value.trim();
-            if (!text) return;
-
-            const now = new Date();
-            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-            await supportDb.ref('support_chats/' + supportTgUser.id).push({
-                sender: 'user',
-                userId: supportTgUser.id,
-                name: supportTgUser.first_name || 'User',
-                photo: supportTgUser.photo_url || '',
-                text: text,
-                time: timeString,
-                seen: false,
-                timestamp: Date.now()
-            });
-
-            input.value = '';
-            input.focus();
-        }
-    </script>
-
-    <!-- ======================================================== -->
-    <!-- PRIMARY APP ENGINE & MULTI-CURRENCY FIRESTORE LOGIC      -->
-    <!-- ======================================================== -->
-    <script type="module">
-        import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-        import { 
-            getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, 
-            query, where, getDocs, limit, runTransaction, getCountFromServer, 
-            updateDoc, increment, Timestamp 
-        } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
-
-        const primaryFirebaseConfig = {
-            apiKey: "AIzaSyC_Qj_G_FOrlSehcj6qjdYB8x_G-yIyWnU",
-            authDomain: "hub-54f3d.firebaseapp.com",
-            projectId: "hub-54f3d",
-            storageBucket: "hub-54f3d.firebasestorage.app",
-            messagingSenderId: "379028334299",
-            appId: "1:379028334299:web:20b8340f8115cd10de0efe"
-        };
-
-        const secondaryFirebaseConfig = {
-            apiKey: "AIzaSyCagqvWu9t5Qp1IALosaP3-9jN52fhxQ2M",
-            authDomain: "saidul4x-78b68.firebaseapp.com",
-            databaseURL: "https://saidul4x-78b68-default-rtdb.firebaseio.com",
-            projectId: "saidul4x-78b68",
-            storageBucket: "saidul4x-78b68.firebasestorage.app",
-            messagingSenderId: "89460698631",
-            appId: "1:89460698631:web:827621e6358efeabce04a2"
-        };
-
-        const primaryApp = !getApps().some(a => a.name === '[DEFAULT]') ? initializeApp(primaryFirebaseConfig) : getApp();
-        const secondaryApp = !getApps().some(a => a.name === 'secondaryApp') ? initializeApp(secondaryFirebaseConfig, 'secondaryApp') : getApp('secondaryApp');
-
-        const dbUser = getFirestore(primaryApp);
-        const dbShop = getFirestore(secondaryApp);
-
-        // CURRENCY CONVERTER SETTINGS
-        const USD_EXCHANGE_RATE = 120.0; // 1 USDT = 120 BDT
-        let activeCurrency = 'USDT'; // 'USDT' or 'BDT'
-        let currentLang = 'en';
-
-        let currentUserTg = null;
-        let userData = null;
-        let appConfig = {};
-        let selectedCategory = 'all';
-        let displayedProductsCache = [];
-        let userPurchasesCache = [];
-        let activeBuyModalData = null;
-        let activeManualModalData = null;
-        let lastPurchasedItemsBatch = [];
-
-        const defaultCategories = [
-            { id: "all", name: "All Services", icon: "layout-grid" },
-            { id: "Hotmail", name: "Hotmail", icon: "mail" },
-            { id: "Gmail", name: "Gmail", icon: "tag" },
-            { id: "Proxy", name: "Proxy", icon: "globe" },
-            { id: "VPN", name: "VPN", icon: "shield-check" }
-        ];
-
-        // CURRENCY FORMATTER
-        function formatBalance(amountBdt, cur = activeCurrency) {
-            const bdt = parseFloat(amountBdt || 0);
-            if (cur === 'USDT') {
-                return `$${(bdt / USD_EXCHANGE_RATE).toFixed(2)}`;
-            }
-            return `৳${bdt.toFixed(2)}`;
-        }
-
-        window.toggleDisplayCurrency = function() {
-            activeCurrency = activeCurrency === 'USDT' ? 'BDT' : 'USDT';
-            updateUI();
-            renderProductsBySelection();
-            showToast(`Currency switched to ${activeCurrency}`, "info");
-        };
-
-        // TOAST
-        window.showToast = function(message, type = 'info') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = `toast-item toast-${type}`;
-            toast.innerHTML = `<span class="leading-tight">${message}</span>`;
-            container.appendChild(toast);
-
-            requestAnimationFrame(() => toast.classList.add('show'));
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        };
-
-        window.showPolicyModal = function() {
-            document.getElementById('policy-modal').classList.remove('hidden');
-        };
-
-        // NAVIGATION
-        window.navigateTo = function(pageId) {
-            document.querySelectorAll('.sub-page').forEach(p => p.classList.remove('active'));
-            const target = document.getElementById(pageId);
-            if (target) target.classList.add('active');
-
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.toggle('active', item.dataset.page === pageId);
-            });
-
-            if (pageId === 'home-page') renderProductsBySelection();
-            if (pageId === 'orders-page') loadOrdersHistory();
-            if (pageId === 'refer-page') loadReferralPageData();
-            if (pageId === 'profile-page') loadProfileData();
-            lucide.createIcons();
-        };
-
-        // INIT USER & TELEGRAM DATA
-        window.onload = async () => {
-            try {
-                if (window.Telegram?.WebApp && window.Telegram.WebApp.initDataUnsafe?.user) {
-                    window.Telegram.WebApp.ready();
-                    window.Telegram.WebApp.expand();
-                    currentUserTg = window.Telegram.WebApp.initDataUnsafe.user;
-                } else {
-                    currentUserTg = { id: "6954647230", first_name: "International User", username: "cloud_user" };
-                }
-            } catch(e) {
-                currentUserTg = { id: "6954647230", first_name: "International User", username: "cloud_user" };
-            }
-
-            supportTgUser = currentUserTg;
-
-            // Load user data
-            const tgChatId = String(currentUserTg.id);
-            const userRef = doc(dbUser, "users", tgChatId);
-            let snap = await getDoc(userRef);
-
-            const userFullName = `${currentUserTg.first_name || ''} ${currentUserTg.last_name || ''}`.trim() || 'Cloud User';
-
-            if (snap.exists()) {
-                userData = snap.data();
-                await updateDoc(userRef, {
-                    name: userFullName,
-                    photo_url: currentUserTg.photo_url || null,
-                    lastSeen: serverTimestamp()
+                    database.ref(`users/${uid}/notifications`).push({
+                        message: `অভিনন্দন! আপনার একাউন্টে ${depositAmount} BDT সফলভাবে অ্যাড হয়েছে। (TXID: ${txid})`,
+                        timestamp: firebase.database.ServerValue.TIMESTAMP,
+                        read: false
+                    });
                 });
-            } else {
-                userData = {
-                    tgChatId: tgChatId,
-                    name: userFullName,
-                    username: currentUserTg.username || null,
-                    photo_url: currentUserTg.photo_url || null,
-                    balance: 0,
-                    totalCashbackEarned: 0,
-                    createdAt: serverTimestamp()
-                };
-                await setDoc(userRef, userData);
             }
+        });
+    }
 
-            // Load Config
-            try {
-                const confSnap = await getDoc(doc(dbUser, "config", "main"));
-                if (confSnap.exists()) appConfig = confSnap.data();
-            } catch(e) {}
+    function openNotifModal() {
+        document.getElementById('notifModal').classList.add('show');
+        loadNotificationsList();
+    }
 
-            renderCategories();
-            updateUI();
-            detectUserLocation();
-            loadProfileData();
+    function closeNotifModal() {
+        document.getElementById('notifModal').classList.remove('show');
+    }
 
-            // Set Refer link
-            const botUser = appConfig.botUsername || "Gmail_HUB7bot";
-            document.getElementById('dedicated-ref-link-display').textContent = `https://t.me/${botUser}/buy?startapp=${userData.tgChatId}`;
-
-            // Hide Loader
-            setTimeout(() => {
-                const loader = document.getElementById('loader');
-                loader.style.opacity = '0';
-                setTimeout(() => loader.style.display = 'none', 300);
-            }, 600);
-        };
-
-        function updateUI() {
-            if (!userData) return;
-            const balBdt = userData.balance || 0;
-            document.getElementById('header-balance-view').textContent = formatBalance(balBdt);
-            document.getElementById('deposit-page-balance').textContent = formatBalance(balBdt);
-            document.getElementById('profile-usdt-balance').textContent = `$${(balBdt / USD_EXCHANGE_RATE).toFixed(2)}`;
-            document.getElementById('profile-bdt-balance').textContent = `৳${balBdt.toFixed(2)}`;
-        }
-
-        // LOAD PROFILE DATA INCLUDING TELEGRAM AVATAR
-        function loadProfileData() {
-            if (!userData) return;
-            document.getElementById('profile-name').textContent = userData.name || 'User';
-            document.getElementById('profile-username').textContent = userData.username ? `@${userData.username}` : '';
-            document.getElementById('profile-id').textContent = `ID: ${userData.tgChatId}`;
-
-            const photo = currentUserTg?.photo_url || userData.photo_url;
-            if (photo) {
-                const img = document.getElementById('profile-avatar-img');
-                img.src = photo;
-                img.classList.remove('hidden');
-                document.getElementById('profile-initials').classList.add('hidden');
-            } else {
-                document.getElementById('profile-initials').textContent = (userData.name || 'U').charAt(0).toUpperCase();
-            }
-        }
-
-        // COUNTRY & LANGUAGE SELECTORS
-        window.changeLanguageManually = function(lang) {
-            currentLang = lang;
-            if (lang === 'bn') {
-                document.getElementById('nav-lbl-shop').textContent = 'শপ';
-                document.getElementById('nav-lbl-deposit').textContent = 'ডিপোজিট';
-                document.getElementById('nav-lbl-refer').textContent = 'রেফার';
-                document.getElementById('nav-lbl-orders').textContent = 'অর্ডার';
-                document.getElementById('nav-lbl-profile').textContent = 'প্রোফাইল';
-                showToast("ভাষা বাংলায় পরিবর্তন করা হয়েছে", "success");
-            } else {
-                document.getElementById('nav-lbl-shop').textContent = 'Shop';
-                document.getElementById('nav-lbl-deposit').textContent = 'Deposit';
-                document.getElementById('nav-lbl-refer').textContent = 'Refer';
-                document.getElementById('nav-lbl-orders').textContent = 'Orders';
-                document.getElementById('nav-lbl-profile').textContent = 'Profile';
-                showToast("Language changed to English", "success");
-            }
-        };
-
-        window.changeCountryManually = function(countryCode) {
-            const flags = { US: '🇺🇸', BD: '🇧🇩', GB: '🇬🇧', AE: '🇦🇪', IN: '🇮🇳', CA: '🇨🇦' };
-            const names = { US: 'United States', BD: 'Bangladesh', GB: 'United Kingdom', AE: 'UAE', IN: 'India', CA: 'Canada' };
-            
-            const flag = flags[countryCode] || '🌐';
-            const name = names[countryCode] || 'Global';
-
-            document.getElementById('header-country-flag').textContent = flag;
-            document.getElementById('header-country-name').textContent = name;
-            document.getElementById('profile-flag').textContent = flag;
-            document.getElementById('profile-country-txt').textContent = name;
-
-            showToast(`Region updated to ${name}`, "info");
-        };
-
-        async function detectUserLocation() {
-            try {
-                const res = await fetch('https://ipapi.co/json/');
-                const data = await res.json();
-                const code = data.country_code || 'US';
-                const name = data.country_name || 'Global';
-                const flag = code.toUpperCase().replace(/./g, c => String.fromCodePoint(127397 + c.charCodeAt()));
-
-                document.getElementById('header-country-flag').textContent = flag;
-                document.getElementById('header-country-name').textContent = name;
-                document.getElementById('profile-flag').textContent = flag;
-                document.getElementById('profile-country-txt').textContent = name;
+    function loadNotificationsList() {
+        if (!currentUser) return;
+        const uid = currentUser.uid;
+        const listDiv = document.getElementById('notifList');
+        listDiv.innerHTML = '<div style="text-align:center; padding: 20px; color:#64748b;"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</div>';
+        
+        database.ref(`users/${uid}/notifications`).orderByChild('timestamp').limitToLast(10).once('value', snapshot => {
+            listDiv.innerHTML = '';
+            if (snapshot.exists()) {
+                const notifs = [];
+                snapshot.forEach(child => { notifs.push({ id: child.key, ...child.val() }); });
+                notifs.reverse();
                 
-                const selectBox = document.getElementById('country-select-box');
-                if (selectBox && selectBox.querySelector(`option[value="${code}"]`)) {
-                    selectBox.value = code;
-                }
-            } catch(e) {}
-        }
-
-        // CATEGORIES
-        function renderCategories() {
-            const grid = document.getElementById('category-filter-grid');
-            const categories = appConfig.categories && appConfig.categories.length > 0 ? appConfig.categories : defaultCategories;
-            grid.innerHTML = categories.map((cat, i) => `
-                <button class="category-btn ${selectedCategory === cat.id ? 'active' : ''}" onclick="filterCat('${cat.id}', this)">
-                    <i data-lucide="${cat.icon || 'tag'}" class="w-3.5 h-3.5"></i>
-                    <span class="truncate">${cat.name}</span>
-                </button>
-            `).join('');
-            lucide.createIcons();
-            renderProductsBySelection();
-        }
-
-        window.filterCat = function(id, btn) {
-            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            selectedCategory = id;
-            renderProductsBySelection();
-        };
-
-        // SHOP PRODUCT RENDER
-        async function renderProductsBySelection() {
-            const container = document.getElementById('product-list-container');
-            container.innerHTML = `<div class="text-center py-10"><div class="w-7 h-7 border-2 border-sky-500 border-t-transparent rounded-full animate-spin mx-auto"></div></div>`;
-
-            const all = [...(appConfig.mails || []), ...(appConfig.proxies || []), ...(appConfig.products || [])];
-            let filtered = all;
-            if (selectedCategory !== 'all') {
-                filtered = all.filter(p => (p.type || '').toLowerCase().includes(selectedCategory.toLowerCase()) || (p.category || '').toLowerCase().includes(selectedCategory.toLowerCase()));
-            }
-
-            if (filtered.length === 0) {
-                container.innerHTML = `<div class="bg-white p-6 rounded-2xl text-center text-xs text-slate-400 border">No products available in this category.</div>`;
-                return;
-            }
-
-            displayedProductsCache = filtered;
-
-            container.innerHTML = filtered.map((item, idx) => {
-                const bdt = parseFloat(item.priceBdt || 0);
-                const usd = (bdt / USD_EXCHANGE_RATE).toFixed(2);
-                const stock = item.stock || 15;
-                const outOfStock = stock <= 0;
-
-                return `
-                <div class="product-card p-4 space-y-3">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <div class="w-12 h-12 rounded-xl bg-sky-50 border border-sky-100 flex items-center justify-center p-2">
-                                <img src="${item.logoUrl || 'https://i.postimg.cc/mD1YdG5y/mail.png'}" class="w-full h-full object-contain" alt="">
-                            </div>
-                            <div>
-                                <h4 class="font-extrabold text-slate-800 text-sm">${item.type}</h4>
-                                <div class="flex items-center gap-2 mt-0.5">
-                                    <span class="text-base font-black text-sky-600 mono-font">${formatBalance(bdt)}</span>
-                                    <span class="text-[11px] text-slate-400 font-bold mono-font">($${usd})</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        ${!outOfStock ? `
-                            <button onclick="openBuyModal(${idx})" class="btn-buy px-4 py-2 text-xs flex items-center gap-1">
-                                <i data-lucide="shopping-bag" class="w-3.5 h-3.5"></i>
-                                <span>Buy Now</span>
-                            </button>
-                        ` : `
-                            <button onclick="openManualModal(${idx})" class="btn-order-orange px-3 py-2 text-xs flex items-center gap-1">
-                                <i data-lucide="clock" class="w-3.5 h-3.5"></i>
-                                <span>Order Now</span>
-                            </button>
-                        `}
-                    </div>
-
-                    <div class="text-xs text-slate-500 bg-slate-50 p-2.5 rounded-xl border border-slate-100 font-medium">
-                        ${item.details || 'Automated and verified accounts with 100% active guarantees.'}
-                    </div>
-
-                    <div class="flex items-center justify-between pt-1 border-t border-slate-100 text-xs text-slate-500">
-                        <span>Stock: <b class="${outOfStock ? 'text-orange-500' : 'text-emerald-600'}">${stock} pcs</b></span>
-                        <span class="text-emerald-600 font-bold">Instant Delivery</span>
-                    </div>
-                </div>`;
-            }).join('');
-            lucide.createIcons();
-        }
-
-        // BUY MODAL
-        window.openBuyModal = function(idx) {
-            const item = displayedProductsCache[idx];
-            if (!item) return;
-
-            activeBuyModalData = {
-                product: item,
-                unitBdt: parseFloat(item.priceBdt || 0),
-                stock: item.stock || 15,
-                qty: 1
-            };
-
-            document.getElementById('buy-modal-title').textContent = item.type;
-            document.getElementById('buy-modal-stock-display').textContent = `${activeBuyModalData.stock} pcs`;
-            document.getElementById('buy-modal-qty-input').value = 1;
-            updateBuyModalPrice();
-
-            document.getElementById('buy-now-modal').classList.remove('hidden');
-            lucide.createIcons();
-        };
-
-        function updateBuyModalPrice() {
-            if (!activeBuyModalData) return;
-            const totalBdt = activeBuyModalData.unitBdt * activeBuyModalData.qty;
-            const totalUsd = (totalBdt / USD_EXCHANGE_RATE).toFixed(2);
-            document.getElementById('buy-modal-price').textContent = `$${totalUsd} / ৳${totalBdt.toFixed(2)}`;
-        }
-
-        window.adjustBuyModalQty = function(delta) {
-            if (!activeBuyModalData) return;
-            let target = activeBuyModalData.qty + delta;
-            if (target < 1) target = 1;
-            activeBuyModalData.qty = target;
-            document.getElementById('buy-modal-qty-input').value = target;
-            updateBuyModalPrice();
-        };
-
-        window.handleBuyModalQtyInput = function(el) {
-            if (!activeBuyModalData) return;
-            let val = parseInt(el.value) || 1;
-            if (val < 1) val = 1;
-            activeBuyModalData.qty = val;
-            updateBuyModalPrice();
-        };
-
-        window.executeBuyNowConfirmed = async function() {
-            if (!activeBuyModalData) return;
-            const totalBdt = activeBuyModalData.unitBdt * activeBuyModalData.qty;
-
-            if ((userData?.balance || 0) < totalBdt) {
-                showToast("Insufficient balance! Please add funds.", "error");
-                document.getElementById('buy-now-modal').classList.add('hidden');
-                navigateTo('pay-page');
-                return;
-            }
-
-            const btn = document.getElementById('confirm-buy-modal-btn');
-            btn.disabled = true;
-            btn.textContent = "Processing...";
-
-            try {
-                const userRef = doc(dbUser, "users", String(userData.tgChatId));
-                await runTransaction(dbUser, async (t) => {
-                    const snap = await t.get(userRef);
-                    if (snap.data().balance < totalBdt) throw new Error("Insufficient balance");
-                    t.update(userRef, { balance: snap.data().balance - totalBdt });
+                notifs.forEach(data => {
+                    const div = document.createElement('div');
+                    div.className = `notif-item ${!data.read ? 'unread' : ''}`;
+                    const dateObj = new Date(data.timestamp);
+                    div.innerHTML = `${data.message} <span class="notif-time">${dateObj.toLocaleDateString()} - ${dateObj.toLocaleTimeString()}</span>`;
+                    listDiv.appendChild(div);
+                    if (!data.read) database.ref(`users/${uid}/notifications/${data.id}`).update({ read: true });
                 });
-
-                const purchased = [];
-                for (let i = 0; i < activeBuyModalData.qty; i++) {
-                    const emailGen = `cloud_${Date.now()}_${i}@domain.com`;
-                    const passGen = `Pass_${Math.floor(100000 + Math.random() * 900000)}`;
-
-                    const docRef = await addDoc(collection(dbShop, "purchases"), {
-                        userId: String(userData.tgChatId),
-                        mailType: activeBuyModalData.product.type,
-                        cost: activeBuyModalData.unitBdt,
-                        mail: emailGen,
-                        password: passGen,
-                        purchasedAt: serverTimestamp()
-                    });
-
-                    purchased.push({
-                        mail: emailGen,
-                        password: passGen,
-                        mailType: activeBuyModalData.product.type
-                    });
-                }
-
-                userData.balance -= totalBdt;
-                updateUI();
-                lastPurchasedItemsBatch = purchased;
-
-                document.getElementById('buy-now-modal').classList.add('hidden');
-                showPurchaseSuccessModal(purchased);
-                showToast("Order completed successfully!", "success");
-            } catch(e) {
-                showToast(e.message || "Purchase failed", "error");
-            } finally {
-                btn.disabled = false;
-                btn.textContent = "Confirm Buy";
+            } else {
+                listDiv.innerHTML = '<div style="text-align:center; color:#64748b; font-size: 14px; margin-top:20px;">কোনো নোটিফিকেশন নেই</div>';
             }
-        };
+        });
+    }
 
-        function showPurchaseSuccessModal(items) {
-            const list = document.getElementById('purchase-success-items-list');
-            list.innerHTML = items.map((item, idx) => `
-                <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 font-mono text-xs space-y-1">
-                    <div class="flex items-center justify-between">
-                        <span class="truncate text-slate-800">${idx + 1}. ${item.mail}</span>
-                        <button onclick="navigator.clipboard.writeText('${item.mail}'); showToast('Copied','success');" class="text-sky-600"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
-                    </div>
-                    <div class="flex items-center justify-between border-t pt-1 text-slate-600">
-                        <span>${item.password}</span>
-                        <button onclick="navigator.clipboard.writeText('${item.password}'); showToast('Copied','success');" class="text-sky-600"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
-                    </div>
-                </div>
-            `).join('');
-            document.getElementById('purchase-success-modal').classList.remove('hidden');
-            lucide.createIcons();
+    function listenForNotifications(uid) {
+        database.ref(`users/${uid}/notifications`).orderByChild('read').equalTo(false).on('value', snapshot => {
+            const dot = document.querySelector('.notif-dot');
+            if (dot) dot.style.display = snapshot.exists() ? 'block' : 'none';
+        });
+    }
+
+    function changeStep(stepId) {
+        document.querySelectorAll('.step-container').forEach(page => page.classList.remove('active'));
+        const targetElement = document.getElementById(`step-${stepId}`);
+        if (targetElement) targetElement.classList.add('active');
+    }
+
+    function showToastPopup(message) {
+        const toast = document.getElementById('toastNotification');
+        if(toast) {
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3500);
         }
+    }
 
-        window.copyCurrentPurchaseExcelFormat = function() {
-            if (!lastPurchasedItemsBatch.length) return;
-            const txt = lastPurchasedItemsBatch.map(p => `${p.mail}\t${p.password}`).join('\n');
-            navigator.clipboard.writeText(txt).then(() => showToast("All credentials copied!", "success"));
-        };
-
-        // PRE-ORDER / MANUAL
-        window.openManualModal = function(idx) {
-            const item = displayedProductsCache[idx];
-            activeManualModalData = {
-                product: item,
-                unitBdt: parseFloat(item.priceBdt || 0),
-                qty: 1
-            };
-            document.getElementById('manual-modal-title').textContent = `${item.type} (Pre-Order)`;
-            document.getElementById('manual-modal-qty-input').value = 1;
-            updateManualModalPrice();
-            document.getElementById('manual-order-modal').classList.remove('hidden');
-            lucide.createIcons();
-        };
-
-        function updateManualModalPrice() {
-            if (!activeManualModalData) return;
-            const totalBdt = activeManualModalData.unitBdt * activeManualModalData.qty;
-            const totalUsd = (totalBdt / USD_EXCHANGE_RATE).toFixed(2);
-            document.getElementById('manual-modal-price').textContent = `$${totalUsd} / ৳${totalBdt.toFixed(2)}`;
-        }
-
-        window.adjustManualOrderModalQty = function(d) {
-            if (!activeManualModalData) return;
-            let t = activeManualModalData.qty + d;
-            if (t < 1) t = 1;
-            activeManualModalData.qty = t;
-            document.getElementById('manual-modal-qty-input').value = t;
-            updateManualModalPrice();
-        };
-
-        window.handleConfirmManualOrder = async function() {
-            if (!activeManualModalData) return;
-            const totalBdt = activeManualModalData.unitBdt * activeManualModalData.qty;
-
-            if ((userData?.balance || 0) < totalBdt) {
-                showToast("Insufficient balance for pre-order", "error");
-                return;
-            }
-
-            try {
-                const userRef = doc(dbUser, "users", String(userData.tgChatId));
-                await runTransaction(dbUser, async (t) => {
-                    const snap = await t.get(userRef);
-                    if (snap.data().balance < totalBdt) throw new Error("Insufficient balance");
-                    t.update(userRef, { balance: snap.data().balance - totalBdt });
-                });
-
-                await addDoc(collection(dbShop, "manual_orders"), {
-                    userId: String(userData.tgChatId),
-                    mailType: activeManualModalData.product.type,
-                    cost: totalBdt,
-                    quantity: activeManualModalData.qty,
-                    status: "pending",
-                    createdAt: serverTimestamp()
-                });
-
-                userData.balance -= totalBdt;
-                updateUI();
-                document.getElementById('manual-order-modal').classList.add('hidden');
-                showToast("Pre-order placed successfully!", "success");
-            } catch(e) {
-                showToast("Pre-order failed", "error");
-            }
-        };
-
-        // ORDERS HISTORY & FULL SYNTAX FIX
-        async function loadOrdersHistory() {
-            const listEl = document.getElementById('orders-purchase-history');
-            listEl.innerHTML = `<div class="text-center py-8"><div class="w-7 h-7 border-2 border-sky-500 border-t-transparent rounded-full animate-spin mx-auto"></div></div>`;
-
-            try {
-                const q = query(collection(dbShop, "purchases"), where("userId", "in", [String(userData.tgChatId), Number(userData.tgChatId)]));
-                const snap = await getDocs(q);
-
-                if (snap.empty) {
-                    listEl.innerHTML = `<div class="bg-white p-6 rounded-2xl text-center text-xs text-slate-400 border">No order records found.</div>`;
-                    return;
-                }
-
-                userPurchasesCache = snap.docs.map(d => ({ docId: d.id, ...d.data() }));
-
-                listEl.innerHTML = userPurchasesCache.map(p => {
-                    const date = p.purchasedAt?.toDate ? p.purchasedAt.toDate().toLocaleString() : 'Recent';
-                    const fullCopy = `${p.mail}|${p.password || ''}`;
-
-                    return `
-                    <div class="bg-white p-3.5 rounded-2xl border border-slate-200 space-y-2.5 shadow-sm text-xs">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <h4 class="font-bold text-slate-800">${p.mailType}</h4>
-                                <span class="text-[10px] text-slate-400">${date}</span>
-                            </div>
-                            <span class="font-black text-sky-600 mono-font">${formatBalance(p.cost)}</span>
-                        </div>
-                        <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 space-y-1.5 font-mono text-xs">
-                            <div class="flex justify-between items-center">
-                                <span class="truncate text-slate-700">${p.mail || ''}</span>
-                                <button onclick="navigator.clipboard.writeText('${p.mail}'); showToast('Copied','success');" class="text-sky-600 p-1"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
-                            </div>
-                            ${p.password ? `
-                            <div class="flex justify-between items-center border-t pt-1">
-                                <span class="text-slate-600">${p.password}</span>
-                                <button onclick="navigator.clipboard.writeText('${p.password}'); showToast('Copied','success');" class="text-sky-600 p-1"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
-                            </div>` : ''}
-                        </div>
-                        <button onclick="navigator.clipboard.writeText('${fullCopy}'); showToast('Copied Credentials','success');" class="w-full py-2 btn-buy rounded-xl text-center font-bold">Copy Credentials</button>
-                    </div>`;
-                }).join('');
-                lucide.createIcons();
-            } catch(e) {
-                listEl.innerHTML = `<p class="text-xs text-red-500 text-center">Failed to load orders</p>`;
-            }
-        }
-
-        window.copyAllOrdersExcelFormat = function() {
-            if (!userPurchasesCache.length) return showToast("No orders to copy", "info");
-            const txt = userPurchasesCache.map(p => `${p.mail}\t${p.password || ''}`).join('\n');
-            navigator.clipboard.writeText(txt).then(() => showToast("All orders copied!", "success"));
-        };
-
-        window.downloadOrdersXlsx = function() {
-            if (!userPurchasesCache.length) return showToast("No orders available", "info");
-            const data = userPurchasesCache.map(p => ({ Service: p.mailType, Email: p.mail, Password: p.password || '', Cost: p.cost }));
-            const ws = XLSX.utils.json_to_sheet(data);
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Orders");
-            XLSX.writeFile(wb, `Orders_${Date.now()}.xlsx`);
-        };
-
-        // DEPOSIT LOGIC
-        window.handleDepositAmountChange = function(val) {
-            const bdt = parseFloat(val || 0);
-            const usd = (bdt / USD_EXCHANGE_RATE).toFixed(2);
-            document.getElementById('deposit-usd-eq').textContent = `≈ $${usd} USDT`;
-        };
-
-        window.setQuickDepositAmount = function(amt) {
-            document.getElementById('amountInput').value = amt;
-            handleDepositAmountChange(amt);
-        };
-
-        window.initiatePayment = function() {
-            const amt = parseFloat(document.getElementById('amountInput').value || 0);
-            if (amt < 10) return showToast("Minimum deposit is ৳10 / $0.10", "error");
-
-            showToast("Redirecting to Instant Payment...", "info");
-            setTimeout(() => {
-                window.open(`https://wa.me/8801827750260?text=Hello%2C%20I%20want%20to%20deposit%20${amt}%20BDT%20equivalent%20to%20ID%20${userData.tgChatId}`, '_blank');
-            }, 800);
-        };
-
-        // REFERRAL DASHBOARD
-        async function loadReferralPageData() {
-            if (!userData) return;
-            try {
-                const q = query(collection(dbUser, "users"), where("referredBy", "==", String(userData.tgChatId)));
-                const snap = await getDocs(q);
-                const totalRefs = snap.size;
-                const totalCashback = parseFloat(userData.totalCashbackEarned || 0);
-                const totalEarnedBdt = (totalRefs * 10) + totalCashback;
-
-                document.getElementById('ref-stat-total').textContent = totalRefs;
-                document.getElementById('ref-stat-cashback').textContent = formatBalance(totalCashback);
-                document.getElementById('ref-stat-earned').textContent = formatBalance(totalEarnedBdt);
-            } catch(e) {}
-        }
-
-        window.copyReferralLink = function() {
-            const link = document.getElementById('dedicated-ref-link-display').textContent;
-            navigator.clipboard.writeText(link).then(() => showToast("Referral link copied!", "success"));
-        };
-
-        window.shareReferralLinkTelegram = function() {
-            const link = document.getElementById('dedicated-ref-link-display').textContent;
-            const text = "Join CLOUD INTERNATIONAL & get instant bonuses on services!";
-            window.open(`https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(text)}`, '_blank');
-        };
-    </script>
-</body>
+    function logoutUser() {
+        auth.signOut().then(() => showToastPopup('লগআউট করা হয়েছে'));
+    }
+</script>
+</body>    
 </html>
