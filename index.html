@@ -201,7 +201,6 @@
         }
         .btn-order-orange:active { transform: scale(0.97); }
 
-        /* ENHANCED PROPORTIONAL BOTTOM NAVIGATION */
         .bottom-nav {
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(18px);
@@ -366,18 +365,27 @@
         .orbit-pos-5 { top: 75%; left: 6.7%; }
         .orbit-pos-6 { top: 25%; left: 6.7%; }
 
+        /* UPDATED CUSTOM IMAGE HUB IN LOADER */
         .center-circle-brand {
-            width: 110px;
-            height: 110px;
+            width: 115px;
+            height: 115px;
             border-radius: 50%;
             background: linear-gradient(145deg, #101935 0%, #1e3a8a 100%);
-            border: 2px solid rgba(96, 165, 250, 0.45);
-            box-shadow: 0 0 35px rgba(37, 99, 235, 0.5), inset 0 0 15px rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(96, 165, 250, 0.55);
+            box-shadow: 0 0 35px rgba(37, 99, 235, 0.55), inset 0 0 15px rgba(255, 255, 255, 0.2);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             z-index: 10;
+            overflow: hidden;
+            position: relative;
+        }
+        .center-circle-brand img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
         }
 
         #side-drawer-overlay {
@@ -568,7 +576,7 @@
         </div>
     </div>
 
-    <!-- ADVANCED ECOSYSTEM LOADER -->
+    <!-- ADVANCED ECOSYSTEM LOADER WITH CUSTOM IMAGE -->
     <div id="loader" class="select-none text-white">
         <div class="loader-hub mb-3">
             <div class="orbit-inner-glow"></div>
@@ -592,12 +600,9 @@
                     <svg class="w-5 h-5" viewBox="0 0 24 24" fill="#29B6F6"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .37z"/></svg>
                 </div>
             </div>
+            <!-- Custom Image Inside Hub -->
             <div class="center-circle-brand">
-                <div class="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center mb-1 shadow-inner border border-white/20">
-                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none"><path d="M20 4H4C2.9 4 2 4.9 2 6L12 13L22 6C22 4.9 21.1 4 20 4Z" fill="#EA4335"/><path d="M2 6V18C2 19.1 2.9 20 4 20H6V9.5L2 6.5V6Z" fill="#4285F4"/><path d="M22 6V18C22 19.1 21.1 20 20 20H18V9.5L22 6.5V6Z" fill="#34A853"/><path d="M6 20H18V13.5L12 9L6 13.5V20Z" fill="#FBBC05" opacity="0.3"/></svg>
-                </div>
-                <span class="font-black text-xs tracking-wider brand-text-styled leading-none">ACC X</span>
-                <span class="text-[8.5px] font-extrabold text-sky-200 uppercase tracking-widest mt-0.5">SHOP</span>
+                <img src="https://i.postimg.cc/L4YZZKsv/IMG-20260919-214336-790.jpg" alt="ACC X SHOP Logo">
             </div>
         </div>
         <div class="text-center space-y-1 z-10 mt-2">
@@ -621,12 +626,8 @@
                 </button>
 
                 <div class="flex items-center gap-2.5 cursor-pointer" onclick="navigateTo('home-page')">
-                    <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-blue-600 via-indigo-600 to-sky-500 flex items-center justify-center shadow-md border border-white/30">
-                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none">
-                            <path d="M20 4H4C2.9 4 2 4.9 2 6L12 13L22 6C22 4.9 21.1 4 20 4Z" fill="#ffffff"/>
-                            <path d="M2 6V18C2 19.1 2.9 20 4 20H6V9.5L2 6.5V6Z" fill="#93c5fd"/>
-                            <path d="M22 6V18C22 19.1 21.1 20 20 20H18V9.5L22 6.5V6Z" fill="#60a5fa"/>
-                        </svg>
+                    <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-blue-600 via-indigo-600 to-sky-500 flex items-center justify-center shadow-md border border-white/30 overflow-hidden">
+                        <img src="https://i.postimg.cc/L4YZZKsv/IMG-20260919-214336-790.jpg" class="w-full h-full object-cover" alt="Logo">
                     </div>
                     <div class="flex flex-col">
                         <span class="text-base font-black tracking-tight leading-tight brand-text-styled">ACC X SHOP</span>
@@ -653,8 +654,8 @@
         <div id="side-drawer" class="fixed top-0 bottom-0 w-72 bg-white z-[85] p-5 flex flex-col shadow-2xl overflow-y-auto">
             <div class="flex items-center justify-between pb-4 border-b border-gray-100 mb-4">
                 <div class="flex items-center gap-2.5">
-                    <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-black text-sm">
-                        <i class="fas fa-envelope text-xs"></i>
+                    <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-black text-sm overflow-hidden">
+                        <img src="https://i.postimg.cc/L4YZZKsv/IMG-20260919-214336-790.jpg" class="w-full h-full object-cover" alt="Logo">
                     </div>
                     <span class="font-black text-base text-gray-800 brand-text-styled !text-gray-900">ACC X SHOP</span>
                 </div>
@@ -710,7 +711,7 @@
             </div>
 
             <div class="pt-4 border-t border-gray-100 text-center">
-                <p class="text-[11px] text-gray-400 font-semibold">ACC X SHOP • v2.9</p>
+                <p class="text-[11px] text-gray-400 font-semibold">ACC X SHOP • v3.0</p>
             </div>
         </div>
 
@@ -746,7 +747,7 @@
                             <span id="refer-rate-badge" class="text-[11px] font-black text-amber-400 bg-amber-400/10 px-2.5 py-0.5 rounded-lg border border-amber-400/20">5% বোনাস</span>
                         </div>
                         <h2 class="text-xl font-black tracking-tight text-white">Refer & Earn Program</h2>
-                        <p class="text-xs text-blue-200" id="refer-desc-text">আপনার বন্ধুদের রেফার করুন। আপনার লিংকে যুক্ত হয়ে বন্ধু প্রথমবার যেকোনো পরিমাণ ডিপোজিট করলেই আপনি পেয়ে যাবেন সরাসরি 5% বোনাস!</p>
+                        <p class="text-xs text-blue-200" id="refer-desc-text">আপনার বন্ধুদের রেফার করুন। আপনার লিংকে যুক্ত হয়ে বন্ধু প্রথমবার যেকোনো পরিমাণ ডিপোজিট করলেই আপনি পেয়ে যাবেন সরাসরি বোনাস!</p>
                     </div>
                 </div>
 
@@ -774,7 +775,7 @@
                     </div>
 
                     <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex items-center justify-between">
-                        <span class="text-[11px] font-mono text-slate-600 truncate mr-2 select-all" id="dedicated-ref-link-display">https://t.me/Gmail_HUB7bot/buy?startapp=000</span>
+                        <span class="text-[11px] font-mono text-slate-600 truncate mr-2 select-all" id="dedicated-ref-link-display">লোড হচ্ছে...</span>
                         <button onclick="copyReferralLink()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold flex items-center gap-1 active:scale-95 transition">
                             <i data-lucide="copy" class="w-3.5 h-3.5"></i>
                             <span>Copy</span>
@@ -794,7 +795,7 @@
                         <span>রেফার করার নিয়মাবলী:</span>
                     </h4>
                     <p>১. আপনার রেফার লিংক কপি করে বন্ধুদের সাথে শেয়ার করুন।</p>
-                    <p>২. আপনার রেফার করা বন্ধু অ্যাকাউন্টে প্রথমবার টাকা ডিপোজিট করলেই তার পরিমাণের নির্ধারিত শতাংশ (ডিফল্ট ৫%) সরাসরি আপনার ব্যালেন্সে যোগ হবে।</p>
+                    <p>২. আপনার রেফার করা বন্ধু অ্যাকাউন্টে প্রথমবার টাকা ডিপোজিট করলেই তার পরিমাণের নির্ধারিত শতাংশ সরাসরি আপনার ব্যালেন্সে যোগ হবে।</p>
                     <p>৩. উপার্জিত ব্যালেন্স দিয়ে সেবা ক্রয় করতে পারবেন অথবা অন্য অ্যাকাউন্টে ট্রান্সফার করতে পারবেন।</p>
                 </div>
 
@@ -839,11 +840,9 @@
 
                 <div class="bg-white p-5 rounded-3xl border border-slate-200/90 shadow-sm space-y-4">
                     <div class="flex items-center justify-between bg-slate-50 p-2.5 px-3.5 rounded-2xl border border-slate-200/80">
-                        <span class="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Supported Methods</span>
-                        <div class="flex items-center gap-1.5">
-                            <span class="px-2.5 py-0.5 text-[10.5px] font-black bg-[#e2136e]/10 text-[#e2136e] rounded-lg border border-[#e2136e]/20">bKash</span>
-                            <span class="px-2.5 py-0.5 text-[10.5px] font-black bg-[#ea580c]/10 text-[#ea580c] rounded-lg border border-[#ea580c]/20">Nagad</span>
-                            <span class="px-2.5 py-0.5 text-[10.5px] font-black bg-[#7c3aed]/10 text-[#7c3aed] rounded-lg border border-[#7c3aed]/20">Rocket</span>
+                        <span class="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Gateway Provider</span>
+                        <div class="flex items-center gap-1.5" id="supported-gateway-badges">
+                            <span id="gateway-name-display" class="px-2.5 py-0.5 text-[10.5px] font-black bg-blue-50 text-blue-600 rounded-lg border border-blue-200">Auto Gateway</span>
                         </div>
                     </div>
 
@@ -1112,7 +1111,7 @@
 
     </div>
 
-    <!-- REDEEM CODE MODAL WITH CLICK-OUTSIDE DISMISS -->
+    <!-- REDEEM CODE MODAL -->
     <div id="redeem-code-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[75] p-4 backdrop-blur-sm" onclick="closeRedeemModal()">
         <div class="bg-white rounded-3xl p-6 w-full max-w-sm space-y-4 relative text-center shadow-2xl" onclick="event.stopPropagation()">
             <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
@@ -1143,12 +1142,12 @@
             <button id="btn-back" class="tg-back-btn" onclick="handleSupportBack()"><i class="fas fa-arrow-left"></i></button>
             <div class="tg-chat-user" onclick="handleHeaderClick()">
                 <div class="tg-avatar-wrap">
-                    <img id="support-header-img" src="https://i.postimg.cc/vmSBzy63/file-00000000eb4c81faa545e57c85285455.png" alt="Avatar">
+                    <img id="support-header-img" src="https://i.postimg.cc/L4YZZKsv/IMG-20260919-214336-790.jpg" alt="Avatar">
                     <div class="online-badge"></div>
                 </div>
                 <div class="user-text-info">
                     <h4 id="support-header-title">
-                        <span>𝐆𝐌𝐀𝐈𝐋 𝐇𝐔𝐁 ˢᵘᵖᵖᵒʳᵗ</span>
+                        <span>𝐀𝐂𝐂 𝐗 𝐒𝐇𝐎𝐏 ˢᵘᵖᵖᵒʳᵗ</span>
                         <svg class="tg-verified-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M10.29 2.3c.75-.4 1.67-.4 2.42 0l1.58.84c.32.17.68.26 1.04.26h1.79c.85 0 1.63.45 2.05 1.18l.89 1.55c.18.31.44.57.75.75l1.55.89c.73.42 1.18 1.2 1.18 2.05v1.79c0 .36.09.72.26 1.04l.84 1.58c.4.75.4 1.67 0 2.42l-.84 1.58c-.17.32-.26.68-.26 1.04v1.79c0 .85-.45 1.63-1.18 2.05l-1.55.89c-.31.18-.57.44-.75.75l-.89 1.55c-.42.73-1.2 1.18-2.05 1.18h-1.79c-.36 0-.72.09-1.04.26l-1.58.84c-.75.4-1.67.4-2.42 0l-1.58-.84a2.44 2.44 0 0 0-1.04-.26h-1.79c-.85 0-1.63-.45-2.05-1.18l-.89-1.55a2.44 2.44 0 0 0-.75-.75l-1.55-.89c-.73-.42-1.18-1.2-1.18-2.05v-1.79c0-.36-.09-.72-.26-1.04l-.84-1.58a2.44 2.44 0 0 1 0-2.42l.84-1.58c.17-.32.26-.68.26-1.04V6.18c0-.85.45-1.63 1.18-2.05l1.55-.89c.31-.18.57-.44.75-.75l.89-1.55c.42-.73 1.2-1.18 2.05-1.18h1.79c.36 0 .72-.09 1.04-.26l1.58-.84z" fill="#2AABEE"/>
                             <path d="M9.3 12.2l1.9 1.9 4.3-4.3" stroke="#ffffff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1179,9 +1178,9 @@
 
         <div class="tg-chat-body" id="chat-messages">
             <div class="msg-row admin">
-                <img src="https://i.postimg.cc/vmSBzy63/file-00000000eb4c81faa545e57c85285455.png" class="msg-avatar" alt="Admin">
+                <img src="https://i.postimg.cc/L4YZZKsv/IMG-20260919-214336-790.jpg" class="msg-avatar" alt="Admin">
                 <div class="msg-bubble">
-                    হ্যালো! <b>𝐆𝐌𝐀𝐈𝐋 𝐇𝐔𝐁 ˢᵘᵖᵖᵒʳᵗ</b> এ আপনাকে স্বাগতম। আপনার সমস্যা বা অভিযোগ বিস্তারিত লিখে জানান।
+                    হ্যালো! <b>𝐀𝐂𝐂 𝐗 𝐒𝐇𝐎𝐏 ˢᵘᵖᵖᵒʳᵗ</b> এ আপনাকে স্বাগতম। আপনার সমস্যা বা অভিযোগ বিস্তারিত লিখে জানান।
                     <div class="msg-time">Official Support</div>
                 </div>
             </div>
@@ -1367,7 +1366,7 @@
             
             <div class="bg-gray-50 p-3.5 rounded-2xl border border-dashed border-gray-300 text-left space-y-2 text-xs">
                 <div>TXID : <span id="displayTxid" class="font-mono font-bold text-purple-600 text-sm"></span></div>
-                <div>Method : <span id="displayMethod" class="font-bold text-blue-600 uppercase">NagorikPay</span></div>
+                <div>Method : <span id="displayMethod" class="font-bold text-blue-600 uppercase">Automatic Gateway</span></div>
                 <div>Amount : <span id="displayAmount" class="font-bold text-gray-900 text-sm"></span></div>
             </div>
 
@@ -1432,8 +1431,9 @@
         </div>
     </div>
 
-    <!-- MAIN FIREBASE (FIRESTORE) & APP SCRIPTS -->
+    <!-- MAIN FIREBASE (FIRESTORE) & APPLICATION MODULE -->
     <script type="module">
+        /* DYNAMIC APP CONFIGURATION BASE */
         const firebaseConfig = {
             apiKey: "AIzaSyAEV4zkuTcRYIFP2AMmKJTyDUTzSYLnbbM",
             authDomain: "used-mail-shop.firebaseapp.com",
@@ -1516,7 +1516,6 @@
             }
         };
 
-        // CLOSE POPUPS & MODALS ON OUTSIDE CLICK
         window.toggleSupportChoicePopup = function(event, forceState) {
             if (event) event.stopPropagation();
             const popup = document.getElementById('support-choice-popup');
@@ -1612,14 +1611,14 @@
                 await setDoc(userRef, userData);
             }
 
-            const refLink = `https://t.me/Gmail_HUB7bot/buy?startapp=${userData.tgChatId}`;
-            const refEl = document.getElementById('dedicated-ref-link-display');
-            if (refEl) refEl.textContent = refLink;
-
             await fetchAppConfig();
             await loadUserNotifications();
 
-            if (String(userData.tgChatId) === "7358825471" || String(userData.tgChatId) === "6954647230") {
+            // Set dynamic referral link from firebase config
+            updateReferralLinkUI();
+
+            const primaryAdminId = appConfig.adminTelegramId || "7358825471";
+            if (String(userData.tgChatId) === String(primaryAdminId) || String(userData.tgChatId) === "6954647230") {
                 const adminBox = document.getElementById('admin-redeem-creator-box');
                 if (adminBox) adminBox.classList.remove('hidden');
             }
@@ -1627,6 +1626,25 @@
             updateUI();
             showMainPage('app-container');
             navigateTo('home-page');
+        }
+
+        function getDynamicReferralBaseLink() {
+            if (appConfig.referralBaseUrl && appConfig.referralBaseUrl.trim() !== '') {
+                return appConfig.referralBaseUrl.trim();
+            }
+            if (appConfig.botUsername && appConfig.botUsername.trim() !== '') {
+                const botClean = appConfig.botUsername.replace('@', '').trim();
+                return `https://t.me/${botClean}?start=ref_`;
+            }
+            return "https://t.me/Gmail_HUB7bot/buy?startapp=";
+        }
+
+        function updateReferralLinkUI() {
+            if (!userData) return;
+            const base = getDynamicReferralBaseLink();
+            const refLink = `${base}${userData.tgChatId}`;
+            const refEl = document.getElementById('dedicated-ref-link-display');
+            if (refEl) refEl.textContent = refLink;
         }
 
         async function fetchAppConfig() {
@@ -1652,6 +1670,11 @@
                 if (rateBadge) rateBadge.textContent = `${refBonusPercent}% বোনাস`;
                 const refDesc = document.getElementById('refer-desc-text');
                 if (refDesc) refDesc.textContent = `আপনার বন্ধুদের রেফার করুন। আপনার লিংকে যুক্ত হয়ে বন্ধু প্রথমবার যেকোনো পরিমাণ ডিপোজিট করলেই আপনি পেয়ে যাবেন সরাসরি ${refBonusPercent}% বোনাস!`;
+
+                // Update Dynamic Gateway Name
+                const gatewayProviderName = appConfig.paymentGateway?.name || appConfig.paymentGatewayName || "Auto Gateway";
+                const gatewayBadge = document.getElementById('gateway-name-display');
+                if (gatewayBadge) gatewayBadge.textContent = gatewayProviderName;
 
                 renderDynamicCategories();
                 renderDynamicOfficialLinks();
@@ -1686,7 +1709,7 @@
         }
 
         // ==========================================
-        // REDEEM CODE MANAGEMENT (FIRESTORE BASED)
+        // REDEEM CODE MANAGEMENT (FIRESTORE)
         // ==========================================
         window.openRedeemModal = function() {
             document.getElementById('input-redeem-code').value = '';
@@ -1744,18 +1767,15 @@
                     const userSnap = await transaction.get(userRef);
                     if (!userSnap.exists()) throw new Error("ব্যবহারকারী অ্যাকাউন্ট পাওয়া যায়নি।");
 
-                    // 1. Update Redeem Code Uses
                     transaction.update(codeRef, {
                         currentUses: increment(1),
                         redeemedUsers: arrayUnion(userId)
                     });
 
-                    // 2. Credit User Balance
                     transaction.update(userRef, {
                         balance: increment(bonusAmount)
                     });
 
-                    // 3. Record Deposit Log for Transparency
                     const depositRef = doc(collection(db, "deposits"));
                     transaction.set(depositRef, {
                         userId: userId,
@@ -1888,14 +1908,16 @@
         }
 
         window.copyReferralLink = function() {
-            const link = `https://t.me/Gmail_HUB7bot/buy?startapp=${userData?.tgChatId || ''}`;
+            const base = getDynamicReferralBaseLink();
+            const link = `${base}${userData?.tgChatId || ''}`;
             navigator.clipboard.writeText(link).then(() => {
                 showToast("রেফারেল লিংক কপি হয়েছে!", "success");
             });
         };
 
         window.shareReferralLinkTelegram = function() {
-            const link = `https://t.me/Gmail_HUB7bot/buy?startapp=${userData?.tgChatId || ''}`;
+            const base = getDynamicReferralBaseLink();
+            const link = `${base}${userData?.tgChatId || ''}`;
             const bonus = appConfig.referralCommissionPercent !== undefined ? appConfig.referralCommissionPercent : 5;
             const text = `🔥 Join করুন এবং প্রথম ডিপোজিটে ${bonus}% রেফারেল বোনাস উপার্জন করুন!`;
             const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(text)}`;
@@ -1906,7 +1928,7 @@
             }
         };
 
-        // --- PAYMENT & DEPOSIT LOGIC ---
+        // --- DYNAMIC PAYMENT & DEPOSIT LOGIC ---
         window.setAutoQuickAmount = function(val) {
             document.getElementById('amountInput').value = val;
             document.querySelectorAll('.quick-amount-pill').forEach(chip => {
@@ -1939,6 +1961,7 @@
             }
 
             const returnUrl = window.location.href.split('?')[0];
+            const gatewayApiUrl = appConfig.paymentGateway?.createUrl || '/api/payment?action=create';
 
             const payload = {
                 amount: String(amount),
@@ -1952,7 +1975,7 @@
             };
 
             try {
-                const res = await fetch('/api/payment?action=create', {
+                const res = await fetch(gatewayApiUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
@@ -2008,8 +2031,10 @@
             if (transactionId || urlStatus === 'success') {
                 showToast('পেমেন্ট ভেরিফাই করা হচ্ছে...', 'info');
 
+                const verifyApiUrl = appConfig.paymentGateway?.verifyUrl || '/api/payment?action=verify';
+
                 try {
-                    const res = await fetch('/api/payment?action=verify', {
+                    const res = await fetch(verifyApiUrl, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ transaction_id: transactionId })
@@ -2021,9 +2046,10 @@
                     if (apiStatus === "COMPLETED" || apiStatus === "SUCCESS" || data.success === true) {
                         let depositAmount = parseFloat(data.amount || 0);
                         let finalTxid = data.transaction_id || transactionId || ("TXN_" + Date.now());
+                        const gatewayName = appConfig.paymentGateway?.name || "Automated Gateway";
 
                         if (depositAmount > 0 && userData) {
-                            await savePaymentAndUpdateBalance(depositAmount, finalTxid, data);
+                            await savePaymentAndUpdateBalance(depositAmount, finalTxid, data, gatewayName);
                             
                             const pendingOrderRaw = localStorage.getItem('pending_preorder_data');
                             if (pendingOrderRaw) {
@@ -2036,7 +2062,7 @@
                                 }
                             } else {
                                 document.getElementById('displayTxid').textContent = finalTxid;
-                                document.getElementById('displayMethod').textContent = "NagorikPay";
+                                document.getElementById('displayMethod').textContent = gatewayName;
                                 document.getElementById('displayAmount').textContent = `${depositAmount.toFixed(2)} BDT`;
                                 document.getElementById('gateway-success-modal').classList.remove('hidden');
                             }
@@ -2051,7 +2077,7 @@
             }
         }
 
-        async function savePaymentAndUpdateBalance(depositAmount, txid, fullData) {
+        async function savePaymentAndUpdateBalance(depositAmount, txid, fullData, gatewayName = 'Automatic Gateway') {
             if (!userData) return;
             const tgChatId = String(userData.tgChatId);
             const depositRef = doc(db, "deposits", txid);
@@ -2073,12 +2099,11 @@
                         inviterSnap = await transaction.get(inviterRef);
                     }
 
-                    // 1. Record Deposit
                     transaction.set(depositRef, {
                         userId: tgChatId,
                         userName: userData.name,
-                        method: 'NagorikPay',
-                        gateway: 'NagorikPay',
+                        method: gatewayName,
+                        gateway: gatewayName,
                         amount: depositAmount,
                         transactionId: txid,
                         status: "approved",
@@ -2086,13 +2111,11 @@
                         requestedAt: serverTimestamp()
                     });
 
-                    // 2. Update User's Balance
                     transaction.update(userRef, {
                         balance: increment(depositAmount),
                         hasEverDeposited: true
                     });
 
-                    // 3. Referral Bonus (First Deposit Only)
                     if (isFirstDeposit && inviterRef && inviterSnap && inviterSnap.exists()) {
                         const commissionRate = (appConfig.referralCommissionPercent !== undefined ? appConfig.referralCommissionPercent : 5) / 100;
                         const bonusAmount = parseFloat((depositAmount * commissionRate).toFixed(2));
@@ -2289,7 +2312,7 @@
         }
 
         async function notifyAdminViaTelegram(alertMessage) {
-            const adminTgId = appConfig.adminTelegramId || "6954647230";
+            const adminTgId = appConfig.adminTelegramId || "7358825471";
             await sendTelegramMessage(adminTgId, alertMessage);
         }
 
@@ -2428,7 +2451,7 @@
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
                             <div class="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center p-2">
-                                <img src="${item.logoUrl || 'https://i.postimg.cc/mD1YdG5y/mail.png'}" class="w-full h-full object-contain" alt="Logo">
+                                <img src="${item.logoUrl || 'https://i.postimg.cc/L4YZZKsv/IMG-20260919-214336-790.jpg'}" class="w-full h-full object-contain" alt="Logo">
                             </div>
                             <div>
                                 <div class="flex items-center gap-2">
@@ -3075,7 +3098,7 @@
                 list.innerHTML = docs.map(d => `
                     <div class="bg-white p-3 rounded-2xl border border-gray-200 flex justify-between items-center text-xs">
                         <div>
-                            <p class="font-bold text-gray-800">${d.method || 'NagorikPay'} (৳${d.amount})</p>
+                            <p class="font-bold text-gray-800">${d.method || d.gateway || 'Auto Deposit'} (৳${d.amount})</p>
                             <p class="text-gray-400 font-mono text-[10px]">${d.transactionId}</p>
                         </div>
                         <span class="font-bold capitalize ${d.status==='approved'?'text-green-600':d.status==='rejected'?'text-red-500':'text-yellow-600'}">${d.status}</span>
@@ -3205,18 +3228,18 @@
         }
     </script>
 
-    <!-- ================= INTEGRATED TELEGRAM SUPPORT LIVE SCRIPT ================= -->
+    <!-- ================= INTEGRATED REALTIME SUPPORT LIVE SCRIPT ================= -->
     <script>
         const OFFICIAL_ADMIN_ID = "7358825471";
-        const OFFICIAL_LOGO = "https://i.postimg.cc/vmSBzy63/file-00000000eb4c81faa545e57c85285455.png";
-        const OFFICIAL_TITLE = "𝐆𝐌𝐀𝐈𝐋 𝐇𝐔𝐁 ˢᵘᵖᵖᵒʳᵗ";
-
-        const VERIFIED_BADGE_SVG = `
+        const OFFICIAL_LOGO = "https://i.postimg.cc/L4YZZKsv/IMG-20260919-214336-790.jpg";
+        const OFFICIAL_TITLE = "𝐀𝐂𝐂 𝐗 𝐒𝐇𝐎𝐏 ˢᵘᵖᵖᵒʳᵗ";
+const VERIFIED_BADGE_SVG = `
             <svg class="tg-verified-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10.29 2.3c.75-.4 1.67-.4 2.42 0l1.58.84c.32.17.68.26 1.04.26h1.79c.85 0 1.63.45 2.05 1.18l.89 1.55c.18.31.44.57.75.75l1.55.89c.73.42 1.18 1.2 1.18 2.05v1.79c0 .36.09.72.26 1.04l.84 1.58c.4.75.4 1.67 0 2.42l-.84 1.58c-.17.32-.26.68-.26 1.04v1.79c0 .85-.45 1.63-1.18 2.05l-1.55.89c-.31.18-.57.44-.75.75l-.89 1.55c-.42.73-1.2 1.18-2.05 1.18h-1.79c-.36 0-.72.09-1.04.26l-1.58.84c-.75.4-1.67.4-2.42 0l-1.58-.84a2.44 2.44 0 0 0-1.04-.26h-1.79c-.85 0-1.63-.45-2.05-1.18l-.89-1.55a2.44 2.44 0 0 0-.75-.75l-1.55-.89c-.73-.42-1.18-1.2-1.18-2.05v-1.79c0-.36-.09-.72-.26-1.04l-.84-1.58a2.44 2.44 0 0 1 0-2.42l.84-1.58c.17-.32.26-.68.26-1.04V6.18c0-.85.45-1.63 1.18-2.05l1.55-.89c.31-.18.57-.44.75-.75l.89-1.55c.42-.73 1.2-1.18 2.05-1.18h1.79c.36 0 .72-.09 1.04-.26l1.58-.84z" fill="#2AABEE"/>
                 <path d="M9.3 12.2l1.9 1.9 4.3-4.3" stroke="#ffffff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>`;
 
+        // Dynamic Realtime Support Database Config
         const supportFirebaseConfig = {
             apiKey: "AIzaSyAsENiikJ5YQ1F8UHrixdJVEINAhO4PG30",
             authDomain: "bot2-3d8bc.firebaseapp.com",
