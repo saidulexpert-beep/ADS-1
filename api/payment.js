@@ -1,104 +1,107 @@
-// api/payment.js
-
 export default async function handler(req, res) {
-    // CORS হেডার যুক্ত করা (যাতে যেকোনো ডোমেন বা লোকালহোস্ট থেকে কাজ করে)
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-    res.setHeader(
-        'Access-Control-Allow-Headers',
-        'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-    );
+  // CORS Headers
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, api-key, API-KEY, Authorization'
+  );
 
-    // প্রি-ফ্লাইট OPTIONS রিকোয়েস্ট হ্যান্ডেল করা
-    if (req.method === 'OPTIONS') {
-        return res.status(200).end();
-    }
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
 
-    if (req.method !== 'POST') {
-        return res.status(405).json({ success: false, message: 'Only POST method is allowed' });
-    }
+  // 🔴 এখানে আপনার NagorikPay মার্চেন্ট প্যানেলের লাইভ API Key বসান
+  const API_KEY = 'khla1gg0zp2wEHkCzr5j1O8gQpwNyA1Wd7W0Mwck11i5QgnCK5';
+  const BASE_URL = 'https://secure-pay.nagorikpay.com/api/payment';
+  
+  const action = req.query.action;
 
-    const { action } = req.query;
-    const API_KEY = process.env.TZ_API_KEY || 'IBqczPjssNoCKEP2';
-
+  // Body Parsing
+  let body = req.body;
+  if (typeof body === 'string') {
     try {
-        // ১. পেমেন্ট তৈরি করার রিকোয়েস্ট (action=create)
-        if (!action || action === 'create') {
-            const { 
-                amount, 
-                cus_name, 
-                cus_email, 
-                cus_number, 
-                success_url, 
-                cancel_url, 
-                callback_url 
-            } = req.body;
-
-            if (!amount || parseFloat(amount) <= 0) {
-                return res.status(400).json({ success: false, message: 'সঠিক এমাউন্ট প্রদান করুন' });
-            }
-
-            // TZ SMMPAY-এর জন্য পে-লোড প্রস্তুত করা
-            const payload = {
-                api_key: API_KEY,
-                cus_name: cus_name || 'Customer',
-                cus_email: cus_email || 'customer@gmail.com',
-                cus_number: cus_number || '01700000000',
-                amount: parseFloat(amount),
-                success_url: success_url,
-                cancel_url: cancel_url,
-                callback_url: callback_url || success_url,
-                redirect: false // API থেকে JSON রেসপন্স পাওয়ার জন্য
-            };
-
-            // TZ SMMPAY API-তে সার্ভার টু সার্ভার কল
-            const gatewayRes = await fetch('https://tzsmmpay.com/api/payment/create', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            });
-
-            const data = await gatewayRes.json();
-            return res.status(200).json(data);
-        }
-
-        // ২. পেমেন্ট ভেরিফাই করার রিকোয়েস্ট (action=verify)
-        if (action === 'verify') {
-            const { transaction_id } = req.body;
-
-            if (!transaction_id) {
-                return res.status(400).json({ success: false, message: 'Transaction ID প্রয়োজন' });
-            }
-
-            // TZ SMMPAY এর ভেরিফিকেশন কল
-            const verifyRes = await fetch('https://tzsmmpay.com/api/payment/verify', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({
-                    api_key: API_KEY,
-                    transaction_id: transaction_id
-                })
-            });
-
-            const verifyData = await verifyRes.json();
-            return res.status(200).json(verifyData);
-        }
-
-        return res.status(400).json({ success: false, message: 'Invalid action parameter' });
-
-    } catch (error) {
-        console.error('Payment API Error:', error);
-        return res.status(500).json({ 
-            success: false, 
-            message: 'সার্ভার ইন্টারনাল এরর হয়েছে', 
-            error: error.message 
-        });
+      body = JSON.parse(body);
+    } catch (e) {
+      body = {};
     }
+  }
+  body = body || {};
+
+  try {
+    // ১. পেমেন্ট তৈরি (Create Payment)
+    if (action === 'create') {
+      const amountVal = String(parseInt(body.amount, 10) || 10);
+      
+      const host = req.headers.host;
+      const protocol = req.headers['x-forwarded-proto'] || 'https';
+      const siteUrl = `${protocol}://${host}`;
+
+      let successUrl = body.success_url || `${siteUrl}?status=success`;
+      let cancelUrl = body.cancel_url || `${siteUrl}?status=cancel`;
+      let webhookUrl = body.webhook_url || `${siteUrl}?status=webhook`;
+
+      // NagorikPay Official Payload Format
+      const payload = {
+        amount: amountVal,
+        success_url: successUrl,
+        cancel_url: cancelUrl,
+        webhook_url: webhookUrl,
+        metadata: {
+          phone: (body.metadata && body.metadata.phone) ? String(body.metadata.phone) : "01700000000"
+        }
+      };
+
+      const response = await fetch(`${BASE_URL}/create`, {
+        method: 'POST',
+        headers: {
+          'API-KEY': API_KEY,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+      
+      const rawText = await response.text();
+      let data;
+      try {
+        data = JSON.parse(rawText);
+      } catch (err) {
+        data = { message: rawText };
+      }
+
+      return res.status(response.status || 200).json(data);
+
+    // ২. পেমেন্ট ভেরিফিকেশন (Verify Payment)
+    } else if (action === 'verify') {
+      const trxId = body.transaction_id || body.trx_id || body.order_id;
+
+      if (!trxId) {
+        return res.status(400).json({ 
+          status: 'ERROR', 
+          message: 'Transaction ID is required' 
+        });
+      }
+
+      const response = await fetch(`${BASE_URL}/verify`, {
+        method: 'POST',
+        headers: {
+          'API-KEY': API_KEY,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({ transaction_id: String(trxId).trim() })
+      });
+      
+      const data = await response.json();
+      return res.status(response.status || 200).json(data);
+
+    } else {
+      return res.status(400).json({ error: 'Invalid Action. Use ?action=create or ?action=verify' });
+    }
+  } catch (error) {
+    console.error("NagorikPay API Error:", error);
+    return res.status(500).json({ error: error.message || 'Server Connection Failed' });
+  }
 }
