@@ -13,7 +13,7 @@ export default async function handler(req, res) {
   }
 
   // 🔴 এখানে আপনার NagorikPay মার্চেন্ট প্যানেলের লাইভ API Key বসান
-  const API_KEY = 'khla1gg0zp2wEHkCzr5j1O8gQpwNyA1Wd7W0Mwck11i5QgnCK5';
+  const API_KEY = 'rmeJ0DKDg3Q60tWUEjK1rNkgFZngPw1xye49FqBuYWnf977ojS';
   const BASE_URL = 'https://secure-pay.nagorikpay.com/api/payment';
   
   const action = req.query.action;
