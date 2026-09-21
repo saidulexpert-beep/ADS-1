@@ -365,6 +365,7 @@
         .orbit-pos-5 { top: 75%; left: 6.7%; }
         .orbit-pos-6 { top: 25%; left: 6.7%; }
 
+        /* UPDATED CUSTOM IMAGE HUB IN LOADER */
         .center-circle-brand {
             width: 115px;
             height: 115px;
@@ -1433,16 +1434,15 @@
     <!-- MAIN FIREBASE (FIRESTORE) & APPLICATION MODULE -->
     <script type="module">
         /* DYNAMIC APP CONFIGURATION BASE */
-        const firebaseConfig = {
-          apiKey: "AIzaSyAi-WW-QuuDonRnfrqSUhqyu-MR4MjdtrU",
-          authDomain: "tested-d30f3.firebaseapp.com",
-          databaseURL: "https://tested-d30f3-default-rtdb.firebaseio.com",
-          projectId: "tested-d30f3",
-          storageBucket: "tested-d30f3.firebasestorage.app",
-          messagingSenderId: "186758071664",
-          appId: "1:186758071664:web:26724e57ac178c9e71fbb5"
-        };
-
+const firebaseConfig = {
+  apiKey: "AIzaSyAi-WW-QuuDonRnfrqSUhqyu-MR4MjdtrU",
+  authDomain: "tested-d30f3.firebaseapp.com",
+  databaseURL: "https://tested-d30f3-default-rtdb.firebaseio.com",
+  projectId: "tested-d30f3",
+  storageBucket: "tested-d30f3.firebasestorage.app",
+  messagingSenderId: "186758071664",
+  appId: "1:186758071664:web:26724e57ac178c9e71fbb5"
+};
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
         import { getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, query, where, getDocs, orderBy, limit, runTransaction, getCountFromServer, writeBatch, updateDoc, Timestamp, increment, arrayUnion } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
@@ -1732,7 +1732,6 @@
             try {
                 const userId = String(userData.tgChatId);
                 const codeRef = doc(db, "redeem_codes", code);
-                let bonusAmount = 0;
 
                 await runTransaction(db, async (transaction) => {
                     const codeSnap = await transaction.get(codeRef);
@@ -1758,7 +1757,7 @@
                         throw new Error("দুঃখিত, এই কোড ব্যবহারের সর্বোচ্চ সীমা শেষ হয়ে গেছে!");
                     }
 
-                    bonusAmount = parseFloat(codeData.amount || 0);
+                    const bonusAmount = parseFloat(codeData.amount || 0);
                     if (bonusAmount <= 0) {
                         throw new Error("অকার্যকর কোড ব্যালেন্স।");
                     }
@@ -1791,7 +1790,7 @@
                 });
 
                 closeRedeemModal();
-                showToast(`অভিনন্দন! আপনার অ্যাকাউন্টে ৳${bonusAmount.toFixed(2)} ব্যালেন্স সফলভাবে যোগ হয়েছে।`, "success");
+                showToast(`অভিনন্দন! আপনার অ্যাকাউন্টে ৳${code} ব্যালেন্স সফলভাবে যোগ হয়েছে।`, "success");
 
                 const refreshedUser = await getDoc(doc(db, "users", String(userData.tgChatId)));
                 userData = refreshedUser.data();
@@ -3233,22 +3232,22 @@
         const OFFICIAL_ADMIN_ID = "7358825471";
         const OFFICIAL_LOGO = "https://i.postimg.cc/L4YZZKsv/IMG-20260919-214336-790.jpg";
         const OFFICIAL_TITLE = "𝐀𝐂𝐂 𝐗 𝐒𝐇𝐎𝐏 ˢᵘᵖᵖᵒʳᵗ";
-        const VERIFIED_BADGE_SVG = `
+const VERIFIED_BADGE_SVG = `
             <svg class="tg-verified-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10.29 2.3c.75-.4 1.67-.4 2.42 0l1.58.84c.32.17.68.26 1.04.26h1.79c.85 0 1.63.45 2.05 1.18l.89 1.55c.18.31.44.57.75.75l1.55.89c.73.42 1.18 1.2 1.18 2.05v1.79c0 .36.09.72.26 1.04l.84 1.58c.4.75.4 1.67 0 2.42l-.84 1.58c-.17.32-.26.68-.26 1.04v1.79c0 .85-.45 1.63-1.18 2.05l-1.55.89c-.31.18-.57.44-.75.75l-.89 1.55c-.42.73-1.2 1.18-2.05 1.18h-1.79c-.36 0-.72.09-1.04.26l-1.58.84c-.75.4-1.67.4-2.42 0l-1.58-.84a2.44 2.44 0 0 0-1.04-.26h-1.79c-.85 0-1.63-.45-2.05-1.18l-.89-1.55a2.44 2.44 0 0 0-.75-.75l-1.55-.89c-.73-.42-1.18-1.2-1.18-2.05v-1.79c0-.36-.09-.72-.26-1.04l-.84-1.58a2.44 2.44 0 0 1 0-2.42l.84-1.58c.17-.32.26-.68.26-1.04V6.18c0-.85.45-1.63 1.18-2.05l1.55-.89c.31-.18.57-.44.75-.75l.89-1.55c.42-.73 1.2-1.18 2.05-1.18h1.79c.36 0 .72-.09 1.04-.26l1.58-.84z" fill="#2AABEE"/>
                 <path d="M9.3 12.2l1.9 1.9 4.3-4.3" stroke="#ffffff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>`;
 
-        // Dynamic Realtime Support Database Config (Fixed & Properly Linked)
-        const supportFirebaseConfig = {
-          apiKey: "AIzaSyAsENiikJ5YQ1F8UHrixdJVEINAhO4PG30",
-          authDomain: "bot2-3d8bc.firebaseapp.com",
-          databaseURL: "https://bot2-3d8bc-default-rtdb.firebaseio.com",
-          projectId: "bot2-3d8bc",
-          storageBucket: "bot2-3d8bc.firebasestorage.app",
-          messagingSenderId: "77444577377",
-          appId: "1:77444577377:web:05a9910049d166878d5220"
-        };
+        // Dynamic Realtime Support Database Config
+const firebaseConfig = {
+  apiKey: "AIzaSyAsENiikJ5YQ1F8UHrixdJVEINAhO4PG30",
+  authDomain: "bot2-3d8bc.firebaseapp.com",
+  databaseURL: "https://bot2-3d8bc-default-rtdb.firebaseio.com",
+  projectId: "bot2-3d8bc",
+  storageBucket: "bot2-3d8bc.firebasestorage.app",
+  messagingSenderId: "77444577377",
+  appId: "1:77444577377:web:05a9910049d166878d5220"
+};
 
         let supportApp;
         try {
@@ -3296,7 +3295,7 @@
                 openAdminInbox();
             } else {
                 document.getElementById('admin-search-bar').style.display = 'none';
-                openUserDirectChat(String(tgUserLive.id));
+                openUserDirectChat(tgUserLive.id);
             }
         };
 
@@ -3317,7 +3316,7 @@
         }
 
         function handleHeaderClick() {
-            if (isAdminUser() && activeChatTargetUserId !== String(tgUserLive.id)) {
+            if (isAdminUser() && activeChatTargetUserId !== tgUserLive.id) {
                 openUserProfileModal();
             }
         }
@@ -3488,7 +3487,7 @@
         function openAdminChatThread(targetUid, userName, userPhoto) {
             triggerHaptic('light');
             detachActiveListeners();
-            activeChatTargetUserId = String(targetUid);
+            activeChatTargetUserId = targetUid;
 
             document.getElementById('btn-back').style.display = 'block';
             document.getElementById('btn-complete-ticket').style.display = 'inline-flex';
@@ -3510,7 +3509,7 @@
 
         function openUserDirectChat(myId) {
             detachActiveListeners();
-            activeChatTargetUserId = String(myId);
+            activeChatTargetUserId = myId;
             document.getElementById('btn-back').style.display = 'none';
             document.getElementById('btn-complete-ticket').style.display = 'none';
             document.getElementById('btn-manage-links').style.display = 'none';
@@ -3823,13 +3822,13 @@
             });
         }
 
-window.sendSupportMessage = async function() {
+        window.sendSupportMessage = async function() {
             const input = document.getElementById('chat-text-input');
             const text = input.value.trim();
             if (!text) return;
 
             const isCurrentAdmin = isAdminUser();
-            const targetChat = String(activeChatTargetUserId);
+            const targetChat = activeChatTargetUserId;
             const userAvatarUrl = tgUserLive.photo_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${tgUserLive.id}`;
 
             if (!isCurrentAdmin) {
