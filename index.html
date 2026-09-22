@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TOP1 KING BD - Ludo Tournament Platform</title>
+    <title>TOP1 KING BD - Gaming Tournament Platform</title>
 
     <!-- Telegram WebApp SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Hind+Siliguri:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&family=Russo+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Hind+Siliguri:wght@400;500;600;700&family=Russo+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 
-    <!-- Firebase Compat SDKs (For Realtime Live Desk Support) -->
+    <!-- Firebase Compat SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
 
@@ -103,7 +103,7 @@
             transform: scale(0.92);
         }
 
-        /* --- ছবি অনুযায়ী ফিল্টার বার ডিজাইন --- */
+        /* Filter Pills */
         .filter-container-box {
             background: #090e1d;
             border: 1.5px solid rgba(255, 255, 255, 0.08);
@@ -111,7 +111,7 @@
             padding: 5px;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
+            gap: 5px;
         }
 
         .filter-tab-pill {
@@ -119,7 +119,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 8px 4px;
+            padding: 8px 3px;
             border-radius: 14px;
             cursor: pointer;
             transition: all 0.22s ease;
@@ -129,11 +129,11 @@
         }
 
         .filter-tab-pill .tab-title {
-            font-size: 0.68rem;
+            font-size: 0.66rem;
             font-weight: 800;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
             color: #94a3b8;
             white-space: nowrap;
         }
@@ -148,19 +148,18 @@
         }
 
         .filter-badge {
-            font-size: 0.70rem;
+            font-size: 0.68rem;
             font-weight: 900;
-            padding: 1px 10px;
+            padding: 1px 8px;
             border-radius: 9999px;
-            line-height: 1.4;
+            line-height: 1.3;
             display: inline-block;
         }
         .filter-badge.badge-white { background: #ffffff; color: #1e3a8a; }
         .filter-badge.badge-pink { background: #451a2d; color: #f43f5e; border: 1px solid rgba(244, 63, 94, 0.2); }
-        .filter-badge.badge-green { background: #063c2c; color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2); }
+        .filter-badge.badge-green { background: #063c2c; color: #10b981; border: 1px solid rgba(168, 85, 247, 0.2); }
         .filter-badge.badge-purple { background: #2e1065; color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.2); }
 
-        /* MATCH CARD DESIGN */
         .match-card {
             background: #ffffff;
             color: #0f172a;
@@ -224,7 +223,6 @@
             width: 100%;
             height: 100vh;
             height: 100dvh;
-            font-family: 'Poppins', sans-serif;
         }
         #support-desk-overlay.active {
             display: flex;
@@ -319,20 +317,79 @@
                     <i class="fas fa-bullhorn text-xs"></i> নোটিশ:
                 </span>
                 <marquee id="main-notice-marquee" class="text-xs text-slate-300 font-semibold" behavior="scroll" direction="left">
-                    👉 🎁 গুরুত্বপূর্ণ ম্যাচ নির্দেশনা: Ludo King এ জয়েন করার পর নির্দিষ্ট সময়ে রুম কোড সংগ্রহ করুন। ম্যাচ শুরু হতে ১০ মিনিট পূর্বে কাউন্টডাউন শুরু হয়।
+                    👉 🎁 টুর্নামেন্ট শুরুর ৩-৫ মিনিট পূর্বে রুম কোড দেওয়া হয়। নির্দিষ্ট সময়ে ২ জন পূর্ণ না হলে স্বয়ংক্রিয়ভাবে ১০০% টাকা রিফান্ড হয়ে যায়।
                 </marquee>
             </div>
 
-            <!-- ARENA TITLE -->
+            <!-- TITLE -->
             <div class="flex items-center justify-center gap-3 pt-1">
                 <div class="h-[1px] bg-slate-700/60 flex-1"></div>
-                <h3 class="text-xs font-black tracking-widest text-slate-400 uppercase" style="font-family: 'Russo One', sans-serif;">LIVE LUDO ARENA</h3>
+                <h3 class="text-xs font-black tracking-widest text-slate-400 uppercase" style="font-family: 'Russo One', sans-serif;">LIVE ARENA TOURNAMENTS</h3>
                 <div class="h-[1px] bg-slate-700/60 flex-1"></div>
             </div>
 
-            <!-- ARENA CARDS -->
+            <!-- ARENA CARDS LIST -->
             <div class="space-y-3">
-                <div onclick="navigateTo('matches-page')" class="bg-[#121a2d] rounded-3xl p-4 border border-blue-500/20 cursor-pointer hover:border-blue-500/50 transition relative overflow-hidden">
+                
+                <!-- 1. FREE FIRE (NEW) -->
+                <div onclick="showUpcomingAlert('Free Fire Tournament')" class="bg-[#121a2d] rounded-3xl p-4 border border-orange-500/20 cursor-pointer hover:border-orange-500/50 transition relative overflow-hidden">
+                    <div class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 text-white text-[10px] font-black uppercase tracking-wider shadow">
+                        UPCOMING
+                    </div>
+                    <div class="flex items-center gap-3.5">
+                        <div class="w-14 h-14 rounded-2xl bg-slate-900 border border-white/10 p-1 flex items-center justify-center shadow-md">
+                            <img src="https://cdn-icons-png.flaticon.com/512/808/808439.png" class="w-full h-full object-cover rounded-xl" alt="Free Fire">
+                        </div>
+                        <div>
+                            <h4 class="text-base font-black text-amber-400 flex items-center gap-1.5">
+                                <i class="fas fa-crosshairs text-orange-400"></i> Free Fire (ফ্রি ফায়ার)
+                            </h4>
+                            <p class="text-xs text-slate-400 font-bold mt-0.5">CS & Battle Royale Matches</p>
+                            <span class="text-[11px] text-orange-300 font-extrabold">(রেজিস্ট্রেশন শীঘ্রই শুরু হবে)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. CARROM BOARD (NEW) -->
+                <div onclick="showUpcomingAlert('Carrom Board')" class="bg-[#121a2d] rounded-3xl p-4 border border-emerald-500/20 cursor-pointer hover:border-emerald-500/50 transition relative overflow-hidden">
+                    <div class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-emerald-600 text-white text-[10px] font-black uppercase tracking-wider shadow">
+                        UPCOMING
+                    </div>
+                    <div class="flex items-center gap-3.5">
+                        <div class="w-14 h-14 rounded-2xl bg-slate-900 border border-white/10 p-1 flex items-center justify-center shadow-md">
+                            <img src="https://cdn-icons-png.flaticon.com/512/3655/3655613.png" class="w-full h-full object-cover rounded-xl" alt="Carrom">
+                        </div>
+                        <div>
+                            <h4 class="text-base font-black text-emerald-400 flex items-center gap-1.5">
+                                <i class="fas fa-circle-notch text-emerald-400"></i> Carrom Board (ক্যারাম বোর্ড)
+                            </h4>
+                            <p class="text-xs text-slate-400 font-bold mt-0.5">1 VS 1 Classic Challenge</p>
+                            <span class="text-[11px] text-emerald-300 font-extrabold">(খুব শীঘ্রই আসছে)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. BEAD 16 (১৬ গুটি - NEW) -->
+                <div onclick="showUpcomingAlert('Bead 16 (১৬ গুটি)')" class="bg-[#121a2d] rounded-3xl p-4 border border-purple-500/20 cursor-pointer hover:border-purple-500/50 transition relative overflow-hidden">
+                    <div class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-purple-600 text-white text-[10px] font-black uppercase tracking-wider shadow">
+                        UPCOMING
+                    </div>
+                    <div class="flex items-center gap-3.5">
+                        <div class="w-14 h-14 rounded-2xl bg-slate-900 border border-white/10 p-1 flex items-center justify-center shadow-md">
+                            <img src="https://cdn-icons-png.flaticon.com/512/3076/3076891.png" class="w-full h-full object-cover rounded-xl" alt="Bead 16">
+                        </div>
+                        <div>
+                            <h4 class="text-base font-black text-purple-300 flex items-center gap-1.5">
+                                <i class="fas fa-chess-board text-purple-400"></i> Bead 16 (১৬ গুটি)
+                            </h4>
+                            <p class="text-xs text-slate-400 font-bold mt-0.5">ঐতিহ্যবাহী ১৬ গুটি চ্যালেঞ্জ</p>
+                            <span class="text-[11px] text-purple-400 font-extrabold">(খুব শীঘ্রই আসছে)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. LUDO KING (ACTIVE) -->
+                <div onclick="navigateTo('matches-page')" class="bg-[#121a2d] rounded-3xl p-4 border border-blue-500/30 cursor-pointer hover:border-blue-500/60 transition relative overflow-hidden shadow-lg">
                     <div class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-rose-500 text-white text-[10px] font-black uppercase tracking-wider flex items-center gap-1 shadow">
                         <i class="fas fa-fire"></i> HOT
                     </div>
@@ -350,7 +407,8 @@
                     </div>
                 </div>
 
-                <div onclick="navigateTo('matches-page')" class="bg-[#121a2d] rounded-3xl p-4 border border-cyan-500/20 cursor-pointer hover:border-cyan-500/50 transition relative overflow-hidden">
+                <!-- 5. LIVE AUTO LUDO (AUTO - SHOWS UPCOMING ALERT) -->
+                <div onclick="showUpcomingAlert('লাইভ অটো লুডু')" class="bg-[#121a2d] rounded-3xl p-4 border border-cyan-500/20 cursor-pointer hover:border-cyan-500/50 transition relative overflow-hidden">
                     <div class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-cyan-500 text-slate-950 text-[10px] font-black uppercase tracking-wider flex items-center gap-1 shadow">
                         <i class="fas fa-bolt"></i> AUTO
                     </div>
@@ -363,7 +421,7 @@
                                 <i class="fas fa-robot text-rose-400 text-sm"></i> লাইভ অটো লুডু
                             </h4>
                             <p class="text-xs text-slate-400 font-bold mt-0.5">ইনস্ট্যান্ট স্বয়ংক্রিয় রুম কোড</p>
-                            <span class="text-[11px] text-cyan-400 font-extrabold">(595টি ম্যাচ রানিং)</span>
+                            <span class="text-[11px] text-cyan-400 font-extrabold">(খুব শীঘ্রই চালুর হবে)</span>
                         </div>
                     </div>
                 </div>
@@ -372,45 +430,58 @@
 
         <!-- ======================= 2. MATCHES LIST PAGE ======================= -->
         <div id="matches-page" class="sub-page space-y-3.5">
-            <div class="flex items-center justify-between pb-1">
-                <div class="flex items-center gap-2">
-                    <button onclick="navigateTo('home-page')" class="w-9 h-9 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10">
-                        <i class="fas fa-arrow-left text-sm"></i>
-                    </button>
-                    <h2 class="text-base font-black text-amber-400" style="font-family: 'Russo One', sans-serif;">LUDO KING (লুডো কিং)</h2>
-                </div>
-                <button onclick="openUploadResultModal()" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black flex items-center gap-1.5 shadow-md">
-                    <i class="fas fa-upload text-[11px]"></i> আপলোড রেজাল্ট
+            
+            <!-- TOP HERO TITLE: LUDO KING -->
+            <div class="bg-gradient-to-r from-blue-900 via-indigo-950 to-slate-900 p-4 rounded-3xl border border-white/10 shadow-lg text-center relative">
+                <button onclick="navigateTo('home-page')" class="w-8 h-8 rounded-full bg-slate-800/80 text-white flex items-center justify-center border border-white/10 absolute left-3 top-3.5">
+                    <i class="fas fa-arrow-left text-xs"></i>
+                </button>
+                <h2 class="text-xl font-black text-amber-400 tracking-wider inline-block" style="font-family: 'Russo One', sans-serif;">
+                    LUDO KING (লুডো কিং)
+                </h2>
+                <p class="text-[11px] text-slate-300 mt-0.5">১ বনাম ১ ক্লাসিক টুর্নামেন্ট ও ইনস্ট্যান্ট উইথড্র</p>
+            </div>
+
+            <!-- ACTION BAR: UPLOAD RESULT & MY JOINED LIST -->
+            <div class="grid grid-cols-2 gap-2">
+                <button onclick="openUploadResultModal()" class="py-2.5 px-3 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black flex items-center justify-center gap-2 shadow-md active:scale-95 transition">
+                    <i class="fas fa-cloud-upload-alt text-sm"></i>
+                    <span>আপলোড রেজাল্ট</span>
+                </button>
+
+                <button onclick="filterMatches('joined', this)" id="btn-joined-list-toggle" class="py-2.5 px-3 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 text-white text-xs font-black flex items-center justify-center gap-2 shadow-md active:scale-95 transition">
+                    <i class="fas fa-list-check text-sm"></i>
+                    <span>আমার জয়েন লিস্ট (<span id="joined-count-badge">0</span>)</span>
                 </button>
             </div>
 
-            <!-- ছবির মতো হুবহু ফিল্টার বার -->
+            <!-- FILTER PILLS (EXACT DESIGN AS SCREENSHOT) -->
             <div class="filter-container-box">
-                <!-- ১. সব ম্যাচ -->
+                <!-- 1. সব ম্যাচ -->
                 <div class="filter-tab-pill active" onclick="filterMatches('all', this)">
                     <div class="tab-title">
                         <i class="fas fa-layer-group text-[10px]"></i> সব ম্যাচ
                     </div>
-                    <span class="filter-badge badge-white" id="filter-count-all">40</span>
+                    <span class="filter-badge badge-white" id="filter-count-all">0</span>
                 </div>
 
-                <!-- ২. স্পেশাল -->
+                <!-- 2. স্পেশাল -->
                 <div class="filter-tab-pill" onclick="filterMatches('special', this)">
                     <div class="tab-title">
                         <i class="fas fa-bolt text-[10px]"></i> স্পেশাল
                     </div>
-                    <span class="filter-badge badge-pink" id="filter-count-special">24</span>
+                    <span class="filter-badge badge-pink" id="filter-count-special">0</span>
                 </div>
 
-                <!-- ৩. ১ জন জয়েন -->
+                <!-- 3. ১ জন জয়েন -->
                 <div class="filter-tab-pill" onclick="filterMatches('1v1', this)">
                     <div class="tab-title">
                         <i class="fas fa-user-check text-[10px]"></i> ১ জন জয়েন
                     </div>
-                    <span class="filter-badge badge-green" id="filter-count-1v1">1</span>
+                    <span class="filter-badge badge-green" id="filter-count-1v1">0</span>
                 </div>
 
-                <!-- ৪. ফ্রি ম্যাচ -->
+                <!-- 4. ফ্রি ম্যাচ -->
                 <div class="filter-tab-pill" onclick="filterMatches('free', this)">
                     <div class="tab-title">
                         <i class="fas fa-gift text-[10px]"></i> ফ্রি ম্যাচ
@@ -439,7 +510,6 @@
             </div>
 
             <div class="space-y-3">
-                <!-- 1. Live In-app Chat Desk -->
                 <div onclick="openSupportDeskModal()" class="rounded-3xl border border-blue-500/30 bg-[#121a2d] p-4 flex items-center justify-between cursor-pointer hover:border-blue-400 transition shadow">
                     <div class="space-y-1">
                         <span class="px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 text-[10px] font-black uppercase border border-blue-400/30">
@@ -453,7 +523,6 @@
                     </div>
                 </div>
 
-                <!-- 2. Telegram Official Channel -->
                 <a href="https://t.me/EXPERTearn_team" target="_blank" class="rounded-3xl border border-sky-500/30 bg-[#121a2d] p-4 flex items-center justify-between cursor-pointer hover:border-sky-400 transition shadow block">
                     <div class="space-y-1">
                         <span class="px-2.5 py-0.5 rounded-full bg-sky-500/20 text-sky-300 text-[10px] font-black uppercase border border-sky-400/30">
@@ -467,7 +536,6 @@
                     </div>
                 </a>
 
-                <!-- 3. WhatsApp Helpline -->
                 <a href="https://wa.me/8801827750260" target="_blank" class="rounded-3xl border border-emerald-500/30 bg-[#121a2d] p-4 flex items-center justify-between cursor-pointer hover:border-emerald-400 transition shadow block">
                     <div class="space-y-1">
                         <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-black uppercase border border-emerald-400/30">
@@ -511,18 +579,39 @@
 
             <!-- REFERRAL STATS METRICS -->
             <div class="grid grid-cols-3 gap-2 text-center">
-                <div class="bg-[#121a2d] border border-white/10 p-3 rounded-2xl shadow">
+                <div class="bg-[#121a2d] border border-white/10 p-3.5 rounded-2xl shadow">
                     <span class="text-[9px] font-black text-slate-400 uppercase tracking-wider block">TOTAL REFER</span>
-                    <span id="ref-stat-total" class="text-lg font-black text-white mt-1 block">12</span>
+                    <span id="ref-stat-total" class="text-lg font-black text-white mt-1 block">0</span>
                 </div>
-                <div class="bg-[#121a2d] border border-emerald-500/20 p-3 rounded-2xl shadow">
+                <div class="bg-[#121a2d] border border-emerald-500/20 p-3.5 rounded-2xl shadow">
                     <span class="text-[9px] font-black text-emerald-400 uppercase tracking-wider block">TOTAL ACTIVE</span>
-                    <span id="ref-stat-active" class="text-lg font-black text-emerald-400 mt-1 block">8</span>
+                    <span id="ref-stat-active" class="text-lg font-black text-emerald-400 mt-1 block">0</span>
                 </div>
-                <div class="bg-[#121a2d] border border-amber-500/20 p-3 rounded-2xl shadow">
+                <div class="bg-[#121a2d] border border-amber-500/20 p-3.5 rounded-2xl shadow">
                     <span class="text-[9px] font-black text-amber-400 uppercase tracking-wider block">TOTAL EARN</span>
-                    <span id="ref-stat-earn" class="text-lg font-black text-amber-400 mt-1 block">৳160.00</span>
+                    <span id="ref-stat-earn" class="text-lg font-black text-amber-400 mt-1 block">৳0.00</span>
                 </div>
+            </div>
+
+            <!-- REFERRAL LINK BOX & SHARE -->
+            <div class="bg-[#121a2d] p-4 rounded-3xl border border-white/10 shadow-lg space-y-3">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-black text-slate-300">আপনার রেফারেল লিংক:</span>
+                    <span class="text-[10px] text-cyan-400 font-bold bg-cyan-500/10 px-2 py-0.5 rounded-md">১০ টাকা বোনাস</span>
+                </div>
+
+                <div class="bg-black/40 p-2.5 rounded-2xl border border-white/10 flex items-center justify-between">
+                    <span class="text-xs font-mono text-slate-300 truncate mr-2 select-all" id="ref-link-display-full">https://t.me/EXPERTearn_team...</span>
+                    <button onclick="copyReferralLink()" class="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-black flex items-center gap-1">
+                        <i class="fas fa-copy"></i>
+                        <span>Copy</span>
+                    </button>
+                </div>
+
+                <button onclick="shareReferralLinkTelegram()" class="w-full py-3 bg-[#2AABEE] hover:bg-[#229ed9] text-white font-extrabold text-xs rounded-2xl flex items-center justify-center gap-2 shadow-lg transition">
+                    <i class="fab fa-telegram-plane text-sm"></i>
+                    <span>টেলিগ্রামে বন্ধুদের সাথে শেয়ার করুন</span>
+                </button>
             </div>
 
             <!-- REFERRAL GUIDELINE CARD -->
@@ -537,42 +626,34 @@
                         <div class="w-7 h-7 rounded-full bg-emerald-500 text-slate-950 font-black flex items-center justify-center flex-shrink-0 text-xs shadow">১</div>
                         <div class="space-y-0.5">
                             <h5 class="font-black text-white text-xs">লিংক শেয়ার ও জয়েনিং</h5>
-                            <p class="text-slate-300 leading-relaxed text-[11px]">মেসেঞ্জার, হোয়াটসঅ্যাপ বা ফেসবুকে আপনার বন্ধুদের রেফারেল লিংকটি পাঠান এবং অ্যাকাউন্ট খুলতে বলুন।</p>
+                            <p class="text-slate-300 leading-relaxed text-[11px]">মেসেঞ্জার, হোয়াটসঅ্যাপ বা টেলিগ্রামে আপনার বন্ধুদের রেফারেল লিংকটি পাঠান।</p>
                         </div>
                     </div>
 
                     <div class="flex items-start gap-3">
                         <div class="w-7 h-7 rounded-full bg-indigo-500 text-white font-black flex items-center justify-center flex-shrink-0 text-xs shadow">২</div>
                         <div class="space-y-0.5">
-                            <h5 class="font-black text-white text-xs">বন্ধু ডিপোজিট করলেই ৳20.00 বোনাস!</h5>
-                            <p class="text-slate-300 leading-relaxed text-[11px]">আপনার আমন্ত্রিত বন্ধু নূন্যতম ৳100 ডিপোজিট করলেই সাথে সাথে আপনার অ্যাকাউন্টে <b class="text-amber-400">৳20.00</b> বোনাস জমা হবে (১ম বার ডিপোজিটে)।</p>
+                            <h5 class="font-black text-white text-xs">বন্ধু ডিপোজিট করলেই বোনাস</h5>
+                            <p class="text-slate-300 leading-relaxed text-[11px]">আপনার আমন্ত্রিত বন্ধু প্রথম ডিপোজিট করলেই সাথে সাথে আপনার ওয়ালেটে বোনাস যোগ হবে।</p>
                         </div>
                     </div>
 
                     <div class="flex items-start gap-3">
                         <div class="w-7 h-7 rounded-full bg-amber-500 text-slate-950 font-black flex items-center justify-center flex-shrink-0 text-xs shadow">৩</div>
                         <div class="space-y-0.5">
-                            <h5 class="font-black text-white text-xs">প্রতি ম্যাচ জয়ে ৳2.00 আজীবন কমিশন</h5>
-                            <p class="text-slate-300 leading-relaxed text-[11px]">আপনার আমন্ত্রিত বন্ধু প্রতিবার লুডু বা টুর্নামেন্ট ম্যাচ জিতে প্রাইজমানি পেলেই সাথে সাথে আপনার ওয়ালেটে <b class="text-emerald-400">৳2.00</b> রেফারেল কমিশন যোগ হবে!</p>
+                            <h5 class="font-black text-white text-xs">প্রতি ম্যাচ জয়ে আজীবন কমিশন</h5>
+                            <p class="text-slate-300 leading-relaxed text-[11px]">আমন্ত্রিত বন্ধু প্রতিবার টুর্নামেন্ট জিতলে আপনি লাইফটাইম কমিশন পাবেন।</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- MY REFERRALS AND INCOME HISTORY -->
+            <!-- MY REFERRALS LIST -->
             <div class="space-y-3 pt-2">
                 <div class="flex items-center justify-between px-1">
-                    <h4 class="text-xs font-black text-slate-300">আমার রেফারেল ও ইনকাম হিস্ট্রি</h4>
+                    <h4 class="text-xs font-black text-slate-300">আমন্ত্রিত বন্ধুদের তালিকা</h4>
                     <span class="px-2.5 py-0.5 rounded-full bg-slate-800 text-[10px] text-cyan-400 font-bold border border-white/5">সক্রিয় মেম্বার</span>
                 </div>
-
-                <div class="p-3 bg-black/40 rounded-2xl border border-white/10 font-mono text-xs text-slate-300 flex items-center justify-between select-all">
-                    <span id="ref-link-display-full" class="truncate mr-2">লোড হচ্ছে...</span>
-                    <button onclick="copyReferralLink()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white font-black rounded-xl text-xs flex-shrink-0">
-                        Copy
-                    </button>
-                </div>
-
                 <div id="referred-users-list-container" class="space-y-2"></div>
             </div>
         </div>
@@ -602,7 +683,7 @@
                 </div>
             </div>
 
-            <!-- TOP1 PLATINUM VIRTUAL WALLET CARD -->
+            <!-- PLATINUM VIRTUAL WALLET CARD -->
             <div class="platinum-card p-5 space-y-4">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2">
@@ -767,7 +848,7 @@
 
     <!-- ======================= MODALS / DIALOGS ======================= -->
 
-    <!-- 1. JOIN MATCH MODAL (নিয়ম, সম্ভাব্য প্রাইজমানি ও প্লেয়ারের নাম বক্স) -->
+    <!-- 1. JOIN MATCH MODAL (CONFIRMATION, PRIZE & EDITABLE TELEGRAM NAME) -->
     <div id="join-match-modal" class="hidden fixed inset-0 z-[95] bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
         <div class="bg-[#11192d] border border-blue-500/40 rounded-3xl p-5 w-full max-w-sm space-y-4 shadow-2xl relative text-left">
             <div class="flex items-center justify-between pb-2 border-b border-white/10">
@@ -775,7 +856,7 @@
                     <span class="w-8 h-8 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-sm"><i class="fas fa-trophy"></i></span>
                     <div>
                         <h4 class="text-sm font-black text-white" id="join-modal-match-title">LUDO MATCH</h4>
-                        <span class="text-[10px] text-cyan-400 font-bold">1 VS 1 Classic Match</span>
+                        <span class="text-[10px] text-cyan-400 font-bold">1 VS 1 Match Confirmation</span>
                     </div>
                 </div>
                 <button onclick="closeModal('join-match-modal')" class="text-slate-400 hover:text-white p-1">
@@ -795,14 +876,14 @@
                 </div>
             </div>
 
-            <!-- Player Game Name Input (Pre-filled with Telegram Name) -->
+            <!-- Player Game Name Input (Pre-filled with Telegram User Name) -->
             <div class="space-y-1.5">
-                <label class="text-xs font-black text-slate-300 block">প্লেয়ার এর নাম (লুডো কিং নাম / টেলিগ্রাম নাম):</label>
+                <label class="text-xs font-black text-slate-300 block">প্লেয়ার এর নাম (লুডো কিং নাম):</label>
                 <div class="relative">
                     <input type="text" id="join-player-name-input" class="w-full p-3 rounded-xl bg-[#090f1d] border border-blue-500/30 text-white font-bold text-xs focus:border-blue-500 outline-none pr-8">
                     <i class="fas fa-user-edit absolute right-3 top-3 text-slate-400 text-xs"></i>
                 </div>
-                <p class="text-[10px] text-slate-400">আপনার লুডো কিং অ্যাপের প্লেয়ার নামটি প্রয়োজন অনুযায়ী পরিবর্তন করতে পারেন।</p>
+                <p class="text-[10px] text-slate-400">আপনার লুডো কিং অ্যাপের প্লেয়ার নামটি মিলিয়ে লিখুন।</p>
             </div>
 
             <!-- Rules Summary -->
@@ -810,11 +891,10 @@
                 <div class="font-bold text-white flex items-center gap-1">
                     <i class="fas fa-shield-alt text-blue-400"></i> টুর্নামেন্ট নিয়মাবলী:
                 </div>
-                <p>১. ম্যাচ শুরু হওয়ার ৩-৫ মিনিট পূর্বে রুম কোড প্রদান করা হবে।</p>
-                <p>২. বিজয়ী হলে গেমের ফাইনাল উইনিং স্ক্রিনশট রেজাল্ট অপশনে আপলোড দিন।</p>
+                <p>১. ম্যাচ শুরু হওয়ার ৩-৫ মিনিট পূর্বে রুম কোড দেওয়া হবে।</p>
+                <p>২. ২ জন পূর্ণ না হয়ে সময় শেষ হলে স্বয়ংক্রিয়ভাবে ১০০% রিফান্ড পাবেন।</p>
             </div>
 
-            <!-- Buttons -->
             <div class="flex gap-2 pt-1">
                 <button onclick="closeModal('join-match-modal')" class="w-1/3 py-3 bg-slate-800 hover:bg-slate-700 font-bold rounded-xl text-xs text-slate-300">
                     বাতিল
@@ -826,7 +906,41 @@
         </div>
     </div>
 
-    <!-- 2. ROOM CODE MODAL -->
+    <!-- 2. UPLOAD RESULT MODAL (WITH REAL IMAGE UPLOAD & PREVIEW) -->
+    <div id="upload-result-modal" class="hidden fixed inset-0 bg-black/85 z-[95] backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-[#11192d] rounded-3xl p-5 w-full max-w-sm border border-white/10 space-y-4 text-center">
+            <div class="flex items-center justify-between pb-2 border-b border-white/10 text-left">
+                <div class="flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm"><i class="fas fa-trophy"></i></span>
+                    <h4 class="text-sm font-black text-white">ফলাফল আপলোড করুন</h4>
+                </div>
+                <button onclick="closeModal('upload-result-modal')" class="text-slate-400 hover:text-white p-1">
+                    <i class="fas fa-times text-sm"></i>
+                </button>
+            </div>
+
+            <input id="input-result-room" type="text" placeholder="ম্যাচের রুম কোডটি লিখুন" class="w-full p-3 rounded-xl bg-[#090f1d] border border-white/10 text-white text-xs outline-none">
+
+            <!-- Real Image Upload Input and Live Preview -->
+            <input type="file" id="result-screenshot-input" accept="image/*" class="hidden" onchange="previewScreenshot(event)">
+            
+            <div onclick="document.getElementById('result-screenshot-input').click()" class="border-2 border-dashed border-slate-700 rounded-2xl p-4 cursor-pointer hover:border-emerald-500 text-slate-400 transition flex flex-col items-center justify-center min-h-[120px] bg-[#090f1d] relative overflow-hidden">
+                <img id="screenshot-preview-img" src="" class="hidden w-full h-32 object-contain rounded-xl mb-2" alt="Preview">
+                <div id="screenshot-placeholder" class="text-center">
+                    <i class="fas fa-camera text-3xl mb-1 text-slate-500"></i>
+                    <span class="block text-xs font-bold text-slate-300">গেমের উইনিং স্ক্রিনশট নির্বাচন করুন</span>
+                    <span class="text-[10px] text-slate-500">ক্লিক করে ফাইল বা ফটো নির্বাচন করুন</span>
+                </div>
+            </div>
+
+            <div class="flex gap-2">
+                <button onclick="closeModal('upload-result-modal')" class="w-1/2 py-2.5 bg-slate-800 font-bold rounded-xl text-xs text-slate-300">বাতিল</button>
+                <button onclick="submitMatchResult()" class="w-1/2 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs">জমা দিন</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. ROOM CODE MODAL -->
     <div id="room-code-modal" class="hidden fixed inset-0 z-[95] bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
         <div class="bg-[#11192d] border border-cyan-500/30 rounded-3xl p-6 w-full max-w-sm text-center space-y-4 shadow-2xl relative">
             <div class="w-16 h-16 rounded-full border-2 border-cyan-400 flex items-center justify-center mx-auto text-cyan-400 text-3xl">
@@ -854,7 +968,7 @@
         </div>
     </div>
 
-    <!-- 3. DAILY LIMIT MODAL -->
+    <!-- 4. DAILY LIMIT MODAL -->
     <div id="daily-limit-modal" class="hidden fixed inset-0 z-[95] bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
         <div class="bg-[#141d33] border border-white/10 rounded-3xl p-5 w-full max-w-sm space-y-4 shadow-2xl relative">
             <div class="flex items-center justify-between pb-2 border-b border-white/10">
@@ -868,7 +982,7 @@
             </div>
 
             <div class="bg-blue-950/40 border-l-4 border-blue-500 p-3 rounded-r-xl text-xs text-slate-200 leading-relaxed">
-                লুডু রাজা অ্যাপে আপনার প্রতিদিনের খেলার লিমিট সম্পর্কে বিস্তারিত জানতে ভিডিওটি দেখুন।
+                প্রতিদিনের খেলার লিমিট ও টুর্নামেন্টের বিস্তারিত নিয়ম জানতে ভিডিওটি দেখে নিন।
             </div>
 
             <div class="bg-black/80 rounded-2xl p-6 text-center border border-white/5 space-y-2">
@@ -884,29 +998,7 @@
         </div>
     </div>
 
-    <!-- 4. UPLOAD RESULT MODAL -->
-    <div id="upload-result-modal" class="hidden fixed inset-0 bg-black/80 z-[95] backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-[#11192d] rounded-3xl p-5 w-full max-w-sm border border-white/10 space-y-4 text-center">
-            <div class="w-14 h-14 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto text-2xl border border-emerald-500/30">
-                <i class="fas fa-trophy"></i>
-            </div>
-            <div>
-                <h3 class="text-base font-black text-white">ম্যাচ ফলাফল আপলোড</h3>
-                <p class="text-xs text-slate-400 mt-1">জয়ী ম্যাচের সম্পূর্ণ স্ক্রিনশট এবং রুম কোড লিখুন।</p>
-            </div>
-            <input id="input-result-room" type="text" placeholder="ম্যাচ রুম কোড" class="w-full p-3 rounded-xl bg-[#090f1d] border border-white/10 text-white text-xs outline-none">
-            <div class="border-2 border-dashed border-slate-700 rounded-2xl p-4 cursor-pointer hover:border-emerald-500 text-slate-400">
-                <i class="fas fa-image text-3xl mb-1 text-slate-500"></i>
-                <span class="block text-xs font-bold">স্ক্রিনশট নির্বাচন করুন</span>
-            </div>
-            <div class="flex gap-2">
-                <button onclick="closeModal('upload-result-modal')" class="w-1/2 py-2.5 bg-slate-800 font-bold rounded-xl text-xs text-slate-300">বাতিল</button>
-                <button onclick="submitMatchResult()" class="w-1/2 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs">জমা দিন</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 5. FULL SCREEN LIVE CHAT DESK OVERLAY -->
+    <!-- 5. FULL SCREEN LIVE SUPPORT CHAT DESK -->
     <div id="support-desk-overlay">
         <div class="tg-top-bar">
             <button class="text-white text-lg pr-2" onclick="closeSupportDeskModal()"><i class="fas fa-arrow-left"></i></button>
@@ -926,7 +1018,7 @@
         <div class="tg-chat-body" id="chat-messages">
             <div class="msg-row admin">
                 <div class="msg-bubble">
-                    হ্যালো! <b>TOP1 KING BD Live Helpdesk</b> এ আপনাকে স্বাগতম। আপনার টুর্নামেন্ট, ডিপোজিট বা উইথড্র বিষয়ে বিস্তারিত লিখে জানান।
+                    হ্যালো! <b>TOP1 KING BD Live Helpdesk</b> এ আপনাকে স্বাগতম। আপনার টুর্নামেন্ট, ডিপোজিট বা উইথড্র বিষয়ে যেকোনো প্রশ্ন লিখুন।
                 </div>
             </div>
         </div>
@@ -976,39 +1068,41 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT LOGIC CORE -->
+    <!-- JAVASCRIPT APPLICATION CORE -->
     <script>
-        // Firebase Support Init
+        // Firebase Compat Init for Support
         const supportDb = firebase.initializeApp({
             apiKey: "AIzaSyAsENiikJ5YQ1F8UHrixdJVEINAhO4PG30",
             authDomain: "bot2-3d8bc.firebaseapp.com",
             databaseURL: "https://bot2-3d8bc-default-rtdb.firebaseio.com",
             projectId: "bot2-3d8bc"
-        }, "tournamentLiveDeskSupport").database();
+        }, "tournamentSupportDeskApp").database();
 
+        // Default User State
         let activeUser = {
-            id: "153153",
+            id: "6954647230",
             name: "SAIDUL",
             gameName: "SAIDUL",
             photo: "https://i.postimg.cc/L4YZZKsv/IMG-20260919-214336-790.jpg",
-            balance: 65.00,
-            winningBalance: 30.00,
-            depositBalance: 35.00
+            balance: 100.00,
+            winningBalance: 40.00,
+            depositBalance: 60.00
         };
 
-        // Matches Database
+        // Tournaments Dynamic Array (Can be replaced/synced with Firebase)
         let matchesList = [
             {
                 id: "51565",
                 matchNo: "#51565",
                 prize: 70,
                 fee: 40,
-                current: 1, // 1 player joined
+                current: 1, // 1 player already joined
                 max: 2,
-                startTimeHour: 23, startTimeMin: 30,
+                startTimeHour: 23, startTimeMin: 55,
                 isSpecial: false,
-                myJoined: true,
-                roomCode: ""
+                myJoined: false,
+                roomCode: "",
+                gameIcon: "https://cdn-icons-png.flaticon.com/512/806/806131.png"
             },
             {
                 id: "51566",
@@ -1017,10 +1111,11 @@
                 fee: 100,
                 current: 0,
                 max: 2,
-                startTimeHour: 23, startTimeMin: 45,
+                startTimeHour: 23, startTimeMin: 58,
                 isSpecial: true,
                 myJoined: false,
-                roomCode: ""
+                roomCode: "",
+                gameIcon: "https://cdn-icons-png.flaticon.com/512/806/806131.png"
             },
             {
                 id: "51567",
@@ -1029,22 +1124,24 @@
                 fee: 0,
                 current: 0,
                 max: 2,
-                startTimeHour: 23, startTimeMin: 55,
+                startTimeHour: 23, startTimeMin: 59,
                 isSpecial: false,
                 myJoined: false,
-                roomCode: ""
+                roomCode: "",
+                gameIcon: "https://cdn-icons-png.flaticon.com/512/806/806131.png"
             },
             {
                 id: "51568",
                 matchNo: "#51568",
                 prize: 150,
                 fee: 80,
-                current: 1, // 1 player joined
+                current: 1,
                 max: 2,
-                startTimeHour: 23, startTimeMin: 40,
+                startTimeHour: 23, startTimeMin: 50,
                 isSpecial: true,
                 myJoined: false,
-                roomCode: ""
+                roomCode: "",
+                gameIcon: "https://cdn-icons-png.flaticon.com/512/806/806131.png"
             }
         ];
 
@@ -1079,7 +1176,7 @@
             renderHistory('matches');
             renderNotifications();
 
-            // Real-time Countdowns
+            // Real-time Countdown & Auto-Refund Routine
             setInterval(updateTournamentCountdowns, 1000);
         };
 
@@ -1094,6 +1191,10 @@
             toast.innerHTML = `<i class="fas fa-info-circle text-sm"></i> <span>${msg}</span>`;
             container.appendChild(toast);
             setTimeout(() => toast.remove(), 3200);
+        }
+
+        function showUpcomingAlert(gameName) {
+            showToast(`🔥 ${gameName} খুব শীঘ্রই চালুর হবে! অফিসিয়াল টেলিগ্রাম চ্যানেলে যুক্ত থাকুন।`, 'info');
         }
 
         function updateUserInterface() {
@@ -1111,6 +1212,10 @@
 
             const refLink = `https://t.me/EXPERTearn_team?start=ref_${activeUser.id}`;
             document.getElementById('ref-link-display-full').textContent = refLink;
+
+            // Update Joined Count Badge
+            const joinedCount = matchesList.filter(m => m.myJoined).length;
+            document.getElementById('joined-count-badge').textContent = joinedCount;
         }
 
         function navigateTo(pageId) {
@@ -1133,7 +1238,41 @@
             return Math.floor((target.getTime() - now.getTime()) / 1000);
         }
 
+        // AUTO-REFUND & MATCH REMOVAL SYSTEM
         function updateTournamentCountdowns() {
+            let listChanged = false;
+
+            for (let i = matchesList.length - 1; i >= 0; i--) {
+                const m = matchesList[i];
+                const diff = getMatchRemainingSeconds(m);
+
+                // If match time reached (diff <= 0) and not full (less than 2 players)
+                if (diff <= 0 && m.current < m.max) {
+                    if (m.myJoined) {
+                        // Refund user fee automatically
+                        activeUser.balance += m.fee;
+                        activeUser.depositBalance += m.fee;
+                        updateUserInterface();
+
+                        notifications.unshift({
+                            title: "ম্যাচ বাতিল ও রিফান্ড",
+                            message: `স্লট পূর্ণ না হওয়ায় ম্যাচ ${m.matchNo}-এর ৳${m.fee} আপনার ওয়ালেটে ১০০% রিফান্ড করা হয়েছে।`,
+                            time: "Just now"
+                        });
+                        renderNotifications();
+                        showToast(`ম্যাচ ${m.matchNo} বাতিল ও ৳${m.fee} রিফান্ড হয়েছে!`, 'success');
+                    }
+                    // Remove match permanently from list
+                    matchesList.splice(i, 1);
+                    listChanged = true;
+                }
+            }
+
+            if (listChanged) {
+                renderMatches();
+            }
+
+            // Update visible countdown strings
             document.querySelectorAll('.timer-string-box').forEach(el => {
                 const matchId = el.dataset.id;
                 const match = matchesList.find(x => x.id === matchId);
@@ -1154,40 +1293,49 @@
 
         function filterMatches(type, el) {
             document.querySelectorAll('.filter-tab-pill').forEach(f => f.classList.remove('active'));
-            el.classList.add('active');
+            if (el && el.classList.contains('filter-tab-pill')) {
+                el.classList.add('active');
+            }
             currentActiveFilter = type;
             renderMatches();
         }
 
         function renderMatches() {
             const container = document.getElementById('tournament-matches-container');
-            let list = [...matchesList];
+            
+            // 1. Calculate Badges based on AVAILABLE matches (Not Joined & Not Full)
+            const availableMatches = matchesList.filter(m => !m.myJoined && m.current < m.max);
+            
+            document.getElementById('filter-count-all').textContent = availableMatches.length;
+            document.getElementById('filter-count-special').textContent = availableMatches.filter(m => m.isSpecial || m.prize >= 100).length;
+            document.getElementById('filter-count-1v1').textContent = availableMatches.filter(m => m.current === 1).length;
+            document.getElementById('filter-count-free').textContent = availableMatches.filter(m => m.fee === 0).length;
 
-            // Counts
-            const countAll = matchesList.length;
-            const countSpecial = matchesList.filter(m => m.isSpecial || m.prize >= 100).length;
-            const count1v1 = matchesList.filter(m => m.current === 1 && m.max === 2).length;
-            const countFree = matchesList.filter(m => m.fee === 0).length;
+            let displayList = [];
 
-            document.getElementById('filter-count-all').textContent = countAll;
-            document.getElementById('filter-count-special').textContent = countSpecial;
-            document.getElementById('filter-count-1v1').textContent = count1v1;
-            document.getElementById('filter-count-free').textContent = countFree;
+            if (currentActiveFilter === 'joined') {
+                // Show only user joined matches
+                displayList = matchesList.filter(m => m.myJoined);
+            } else {
+                // In normal filters: DO NOT SHOW JOINED MATCHES & DO NOT SHOW FULL MATCHES
+                displayList = availableMatches;
+                if (currentActiveFilter === 'special') displayList = displayList.filter(m => m.isSpecial || m.prize >= 100);
+                else if (currentActiveFilter === '1v1') displayList = displayList.filter(m => m.current === 1);
+                else if (currentActiveFilter === 'free') displayList = displayList.filter(m => m.fee === 0);
+            }
 
-            if (currentActiveFilter === 'special') list = list.filter(m => m.isSpecial || m.prize >= 100);
-            else if (currentActiveFilter === '1v1') list = list.filter(m => m.current === 1 && m.max === 2);
-            else if (currentActiveFilter === 'free') list = list.filter(m => m.fee === 0);
-
-            if (list.length === 0) {
+            if (displayList.length === 0) {
                 container.innerHTML = `
                     <div class="bg-[#121a2d] p-8 rounded-3xl text-center space-y-2 border border-white/5">
                         <i class="fas fa-folder-open text-3xl text-slate-500"></i>
-                        <h4 class="text-sm font-bold text-slate-300">এই ক্যাটাগরিতে কোনো ম্যাচ পাওয়া যায়নি</h4>
+                        <h4 class="text-sm font-bold text-slate-300">
+                            ${currentActiveFilter === 'joined' ? 'আপনি এখনো কোনো ম্যাচে জয়েন করেননি।' : 'এই ক্যাটাগরিতে কোনো উন্মুক্ত ম্যাচ নেই।'}
+                        </h4>
                     </div>`;
                 return;
             }
 
-            container.innerHTML = list.map(m => {
+            container.innerHTML = displayList.map(m => {
                 const isFull = m.current >= m.max;
                 const diff = getMatchRemainingSeconds(m);
                 const canRefund = m.myJoined && !isFull;
@@ -1196,7 +1344,7 @@
                 <div class="match-card p-4 space-y-3.5 border border-slate-200">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2.5">
-                            <img src="https://cdn-icons-png.flaticon.com/512/806/806131.png" class="w-10 h-10 rounded-xl" alt="Ludo">
+                            <img src="${m.gameIcon || 'https://cdn-icons-png.flaticon.com/512/806/806131.png'}" class="w-10 h-10 rounded-xl" alt="Ludo">
                             <div>
                                 <h3 class="text-sm font-black text-slate-900 flex items-center gap-1.5">
                                     LUDO KING 🔥 - Match ${m.matchNo}
@@ -1276,7 +1424,7 @@
             }).join('');
         }
 
-        // --- JOIN MODAL LOGIC ---
+        // --- JOIN MODAL ---
         function openJoinMatchModal(id) {
             const m = matchesList.find(x => x.id === id);
             if (!m) return;
@@ -1305,7 +1453,7 @@
             }
             activeUser.gameName = chosenName;
 
-            // Deduct balance
+            // Deduct Balance
             activeUser.balance -= m.fee;
             m.current += 1;
             m.myJoined = true;
@@ -1314,7 +1462,7 @@
             updateUserInterface();
             renderMatches();
 
-            showToast(`অভিনন্দন! ম্যাচ ${m.matchNo}-এ সফলভাবে জয়েন করেছেন।`, 'success');
+            showToast(`অভিনন্দন! ম্যাচ ${m.matchNo}-এ সফলভাবে জয়েন করেছেন। জয়েন লিস্টে দেখুন।`, 'success');
             pendingJoinMatchId = null;
         }
 
@@ -1403,13 +1551,17 @@
             }
         }
 
-        // --- REFERRALS ---
+        // --- REFERRALS SYSTEM ---
         function renderReferrals() {
             const container = document.getElementById('referred-users-list-container');
             const mockUsers = [
                 { name: "Tanvir Ahmed", uid: "00921", photo: "https://api.dicebear.com/7.x/avataaars/svg?seed=Tanvir", status: "Active" },
                 { name: "Mehedi Hasan", uid: "00844", photo: "https://api.dicebear.com/7.x/avataaars/svg?seed=Mehedi", status: "Active" }
             ];
+
+            document.getElementById('ref-stat-total').textContent = mockUsers.length;
+            document.getElementById('ref-stat-active').textContent = mockUsers.length;
+            document.getElementById('ref-stat-earn').textContent = `৳${(mockUsers.length * 10).toFixed(2)}`;
 
             container.innerHTML = mockUsers.map(u => `
                 <div class="bg-[#121a2d] p-3 rounded-2xl border border-white/5 flex items-center justify-between text-xs">
@@ -1434,7 +1586,18 @@
             });
         }
 
-        // --- LIVE SUPPORT CHAT DESK ---
+        function shareReferralLinkTelegram() {
+            const link = `https://t.me/EXPERTearn_team?start=ref_${activeUser.id}`;
+            const text = "🔥 TOP1 KING BD লুডো টুর্নামেন্টে জয়েন করে প্রতি ম্যাচে নগদ টাকা আয় করুন!";
+            const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(text)}`;
+            if (window.Telegram?.WebApp?.openTelegramLink) {
+                window.Telegram.WebApp.openTelegramLink(shareUrl);
+            } else {
+                window.open(shareUrl, '_blank');
+            }
+        }
+
+        // --- SUPPORT LIVE DESK ---
         function openSupportDeskModal() {
             document.getElementById('support-desk-overlay').classList.add('active');
             loadChatMessages(activeUser.id);
@@ -1450,7 +1613,7 @@
                 body.innerHTML = `
                     <div class="msg-row admin">
                         <div class="msg-bubble">
-                            হ্যালো! <b>TOP1 KING BD Live Helpdesk</b> এ আপনাকে স্বাগতম। আপনার টুর্নামেন্ট, ডিপোজিট বা উইথড্র বিষয়ে বিস্তারিত লিখে জানান।
+                            হ্যালো! <b>TOP1 KING BD Live Helpdesk</b> এ আপনাকে স্বাগতম। আপনার টুর্নামেন্ট, ডিপোজিট বা উইথড্র বিষয়ে যেকোনো প্রশ্ন লিখুন।
                         </div>
                     </div>`;
 
@@ -1507,7 +1670,43 @@
             `).join('');
         }
 
-        // --- REDEEM PROMO CODE ---
+        // --- SCREENSHOT RESULT UPLOAD ---
+        function openUploadResultModal() {
+            document.getElementById('input-result-room').value = '';
+            document.getElementById('screenshot-preview-img').classList.add('hidden');
+            document.getElementById('screenshot-placeholder').classList.remove('hidden');
+            document.getElementById('result-screenshot-input').value = '';
+            document.getElementById('upload-result-modal').classList.remove('hidden');
+        }
+
+        function previewScreenshot(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.getElementById('screenshot-preview-img');
+                    img.src = e.target.result;
+                    img.classList.remove('hidden');
+                    document.getElementById('screenshot-placeholder').classList.add('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function submitMatchResult() {
+            const room = document.getElementById('input-result-room').value.trim();
+            const fileInput = document.getElementById('result-screenshot-input');
+
+            if (!room) return showToast("দয়া করে সঠিক রুম কোড দিন", "error");
+            if (!fileInput.files || fileInput.files.length === 0) {
+                return showToast("দয়া করে খেলার উইনিং স্ক্রিনশট সিলেক্ট করুন", "error");
+            }
+
+            closeModal('upload-result-modal');
+            showToast("উইনিং স্ক্রিনশট ও ফলাফল সফলভাবে জমা হয়েছে! এডমিন দ্রুত রিভিউ করবেন।", "success");
+        }
+
+        // --- PROMO CODE ---
         function openRedeemModal() {
             document.getElementById('input-redeem-code').value = '';
             document.getElementById('redeem-code-modal').classList.remove('hidden');
@@ -1523,19 +1722,7 @@
             showToast("অভিনন্দন! ৳20 বোনাস যুক্ত হয়েছে।", "success");
         }
 
-        // --- RESULT UPLOAD ---
-        function openUploadResultModal() {
-            document.getElementById('upload-result-modal').classList.remove('hidden');
-        }
-
-        function submitMatchResult() {
-            const room = document.getElementById('input-result-room').value.trim();
-            if (!room) return showToast("দয়া করে সঠিক রুম কোড দিন", "error");
-            closeModal('upload-result-modal');
-            showToast("আপনার ফলাফল পর্যালোচনার জন্য জমা নেওয়া হয়েছে!", "success");
-        }
-
-        // --- DEPOSIT ---
+        // --- QUICK DEPOSIT ---
         function setQuickDeposit(val) {
             document.getElementById('deposit-amount-input').value = val;
         }
