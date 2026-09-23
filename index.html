@@ -364,120 +364,9 @@
                 <div class="h-[1px] bg-slate-700/60 flex-1"></div>
             </div>
 
-            <!-- ARENA CARDS LIST -->
-            <div class="space-y-3">
-                <!-- 1. LUDO KING -->
-                <div onclick="openGameArena('Ludo King (লুডো কিং)', 'ludo')" class="bg-[#121a2d] rounded-3xl p-4 border border-blue-500/30 cursor-pointer hover:border-blue-500/60 transition relative overflow-hidden shadow-lg">
-                    <div class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-rose-500 text-white text-[10px] font-black uppercase tracking-wider flex items-center gap-1 shadow">
-                        <i class="fas fa-fire"></i> HOT
-                    </div>
-                    <div class="flex items-center gap-3.5">
-                        <div class="w-14 h-14 rounded-2xl bg-slate-900 border border-white/10 p-1 flex items-center justify-center shadow-md">
-                            <img src="https://cdn-icons-png.flaticon.com/512/806/806131.png" class="w-full h-full object-cover rounded-xl" alt="Ludo King">
-                        </div>
-                        <div>
-                            <h4 class="text-base font-black text-white flex items-center gap-1.5">
-                                <i class="fas fa-crown text-amber-400 text-sm"></i> Ludo King (লুডো কিং)
-                            </h4>
-                            <p class="text-xs text-slate-400 font-bold mt-0.5">১v১, ১v২ ও ১v৩ লাইভ চ্যালেঞ্জ</p>
-                            <span class="text-[11px] text-emerald-400 font-extrabold">(ম্যাচগুলো লাইভ রয়েছে)</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 2. SNAKE KING (NEW) -->
-                <div onclick="openGameArena('Snake King (সাপ লুডু)', 'snake')" class="bg-[#121a2d] rounded-3xl p-4 border border-teal-500/30 cursor-pointer hover:border-teal-500/60 transition relative overflow-hidden shadow-lg">
-                    <div class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-teal-500 text-slate-950 text-[10px] font-black uppercase tracking-wider flex items-center gap-1 shadow">
-                        <i class="fas fa-bolt"></i> NEW
-                    </div>
-                    <div class="flex items-center gap-3.5">
-                        <div class="w-14 h-14 rounded-2xl bg-slate-900 border border-white/10 p-1 flex items-center justify-center shadow-md">
-                            <img src="https://cdn-icons-png.flaticon.com/512/2865/2865488.png" class="w-full h-full object-cover rounded-xl" alt="Snake King">
-                        </div>
-                        <div>
-                            <h4 class="text-base font-black text-teal-300 flex items-center gap-1.5">
-                                <i class="fas fa-staff-snake text-teal-400 text-sm"></i> Snake King (সাপ লুডু)
-                            </h4>
-                            <p class="text-xs text-slate-400 font-bold mt-0.5">ক্লাসিক স্নেক অ্যান্ড ল্যাডার টুর্নামেন্ট</p>
-                            <span class="text-[11px] text-emerald-400 font-extrabold">(ম্যাচগুলো লাইভ রয়েছে)</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 3. FREE FIRE -->
-                <div onclick="openGameArena('Free Fire (ফ্রি ফায়ার)', 'freefire')" class="bg-[#121a2d] rounded-3xl p-4 border border-orange-500/20 cursor-pointer hover:border-orange-500/50 transition relative overflow-hidden">
-                    <div class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 text-white text-[10px] font-black uppercase tracking-wider shadow">
-                        PLAY NOW
-                    </div>
-                    <div class="flex items-center gap-3.5">
-                        <div class="w-14 h-14 rounded-2xl bg-slate-900 border border-white/10 p-1 flex items-center justify-center shadow-md">
-                            <img src="https://cdn-icons-png.flaticon.com/512/808/808439.png" class="w-full h-full object-cover rounded-xl" alt="Free Fire">
-                        </div>
-                        <div>
-                            <h4 class="text-base font-black text-amber-400 flex items-center gap-1.5">
-                                <i class="fas fa-crosshairs text-orange-400"></i> Free Fire (ফ্রি ফায়ার)
-                            </h4>
-                            <p class="text-xs text-slate-400 font-bold mt-0.5">CS & Battle Royale Matches</p>
-                            <span class="text-[11px] text-orange-300 font-extrabold">(লাইভ টুর্নামেন্ট রুম)</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 4. CARROM BOARD -->
-                <div onclick="openGameArena('Carrom Board (ক্যারাম বোর্ড)', 'carrom')" class="bg-[#121a2d] rounded-3xl p-4 border border-emerald-500/20 cursor-pointer hover:border-emerald-500/50 transition relative overflow-hidden">
-                    <div class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-emerald-600 text-white text-[10px] font-black uppercase tracking-wider shadow">
-                        PLAY NOW
-                    </div>
-                    <div class="flex items-center gap-3.5">
-                        <div class="w-14 h-14 rounded-2xl bg-slate-900 border border-white/10 p-1 flex items-center justify-center shadow-md">
-                            <img src="https://cdn-icons-png.flaticon.com/512/3655/3655613.png" class="w-full h-full object-cover rounded-xl" alt="Carrom">
-                        </div>
-                        <div>
-                            <h4 class="text-base font-black text-emerald-400 flex items-center gap-1.5">
-                                <i class="fas fa-circle-notch text-emerald-400"></i> Carrom Board (ক্যারাম বোর্ড)
-                            </h4>
-                            <p class="text-xs text-slate-400 font-bold mt-0.5">Classic Board Challenge</p>
-                            <span class="text-[11px] text-emerald-300 font-extrabold">(লাইভ টুর্নামেন্ট রুম)</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 5. BEAD 16 -->
-                <div onclick="openGameArena('Bead 16 (১৬ গুটি)', 'bead16')" class="bg-[#121a2d] rounded-3xl p-4 border border-purple-500/20 cursor-pointer hover:border-purple-500/50 transition relative overflow-hidden">
-                    <div class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-purple-600 text-white text-[10px] font-black uppercase tracking-wider shadow">
-                        PLAY NOW
-                    </div>
-                    <div class="flex items-center gap-3.5">
-                        <div class="w-14 h-14 rounded-2xl bg-slate-900 border border-white/10 p-1 flex items-center justify-center shadow-md">
-                            <img src="https://cdn-icons-png.flaticon.com/512/3076/3076891.png" class="w-full h-full object-cover rounded-xl" alt="Bead 16">
-                        </div>
-                        <div>
-                            <h4 class="text-base font-black text-purple-300 flex items-center gap-1.5">
-                                <i class="fas fa-chess-board text-purple-400"></i> Bead 16 (১৬ গুটি)
-                            </h4>
-                            <p class="text-xs text-slate-400 font-bold mt-0.5">ঐতিহ্যবাহী ১৬ গুটি চ্যালেঞ্জ</p>
-                            <span class="text-[11px] text-purple-400 font-extrabold">(লাইভ টুর্নামেন্ট রুম)</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 6. LIVE AUTO LUDO (DISABLED) -->
-                <div class="bg-[#121a2d]/50 rounded-3xl p-4 border border-white/5 relative overflow-hidden opacity-50 cursor-not-allowed">
-                    <div class="absolute top-3 right-3 px-2 py-0.5 rounded-full bg-slate-700 text-slate-300 text-[10px] font-black uppercase">
-                        DISABLED
-                    </div>
-                    <div class="flex items-center gap-3.5">
-                        <div class="w-14 h-14 rounded-2xl bg-slate-900/80 border border-white/5 p-1 flex items-center justify-center filter grayscale">
-                            <img src="https://cdn-icons-png.flaticon.com/512/806/806131.png" class="w-full h-full object-cover rounded-xl" alt="Auto Ludo">
-                        </div>
-                        <div>
-                            <h4 class="text-base font-bold text-slate-400 flex items-center gap-1.5">
-                                <i class="fas fa-ban text-rose-400"></i> লাইভ অটো লুডু
-                            </h4>
-                            <p class="text-xs text-slate-500 font-semibold mt-0.5">স্বয়ংক্রিয় সার্ভার সাময়িকভাবে বন্ধ আছে</p>
-                        </div>
-                    </div>
-                </div>
+            <!-- DYNAMIC ARENA CARDS CONTAINER (CONTROLLED FROM FIREBASE) -->
+            <div id="game-categories-container" class="space-y-3">
+                <!-- Dynamically Rendered From Firebase with Admin Hide & Logo Update Support -->
             </div>
         </div>
 
@@ -587,20 +476,20 @@
             </div>
         </div>
 
-        <!-- ======================= 4. UNIFIED PROFESSIONAL HISTORY PAGE ======================= -->
+        <!-- ======================= 4. PURE MATCH HISTORY (1V1 TO 1V3 WITH PERMANENT OPPONENT) ======================= -->
         <div id="history-page" class="sub-page space-y-4">
             <div class="flex items-center justify-between pb-1">
                 <div class="flex items-center gap-2">
                     <button onclick="navigateTo('home-page')" class="w-9 h-9 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10">
                         <i class="fas fa-arrow-left text-sm"></i>
                     </button>
-                    <h2 class="text-base font-black text-white" style="font-family: 'Russo One', sans-serif;">অল-ইন-ওয়ান অ্যাক্টিভিটি হিস্ট্রি</h2>
+                    <h2 class="text-base font-black text-white" style="font-family: 'Russo One', sans-serif;">টুর্নামেন্ট ম্যাচ হিস্ট্রি</h2>
                 </div>
-                <span class="text-[10px] bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full border border-white/10 font-bold">লাইভ সিঙ্ক</span>
+                <span class="text-[10px] bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full border border-white/10 font-bold">ম্যাচ রেকর্ডস</span>
             </div>
 
-            <!-- UNIFIED HISTORY CONTAINER -->
-            <div id="unified-history-container" class="space-y-3 min-h-[300px]"></div>
+            <!-- PURE MATCH HISTORY CONTAINER -->
+            <div id="pure-match-history-container" class="space-y-3 min-h-[300px]"></div>
         </div>
 
         <!-- ======================= 5. REFERRAL PROGRAM PAGE ======================= -->
@@ -630,7 +519,7 @@
             <div class="bg-[#121a2d] p-4 rounded-3xl border border-white/10 shadow-lg space-y-3">
                 <div class="flex items-center justify-between">
                     <span class="text-xs font-black text-slate-300">আপনার রেফারেল লিংক:</span>
-                    <span id="refer-bonus-badge" class="text-[10px] text-cyan-400 font-bold bg-cyan-500/10 px-2 py-0.5 rounded-md">বোনাস ৳১০</span>
+                    <span class="text-[10px] text-cyan-400 font-bold bg-cyan-500/10 px-2 py-0.5 rounded-md">১০ টাকা + ২ টাকা বোনাস</span>
                 </div>
 
                 <div class="bg-black/40 p-2.5 rounded-2xl border border-white/10 flex items-center justify-between">
@@ -647,6 +536,23 @@
                 </button>
             </div>
 
+            <!-- REFERRAL GUIDELINE AS REQUESTED -->
+            <div class="bg-[#052e16]/60 border border-emerald-500/30 p-4 rounded-3xl space-y-3">
+                <h4 class="text-xs font-black text-emerald-400 flex items-center gap-2">
+                    <i class="fas fa-gift"></i> রেফারেল ইনকাম রুলস:
+                </h4>
+                <div class="space-y-2 text-xs text-slate-300 leading-relaxed">
+                    <p class="flex items-start gap-2">
+                        <span class="w-5 h-5 rounded-full bg-emerald-500 text-slate-950 font-black flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">১</span>
+                        <span>আপনার বন্ধু যদি প্রথমবার <b>১০০ টাকা</b> ডিপোজিট করে, তাহলে সাথে সাথে আপনি <b>১০ টাকা</b> বোনাস পাবেন (১ বার)।</span>
+                    </p>
+                    <p class="flex items-start gap-2">
+                        <span class="w-5 h-5 rounded-full bg-cyan-500 text-slate-950 font-black flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">২</span>
+                        <span>এরপর থেকে আপনার রেফার করা বন্ধু যেকোনো ম্যাচ উইন (Win) হলে আপনি প্রতি ম্যাচ থেকে <b>২ টাকা করে আজীবন কমিশন</b> পাবেন!</span>
+                    </p>
+                </div>
+            </div>
+
             <div class="bg-[#121a2d] p-4 rounded-3xl border border-white/10 space-y-3">
                 <h4 class="text-xs font-black text-slate-300">আমন্ত্রিত বন্ধুদের তালিকা</h4>
                 <div id="referred-users-list-container" class="space-y-2 text-xs text-slate-400">
@@ -655,7 +561,7 @@
             </div>
         </div>
 
-        <!-- ======================= 6. LEADERBOARD PAGE (NEW) ======================= -->
+        <!-- ======================= 6. LEADERBOARD PAGE ======================= -->
         <div id="leaderboard-page" class="sub-page space-y-4">
             <div class="flex items-center gap-2 pb-1">
                 <button onclick="navigateTo('profile-page')" class="w-9 h-9 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10">
@@ -670,9 +576,7 @@
                 <p class="text-[11px] text-amber-100 font-semibold">লাইভ টুর্নামেন্ট খেলে শীর্ষে থাকুন ও বিশেষ পুরস্কার জিতুন!</p>
             </div>
 
-            <div id="leaderboard-list-container" class="space-y-2.5">
-                <!-- Dynamically Rendered -->
-            </div>
+            <div id="leaderboard-list-container" class="space-y-2.5"></div>
         </div>
 
         <!-- ======================= 7. PROFILE PAGE ======================= -->
@@ -1048,18 +952,19 @@
             photo: "https://i.postimg.cc/L4YZZKsv/IMG-20260919-214336-790.jpg",
             balance: 100.00,
             winningBalance: 40.00,
-            depositBalance: 60.00
+            depositBalance: 60.00,
+            referredBy: null
         };
 
         let selectedGameCategory = 'ludo'; 
         let realtimeMatches = [];
+        let gameCategories = [];
         let pendingJoinMatchId = null;
         let currentActiveFilter = 'all';
 
-        let userActivityHistory = [];
+        let pureMatchHistory = [];
         let notifications = [];
         let firebaseReferralBaseUrl = "https://t.me/EXPERTearn_team?start=ref_";
-        let firebaseReferBonus = "১০";
 
         window.onload = function() {
             // Telegram WebApp Setup
@@ -1075,6 +980,15 @@
                     activeUser.email = tgUser.username ? `${tgUser.username}@telegram.org` : `${activeUser.id}@telegram.org`;
                     if (tgUser.photo_url) activeUser.photo = tgUser.photo_url;
                 }
+
+                // Check Start Param for Referral Tracking
+                const startParam = window.Telegram.WebApp.initDataUnsafe?.start_param;
+                if (startParam && startParam.startsWith('ref_')) {
+                    const inviterId = startParam.replace('ref_', '');
+                    if (inviterId && inviterId !== activeUser.id) {
+                        registerUserReferral(inviterId);
+                    }
+                }
             }
 
             // Sync user profile to DB
@@ -1089,13 +1003,29 @@
             initRealtimeFirebaseSync();
             checkReturnPaymentStatus();
 
-            // Hide Preloader
             setTimeout(() => {
                 const loader = document.getElementById('preloader');
                 loader.style.opacity = '0';
                 loader.style.visibility = 'hidden';
             }, 800);
         };
+
+        function registerUserReferral(inviterId) {
+            const userRef = database.ref(`users/${activeUser.id}`);
+            userRef.once('value', snapshot => {
+                const u = snapshot.val() || {};
+                if (!u.referredBy) {
+                    userRef.update({ referredBy: inviterId });
+                    database.ref(`users/${inviterId}/referrals/${activeUser.id}`).set({
+                        uid: activeUser.id,
+                        name: activeUser.name,
+                        photo: activeUser.photo,
+                        hasFirstDepositBonusGiven: false,
+                        joinedAt: Date.now()
+                    });
+                }
+            });
+        }
 
         function updateUserInterface() {
             const total = activeUser.balance.toFixed(2);
@@ -1117,8 +1047,6 @@
             const fullRefLink = `${firebaseReferralBaseUrl}${activeUser.id}`;
             const linkElem = document.getElementById('ref-link-display-full');
             if (linkElem) linkElem.textContent = fullRefLink;
-            const badge = document.getElementById('refer-bonus-badge');
-            if (badge) badge.textContent = `বোনাস ৳${firebaseReferBonus}`;
         }
 
         function showToast(msg, type = 'info') {
@@ -1135,6 +1063,10 @@
             setTimeout(() => toast.remove(), 3400);
         }
 
+        function showComingSoonAlert(title) {
+            showToast(`🔥 ${title} - Coming soon! খুব শীঘ্রই এটি চালু হবে।`, 'info');
+        }
+
         // ================= SWITCH AND OPEN GAME ARENAS =================
         function openGameArena(title, categoryKey) {
             selectedGameCategory = categoryKey;
@@ -1146,18 +1078,23 @@
 
         // ================= FIREBASE REALTIME MATCH SYNC =================
         function initRealtimeFirebaseSync() {
-            // Listen to Dynamic Referral Settings
+            // Listen to Dynamic Referral URL
             database.ref('settings/referral_base_url').on('value', snap => {
                 if (snap.exists() && snap.val()) {
                     firebaseReferralBaseUrl = snap.val();
                     updateReferralDisplay();
                 }
             });
-            database.ref('settings/refer_bonus').on('value', snap => {
-                if (snap.exists() && snap.val()) {
-                    firebaseReferBonus = String(snap.val());
-                    updateReferralDisplay();
+
+            // Listen to Game Categories (Admin can Hide or Change Logo Link)
+            database.ref('game_categories').on('value', snap => {
+                const data = snap.val();
+                if (data) {
+                    gameCategories = Object.keys(data).map(k => ({ key: k, ...data[k] }));
+                } else {
+                    seedDefaultCategories();
                 }
+                renderGameCategories();
             });
 
             // Listen to Matches (supports 1v1, 1v2, 1v3)
@@ -1171,7 +1108,6 @@
                         const m = data[key];
                         m.id = key;
                         m.gameType = m.gameType || 'ludo';
-                        // Determine mode capacity: 1v1 (2 players), 1v2 (3 players), 1v3 (4 players)
                         m.mode = m.mode || (m.max === 4 ? '1v3' : m.max === 3 ? '1v2' : '1v1');
                         m.max = m.max || (m.mode === '1v3' ? 4 : m.mode === '1v2' ? 3 : 2);
                         
@@ -1192,7 +1128,7 @@
                 }
 
                 renderMatches();
-                renderUnifiedHistory();
+                renderPureMatchHistory();
             });
 
             // Listen for User Balance
@@ -1203,15 +1139,16 @@
                 }
             });
 
-            // Listen for History & Notifications
+            // Listen for Pure Match History
             database.ref(`users/${activeUser.id}/history`).on('value', snap => {
-                userActivityHistory = [];
+                pureMatchHistory = [];
                 if (snap.exists()) {
-                    snap.forEach(c => { userActivityHistory.unshift(c.val()); });
+                    snap.forEach(c => { pureMatchHistory.unshift(c.val()); });
                 }
-                renderUnifiedHistory();
+                renderPureMatchHistory();
             });
 
+            // Listen for Notifications
             database.ref(`users/${activeUser.id}/notifications`).on('value', snap => {
                 notifications = [];
                 if (snap.exists()) {
@@ -1223,8 +1160,46 @@
                 renderNotifications();
             });
 
-            // Load Leaderboard Live
+            // Referral Stats
+            database.ref(`users/${activeUser.id}/referrals`).on('value', snap => {
+                if(snap.exists()) {
+                    const refs = snap.val();
+                    const count = Object.keys(refs).length;
+                    document.getElementById('ref-stat-total').textContent = count;
+                    document.getElementById('ref-stat-active').textContent = count;
+                    
+                    let refListHtml = '';
+                    Object.values(refs).forEach(r => {
+                        refListHtml += `
+                        <div class="p-2.5 bg-black/30 rounded-xl flex items-center justify-between border border-white/5">
+                            <div class="flex items-center gap-2">
+                                <img src="${r.photo || 'https://i.postimg.cc/L4YZZKsv/IMG-20260919-214336-790.jpg'}" class="w-7 h-7 rounded-full object-cover">
+                                <span class="font-bold text-white">${r.name}</span>
+                            </div>
+                            <span class="text-[10px] text-emerald-400 font-bold">সক্রিয়</span>
+                        </div>`;
+                    });
+                    document.getElementById('referred-users-list-container').innerHTML = refListHtml;
+                }
+            });
+
+            database.ref(`users/${activeUser.id}/refer_earnings`).on('value', snap => {
+                const earn = parseFloat(snap.val()) || 0;
+                document.getElementById('ref-stat-earn').textContent = `৳${earn.toFixed(2)}`;
+            });
+
             loadLeaderboard();
+        }
+
+        function seedDefaultCategories() {
+            const initial = {
+                ludo: { name: "Ludo King (লুডো কিং)", icon: "https://cdn-icons-png.flaticon.com/512/806/806131.png", subtitle: "১v১, ১v২ ও ১v৩ লাইভ চ্যালেঞ্জ", hidden: false, tag: "HOT", color: "blue" },
+                snake: { name: "Snake King (সাপ লুডু)", icon: "https://cdn-icons-png.flaticon.com/512/2865/2865488.png", subtitle: "ক্লাসিক স্নেক অ্যান্ড ল্যাডার টুর্নামেন্ট", hidden: false, tag: "NEW", color: "teal" },
+                freefire: { name: "Free Fire (ফ্রি ফায়ার)", icon: "https://cdn-icons-png.flaticon.com/512/808/808439.png", subtitle: "CS & Battle Royale Matches", hidden: false, tag: "PLAY NOW", color: "orange" },
+                carrom: { name: "Carrom Board (ক্যারাম বোর্ড)", icon: "https://cdn-icons-png.flaticon.com/512/3655/3655613.png", subtitle: "Classic Board Challenge", hidden: false, tag: "PLAY NOW", color: "emerald" },
+                bead16: { name: "Bead 16 (১৬ গুটি)", icon: "https://cdn-icons-png.flaticon.com/512/3076/3076891.png", subtitle: "ঐতিহ্যবাহী ১৬ গুটি চ্যালেঞ্জ", hidden: false, tag: "PLAY NOW", color: "purple" }
+            };
+            database.ref('game_categories').set(initial);
         }
 
         function seedDefaultMatches() {
@@ -1238,6 +1213,66 @@
                 { matchNo: "#4001", gameType: "bead16", mode: "1v1", max: 2, fee: 30, prize: 50, isSpecial: false, roomCode: "", status: "waiting", createdAt: Date.now() }
             ];
             defaults.forEach(item => database.ref('matches').push(item));
+        }
+
+        // ================= DYNAMIC ARENA CARDS RENDERING =================
+        function renderGameCategories() {
+            const container = document.getElementById('game-categories-container');
+            if (!container) return;
+
+            let html = '';
+
+            gameCategories.forEach(g => {
+                if (g.hidden === true) return; // Admin can hide by setting hidden: true
+
+                let borderColor = 'border-blue-500/30';
+                let tagBg = 'bg-rose-500 text-white';
+                if (g.color === 'teal') { borderColor = 'border-teal-500/30'; tagBg = 'bg-teal-500 text-slate-950'; }
+                if (g.color === 'orange') { borderColor = 'border-orange-500/30'; tagBg = 'bg-gradient-to-r from-orange-500 to-amber-500 text-white'; }
+                if (g.color === 'emerald') { borderColor = 'border-emerald-500/30'; tagBg = 'bg-emerald-600 text-white'; }
+                if (g.color === 'purple') { borderColor = 'border-purple-500/30'; tagBg = 'bg-purple-600 text-white'; }
+
+                html += `
+                <div onclick="openGameArena('${g.name}', '${g.key}')" class="bg-[#121a2d] rounded-3xl p-4 border ${borderColor} cursor-pointer hover:scale-[1.01] transition relative overflow-hidden shadow-lg">
+                    <div class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full ${tagBg} text-[10px] font-black uppercase tracking-wider shadow">
+                        ${g.tag || 'PLAY'}
+                    </div>
+                    <div class="flex items-center gap-3.5">
+                        <div class="w-14 h-14 rounded-2xl bg-slate-900 border border-white/10 p-1 flex items-center justify-center shadow-md">
+                            <img src="${g.icon}" class="w-full h-full object-cover rounded-xl" alt="${g.name}">
+                        </div>
+                        <div>
+                            <h4 class="text-base font-black text-white flex items-center gap-1.5">
+                                ${g.name}
+                            </h4>
+                            <p class="text-xs text-slate-400 font-bold mt-0.5">${g.subtitle || 'লাইভ টুর্নামেন্ট চ্যালেঞ্জ'}</p>
+                            <span class="text-[11px] text-emerald-400 font-extrabold">(ম্যাচগুলো লাইভ রয়েছে)</span>
+                        </div>
+                    </div>
+                </div>`;
+            });
+
+            // 5. LIVE AUTO LUDO (AS REQUESTED: KEPT AS PREVIOUS & SHOWS COMING SOON ON CLICK)
+            html += `
+            <div onclick="showComingSoonAlert('লাইভ অটো লুডু')" class="bg-[#121a2d] rounded-3xl p-4 border border-cyan-500/20 cursor-pointer hover:border-cyan-500/50 transition relative overflow-hidden">
+                <div class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-cyan-500 text-slate-950 text-[10px] font-black uppercase tracking-wider flex items-center gap-1 shadow">
+                    <i class="fas fa-bolt"></i> AUTO
+                </div>
+                <div class="flex items-center gap-3.5">
+                    <div class="w-14 h-14 rounded-2xl bg-slate-900 border border-white/10 p-1 flex items-center justify-center shadow-md">
+                        <img src="https://cdn-icons-png.flaticon.com/512/806/806131.png" class="w-full h-full object-cover rounded-xl" alt="Live Ludo">
+                    </div>
+                    <div>
+                        <h4 class="text-base font-black text-rose-400 flex items-center gap-1.5">
+                            <i class="fas fa-robot text-rose-400 text-sm"></i> লাইভ অটো লুডু
+                        </h4>
+                        <p class="text-xs text-slate-400 font-bold mt-0.5">ইনস্ট্যান্ট স্বয়ংক্রিয় রুম কোড</p>
+                        <span class="text-[11px] text-cyan-400 font-extrabold">(খুব শীঘ্রই চালুর হবে)</span>
+                    </div>
+                </div>
+            </div>`;
+
+            container.innerHTML = html;
         }
 
         function triggerRoomCodeLiveNotification(match) {
@@ -1288,7 +1323,7 @@
                     <div class="bg-[#121a2d] p-8 rounded-3xl text-center space-y-2 border border-white/5">
                         <i class="fas fa-gamepad text-3xl text-slate-500"></i>
                         <h4 class="text-sm font-bold text-slate-300">
-                            ${currentActiveFilter === 'joined' ? 'আপনি এখনো কোনো সক্রিয় ম্যাচে জয়েন করেননি।' : 'এই মুহূর্তে এই ফিল্টারে কোনো ম্যাচ উপলব্ধ নেই।'}
+                            ${currentActiveFilter === 'joined' ? 'আপনি এখনো কোনো সক্রিয় ম্যাচে জয়েন করেননি।' : 'এই ফিল্টারে কোনো ম্যাচ উপলব্ধ নেই।'}
                         </h4>
                     </div>`;
                 return;
@@ -1298,8 +1333,6 @@
                 const maxPlayers = m.max || 2;
                 const isFull = m.current >= maxPlayers;
                 const hasRoomCode = m.roomCode && m.roomCode.trim() !== "";
-
-                // Mode label formatting: 1v1, 1v2, 1v3
                 const modeLabel = m.mode ? m.mode.toUpperCase() : (maxPlayers === 4 ? '1V3' : maxPlayers === 3 ? '1V2' : '1V1');
 
                 return `
@@ -1351,11 +1384,9 @@
                         </div>
                     </div>
 
-                    <!-- ACTION BUTTONS LOGIC -->
                     <div>
                         ${m.myJoined ? `
                             ${!isFull ? `
-                                <!-- সিট বাকি: রিফান্ড চালু, রুম কোড ডিজাবল -->
                                 <div class="grid grid-cols-2 gap-2 pt-1">
                                     <button onclick="handleManualRefund('${m.id}')" class="py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs shadow flex items-center justify-center gap-1 active:scale-95 transition">
                                         <i class="fas fa-undo"></i> রিফান্ড নিন
@@ -1365,7 +1396,6 @@
                                     </button>
                                 </div>
                             ` : `
-                                <!-- ফুল হয়েছে: রিফান্ড লক ও রুম কোড ট্রানজিশন -->
                                 ${!hasRoomCode ? `
                                     <div class="grid grid-cols-2 gap-2 pt-1">
                                         <button disabled class="py-2.5 rounded-xl bg-slate-200 text-slate-400 font-black text-xs flex items-center justify-center gap-1 cursor-not-allowed">
@@ -1376,7 +1406,6 @@
                                         </div>
                                     </div>
                                 ` : `
-                                    <!-- এডমিন রুম কোড দিলে: রুম কোড কপি (সবুজ) এবং Play Game (বেগুনি) -->
                                     <div class="grid grid-cols-2 gap-2 pt-1">
                                         <button onclick="copyMatchRoomCode('${m.roomCode}')" class="py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs shadow-md flex items-center justify-center gap-1.5 transition active:scale-95">
                                             <i class="fas fa-copy"></i> কোড: ${m.roomCode}
@@ -1388,7 +1417,6 @@
                                 `}
                             `}
                         ` : `
-                            <!-- নট জয়েনড অবস্থা -->
                             ${isFull ? `
                                 <button disabled class="w-full py-3 rounded-xl bg-slate-200 text-slate-400 font-black text-xs cursor-not-allowed">
                                     ম্যাচটি সম্পূর্ণ ফুল
@@ -1405,6 +1433,8 @@
         }
 
         function getGameIcon(type) {
+            const cat = gameCategories.find(c => c.key === type);
+            if (cat && cat.icon) return cat.icon;
             switch(type) {
                 case 'freefire': return 'https://cdn-icons-png.flaticon.com/512/808/808439.png';
                 case 'carrom': return 'https://cdn-icons-png.flaticon.com/512/3655/3655613.png';
@@ -1422,10 +1452,10 @@
         }
 
         function launchGameApp(gameType) {
-            showToast("গেমটি ওপেন করে জয়েন করুন ও কোড পেস্ট করুন!", "info");
+            showToast("গেমটি ওপেন করে কোড দিয়ে জয়েন করুন!", "info");
         }
 
-        // ================= JOIN MATCH =================
+        // ================= JOIN MATCH (WITH PERMANENT OPPONENT SNAPSHOT) =================
         function openJoinMatchModal(id) {
             const m = realtimeMatches.find(x => x.id === id);
             if (!m) return;
@@ -1453,7 +1483,6 @@
             if (!chosenName) return showToast("আপনার প্লেয়ার নাম লিখুন!", "error");
             activeUser.gameName = chosenName;
 
-            // Deduct Balance
             activeUser.balance -= m.fee;
             activeUser.depositBalance = Math.max(0, activeUser.depositBalance - m.fee);
             updateUserInterface();
@@ -1467,22 +1496,28 @@
                 joinedAt: Date.now()
             };
 
-            database.ref(`matches/${m.id}/players/${activeUser.id}`).set(playerPayload);
+            // Save player into Match
+            database.ref(`matches/${m.id}/players/${activeUser.id}`).set(playerPayload).then(() => {
+                // Read current players snapshot to preserve permanently in History
+                database.ref(`matches/${m.id}/players`).once('value', pSnap => {
+                    const currentPlayers = pSnap.val() ? Object.values(pSnap.val()) : [playerPayload];
 
-            // Record into History
-            const historyItem = {
-                type: "MATCH",
-                matchNo: m.matchNo,
-                matchId: m.id,
-                gameType: m.gameType || 'ludo',
-                mode: m.mode || '1v1',
-                fee: m.fee,
-                prize: m.prize,
-                status: "JOINED",
-                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                timestamp: Date.now()
-            };
-            database.ref(`users/${activeUser.id}/history/${m.id}`).set(historyItem);
+                    const historyItem = {
+                        type: "MATCH",
+                        matchNo: m.matchNo,
+                        matchId: m.id,
+                        gameType: m.gameType || 'ludo',
+                        mode: m.mode || '1v1',
+                        fee: m.fee,
+                        prize: m.prize,
+                        status: "JOINED",
+                        playersSnapshot: currentPlayers, // Permanent opponent history
+                        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                        timestamp: Date.now()
+                    };
+                    database.ref(`users/${activeUser.id}/history/${m.id}`).set(historyItem);
+                });
+            });
 
             database.ref(`users/${activeUser.id}/notifications`).push({
                 title: "ম্যাচে সফল জয়েন!",
@@ -1585,21 +1620,26 @@
                     return showToast("এই ম্যাচটি ইতিমধ্যে সম্পন্ন হয়ে গেছে!", "error");
                 }
 
+                // Update Match to Completed
                 database.ref(`matches/${foundMatch.id}`).update({
                     status: "COMPLETED",
                     resultSubmittedBy: activeUser.id,
                     submittedAt: Date.now()
                 });
 
+                // Update User Match History to WIN
                 database.ref(`users/${activeUser.id}/history/${foundMatch.id}`).update({
                     status: "WIN",
                     roomCode: room,
                     completedAt: Date.now()
                 });
 
+                // Trigger Referral Match Win Commission (2 TAKA TO INVITER)
+                checkAndGiveReferralWinCommission(activeUser.id, foundMatch.matchNo);
+
                 database.ref(`users/${activeUser.id}/notifications`).push({
                     title: "রেজাল্ট জমা হয়েছে",
-                    message: `রুম কোড ${room}-এর রেজাল্ট সফলভাবে সাবমিট হয়েছে। ভেরিফাই শেষে প্রাইজ ব্যালেন্স যুক্ত হবে।`,
+                    message: `রুম কোড ${room}-এর রেজাল্ট সফলভাবে সাবমিট হয়েছে।`,
                     time: "Just now"
                 });
 
@@ -1614,161 +1654,151 @@
             });
         }
 
-        // ================= UNIFIED ALL-IN-ONE PROFESSIONAL HISTORY =================
-        function renderUnifiedHistory() {
-            const container = document.getElementById('unified-history-container');
+        // ================= REFERRAL COMMISSIONS LOGIC =================
+        function checkAndGiveReferralWinCommission(winnerUid, matchNo) {
+            database.ref(`users/${winnerUid}/referredBy`).once('value', snap => {
+                if (snap.exists() && snap.val()) {
+                    const inviterId = snap.val();
+                    // Add 2 TK Win Commission to Inviter
+                    database.ref(`users/${inviterId}/balance`).transaction(curr => (curr || 0) + 2);
+                    database.ref(`users/${inviterId}/refer_earnings`).transaction(curr => (curr || 0) + 2);
+
+                    database.ref(`users/${inviterId}/notifications`).push({
+                        title: "রেফারেল ম্যাচ কমিশন!",
+                        message: `আপনার আমন্ত্রিত বন্ধু ম্যাচ ${matchNo} জয় করায় আপনি ৳২ কমিশন পেয়েছেন।`,
+                        time: "Just now",
+                        timestamp: Date.now()
+                    });
+                }
+            });
+        }
+
+        function checkAndGiveFirstDepositReferralBonus(userUid, depositAmount) {
+            if (depositAmount < 100) return;
+
+            database.ref(`users/${userUid}/referredBy`).once('value', snap => {
+                if (snap.exists() && snap.val()) {
+                    const inviterId = snap.val();
+                    const refItemRef = database.ref(`users/${inviterId}/referrals/${userUid}`);
+
+                    refItemRef.once('value', rSnap => {
+                        const rData = rSnap.val() || {};
+                        if (!rData.hasFirstDepositBonusGiven) {
+                            // Give 10 TK Bonus to Inviter
+                            database.ref(`users/${inviterId}/balance`).transaction(curr => (curr || 0) + 10);
+                            database.ref(`users/${inviterId}/refer_earnings`).transaction(curr => (curr || 0) + 10);
+
+                            refItemRef.update({ hasFirstDepositBonusGiven: true });
+
+                            database.ref(`users/${inviterId}/notifications`).push({
+                                title: "রেফারেল ডিপোজিট বোনাস!",
+                                message: `আপনার আমন্ত্রিত বন্ধু প্রথমবার ৳${depositAmount} ডিপোজিট করায় আপনি ৳১০ বোনাস পেয়েছেন!`,
+                                time: "Just now",
+                                timestamp: Date.now()
+                            });
+                        }
+                    });
+                }
+            });
+        }
+
+        // ================= PURE MATCH HISTORY ENGINE (1V1 TO 1V3 WITH PERMANENT OPPONENTS) =================
+        function renderPureMatchHistory() {
+            const container = document.getElementById('pure-match-history-container');
             if (!container) return;
 
-            // Combine Match History + Deposits into a unified chronological array
-            database.ref(`users/${activeUser.id}/deposits`).once('value', depSnap => {
-                let allEvents = [];
+            if (pureMatchHistory.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-[#121a2d] p-8 rounded-3xl text-center border border-white/5 space-y-2">
+                        <i class="fas fa-trophy text-3xl text-slate-500"></i>
+                        <p class="text-xs font-bold text-slate-400">এখনো কোনো টুর্নামেন্ট ম্যাচ খেলেননি।</p>
+                    </div>`;
+                return;
+            }
 
-                // 1. MATCH EVENTS
-                userActivityHistory.forEach(h => {
-                    allEvents.push({
-                        category: "MATCH",
-                        id: h.matchId,
-                        matchNo: h.matchNo,
-                        gameType: h.gameType || 'ludo',
-                        mode: h.mode || '1v1',
-                        status: h.status || 'JOINED',
-                        amount: h.fee || 0,
-                        prize: h.prize || 0,
-                        timestamp: h.timestamp || Date.now(),
-                        time: h.time || 'Today'
-                    });
-                });
+            container.innerHTML = pureMatchHistory.map(item => {
+                const isOneVsOne = (item.mode === '1v1' || !item.mode);
+                const players = item.playersSnapshot || [];
 
-                // 2. TRANSACTION / DEPOSIT EVENTS
-                if (depSnap.exists()) {
-                    depSnap.forEach(d => {
-                        const val = d.val();
-                        allEvents.push({
-                            category: "TRANSACTION",
-                            type: val.type || "DEPOSIT",
-                            gateway: val.gateway || "Instant Pay",
-                            amount: val.amount || 0,
-                            txid: val.txid || d.key,
-                            status: "COMPLETED",
-                            timestamp: val.timestamp || Date.now(),
-                            time: new Date(val.timestamp || Date.now()).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
-                        });
-                    });
+                let p1Photo = activeUser.photo;
+                let p2Photo = "https://cdn-icons-png.flaticon.com/512/847/847969.png";
+                let p2Name = "Opponent";
+
+                const opponentList = players.filter(p => p.uid !== activeUser.id);
+                if (opponentList.length > 0) {
+                    p2Photo = opponentList[0].photo || p2Photo;
+                    p2Name = opponentList[0].name || p2Name;
                 }
 
-                allEvents.sort((a, b) => b.timestamp - a.timestamp);
+                // Colors: Refund = Yellow, Win = Green, Loss = Red
+                let statusColor = "text-amber-400 bg-amber-500/10 border-amber-500/30";
+                let statusText = item.status;
 
-                if (allEvents.length === 0) {
-                    container.innerHTML = `
-                        <div class="bg-[#121a2d] p-8 rounded-3xl text-center border border-white/5 space-y-2">
-                            <i class="fas fa-receipt text-3xl text-slate-500"></i>
-                            <p class="text-xs font-bold text-slate-400">এখনো কোনো হিস্ট্রি বা ট্রানজ্যাকশন পাওয়া যায়নি।</p>
-                        </div>`;
-                    return;
+                if (item.status === 'WIN') {
+                    statusColor = "text-emerald-400 bg-emerald-500/10 border-emerald-500/30";
+                    statusText = "🏆 WINNER";
+                } else if (item.status === 'LOSS') {
+                    statusColor = "text-rose-400 bg-rose-500/10 border-rose-500/30";
+                    statusText = "LOST";
+                } else if (item.status === 'REFUNDED') {
+                    statusColor = "text-yellow-400 bg-yellow-500/10 border-yellow-500/30";
+                    statusText = "রিফান্ড";
                 }
 
-                container.innerHTML = allEvents.map(item => {
-                    if (item.category === "MATCH") {
-                        // Find match in realtimeMatches to check players for 1v1 VS Avatar view
-                        const currentMatchData = realtimeMatches.find(x => x.id === item.id);
-                        const isOneVsOne = (item.mode === '1v1' || !item.mode);
+                return `
+                <div class="bg-[#121a2d] p-4 rounded-3xl border border-white/5 shadow-md space-y-3">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded-lg bg-blue-500/20 text-blue-400 text-[10px] font-black uppercase tracking-wider">${(item.mode || '1v1').toUpperCase()}</span>
+                            <h4 class="text-xs font-black text-white">${(item.gameType || 'GAME').toUpperCase()} ${item.matchNo}</h4>
+                        </div>
+                        <span class="px-2.5 py-0.5 rounded-full border text-[10px] font-black ${statusColor}">
+                            ${statusText}
+                        </span>
+                    </div>
 
-                        let p1Photo = activeUser.photo;
-                        let p2Photo = "https://cdn-icons-png.flaticon.com/512/847/847969.png"; // Placeholder
-
-                        if (currentMatchData && currentMatchData.playersList) {
-                            const other = currentMatchData.playersList.find(p => p.uid !== activeUser.id);
-                            if (other && other.photo) p2Photo = other.photo;
-                        }
-
-                        // Color rules:
-                        // Refund = Yellow (amber)
-                        // Win = Green (emerald)
-                        // Loss = Red (rose)
-                        let statusColor = "text-amber-400 bg-amber-500/10 border-amber-500/30";
-                        let statusText = item.status;
-
-                        if (item.status === 'WIN') {
-                            statusColor = "text-emerald-400 bg-emerald-500/10 border-emerald-500/30";
-                        } else if (item.status === 'LOSS') {
-                            statusColor = "text-rose-400 bg-rose-500/10 border-rose-500/30";
-                        } else if (item.status === 'REFUNDED') {
-                            statusColor = "text-yellow-400 bg-yellow-500/10 border-yellow-500/30";
-                            statusText = "রিফান্ড";
-                        }
-
-                        return `
-                        <div class="bg-[#121a2d] p-4 rounded-3xl border border-white/5 shadow-md space-y-3">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-2">
-                                    <span class="px-2 py-0.5 rounded-lg bg-blue-500/20 text-blue-400 text-[10px] font-black uppercase tracking-wider">${item.mode.toUpperCase()}</span>
-                                    <h4 class="text-xs font-black text-white">${(item.gameType).toUpperCase()} ${item.matchNo}</h4>
+                    ${isOneVsOne ? `
+                        <!-- 1V1 TELEGRAM AVATAR VS AVATAR DISPLAY -->
+                        <div class="bg-[#090f1d] p-3 rounded-2xl border border-white/5 flex items-center justify-around relative">
+                            <div class="flex flex-col items-center gap-1">
+                                <div class="w-12 h-12 rounded-full border-2 border-emerald-500 p-0.5 overflow-hidden shadow-lg bg-slate-800">
+                                    <img src="${p1Photo}" class="w-full h-full object-cover rounded-full" alt="You">
                                 </div>
-                                <span class="px-2.5 py-0.5 rounded-full border text-[10px] font-black ${statusColor}">
-                                    ${statusText}
-                                </span>
+                                <span class="text-[10px] font-bold text-slate-300">You (${activeUser.name})</span>
                             </div>
 
-                            ${isOneVsOne ? `
-                                <!-- 1V1 TELEGRAM AVATAR VS AVATAR DISPLAY -->
-                                <div class="bg-[#090f1d] p-3 rounded-2xl border border-white/5 flex items-center justify-around relative">
-                                    <div class="flex flex-col items-center gap-1">
-                                        <div class="w-12 h-12 rounded-full border-2 border-emerald-500 p-0.5 overflow-hidden shadow-lg bg-slate-800">
-                                            <img src="${p1Photo}" class="w-full h-full object-cover rounded-full" alt="You">
-                                        </div>
-                                        <span class="text-[10px] font-bold text-slate-300">You</span>
+                            <div class="text-center">
+                                <span class="text-base font-black italic text-rose-500 tracking-wider">VS</span>
+                            </div>
+
+                            <div class="flex flex-col items-center gap-1">
+                                <div class="w-12 h-12 rounded-full border-2 border-rose-500 p-0.5 overflow-hidden shadow-lg bg-slate-800">
+                                    <img src="${p2Photo}" class="w-full h-full object-cover rounded-full" alt="Opponent">
+                                </div>
+                                <span class="text-[10px] font-bold text-slate-400 truncate max-w-[80px]">${p2Name}</span>
+                            </div>
+                        </div>
+                    ` : `
+                        <!-- MULTI-PLAYER (1v2, 1v3) PERMANENT OPPONENT LIST -->
+                        <div class="bg-[#090f1d] p-3 rounded-2xl border border-white/5 space-y-2">
+                            <span class="text-[10px] text-slate-400 uppercase font-black">ম্যাচ প্লেয়ারগণ (${item.mode.toUpperCase()}):</span>
+                            <div class="flex items-center gap-2 overflow-x-auto pb-1">
+                                ${players.map(p => `
+                                    <div class="flex items-center gap-1.5 bg-slate-800/80 px-2 py-1 rounded-xl border border-white/5 flex-shrink-0">
+                                        <img src="${p.photo || 'https://cdn-icons-png.flaticon.com/512/847/847969.png'}" class="w-5 h-5 rounded-full object-cover">
+                                        <span class="text-[10px] text-slate-300 font-bold truncate max-w-[60px]">${p.name}</span>
                                     </div>
-
-                                    <div class="text-center">
-                                        <span class="text-base font-black italic text-rose-500 tracking-wider">VS</span>
-                                    </div>
-
-                                    <div class="flex flex-col items-center gap-1">
-                                        <div class="w-12 h-12 rounded-full border-2 border-rose-500 p-0.5 overflow-hidden shadow-lg bg-slate-800">
-                                            <img src="${p2Photo}" class="w-full h-full object-cover rounded-full" alt="Opponent">
-                                        </div>
-                                        <span class="text-[10px] font-bold text-slate-400">Opponent</span>
-                                    </div>
-                                </div>
-                            ` : `
-                                <!-- MULTI-PLAYER (1v2, 1v3) INFO -->
-                                <div class="bg-[#090f1d] p-2.5 rounded-2xl border border-white/5 flex items-center justify-between text-xs">
-                                    <span class="text-slate-400 font-semibold">মাল্টিপ্লেয়ার ব্যাটল (${item.mode})</span>
-                                    <span class="text-amber-400 font-black">প্রাইজ: ৳${item.prize}</span>
-                                </div>
-                            `}
-
-                            <div class="flex items-center justify-between text-[11px] text-slate-400 pt-1 border-t border-white/5">
-                                <span>ফি: <b class="text-white">৳${item.amount}</b></span>
-                                <span>${item.time}</span>
+                                `).join('')}
                             </div>
-                        </div>`;
-                    } else {
-                        // TRANSACTION / DEPOSIT / WITHDRAWAL
-                        const isDep = item.type === "DEPOSIT";
-                        const cardColor = isDep ? "border-emerald-500/20" : "border-rose-500/20";
-                        const amountColor = isDep ? "text-emerald-400" : "text-rose-400";
-                        const badgeColor = isDep ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30" : "bg-rose-500/10 text-rose-400 border-rose-500/30";
+                        </div>
+                    `}
 
-                        return `
-                        <div class="bg-[#121a2d] p-4 rounded-3xl border ${cardColor} shadow-md flex items-center justify-between">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-2xl ${isDep ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'} flex items-center justify-center text-base">
-                                    <i class="fas ${isDep ? 'fa-arrow-down' : 'fa-arrow-up'}"></i>
-                                </div>
-                                <div>
-                                    <h4 class="text-xs font-black text-white">${isDep ? 'ডিপোজিট সম্পন্ন' : 'উইথড্রয়াল প্রসেস'}</h4>
-                                    <p class="text-[10px] font-mono text-slate-400 mt-0.5">${item.txid}</p>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <span class="text-sm font-black ${amountColor} block">${isDep ? '+' : '-'}৳${item.amount.toFixed(2)}</span>
-                                <span class="px-2 py-0.5 rounded-md border text-[9px] font-bold ${badgeColor} inline-block mt-0.5">${item.status}</span>
-                            </div>
-                        </div>`;
-                    }
-                }).join('');
-            });
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 pt-1 border-t border-white/5">
+                        <span>এন্ট্রি ফি: <b class="text-white">৳${item.fee}</b> • প্রাইজ: <b class="text-emerald-400">৳${item.prize}</b></span>
+                        <span>${item.time}</span>
+                    </div>
+                </div>`;
+            }).join('');
         }
 
         // ================= LIVE LEADERBOARD SYSTEM =================
@@ -1980,6 +2010,9 @@
                             return (curr || 0) + depositAmount;
                         });
 
+                        // Check & Trigger Referral First Deposit 10 TK Bonus
+                        checkAndGiveFirstDepositReferralBonus(uid, depositAmount);
+
                         database.ref(`users/${uid}/notifications`).push({
                             title: "ডিপোজিট সফল",
                             message: `অভিনন্দন! আপনার একাউন্টে ৳${depositAmount} যোগ করা হয়েছে। (TXID: ${txid})`,
@@ -2027,7 +2060,7 @@
             const activeNav = document.querySelector(`.nav-item[data-page="${pageId.replace('-page','')}"]`);
             if (activeNav) activeNav.classList.add('active');
 
-            if (pageId === 'history-page') renderUnifiedHistory();
+            if (pageId === 'history-page') renderPureMatchHistory();
             if (pageId === 'leaderboard-page') loadLeaderboard();
         }
 
