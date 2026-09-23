@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LUDO HUB - Official Gaming Tournament Platform</title>
+    <title>LUDO HUB - Tournament & Gaming Platform</title>
 
     <!-- Telegram WebApp SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -14,8 +14,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 
     <!-- Firebase Compat SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
     <style>
         :root {
@@ -55,14 +56,14 @@
             transition: opacity 0.5s ease, visibility 0.5s ease;
         }
         .dice-spinner {
-            width: 70px;
-            height: 70px;
+            width: 72px;
+            height: 72px;
             background: linear-gradient(135deg, #3b82f6, #ec4899);
-            border-radius: 20px;
+            border-radius: 22px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 32px;
+            font-size: 34px;
             color: #fff;
             box-shadow: 0 0 35px rgba(59, 130, 246, 0.7);
             animation: diceRotate 1.4s infinite cubic-bezier(0.68, -0.55, 0.27, 1.55);
@@ -296,7 +297,7 @@
         </div>
         <h2 class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-sky-300 to-amber-300 tracking-wider" style="font-family: 'Russo One', sans-serif;">LUDO HUB</h2>
         <p class="text-xs font-bold text-slate-400 mt-2 flex items-center gap-2">
-            <i class="fas fa-spinner fa-spin text-sky-400"></i> ম্যাচ ডাটা সিঙ্ক হচ্ছে...
+            <i class="fas fa-spinner fa-spin text-sky-400"></i> সার্ভার থেকে ম্যাচ সিঙ্ক হচ্ছে...
         </p>
     </div>
 
@@ -372,8 +373,65 @@
 
             <!-- ARENA CARDS LIST -->
             <div class="space-y-3">
-                <!-- LUDO KING (ACTIVE) -->
-                <div onclick="navigateTo('matches-page')" class="bg-[#121a2d] rounded-3xl p-4 border border-blue-500/30 cursor-pointer hover:border-blue-500/60 transition relative overflow-hidden shadow-lg">
+                <!-- 1. FREE FIRE (ACTIVE) -->
+                <div onclick="openGameArena('Free Fire (ফ্রি ফায়ার)', 'freefire')" class="bg-[#121a2d] rounded-3xl p-4 border border-orange-500/20 cursor-pointer hover:border-orange-500/50 transition relative overflow-hidden">
+                    <div class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 text-white text-[10px] font-black uppercase tracking-wider shadow">
+                        PLAY NOW
+                    </div>
+                    <div class="flex items-center gap-3.5">
+                        <div class="w-14 h-14 rounded-2xl bg-slate-900 border border-white/10 p-1 flex items-center justify-center shadow-md">
+                            <img src="https://cdn-icons-png.flaticon.com/512/808/808439.png" class="w-full h-full object-cover rounded-xl" alt="Free Fire">
+                        </div>
+                        <div>
+                            <h4 class="text-base font-black text-amber-400 flex items-center gap-1.5">
+                                <i class="fas fa-crosshairs text-orange-400"></i> Free Fire (ফ্রি ফায়ার)
+                            </h4>
+                            <p class="text-xs text-slate-400 font-bold mt-0.5">CS & Battle Royale Matches</p>
+                            <span class="text-[11px] text-orange-300 font-extrabold">(লাইভ টুর্নামেন্ট রুম)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. CARROM BOARD (ACTIVE) -->
+                <div onclick="openGameArena('Carrom Board (ক্যারাম বোর্ড)', 'carrom')" class="bg-[#121a2d] rounded-3xl p-4 border border-emerald-500/20 cursor-pointer hover:border-emerald-500/50 transition relative overflow-hidden">
+                    <div class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-emerald-600 text-white text-[10px] font-black uppercase tracking-wider shadow">
+                        PLAY NOW
+                    </div>
+                    <div class="flex items-center gap-3.5">
+                        <div class="w-14 h-14 rounded-2xl bg-slate-900 border border-white/10 p-1 flex items-center justify-center shadow-md">
+                            <img src="https://cdn-icons-png.flaticon.com/512/3655/3655613.png" class="w-full h-full object-cover rounded-xl" alt="Carrom">
+                        </div>
+                        <div>
+                            <h4 class="text-base font-black text-emerald-400 flex items-center gap-1.5">
+                                <i class="fas fa-circle-notch text-emerald-400"></i> Carrom Board (ক্যারাম বোর্ড)
+                            </h4>
+                            <p class="text-xs text-slate-400 font-bold mt-0.5">1 VS 1 Classic Challenge</p>
+                            <span class="text-[11px] text-emerald-300 font-extrabold">(লাইভ টুর্নামেন্ট রুম)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. BEAD 16 (১৬ গুটি - ACTIVE) -->
+                <div onclick="openGameArena('Bead 16 (১৬ গুটি)', 'bead16')" class="bg-[#121a2d] rounded-3xl p-4 border border-purple-500/20 cursor-pointer hover:border-purple-500/50 transition relative overflow-hidden">
+                    <div class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-purple-600 text-white text-[10px] font-black uppercase tracking-wider shadow">
+                        PLAY NOW
+                    </div>
+                    <div class="flex items-center gap-3.5">
+                        <div class="w-14 h-14 rounded-2xl bg-slate-900 border border-white/10 p-1 flex items-center justify-center shadow-md">
+                            <img src="https://cdn-icons-png.flaticon.com/512/3076/3076891.png" class="w-full h-full object-cover rounded-xl" alt="Bead 16">
+                        </div>
+                        <div>
+                            <h4 class="text-base font-black text-purple-300 flex items-center gap-1.5">
+                                <i class="fas fa-chess-board text-purple-400"></i> Bead 16 (১৬ গুটি)
+                            </h4>
+                            <p class="text-xs text-slate-400 font-bold mt-0.5">ঐতিহ্যবাহী ১৬ গুটি চ্যালেঞ্জ</p>
+                            <span class="text-[11px] text-purple-400 font-extrabold">(লাইভ টুর্নামেন্ট রুম)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. LUDO KING (ACTIVE) -->
+                <div onclick="openGameArena('Ludo King (লুডো কিং)', 'ludo')" class="bg-[#121a2d] rounded-3xl p-4 border border-blue-500/30 cursor-pointer hover:border-blue-500/60 transition relative overflow-hidden shadow-lg">
                     <div class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-rose-500 text-white text-[10px] font-black uppercase tracking-wider flex items-center gap-1 shadow">
                         <i class="fas fa-fire"></i> HOT
                     </div>
@@ -385,72 +443,40 @@
                             <h4 class="text-base font-black text-white flex items-center gap-1.5">
                                 <i class="fas fa-crown text-amber-400 text-sm"></i> Ludo King (লুডো কিং)
                             </h4>
-                            <p class="text-xs text-slate-400 font-bold mt-0.5">অটো রুম কোড ও (লাইভ ১ বনাম ১)</p>
+                            <p class="text-xs text-slate-400 font-bold mt-0.5">অটো রুম কোড ও (লাইভ চ্যালেঞ্জ)</p>
                             <span class="text-[11px] text-emerald-400 font-extrabold" id="home-ludo-status">(ম্যাচগুলো লাইভ রয়েছে)</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- FREE FIRE (UPCOMING) -->
-                <div onclick="showUpcomingAlert('Free Fire Tournament')" class="bg-[#121a2d] rounded-3xl p-4 border border-orange-500/20 cursor-pointer hover:border-orange-500/50 transition relative overflow-hidden">
-                    <div class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 text-white text-[10px] font-black uppercase tracking-wider shadow">UPCOMING</div>
-                    <div class="flex items-center gap-3.5">
-                        <div class="w-14 h-14 rounded-2xl bg-slate-900 border border-white/10 p-1 flex items-center justify-center shadow-md">
-                            <img src="https://cdn-icons-png.flaticon.com/512/808/808439.png" class="w-full h-full object-cover rounded-xl" alt="Free Fire">
-                        </div>
-                        <div>
-                            <h4 class="text-base font-black text-amber-400 flex items-center gap-1.5">
-                                <i class="fas fa-crosshairs text-orange-400"></i> Free Fire (ফ্রি ফায়ার)
-                            </h4>
-                            <p class="text-xs text-slate-400 font-bold mt-0.5">CS & Battle Royale Matches</p>
-                            <span class="text-[11px] text-orange-300 font-extrabold">(খুব শীঘ্রই শুরু হবে)</span>
-                        </div>
+                <!-- 5. LIVE AUTO LUDO (KEEP EXACT AS PREVIOUS AUTO SECTION) -->
+                <div onclick="showUpcomingAlert('লাইভ অটো লুডু')" class="bg-[#121a2d] rounded-3xl p-4 border border-cyan-500/20 cursor-pointer hover:border-cyan-500/50 transition relative overflow-hidden">
+                    <div class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-cyan-500 text-slate-950 text-[10px] font-black uppercase tracking-wider flex items-center gap-1 shadow">
+                        <i class="fas fa-bolt"></i> AUTO
                     </div>
-                </div>
-
-                <!-- CARROM BOARD (UPCOMING) -->
-                <div onclick="showUpcomingAlert('Carrom Board')" class="bg-[#121a2d] rounded-3xl p-4 border border-emerald-500/20 cursor-pointer hover:border-emerald-500/50 transition relative overflow-hidden">
-                    <div class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-emerald-600 text-white text-[10px] font-black uppercase tracking-wider shadow">UPCOMING</div>
                     <div class="flex items-center gap-3.5">
                         <div class="w-14 h-14 rounded-2xl bg-slate-900 border border-white/10 p-1 flex items-center justify-center shadow-md">
-                            <img src="https://cdn-icons-png.flaticon.com/512/3655/3655613.png" class="w-full h-full object-cover rounded-xl" alt="Carrom">
+                            <img src="https://cdn-icons-png.flaticon.com/512/806/806131.png" class="w-full h-full object-cover rounded-xl" alt="Live Ludo">
                         </div>
                         <div>
-                            <h4 class="text-base font-black text-emerald-400 flex items-center gap-1.5">
-                                <i class="fas fa-circle-notch text-emerald-400"></i> Carrom Board (ক্যারাম বোর্ড)
+                            <h4 class="text-base font-black text-rose-400 flex items-center gap-1.5">
+                                <i class="fas fa-robot text-rose-400 text-sm"></i> লাইভ অটো লুডু
                             </h4>
-                            <p class="text-xs text-slate-400 font-bold mt-0.5">1 VS 1 Classic Challenge</p>
-                            <span class="text-[11px] text-emerald-300 font-extrabold">(খুব শীঘ্রই আসছে)</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- BEAD 16 (UPCOMING) -->
-                <div onclick="showUpcomingAlert('Bead 16 (১৬ গুটি)')" class="bg-[#121a2d] rounded-3xl p-4 border border-purple-500/20 cursor-pointer hover:border-purple-500/50 transition relative overflow-hidden">
-                    <div class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-purple-600 text-white text-[10px] font-black uppercase tracking-wider shadow">UPCOMING</div>
-                    <div class="flex items-center gap-3.5">
-                        <div class="w-14 h-14 rounded-2xl bg-slate-900 border border-white/10 p-1 flex items-center justify-center shadow-md">
-                            <img src="https://cdn-icons-png.flaticon.com/512/3076/3076891.png" class="w-full h-full object-cover rounded-xl" alt="Bead 16">
-                        </div>
-                        <div>
-                            <h4 class="text-base font-black text-purple-300 flex items-center gap-1.5">
-                                <i class="fas fa-chess-board text-purple-400"></i> Bead 16 (১৬ গুটি)
-                            </h4>
-                            <p class="text-xs text-slate-400 font-bold mt-0.5">ঐতিহ্যবাহী ১৬ গুটি চ্যালেঞ্জ</p>
-                            <span class="text-[11px] text-purple-400 font-extrabold">(খুব শীঘ্রই আসছে)</span>
+                            <p class="text-xs text-slate-400 font-bold mt-0.5">ইনস্ট্যান্ট স্বয়ংক্রিয় রুম কোড</p>
+                            <span class="text-[11px] text-cyan-400 font-extrabold">(খুব শীঘ্রই চালুর হবে)</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ======================= 2. MATCHES LIST PAGE ======================= -->
+        <!-- ======================= 2. MATCHES LIST PAGE (DYNAMIC FOR ALL GAMES) ======================= -->
         <div id="matches-page" class="sub-page space-y-3.5">
             <div class="bg-gradient-to-r from-blue-900 via-indigo-950 to-slate-900 p-4 rounded-3xl border border-white/10 shadow-lg text-center relative">
                 <button onclick="navigateTo('home-page')" class="w-8 h-8 rounded-full bg-slate-800/80 text-white flex items-center justify-center border border-white/10 absolute left-3 top-3.5">
                     <i class="fas fa-arrow-left text-xs"></i>
                 </button>
-                <h2 class="text-xl font-black text-amber-400 tracking-wider inline-block" style="font-family: 'Russo One', sans-serif;">
+                <h2 class="text-xl font-black text-amber-400 tracking-wider inline-block" id="arena-header-title" style="font-family: 'Russo One', sans-serif;">
                     LUDO KING (লুডো কিং)
                 </h2>
                 <p class="text-[11px] text-slate-300 mt-0.5">১ বনাম ১ ক্লাসিক টুর্নামেন্ট ও ইনস্ট্যান্ট উইথড্র</p>
@@ -743,7 +769,7 @@
             </div>
         </div>
 
-        <!-- ======================= 7. WALLET / DEPOSIT PAGE ======================= -->
+        <!-- ======================= 7. WALLET / DEPOSIT PAGE WITH INSTANT GATEWAY ======================= -->
         <div id="wallet-page" class="sub-page space-y-4">
             <div class="flex items-center gap-2 pb-1">
                 <button onclick="navigateTo('home-page')" class="w-9 h-9 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10">
@@ -760,7 +786,11 @@
             <div class="bg-[#141c30] p-5 rounded-3xl border border-white/10 space-y-4 shadow-xl">
                 <div class="flex items-center justify-between">
                     <span class="text-xs font-black text-slate-300 uppercase tracking-wider">Automated Instant Gateway</span>
-                    <span class="text-[10px] bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold">bKash • Nagad</span>
+                    <span class="text-[10px] bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold">bKash • Nagad • Rocket</span>
+                </div>
+
+                <div class="note-card bg-amber-500/10 border-l-4 border-amber-500 p-3 rounded-r-xl text-xs text-amber-300">
+                    নিরাপদ পেমেন্ট সম্পন্ন করতে টাকার পরিমাণ লিখে Continue বাটনে ক্লিক করুন। অটোমেটিক ভেরিফাই হয়ে ইনস্ট্যান্ট ব্যালেন্স যুক্ত হবে।
                 </div>
 
                 <div class="relative">
@@ -775,8 +805,9 @@
                     <button type="button" onclick="setQuickDeposit(500)" class="quick-amount-pill py-2 text-xs bg-slate-800 rounded-xl">500</button>
                 </div>
 
-                <button id="btnPayGateway" onclick="initiateTournamentDeposit()" class="w-full py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-black text-sm shadow-xl">
-                    <i class="fas fa-lock text-sm mr-1"></i> Continue to Payment
+                <button id="btnPayGateway" onclick="initiatePaymentGateway()" class="w-full py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 text-white font-black text-sm shadow-xl flex items-center justify-center gap-2">
+                    <i class="fas fa-lock text-amber-300"></i>
+                    <span>Continue to Payment</span>
                 </button>
             </div>
         </div>
@@ -818,7 +849,7 @@
                 <div class="flex items-center gap-2">
                     <span class="w-8 h-8 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-sm"><i class="fas fa-trophy"></i></span>
                     <div>
-                        <h4 class="text-sm font-black text-white" id="join-modal-match-title">LUDO MATCH</h4>
+                        <h4 class="text-sm font-black text-white" id="join-modal-match-title">TOURNAMENT MATCH</h4>
                         <span class="text-[10px] text-cyan-400 font-bold">1 VS 1 Match Confirmation</span>
                     </div>
                 </div>
@@ -839,19 +870,19 @@
             </div>
 
             <div class="space-y-1.5">
-                <label class="text-xs font-black text-slate-300 block">প্লেয়ার এর নাম (লুডো কিং নাম):</label>
+                <label class="text-xs font-black text-slate-300 block">ইন-গেম প্লেয়ারের নাম:</label>
                 <div class="relative">
                     <input type="text" id="join-player-name-input" class="w-full p-3 rounded-xl bg-[#090f1d] border border-blue-500/30 text-white font-bold text-xs focus:border-blue-500 outline-none pr-8">
                     <i class="fas fa-user-edit absolute right-3 top-3 text-slate-400 text-xs"></i>
                 </div>
-                <p class="text-[10px] text-slate-400">আপনার লুডো কিং অ্যাপের প্লেয়ার নামটি মিলিয়ে লিখুন।</p>
+                <p class="text-[10px] text-slate-400">আপনার গেমের আসল প্লেয়ার নামটি এখানে দিন।</p>
             </div>
 
             <div class="bg-blue-950/30 border-l-4 border-blue-500 p-2.5 rounded-r-xl text-[11px] text-slate-300 space-y-1 leading-relaxed">
                 <div class="font-bold text-white flex items-center gap-1">
                     <i class="fas fa-shield-alt text-blue-400"></i> টুর্নামেন্ট নিয়মাবলী:
                 </div>
-                <p>১. ২ জন পূর্ণ হওয়ার সাথে সাথে রুম কোড জেনারেট শুরু হবে।</p>
+                <p>১. ২ জন পূর্ণ হওয়ার সাথে সাথে রুম কোড তৈরি হবে।</p>
                 <p>২. গেম শুরু না হওয়া পর্যন্ত ১০০% রিফান্ড নেওয়ার সুবিধা রয়েছে।</p>
             </div>
 
@@ -866,7 +897,7 @@
         </div>
     </div>
 
-    <!-- 2. UPLOAD RESULT MODAL -->
+    <!-- 2. UPLOAD RESULT MODAL (WITH ROOM CODE VALIDATION) -->
     <div id="upload-result-modal" class="hidden fixed inset-0 bg-black/85 z-[95] backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-[#11192d] rounded-3xl p-5 w-full max-w-sm border border-white/10 space-y-4 text-center">
             <div class="flex items-center justify-between pb-2 border-b border-white/10 text-left">
@@ -879,7 +910,10 @@
                 </button>
             </div>
 
-            <input id="input-result-room" type="text" placeholder="ম্যাচের রুম কোডটি লিখুন" class="w-full p-3 rounded-xl bg-[#090f1d] border border-white/10 text-white text-xs outline-none">
+            <div class="text-left space-y-1">
+                <label class="text-[11px] font-bold text-slate-300">ম্যাচ রুম কোড:</label>
+                <input id="input-result-room" type="text" placeholder="সঠিক রুম কোড লিখুন" class="w-full p-3 rounded-xl bg-[#090f1d] border border-white/10 text-white text-xs outline-none focus:border-emerald-500">
+            </div>
 
             <input type="file" id="result-screenshot-input" accept="image/*" class="hidden" onchange="previewScreenshot(event)">
             
@@ -888,13 +922,13 @@
                 <div id="screenshot-placeholder" class="text-center">
                     <i class="fas fa-camera text-3xl mb-1 text-slate-500"></i>
                     <span class="block text-xs font-bold text-slate-300">গেমের উইনিং স্ক্রিনশট নির্বাচন করুন</span>
-                    <span class="text-[10px] text-slate-500">ক্লিক করে ফাইল বা ফটো নির্বাচন করুন</span>
+                    <span class="text-[10px] text-slate-500">ক্লিক করে ফাইল বা ফটো সিলেক্ট করুন</span>
                 </div>
             </div>
 
             <div class="flex gap-2">
                 <button onclick="closeModal('upload-result-modal')" class="w-1/2 py-2.5 bg-slate-800 font-bold rounded-xl text-xs text-slate-300">বাতিল</button>
-                <button onclick="submitMatchResult()" class="w-1/2 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs">জমা দিন</button>
+                <button onclick="submitMatchResult()" id="btn-submit-result" class="w-1/2 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs">ভেরিফাই ও জমা দিন</button>
             </div>
         </div>
     </div>
@@ -949,7 +983,7 @@
         <div class="tg-chat-body" id="chat-messages">
             <div class="msg-row admin">
                 <div class="msg-bubble">
-                    হ্যালো! <b>LUDO HUB Live Helpdesk</b> এ আপনাকে স্বাগতম। আপনার টুর্নামেন্ট, ডিপোজিট বা উইথড্র বিষয়ে যেকোনো প্রশ্ন লিখুন।
+                    হ্যালো! <b>LUDO HUB Helpdesk</b> এ আপনাকে স্বাগতম। আপনার টুর্নামেন্ট বা পেমেন্ট বিষয়ক যেকোনো প্রশ্ন লিখুন।
                 </div>
             </div>
         </div>
@@ -971,7 +1005,7 @@
                 </div>
                 <div>
                     <h3 class="font-bold text-white text-base leading-tight">নোটিফিকেশন সেন্টার</h3>
-                    <p class="text-[11px] text-slate-400">সকল সিস্টেম, রুম কোড ও রিফান্ড আপডেট</p>
+                    <p class="text-[11px] text-slate-400">সকল সিস্টেম, রুম কোড ও ডিপোজিট আপডেট</p>
                 </div>
             </div>
             <button onclick="toggleNotificationModal()" class="p-2 bg-slate-800 text-slate-300 rounded-xl">
@@ -999,30 +1033,38 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT APPLICATION CORE -->
+    <!-- ======================= JAVASCRIPT APPLICATION CORE ======================= -->
     <script>
         // Realtime Firebase Integration
         const firebaseConfig = {
-            apiKey: "AIzaSyAsENiikJ5YQ1F8UHrixdJVEINAhO4PG30",
-            authDomain: "bot2-3d8bc.firebaseapp.com",
-            databaseURL: "https://bot2-3d8bc-default-rtdb.firebaseio.com",
-            projectId: "bot2-3d8bc"
+            apiKey: "AIzaSyAEV4zkuTcRYIFP2AMmKJTyDUTzSYLnbbM",
+            authDomain: "used-mail-shop.firebaseapp.com",
+            databaseURL: "https://used-mail-shop-default-rtdb.firebaseio.com",
+            projectId: "used-mail-shop",
+            storageBucket: "used-mail-shop.firebasestorage.app",
+            messagingSenderId: "251382358623",
+            appId: "1:251382358623:web:a567a9349d1fd87277b1ea"
         };
-        const app = firebase.initializeApp(firebaseConfig);
-        const db = app.database();
 
-        // Active Player State
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const auth = firebase.auth();
+        const database = firebase.database();
+
         let activeUser = {
             id: "6954647230",
             chatId: "6954647230",
             name: "SAIDUL",
+            email: "player@ludohub.com",
             gameName: "SAIDUL",
             photo: "https://i.postimg.cc/L4YZZKsv/IMG-20260919-214336-790.jpg",
-            balance: 120.00,
-            winningBalance: 50.00,
-            depositBalance: 70.00
+            balance: 100.00,
+            winningBalance: 40.00,
+            depositBalance: 60.00
         };
 
+        let selectedGameCategory = 'ludo'; 
         let realtimeMatches = [];
         let pendingJoinMatchId = null;
         let currentActiveFilter = 'all';
@@ -1042,25 +1084,23 @@
                     activeUser.chatId = String(tgUser.id);
                     activeUser.name = `${tgUser.first_name || ''} ${tgUser.last_name || ''}`.trim() || "PLAYER";
                     activeUser.gameName = activeUser.name;
+                    activeUser.email = tgUser.username ? `${tgUser.username}@telegram.org` : `${activeUser.id}@telegram.org`;
                     if (tgUser.photo_url) activeUser.photo = tgUser.photo_url;
                 }
             }
 
             updateUserInterface();
             initRealtimeFirebaseSync();
+            checkReturnPaymentStatus();
 
-            // Hide Preloader with Smooth Fade
+            // Hide Preloader
             setTimeout(() => {
                 const loader = document.getElementById('preloader');
                 loader.style.opacity = '0';
                 loader.style.visibility = 'hidden';
-            }, 1200);
-
-            // Time interval for normal matches (if any scheduled)
-            setInterval(updateCountdownDisplays, 1000);
+            }, 1000);
         };
 
-        // UI Updates
         function updateUserInterface() {
             const total = activeUser.balance.toFixed(2);
             document.getElementById('header-balance-val').textContent = total;
@@ -1092,12 +1132,21 @@
         }
 
         function showUpcomingAlert(name) {
-            showToast(`🔥 ${name} টুর্নামেন্ট খুব শীঘ্রই শুরু হবে! টেলিগ্রামে যুক্ত থাকুন।`, 'info');
+            showToast(`🔥 ${name} খুব শীঘ্রই অটো সার্ভারে চালু করা হবে! সাথেই থাকুন।`, 'info');
+        }
+
+        // ================= SWITCH AND OPEN GAME ARENAS =================
+        function openGameArena(title, categoryKey) {
+            selectedGameCategory = categoryKey;
+            document.getElementById('arena-header-title').textContent = title;
+            currentActiveFilter = 'all';
+            navigateTo('matches-page');
+            renderMatches();
         }
 
         // ================= FIREBASE REALTIME MATCH SYNC =================
         function initRealtimeFirebaseSync() {
-            const matchesRef = db.ref('matches');
+            const matchesRef = database.ref('matches');
 
             matchesRef.on('value', snapshot => {
                 const data = snapshot.val();
@@ -1107,7 +1156,7 @@
                     Object.keys(data).forEach(key => {
                         const m = data[key];
                         m.id = key;
-                        // Determine if current user is joined
+                        m.gameType = m.gameType || 'ludo'; // Default to ludo if not specified
                         m.myJoined = m.players && m.players[activeUser.id] !== undefined;
                         m.current = m.players ? Object.keys(m.players).length : 0;
                         realtimeMatches.push(m);
@@ -1119,16 +1168,22 @@
                         }
                     });
                 } else {
-                    // Seed initial sample match to Firebase if empty so users can start immediately
-                    seedInitialFirebaseMatch();
+                    seedDefaultMatches();
                 }
 
                 renderMatches();
                 renderHistory('matches');
             });
 
-            // Listen for user specific notifications & history
-            db.ref(`users/${activeUser.id}/history`).on('value', snap => {
+            // Listen for user balance & notifications
+            database.ref(`users/${activeUser.id}/balance`).on('value', snap => {
+                if (snap.exists()) {
+                    activeUser.balance = parseFloat(snap.val()) || 0;
+                    updateUserInterface();
+                }
+            });
+
+            database.ref(`users/${activeUser.id}/history`).on('value', snap => {
                 userActivityHistory = [];
                 if (snap.exists()) {
                     snap.forEach(c => { userActivityHistory.unshift(c.val()); });
@@ -1136,7 +1191,7 @@
                 renderHistory('matches');
             });
 
-            db.ref(`users/${activeUser.id}/notifications`).on('value', snap => {
+            database.ref(`users/${activeUser.id}/notifications`).on('value', snap => {
                 notifications = [];
                 if (snap.exists()) {
                     snap.forEach(c => { notifications.unshift(c.val()); });
@@ -1148,38 +1203,25 @@
             });
         }
 
-        function seedInitialFirebaseMatch() {
-            const sampleMatch = {
-                matchNo: "#7001",
-                fee: 50,
-                prize: 90,
-                max: 2,
-                isSpecial: true,
-                status: "waiting", // waiting, full, completed
-                roomCode: "",
-                createdAt: Date.now()
-            };
-            db.ref('matches').push(sampleMatch);
+        function seedDefaultMatches() {
+            const defaults = [
+                { matchNo: "#1001", gameType: "ludo", fee: 50, prize: 90, max: 2, isSpecial: true, roomCode: "", status: "waiting", createdAt: Date.now() },
+                { matchNo: "#2001", gameType: "freefire", fee: 100, prize: 180, max: 2, isSpecial: false, roomCode: "", status: "waiting", createdAt: Date.now() },
+                { matchNo: "#3001", gameType: "carrom", fee: 40, prize: 70, max: 2, isSpecial: true, roomCode: "", status: "waiting", createdAt: Date.now() },
+                { matchNo: "#4001", gameType: "bead16", fee: 30, prize: 50, max: 2, isSpecial: false, roomCode: "", status: "waiting", createdAt: Date.now() }
+            ];
+            defaults.forEach(item => database.ref('matches').push(item));
         }
 
-        // Trigger Notification when Admin adds room code
         function triggerRoomCodeLiveNotification(match) {
             const note = {
                 title: `🎮 রুম কোড দেওয়া হয়েছে!`,
-                message: `ম্যাচ ${match.matchNo}-এর রুম কোড: ${match.roomCode}। লুডো কিং ওপেন করে জয়েন করুন।`,
+                message: `ম্যাচ ${match.matchNo}-এর রুম কোড: ${match.roomCode}। খেলায় যোগ দিন।`,
                 time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                 timestamp: Date.now()
             };
-            db.ref(`users/${activeUser.id}/notifications`).push(note);
-            showToast(`ম্যাচ ${match.matchNo}-এর রুম কোড এসেছে: ${match.roomCode}`, 'success');
-
-            // Send Real Telegram Bot Alert to user's chat_id
-            sendTelegramPushNotification(activeUser.chatId, `🎉 LUDO HUB: ম্যাচ ${match.matchNo}-এর রুম কোড: ${match.roomCode}। এখনি গেম ওপেন করে জয়েন করুন!`);
-        }
-
-        function sendTelegramPushNotification(chatId, text) {
-            // Optional: Connect to your telegram bot webhook or local dispatcher
-            console.log(`Telegram message queued for ChatID: ${chatId} -> ${text}`);
+            database.ref(`users/${activeUser.id}/notifications`).push(note);
+            showToast(`ম্যাচ ${match.matchNo}-এর রুম কোড: ${match.roomCode}`, 'success');
         }
 
         // ================= MATCH RENDERING ENGINE =================
@@ -1194,11 +1236,13 @@
 
         function renderMatches() {
             const container = document.getElementById('tournament-matches-container');
-            const joinedMatches = realtimeMatches.filter(m => m.myJoined);
+            
+            // Filter by currently selected game
+            const categoryMatches = realtimeMatches.filter(m => (m.gameType || 'ludo') === selectedGameCategory);
+            const joinedMatches = categoryMatches.filter(m => m.myJoined);
             document.getElementById('joined-count-badge').textContent = joinedMatches.length;
 
-            // Badges
-            const availableMatches = realtimeMatches.filter(m => !m.myJoined && m.current < (m.max || 2));
+            const availableMatches = categoryMatches.filter(m => !m.myJoined && m.current < (m.max || 2));
             document.getElementById('filter-count-all').textContent = availableMatches.length;
             document.getElementById('filter-count-special').textContent = availableMatches.filter(m => m.isSpecial).length;
             document.getElementById('filter-count-1v1').textContent = availableMatches.filter(m => m.current === 1).length;
@@ -1218,9 +1262,9 @@
             if (displayList.length === 0) {
                 container.innerHTML = `
                     <div class="bg-[#121a2d] p-8 rounded-3xl text-center space-y-2 border border-white/5">
-                        <i class="fas fa-dice text-3xl text-slate-500"></i>
+                        <i class="fas fa-gamepad text-3xl text-slate-500"></i>
                         <h4 class="text-sm font-bold text-slate-300">
-                            ${currentActiveFilter === 'joined' ? 'আপনি এখনো কোনো ম্যাচে জয়েন করেননি।' : 'এই মুহূর্তে কোনো উন্মুক্ত ম্যাচ নেই।'}
+                            ${currentActiveFilter === 'joined' ? 'আপনি এখনো কোনো ম্যাচে জয়েন করেননি।' : 'এই মুহূর্তে কোনো উন্মুক্ত ম্যাচ পাওয়া যায়নি।'}
                         </h4>
                     </div>`;
                 return;
@@ -1235,10 +1279,10 @@
                 <div class="match-card p-4 space-y-3.5 border border-slate-200">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2.5">
-                            <img src="https://cdn-icons-png.flaticon.com/512/806/806131.png" class="w-10 h-10 rounded-xl" alt="Ludo">
+                            <img src="${getGameIcon(m.gameType)}" class="w-10 h-10 rounded-xl" alt="Game">
                             <div>
                                 <h3 class="text-sm font-black text-slate-900 flex items-center gap-1.5">
-                                    LUDO HUB 🔥 - Match ${m.matchNo}
+                                    ${m.gameType ? m.gameType.toUpperCase() : 'LUDO'} - Match ${m.matchNo}
                                     ${m.isSpecial ? '<span class="px-1.5 py-0.5 rounded bg-amber-500 text-white text-[9px] font-black">SPECIAL</span>' : ''}
                                     ${m.myJoined ? `
                                         <span class="px-2 py-0.5 rounded-md bg-emerald-500 text-white text-[9px] font-black uppercase tracking-wider shadow">
@@ -1280,10 +1324,8 @@
                         </div>
                     </div>
 
-                    <!-- CONDITIONAL ACTION BUTTONS -->
                     <div>
                         ${isFull ? `
-                            <!-- FULL / 2 PLAYERS REACHED: SHOW ROOM CODE GENERATING LOADING STATE -->
                             <div class="space-y-2">
                                 <div class="bg-amber-50 border border-amber-300 p-2.5 rounded-xl flex items-center justify-center gap-2 text-amber-900 text-xs font-black">
                                     <i class="fas fa-spinner fa-spin text-amber-600 text-sm"></i>
@@ -1298,13 +1340,12 @@
                                         </button>
                                     ` : `
                                         <button disabled class="w-full col-span-2 py-3 rounded-xl bg-slate-200 text-slate-500 font-black text-xs cursor-not-allowed">
-                                            ম্যাচটি সম্পূর্ণ ফুল হয়ে গেছে
+                                            ম্যাচটি সম্পূর্ণ ফুল
                                         </button>
                                     `}
                                 </div>
                             </div>
                         ` : `
-                            <!-- SLOTS STILL OPEN -->
                             <div class="grid grid-cols-2 gap-2 pt-1">
                                 ${m.myJoined ? `
                                     <button onclick="handleManualRefund('${m.id}')" class="py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black text-xs shadow flex items-center justify-center gap-1 active:scale-95 transition">
@@ -1325,11 +1366,16 @@
             }).join('');
         }
 
-        function updateCountdownDisplays() {
-            // Can be used for custom timers if required
+        function getGameIcon(type) {
+            switch(type) {
+                case 'freefire': return 'https://cdn-icons-png.flaticon.com/512/808/808439.png';
+                case 'carrom': return 'https://cdn-icons-png.flaticon.com/512/3655/3655613.png';
+                case 'bead16': return 'https://cdn-icons-png.flaticon.com/512/3076/3076891.png';
+                default: return 'https://cdn-icons-png.flaticon.com/512/806/806131.png';
+            }
         }
 
-        // ================= MATCH JOIN & FIREBASE WRITE =================
+        // ================= JOIN MATCH =================
         function openJoinMatchModal(id) {
             const m = realtimeMatches.find(x => x.id === id);
             if (!m) return;
@@ -1339,7 +1385,7 @@
             }
 
             pendingJoinMatchId = id;
-            document.getElementById('join-modal-match-title').textContent = `LUDO MATCH ${m.matchNo}`;
+            document.getElementById('join-modal-match-title').textContent = `${(m.gameType || 'LUDO').toUpperCase()} ${m.matchNo}`;
             document.getElementById('join-modal-fee').textContent = `৳${m.fee}`;
             document.getElementById('join-modal-prize').textContent = `৳${m.prize}`;
             document.getElementById('join-player-name-input').value = activeUser.gameName || activeUser.name;
@@ -1356,25 +1402,27 @@
             if (!chosenName) return showToast("আপনার প্লেয়ার নাম লিখুন!", "error");
             activeUser.gameName = chosenName;
 
-            // Balance Deduction
+            // Deduct Balance
             activeUser.balance -= m.fee;
             activeUser.depositBalance = Math.max(0, activeUser.depositBalance - m.fee);
             updateUserInterface();
 
-            // Firebase Join Push
+            database.ref(`users/${activeUser.id}/balance`).set(activeUser.balance);
+
             const playerPayload = {
                 uid: activeUser.id,
                 name: chosenName,
                 joinedAt: Date.now()
             };
 
-            db.ref(`matches/${m.id}/players/${activeUser.id}`).set(playerPayload);
+            database.ref(`matches/${m.id}/players/${activeUser.id}`).set(playerPayload);
 
-            // Record into User Activity History with status JOINED
+            // Add History Record
             const historyItem = {
                 type: "MATCH",
                 matchNo: m.matchNo,
                 matchId: m.id,
+                gameType: m.gameType || 'ludo',
                 roomCode: m.roomCode || "WAITING",
                 fee: m.fee,
                 prize: m.prize,
@@ -1382,12 +1430,11 @@
                 time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                 timestamp: Date.now()
             };
-            db.ref(`users/${activeUser.id}/history/${m.id}`).set(historyItem);
+            database.ref(`users/${activeUser.id}/history/${m.id}`).set(historyItem);
 
-            // Notification
-            db.ref(`users/${activeUser.id}/notifications`).push({
+            database.ref(`users/${activeUser.id}/notifications`).push({
                 title: "ম্যাচে সফল জয়েন!",
-                message: `আপনি সফলভাবে ${m.matchNo} ম্যাচে জয়েন করেছেন। ২ জন হলে রুম কোড দেওয়া হবে।`,
+                message: `আপনি সফলভাবে ${m.matchNo} ম্যাচে জয়েন করেছেন। ২ জন হলে রুম কোড পাবেন।`,
                 time: "Just now"
             });
 
@@ -1396,28 +1443,26 @@
             pendingJoinMatchId = null;
         }
 
-        // ================= MANUAL & AUTO REFUND SYSTEM =================
+        // ================= REFUND =================
         function handleManualRefund(id) {
             const m = realtimeMatches.find(x => x.id === id);
             if (!m || !m.myJoined) return;
 
             if (confirm(`আপনি কি ম্যাচটি থেকে বের হয়ে ৳${m.fee} ইনস্ট্যান্ট রিফান্ড নিতে চান?`)) {
-                // Remove player from match
-                db.ref(`matches/${m.id}/players/${activeUser.id}`).remove();
+                database.ref(`matches/${m.id}/players/${activeUser.id}`).remove();
 
-                // Refund balance
                 activeUser.balance += m.fee;
                 activeUser.depositBalance += m.fee;
                 updateUserInterface();
 
-                // Update History item as REFUNDED
-                db.ref(`users/${activeUser.id}/history/${m.id}`).update({
+                database.ref(`users/${activeUser.id}/balance`).set(activeUser.balance);
+
+                database.ref(`users/${activeUser.id}/history/${m.id}`).update({
                     status: "REFUNDED",
                     refundTime: Date.now()
                 });
 
-                // Add Refund Notification
-                db.ref(`users/${activeUser.id}/notifications`).push({
+                database.ref(`users/${activeUser.id}/notifications`).push({
                     title: "রিফান্ড সফল",
                     message: `ম্যাচ ${m.matchNo} থেকে ৳${m.fee} আপনার ওয়ালেটে ফেরত দেওয়া হয়েছে।`,
                     time: "Just now"
@@ -1427,42 +1472,7 @@
             }
         }
 
-        // ================= ROOM CODE POPUP =================
-        function openRoomCodeModal(roomCode) {
-            currentRoomCodeCache = roomCode;
-            const modal = document.getElementById('room-code-modal');
-            const codeVal = document.getElementById('room-code-modal-value');
-            const statusTitle = document.getElementById('room-code-status-title');
-            const desc = document.getElementById('room-code-desc');
-            const copyBtn = document.getElementById('btn-copy-room');
-            const iconBox = document.getElementById('room-icon-box');
-
-            if (roomCode && roomCode.trim() !== '') {
-                statusTitle.innerHTML = `<span class="text-emerald-400 font-bold">রুম কোড প্রস্তুত!</span>`;
-                desc.textContent = "নিচের কোডটি কপি করে লুডো কিং-এ জয়েন করুন। খেলা শেষে রেজাল্ট আপলোড করুন।";
-                codeVal.textContent = roomCode;
-                copyBtn.classList.remove('hidden');
-                iconBox.innerHTML = '<i class="fas fa-check text-emerald-400"></i>';
-                iconBox.className = "w-16 h-16 rounded-full border-2 border-emerald-400 flex items-center justify-center mx-auto text-3xl";
-            } else {
-                statusTitle.innerHTML = `<span class="text-amber-400 font-bold">রুম কোড তৈরি হচ্ছে...</span>`;
-                desc.textContent = "এডমিন ফায়ারবেস থেকে রুম কোড যোগ করার সাথে সাথে এখানে ভেসে উঠবে।";
-                codeVal.textContent = "GENERATING...";
-                copyBtn.classList.add('hidden');
-                iconBox.innerHTML = '<i class="fas fa-spinner fa-spin text-amber-400"></i>';
-                iconBox.className = "w-16 h-16 rounded-full border-2 border-amber-400 flex items-center justify-center mx-auto text-3xl";
-            }
-            modal.classList.remove('hidden');
-        }
-
-        function copyCurrentRoomCode() {
-            if (!currentRoomCodeCache) return;
-            navigator.clipboard.writeText(currentRoomCodeCache).then(() => {
-                showToast("রুম কোড কপি করা হয়েছে!", "success");
-            });
-        }
-
-        // ================= RESULT SCREENSHOT SUBMIT =================
+        // ================= ROOM CODE VALIDATION & SCREENSHOT UPLOAD =================
         function openUploadResultModal() {
             document.getElementById('input-result-room').value = '';
             document.getElementById('screenshot-preview-img').classList.add('hidden');
@@ -1488,26 +1498,216 @@
         function submitMatchResult() {
             const room = document.getElementById('input-result-room').value.trim();
             const fileInput = document.getElementById('result-screenshot-input');
+            const submitBtn = document.getElementById('btn-submit-result');
 
             if (!room) return showToast("দয়া করে সঠিক রুম কোড দিন", "error");
             if (!fileInput.files || fileInput.files.length === 0) {
                 return showToast("দয়া করে খেলার উইনিং স্ক্রিনশট সিলেক্ট করুন", "error");
             }
 
-            // Find match by Room Code and mark as COMPLETED in history
-            const matchedItem = realtimeMatches.find(m => m.roomCode === room);
-            if (matchedItem) {
-                db.ref(`users/${activeUser.id}/history/${matchedItem.id}`).update({
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> যাচাই হচ্ছে...';
+
+            // Realtime Verification from Firebase
+            database.ref('matches').once('value').then(snapshot => {
+                let foundMatch = null;
+                snapshot.forEach(child => {
+                    const m = child.val();
+                    if (m.roomCode && String(m.roomCode).trim() === room) {
+                        foundMatch = { id: child.key, ...m };
+                    }
+                });
+
+                if (!foundMatch) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'ভেরিফাই ও জমা দিন';
+                    return showToast("ভুল রুম কোড! এই কোডে কোনো সক্রিয় ম্যাচ পাওয়া যায়নি।", "error");
+                }
+
+                if (foundMatch.status === "COMPLETED" || foundMatch.status === "completed") {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'ভেরিফাই ও জমা দিন';
+                    return showToast("এই ম্যাচটি ইতিমধ্যে কমপ্লিট হয়ে গেছে! নতুন করে স্ক্রিনশট দেওয়া যাবে না।", "error");
+                }
+
+                // If valid and running, proceed to save result
+                database.ref(`matches/${foundMatch.id}`).update({
                     status: "COMPLETED",
+                    resultSubmittedBy: activeUser.id,
                     submittedAt: Date.now()
                 });
-            }
 
-            closeModal('upload-result-modal');
-            showToast("উইনিং স্ক্রিনশট ও ফলাফল সফলভাবে জমা হয়েছে! এডমিন দ্রুত ভেরিফাই করবেন।", "success");
+                database.ref(`users/${activeUser.id}/history/${foundMatch.id}`).update({
+                    status: "COMPLETED",
+                    roomCode: room,
+                    completedAt: Date.now()
+                });
+
+                database.ref(`users/${activeUser.id}/notifications`).push({
+                    title: "রেজাল্ট জমা হয়েছে",
+                    message: `রুম কোড ${room}-এর উইনিং স্ক্রিনশট গ্রহণ করা হয়েছে। এডমিন ভেরিফাই করে উইনিং প্রাইজ প্রদান করবেন।`,
+                    time: "Just now"
+                });
+
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'ভেরিফাই ও জমা দিন';
+                closeModal('upload-result-modal');
+                showToast("রেজাল্ট ও স্ক্রিনশট সফলভাবে সাবমিট হয়েছে!", "success");
+            }).catch(err => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'ভেরিফাই ও জমা দিন';
+                showToast("যাচাই করতে সমস্যা হয়েছে। ইন্টারনেট চেক করুন।", "error");
+            });
         }
 
-        // ================= DYNAMIC HISTORY ENGINE =================
+        // ================= ROOM CODE POPUP =================
+        function openRoomCodeModal(roomCode) {
+            currentRoomCodeCache = roomCode;
+            const modal = document.getElementById('room-code-modal');
+            const codeVal = document.getElementById('room-code-modal-value');
+            const statusTitle = document.getElementById('room-code-status-title');
+            const desc = document.getElementById('room-code-desc');
+            const copyBtn = document.getElementById('btn-copy-room');
+            const iconBox = document.getElementById('room-icon-box');
+
+            if (roomCode && roomCode.trim() !== '') {
+                statusTitle.innerHTML = `<span class="text-emerald-400 font-bold">রুম কোড প্রস্তুত!</span>`;
+                desc.textContent = "নিচের কোডটি কপি করে গেমে প্রবেশ করুন। খেলা শেষে রেজাল্ট আপলোড করুন।";
+                codeVal.textContent = roomCode;
+                copyBtn.classList.remove('hidden');
+                iconBox.innerHTML = '<i class="fas fa-check text-emerald-400"></i>';
+                iconBox.className = "w-16 h-16 rounded-full border-2 border-emerald-400 flex items-center justify-center mx-auto text-3xl";
+            } else {
+                statusTitle.innerHTML = `<span class="text-amber-400 font-bold">রুম কোড তৈরি হচ্ছে...</span>`;
+                desc.textContent = "এডমিন ফায়ারবেস থেকে রুম কোড যোগ করার সাথে সাথে এখানে দেখতে পাবেন।";
+                codeVal.textContent = "GENERATING...";
+                copyBtn.classList.add('hidden');
+                iconBox.innerHTML = '<i class="fas fa-spinner fa-spin text-amber-400"></i>';
+                iconBox.className = "w-16 h-16 rounded-full border-2 border-amber-400 flex items-center justify-center mx-auto text-3xl";
+            }
+            modal.classList.remove('hidden');
+        }
+
+        function copyCurrentRoomCode() {
+            if (!currentRoomCodeCache) return;
+            navigator.clipboard.writeText(currentRoomCodeCache).then(() => {
+                showToast("রুম কোড কপি করা হয়েছে!", "success");
+            });
+        }
+
+        // ================= AUTOMATED GATEWAY PAYMENT SYSTEM =================
+        function setQuickDeposit(val) {
+            document.getElementById('deposit-amount-input').value = val;
+        }
+
+        async function initiatePaymentGateway() {
+            const amount = document.getElementById('deposit-amount-input').value.trim();
+            if (!amount || parseFloat(amount) <= 0) return showToast('সঠিক এমাউন্ট লিখুন', 'error');
+
+            const btn = document.getElementById('btnPayGateway');
+            btn.disabled = true; 
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> প্রসেসিং হচ্ছে...';
+
+            const returnUrl = window.location.href.split('?')[0];
+
+            const payload = {
+                amount: String(amount),
+                success_url: returnUrl + "?status=success",
+                cancel_url: returnUrl + "?status=cancel",
+                metadata: {
+                    uid: activeUser.id,
+                    phone: activeUser.email
+                }
+            };
+
+            try {
+                const res = await fetch('/api/payment?action=create', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                const data = await res.json();
+                let payUrl = data.payment_url || data.url || (data.data && data.data.payment_url) || (data.data && data.data.url);
+
+                if (payUrl) {
+                    window.location.href = payUrl;
+                } else {
+                    showToast(data.message || 'পেমেন্ট গেটওয়েতে সমস্যা হচ্ছে!', 'error');
+                    btn.disabled = false; 
+                    btn.innerHTML = '<i class="fas fa-lock text-amber-300"></i> Continue to Payment';
+                }
+            } catch (err) {
+                showToast('সার্ভার কানেকশন ব্যর্থ হয়েছে', 'error');
+                btn.disabled = false; 
+                btn.innerHTML = '<i class="fas fa-lock text-amber-300"></i> Continue to Payment';
+            }
+        }
+
+        async function checkReturnPaymentStatus() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const transactionId = urlParams.get('transactionId') || urlParams.get('transaction_id') || urlParams.get('txid');
+            const urlStatus = urlParams.get('status');
+
+            if (transactionId || urlStatus === 'success') {
+                showToast('পেমেন্ট ভেরিফাই করা হচ্ছে...');
+
+                try {
+                    const res = await fetch('/api/payment?action=verify', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ transaction_id: transactionId })
+                    });
+
+                    const data = await res.json();
+                    const apiStatus = data.status ? String(data.status).toUpperCase() : "";
+
+                    if (apiStatus === "SUCCESS" || apiStatus === "COMPLETED" || data.payment_status === "COMPLETED" || data.success === true) {
+                        let depositAmount = parseFloat(data.amount || urlParams.get('paymentAmount') || 0);
+
+                        if(depositAmount > 0) {
+                            savePaymentAndUpdateBalance(depositAmount, transactionId, data);
+                            showToast(`৳${depositAmount} সফলভাবে আপনার একাউন্টে জমা হয়েছে!`, 'success');
+                            window.history.replaceState({}, document.title, window.location.pathname);
+                        }
+                    } else {
+                        showToast('পেমেন্ট ভেরিফিকেশন সফল হয়নি', 'error');
+                    }
+                } catch (e) {
+                    showToast('ভেরিফিকেশনে সমস্যা দেখা দিয়েছে', 'error');
+                }
+            }
+        }
+
+        function savePaymentAndUpdateBalance(depositAmount, txid, fullData) {
+            const uid = activeUser.id;
+            const txRef = database.ref(`users/${uid}/deposits/${txid}`);
+
+            txRef.once('value', snapshot => {
+                if (!snapshot.exists()) {
+                    txRef.set({
+                        txid: txid || `TXN_${Date.now()}`,
+                        amount: depositAmount,
+                        gateway: 'Instant Gateway',
+                        details: fullData,
+                        timestamp: firebase.database.ServerValue.TIMESTAMP
+                    }).then(() => {
+                        database.ref(`users/${uid}/balance`).transaction(curr => {
+                            return (curr || 0) + depositAmount;
+                        });
+
+                        database.ref(`users/${uid}/notifications`).push({
+                            title: "ডিপোজিট সফল",
+                            message: `অভিনন্দন! আপনার একাউন্টে ৳${depositAmount} সফলভাবে যোগ করা হয়েছে। (TXID: ${txid})`,
+                            time: "Just now",
+                            timestamp: firebase.database.ServerValue.TIMESTAMP
+                        });
+                    });
+                }
+            });
+        }
+
+        // ================= HISTORY TAB ENGINE =================
         function switchHistoryTab(tab) {
             document.getElementById('btn-tab-hist-matches').className = tab === 'matches' ? 'p-2.5 rounded-xl bg-blue-600 text-white font-bold text-xs shadow' : 'p-2.5 rounded-xl bg-slate-800 text-slate-400 font-bold text-xs';
             document.getElementById('btn-tab-hist-deposits').className = tab === 'deposits' ? 'p-2.5 rounded-xl bg-blue-600 text-white font-bold text-xs shadow' : 'p-2.5 rounded-xl bg-slate-800 text-slate-400 font-bold text-xs';
@@ -1531,7 +1731,7 @@
                     return `
                     <div class="bg-[#121a2d] p-3 rounded-2xl border border-white/5 flex items-center justify-between text-xs">
                         <div>
-                            <h5 class="font-bold text-white">LUDO HUB ${h.matchNo || ''}</h5>
+                            <h5 class="font-bold text-white">${h.gameType ? h.gameType.toUpperCase() : 'GAME'} ${h.matchNo || ''}</h5>
                             <span class="text-[10px] text-slate-400">রুম কোড: <b class="text-amber-400">${h.roomCode || 'Pending'}</b> • ফি: ৳${h.fee}</span>
                         </div>
                         <span class="px-2.5 py-1 rounded-lg font-black text-[10px] ${badgeColor}">
@@ -1540,15 +1740,25 @@
                     </div>`;
                 }).join('');
             } else {
-                container.innerHTML = `
-                    <div class="bg-[#121a2d] p-3 rounded-2xl border border-white/5 flex items-center justify-between text-xs">
-                        <div>
-                            <h5 class="font-bold text-white">ডিপোজিট (bKash Instant)</h5>
-                            <span class="text-[10px] text-slate-400">TXN_LUDOHUB_01928</span>
-                        </div>
-                        <span class="font-black text-emerald-400">+৳100.00</span>
-                    </div>
-                `;
+                database.ref(`users/${activeUser.id}/deposits`).limitToLast(10).once('value', snapshot => {
+                    if (snapshot.exists()) {
+                        let html = '';
+                        snapshot.forEach(c => {
+                            const d = c.val();
+                            html += `
+                            <div class="bg-[#121a2d] p-3 rounded-2xl border border-white/5 flex items-center justify-between text-xs">
+                                <div>
+                                    <h5 class="font-bold text-white">ডিপোজিট (${d.gateway})</h5>
+                                    <span class="text-[10px] text-slate-400">${d.txid}</span>
+                                </div>
+                                <span class="font-black text-emerald-400">+৳${d.amount.toFixed(2)}</span>
+                            </div>`;
+                        });
+                        container.innerHTML = html;
+                    } else {
+                        container.innerHTML = `<div class="text-center text-slate-500 py-10 text-xs">কোনো ডিপোজিট বা ট্রানজ্যাকশন রেকর্ড নেই।</div>`;
+                    }
+                });
             }
         }
 
@@ -1563,12 +1773,12 @@
         }
 
         function loadChatMessages(uid) {
-            db.ref('support_chats/' + uid).on('value', snap => {
+            database.ref('support_chats/' + uid).on('value', snap => {
                 const body = document.getElementById('chat-messages');
                 body.innerHTML = `
                     <div class="msg-row admin">
                         <div class="msg-bubble">
-                            হ্যালো! <b>LUDO HUB Helpdesk</b> এ আপনাকে স্বাগতম। আপনার টুর্নামেন্ট বা পেমেন্ট বিষয়ক যেকোনো প্রশ্ন লিখুন।
+                            হ্যালো! <b>LUDO HUB Helpdesk</b> এ আপনাকে স্বাগতম। যেকোনো সমস্যা বা প্রশ্ন এখানে লিখুন।
                         </div>
                     </div>`;
 
@@ -1595,7 +1805,7 @@
             if (!text) return;
 
             const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            db.ref('support_chats/' + activeUser.id).push({
+            database.ref('support_chats/' + activeUser.id).push({
                 sender: 'user',
                 text: text,
                 time: timeStr,
@@ -1622,7 +1832,7 @@
                         <h5 class="font-bold text-xs text-amber-400 flex items-center gap-1.5">
                             <i class="fas fa-bell text-xs"></i> ${n.title}
                         </h5>
-                        <span class="text-[10px] text-slate-400">${n.time}</span>
+                        <span class="text-[10px] text-slate-400">${n.time || ''}</span>
                     </div>
                     <p class="text-xs text-slate-300">${n.message}</p>
                 </div>
@@ -1655,7 +1865,7 @@
 
         function shareReferralLinkTelegram() {
             const link = `https://t.me/EXPERTearn_team?start=ref_${activeUser.id}`;
-            const text = "🔥 LUDO HUB-এ জয়েন করে লুডো খেলে ইনস্ট্যান্ট টাকা ইনকাম করুন!";
+            const text = "🔥 LUDO HUB-এ জয়েন করে লুডো ও অন্যান্য গেম খেলে নগদ টাকা আয় করুন!";
             const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(text)}`;
             if (window.Telegram?.WebApp?.openTelegramLink) {
                 window.Telegram.WebApp.openTelegramLink(shareUrl);
@@ -1675,17 +1885,9 @@
 
             activeUser.balance += 20;
             updateUserInterface();
+            database.ref(`users/${activeUser.id}/balance`).set(activeUser.balance);
             closeModal('redeem-code-modal');
-            showToast("অভিনন্দন! ৳20 বোনাস রিডিম সফল হয়েছে।", "success");
-        }
-
-        function setQuickDeposit(val) {
-            document.getElementById('deposit-amount-input').value = val;
-        }
-
-        function initiateTournamentDeposit() {
-            const val = document.getElementById('deposit-amount-input').value;
-            showToast(`৳${val} ডিপোজিটের জন্য গেটওয়েতে পাঠানো হচ্ছে...`);
+            showToast("অভিনন্দন! ৳20 বোনাস যুক্ত হয়েছে।", "success");
         }
     </script>
 </body>
