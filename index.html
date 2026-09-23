@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LUDO HUB - Gaming, Wallet & Support</title>
+    <title>LUDO HUB - Gaming & Platform</title>
 
     <!-- Telegram WebApp SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Hind+Siliguri:wght@400;500;600;700&family=Russo+One&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Hind+Siliguri:wght@400;500;600;700&family=Russo+One&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-    <script src="https://unpkg.com/lucide@latest"></script>
 
     <!-- Firebase Compat SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -57,8 +56,8 @@
             transition: opacity 0.4s ease, visibility 0.4s ease;
         }
         .dice-spinner {
-            width: 68px;
-            height: 68px;
+            width: 70px;
+            height: 70px;
             background: linear-gradient(135deg, #3b82f6, #ec4899);
             border-radius: 20px;
             display: flex;
@@ -66,12 +65,12 @@
             justify-content: center;
             font-size: 32px;
             color: #fff;
-            box-shadow: 0 0 30px rgba(59, 130, 246, 0.7);
+            box-shadow: 0 0 35px rgba(59, 130, 246, 0.7);
             animation: diceRotate 1.3s infinite cubic-bezier(0.68, -0.55, 0.27, 1.55);
         }
         @keyframes diceRotate {
             0% { transform: rotate(0deg) scale(0.9); }
-            50% { transform: rotate(180deg) scale(1.1); }
+            50% { transform: rotate(180deg) scale(1.12); }
             100% { transform: rotate(360deg) scale(0.9); }
         }
 
@@ -84,7 +83,7 @@
             z-index: 45;
         }
 
-        /* FLOATING BOTTOM NAVIGATION */
+        /* FLOATING BOTTOM NAVIGATION (PREVIOUS 5 TABS) */
         .bottom-nav {
             background: #090f1d;
             border-top: 1px solid var(--card-border);
@@ -96,7 +95,7 @@
             margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            height: 68px;
+            height: 72px;
             z-index: 50;
             padding: 0 4px;
         }
@@ -107,10 +106,10 @@
             align-items: center;
             justify-content: center;
             color: #718096;
-            font-size: 0.68rem;
+            font-size: 0.70rem;
             font-weight: 700;
             cursor: pointer;
-            gap: 2px;
+            gap: 3px;
             transition: all 0.22s ease;
         }
         .nav-item.active {
@@ -119,9 +118,9 @@
 
         .floating-center-btn {
             position: relative;
-            top: -16px;
-            width: 56px;
-            height: 56px;
+            top: -18px;
+            width: 58px;
+            height: 58px;
             border-radius: 50%;
             background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
             display: flex;
@@ -277,47 +276,48 @@
         .sub-page.active { display: block; animation: fadeIn 0.25s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* LIVE SUPPORT CHAT DESK */
-        #support-chat-wrapper {
+        /* Full Screen Live Support Chat Desk Overlay */
+        #support-desk-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
             background: #0e1621;
-            color: #ffffff;
-            display: flex;
+            display: none;
             flex-direction: column;
-            border-radius: 24px;
-            overflow: hidden;
-            font-family: 'Poppins', sans-serif;
-            border: 1px solid #1e293b;
-            height: calc(100vh - 170px);
-            min-height: 480px;
+            width: 100%;
+            height: 100vh;
+            height: 100dvh;
+        }
+        #support-desk-overlay.active {
+            display: flex;
         }
         .tg-top-bar {
-            background: #17212b;
+            background: var(--tg-surface);
             color: #fff;
-            padding: 10px 14px;
+            padding: 12px 16px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            flex-shrink: 0;
         }
         .tg-chat-body {
             flex: 1;
-            padding: 14px;
+            padding: 16px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
             background: radial-gradient(circle at 50% 20%, #172435 0%, #0a1017 100%);
         }
         .msg-row { display: flex; align-items: flex-end; gap: 8px; width: 100%; }
         .msg-row.admin { justify-content: flex-start; }
         .msg-row.user { justify-content: flex-end; }
-        .msg-bubble { max-width: 86%; padding: 10px 13px; border-radius: 16px; font-size: 0.84rem; line-height: 1.45; color: #fff; word-break: break-word; }
-        .msg-row.admin .msg-bubble { background: #1e2c3a; border-bottom-left-radius: 4px; border: 1px solid rgba(255,255,255,0.08); }
-        .msg-row.user .msg-bubble { background: #2b5278; border-bottom-right-radius: 4px; }
-        .tg-bottom-bar { background: #17212b; padding: 8px 12px; display: flex; align-items: center; gap: 8px; border-top: 1px solid rgba(255,255,255,0.08); flex-shrink: 0; }
-        .tg-input { flex: 1; min-width: 0; padding: 10px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.12); outline: none; font-size: 0.86rem; background: #0e1621; color: #fff; }
-        .tg-send-btn { background: #2AABEE; color: #fff; width: 40px; height: 40px; border-radius: 50%; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.05rem; }
+        .msg-bubble { max-width: 85%; padding: 11px 14px; border-radius: 16px; font-size: 0.86rem; line-height: 1.45; color: #fff; word-break: break-word; }
+        .msg-row.admin .msg-bubble { background: var(--chat-admin); border-bottom-left-radius: 4px; border: 1px solid rgba(255,255,255,0.08); }
+        .msg-row.user .msg-bubble { background: var(--chat-my); border-bottom-right-radius: 4px; }
+        .tg-bottom-bar { background: var(--tg-surface); padding: 10px 14px; display: flex; align-items: center; gap: 10px; border-top: 1px solid rgba(255,255,255,0.08); }
+        .tg-input { flex: 1; padding: 10px 16px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.12); outline: none; font-size: 0.88rem; background: #0e1621; color: #fff; }
+        .tg-send-btn { background: var(--tg-blue); color: #fff; width: 42px; height: 42px; border-radius: 50%; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
 
         .disabled-game-card {
             opacity: 0.6;
@@ -330,7 +330,7 @@
             content: "বর্তমানে অফলাইন";
             position: absolute;
             inset: 0;
-            background: rgba(6, 11, 23, 0.7);
+            background: rgba(6, 11, 23, 0.72);
             backdrop-filter: blur(2px);
             display: flex;
             align-items: center;
@@ -351,7 +351,7 @@
         </div>
         <h2 class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-sky-300 to-amber-300 tracking-wider" style="font-family: 'Russo One', sans-serif;">LUDO HUB</h2>
         <p class="text-xs font-bold text-slate-400 mt-2 flex items-center gap-2">
-            <i class="fas fa-spinner fa-spin text-sky-400"></i> সার্ভার ডেটা লোড হচ্ছে...
+            <i class="fas fa-spinner fa-spin text-sky-400"></i> সার্ভার ডেটা সিঙ্ক হচ্ছে...
         </p>
     </div>
 
@@ -370,7 +370,7 @@
         </div>
 
         <div class="flex items-center gap-2">
-            <button onclick="navigateTo('support-page')" class="w-8 h-8 rounded-full bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 flex items-center justify-center hover:bg-cyan-500/30 transition shadow">
+            <button onclick="openSupportDeskModal()" class="w-8 h-8 rounded-full bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 flex items-center justify-center hover:bg-cyan-500/30 transition shadow">
                 <i class="fas fa-headset text-xs"></i>
             </button>
 
@@ -574,7 +574,7 @@
             <div id="tournament-matches-container" class="space-y-3 pt-1"></div>
         </div>
 
-        <!-- ======================= 3. DEPOSIT & WALLET PAGE (EXACT FROM FILE 1) ======================= -->
+        <!-- ======================= 3. DEPOSIT & WALLET PAGE ======================= -->
         <div id="wallet-page" class="sub-page space-y-4">
             <div class="flex items-center gap-2 pb-1">
                 <button onclick="navigateTo('home-page')" class="w-9 h-9 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10">
@@ -649,19 +649,122 @@
                     <i class="fas fa-lock text-amber-300"></i>
                     <span>Continue to Instant Payment</span>
                 </button>
+            </div>
+        </div>
 
-                <div class="pt-2">
-                    <button onclick="navigateTo('withdraw-page')" class="w-full py-3 bg-slate-800/80 hover:bg-slate-700 border border-white/10 rounded-2xl text-xs font-black text-rose-400 flex items-center justify-center gap-2">
-                        <i class="fas fa-arrow-down"></i> টাকা উত্তোলন (Withdraw Page)
-                    </button>
+        <!-- ======================= 4. HISTORY PAGE ======================= -->
+        <div id="history-page" class="sub-page space-y-4">
+            <div class="flex items-center gap-2 pb-1">
+                <button onclick="navigateTo('home-page')" class="w-9 h-9 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10">
+                    <i class="fas fa-arrow-left text-sm"></i>
+                </button>
+                <h2 class="text-base font-black text-white" style="font-family: 'Russo One', sans-serif;">আমার হিস্ট্রি ও রেকর্ড</h2>
+            </div>
+
+            <div class="grid grid-cols-3 gap-1.5 bg-[#0e1627] p-1 rounded-2xl border border-white/10">
+                <button onclick="switchHistoryTab('matches')" id="btn-tab-hist-matches" class="p-2.5 rounded-xl bg-blue-600 text-white font-bold text-xs shadow">ম্যাচ</button>
+                <button onclick="switchHistoryTab('deposits')" id="btn-tab-hist-deposits" class="p-2.5 rounded-xl bg-slate-800 text-slate-400 font-bold text-xs">ডিপোজিট</button>
+                <button onclick="switchHistoryTab('withdrawals')" id="btn-tab-hist-withdrawals" class="p-2.5 rounded-xl bg-slate-800 text-slate-400 font-bold text-xs">উইথড্র</button>
+            </div>
+
+            <div id="history-content-container" class="space-y-2.5 min-h-[200px]"></div>
+        </div>
+
+        <!-- ======================= 5. PROFILE PAGE (WITH WITHDRAW SYSTEM) ======================= -->
+        <div id="profile-page" class="sub-page space-y-4">
+            <div class="flex items-center justify-between">
+                <button onclick="navigateTo('home-page')" class="w-9 h-9 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10">
+                    <i class="fas fa-arrow-left text-sm"></i>
+                </button>
+                <h2 class="text-base font-black text-white" style="font-family: 'Russo One', sans-serif;">My Profile</h2>
+                <div class="w-9"></div>
+            </div>
+
+            <div class="relative rounded-3xl overflow-hidden bg-[#11192d] border border-white/10 p-5 text-center shadow-xl">
+                <div class="relative w-24 h-24 mx-auto mb-3 mt-2">
+                    <img id="user-profile-img" src="https://i.postimg.cc/L4YZZKsv/IMG-20260919-214336-790.jpg" class="w-full h-full object-cover rounded-full border-4 border-amber-400 shadow-2xl bg-slate-800" alt="Profile">
+                </div>
+
+                <h3 id="profile-name-text" class="text-xl font-black text-white tracking-wide uppercase" style="font-family: 'Russo One', sans-serif;">PLAYER</h3>
+
+                <div class="inline-flex items-center gap-2 mt-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-black text-xs cursor-pointer shadow-sm" onclick="copyReferralLink()">
+                    <i class="fas fa-fingerprint"></i>
+                    <span id="profile-uid-display">UID: 00000</span>
+                    <i class="fas fa-copy text-xs ml-0.5"></i>
+                </div>
+            </div>
+
+            <!-- PLATINUM VIRTUAL WALLET CARD -->
+            <div class="platinum-card p-5 space-y-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-shield-alt text-cyan-400"></i>
+                        <span class="text-xs font-black tracking-widest text-cyan-300 uppercase">LUDO HUB PLATINUM</span>
+                    </div>
+                    <div class="flex items-center -space-x-2">
+                        <div class="w-5 h-5 rounded-full bg-rose-500 opacity-90"></div>
+                        <div class="w-5 h-5 rounded-full bg-amber-400 opacity-90"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <span class="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block">TOTAL BALANCE</span>
+                    <div class="text-3xl font-black text-white tracking-tight mt-0.5 flex items-baseline gap-1">
+                        <span>৳</span><span id="card-total-bal">0.00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROFILE MENU OPTIONS (WITH WITHDRAW ADDED) -->
+            <div class="space-y-2 pt-1">
+                <!-- 1. WITHDRAW BUTTON -->
+                <div onclick="navigateTo('withdraw-page')" class="action-row-item border-l-4 border-l-rose-500 bg-gradient-to-r from-rose-950/40 to-[#121a2d]">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-2xl bg-rose-500/20 text-rose-400 flex items-center justify-center text-lg">
+                            <i class="fas fa-arrow-down-to-line"></i>
+                        </div>
+                        <div>
+                            <h5 class="text-sm font-black text-white">টাকা উত্তোলন (Withdraw)</h5>
+                            <p class="text-[11px] text-slate-400">বিকাশ, নগদ, রকেট ও বাইন্যান্সে নিন</p>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-right text-rose-400 text-sm"></i>
+                </div>
+
+                <!-- 2. DEPOSIT BUTTON -->
+                <div onclick="navigateTo('wallet-page')" class="action-row-item border-l-4 border-l-amber-500">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <div>
+                            <h5 class="text-sm font-black text-white">Deposit Wallet</h5>
+                            <p class="text-[11px] text-slate-400">ব্যালেন্স রিচার্জ করুন</p>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-right text-amber-400 text-sm"></i>
+                </div>
+
+                <!-- 3. REFER & EARN BUTTON -->
+                <div onclick="navigateTo('refer-page')" class="action-row-item border-l-4 border-l-emerald-500">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg">
+                            <i class="fas fa-user-friends"></i>
+                        </div>
+                        <div>
+                            <h5 class="text-sm font-black text-white">Referrals Program</h5>
+                            <p class="text-[11px] text-slate-400">বন্ধুদের রেফার করে আয় করুন</p>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-right text-emerald-400 text-sm"></i>
                 </div>
             </div>
         </div>
 
-        <!-- ======================= 4. WITHDRAWAL PAGE (EXACT FROM FILE 1) ======================= -->
+        <!-- ======================= 6. WITHDRAWAL SUB-PAGE (ACCESSED VIA PROFILE) ======================= -->
         <div id="withdraw-page" class="sub-page space-y-4">
             <div class="flex items-center gap-2 pb-1">
-                <button onclick="navigateTo('wallet-page')" class="w-9 h-9 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10">
+                <button onclick="navigateTo('profile-page')" class="w-9 h-9 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10">
                     <i class="fas fa-arrow-left text-sm"></i>
                 </button>
                 <h2 class="text-base font-black text-white" style="font-family: 'Russo One', sans-serif;">উত্তোলন (Withdraw)</h2>
@@ -724,21 +827,12 @@
                     <span>উত্তোলন নিশ্চিত করুন</span>
                 </button>
             </div>
-
-            <!-- WITHDRAW HISTORY -->
-            <div class="space-y-2 pt-2">
-                <h3 class="text-xs font-black uppercase tracking-wider text-slate-400 flex items-center gap-2">
-                    <i class="fas fa-history text-rose-500"></i>
-                    <span>উত্তোলন হিস্ট্রি (History)</span>
-                </h3>
-                <div id="withdraw-history-list" class="space-y-2.5"></div>
-            </div>
         </div>
 
-        <!-- ======================= 5. REFER & EARN (EXACT FROM FILE 1) ======================= -->
+        <!-- ======================= 7. REFER & EARN SUB-PAGE ======================= -->
         <div id="refer-page" class="sub-page space-y-4">
             <div class="flex items-center gap-2 pb-1">
-                <button onclick="navigateTo('home-page')" class="w-9 h-9 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10">
+                <button onclick="navigateTo('profile-page')" class="w-9 h-9 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10">
                     <i class="fas fa-arrow-left text-sm"></i>
                 </button>
                 <h2 class="text-base font-black text-white" style="font-family: 'Russo One', sans-serif;">Refer & Earn Program</h2>
@@ -753,7 +847,7 @@
                         <span class="text-[11px] font-black text-amber-400 bg-amber-400/10 px-2.5 py-0.5 rounded-lg border border-amber-400/20" id="refer-rate-badge">৳১০ / একটিভ রেফার</span>
                     </div>
                     <h2 class="text-xl font-black tracking-tight text-white">Refer & Earn Program</h2>
-                    <p class="text-xs text-blue-200" id="refer-page-desc">আপনার বন্ধুদের ইনভাইট করুন এবং প্রতি অ্যাক্টিভ রেফারে আকর্ষণীয় বোনাস সরাসরি ওয়ালেটে নিন!</p>
+                    <p class="text-xs text-blue-200" id="refer-page-desc">আপনার বন্ধুদের ইনভাইট করুন এবং আকর্ষণীয় বোনাস সরাসরি ওয়ালেটে নিন!</p>
                 </div>
             </div>
 
@@ -804,178 +898,78 @@
             </div>
         </div>
 
-        <!-- ======================= 6. LIVE SUPPORT CHAT DESK (EXACT FROM FILE 1) ======================= -->
-        <div id="support-page" class="sub-page space-y-3">
-            <div class="flex items-center gap-2 pb-1">
-                <button onclick="navigateTo('home-page')" class="w-9 h-9 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10">
-                    <i class="fas fa-arrow-left text-sm"></i>
-                </button>
-                <h2 class="text-base font-black text-white" style="font-family: 'Russo One', sans-serif;">২৪/৭ লাইভ সাপোর্ট হাব</h2>
-            </div>
-
-            <div id="support-chat-wrapper">
-                <!-- Top Bar -->
-                <div class="tg-top-bar">
-                    <div class="flex items-center gap-2.5 flex-1 overflow-hidden">
-                        <img src="https://i.postimg.cc/L4YZZKsv/IMG-20260919-214336-790.jpg" class="w-9 h-9 rounded-full border-2 border-[#2AABEE] object-cover" alt="Avatar">
-                        <div class="overflow-hidden">
-                            <h4 class="text-xs font-bold text-white flex items-center gap-1.5">
-                                <span>𝐋𝐔𝐃𝐎 𝐇𝐔𝐁 ˢᵘᵖᵖᵒʳᵗ</span>
-                                <i class="fas fa-check-circle text-sky-400 text-[11px]"></i>
-                            </h4>
-                            <p class="text-[10px] text-sky-400 font-medium">লাইভ সাপোর্ট টিম (Online)</p>
-                        </div>
-                    </div>
-
-                    <a href="https://wa.me/8801827750260" target="_blank" class="px-2.5 py-1 bg-emerald-600 text-white rounded-lg text-[10px] font-bold flex items-center gap-1 shadow">
-                        <i class="fab fa-whatsapp"></i> WhatsApp
-                    </a>
-                </div>
-
-                <!-- Messages Area -->
-                <div class="tg-chat-body" id="chat-messages">
-                    <div class="msg-row admin">
-                        <div class="msg-bubble">
-                            হ্যালো! <b>𝐋𝐔𝐃𝐎 𝐇𝐔𝐁</b> লাইভ সাপোর্টে আপনাকে স্বাগতম। আপনার যেকোনো প্রশ্ন বা সমস্যার কথা এখানে বিস্তারিত লিখে জানান।
-                            <div class="text-[9px] text-slate-400 text-right mt-1">Official 24/7 Desk</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Typing Indicator -->
-                <div id="typing-box" class="px-4 py-1 bg-[#17212b] text-[11px] text-sky-400 font-bold hidden items-center gap-2">
-                    <i class="fas fa-pencil-alt"></i> <span>এডমিন টাইপ করছেন...</span>
-                </div>
-
-                <!-- Bottom Input Bar -->
-                <div class="tg-bottom-bar">
-                    <input type="text" id="chat-text-input" class="tg-input" placeholder="মেসেজ লিখুন..." oninput="handleTypingEvent()" onkeydown="if(event.key==='Enter') sendSupportMessage()">
-                    <button class="tg-send-btn" onclick="sendSupportMessage()" title="Send">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- ======================= 7. PROFILE PAGE ======================= -->
-        <div id="profile-page" class="sub-page space-y-4">
-            <div class="flex items-center justify-between">
-                <button onclick="navigateTo('home-page')" class="w-9 h-9 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10">
-                    <i class="fas fa-arrow-left text-sm"></i>
-                </button>
-                <h2 class="text-base font-black text-white" style="font-family: 'Russo One', sans-serif;">My Profile</h2>
-                <div class="w-9"></div>
-            </div>
-
-            <div class="relative rounded-3xl overflow-hidden bg-[#11192d] border border-white/10 p-5 text-center shadow-xl">
-                <div class="relative w-24 h-24 mx-auto mb-3 mt-2">
-                    <img id="user-profile-img" src="https://i.postimg.cc/L4YZZKsv/IMG-20260919-214336-790.jpg" class="w-full h-full object-cover rounded-full border-4 border-amber-400 shadow-2xl bg-slate-800" alt="Profile">
-                </div>
-
-                <h3 id="profile-name-text" class="text-xl font-black text-white tracking-wide uppercase" style="font-family: 'Russo One', sans-serif;">PLAYER</h3>
-
-                <div class="inline-flex items-center gap-2 mt-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-black text-xs cursor-pointer shadow-sm" onclick="copyReferralLink()">
-                    <i class="fas fa-fingerprint"></i>
-                    <span id="profile-uid-display">UID: 00000</span>
-                    <i class="fas fa-copy text-xs ml-0.5"></i>
-                </div>
-            </div>
-
-            <!-- PLATINUM VIRTUAL WALLET CARD -->
-            <div class="platinum-card p-5 space-y-4">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <i class="fas fa-shield-alt text-cyan-400"></i>
-                        <span class="text-xs font-black tracking-widest text-cyan-300 uppercase">LUDO HUB PLATINUM</span>
-                    </div>
-                    <div class="flex items-center -space-x-2">
-                        <div class="w-5 h-5 rounded-full bg-rose-500 opacity-90"></div>
-                        <div class="w-5 h-5 rounded-full bg-amber-400 opacity-90"></div>
-                    </div>
-                </div>
-
-                <div>
-                    <span class="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block">TOTAL BALANCE</span>
-                    <div class="text-3xl font-black text-white tracking-tight mt-0.5 flex items-baseline gap-1">
-                        <span>৳</span><span id="card-total-bal">0.00</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- MENU OPTIONS -->
-            <div class="space-y-2 pt-2">
-                <div onclick="navigateTo('wallet-page')" class="action-row-item border-l-4 border-l-amber-500">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg">
-                            <i class="fas fa-wallet"></i>
-                        </div>
-                        <div>
-                            <h5 class="text-sm font-black text-white">Deposit Wallet</h5>
-                            <p class="text-[11px] text-slate-400">ব্যালেন্স রিচার্জ ও হিস্ট্রি</p>
-                        </div>
-                    </div>
-                    <i class="fas fa-chevron-right text-amber-400 text-sm"></i>
-                </div>
-
-                <div onclick="navigateTo('withdraw-page')" class="action-row-item border-l-4 border-l-rose-500">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-2xl bg-rose-500/20 text-rose-400 flex items-center justify-center text-lg">
-                            <i class="fas fa-arrow-down-to-line"></i>
-                        </div>
-                        <div>
-                            <h5 class="text-sm font-black text-white">Withdrawal (উত্তোলন)</h5>
-                            <p class="text-[11px] text-slate-400">বিকাশ, নগদ, রকেটে টাকা তুলুন</p>
-                        </div>
-                    </div>
-                    <i class="fas fa-chevron-right text-rose-400 text-sm"></i>
-                </div>
-
-                <div onclick="navigateTo('refer-page')" class="action-row-item border-l-4 border-l-emerald-500">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg">
-                            <i class="fas fa-user-friends"></i>
-                        </div>
-                        <div>
-                            <h5 class="text-sm font-black text-white">Referrals Program</h5>
-                            <p class="text-[11px] text-slate-400">বন্ধুদের রেফার করে বোনাস ইনকাম</p>
-                        </div>
-                    </div>
-                    <i class="fas fa-chevron-right text-emerald-400 text-sm"></i>
-                </div>
-            </div>
-        </div>
-
     </main>
 
-    <!-- BOTTOM NAVIGATION (5 TABS) -->
+    <!-- PREVIOUS BOTTOM NAVIGATION (5 CORE TABS) -->
     <nav class="bottom-nav">
-        <div class="nav-item" data-page="home" onclick="navigateTo('home-page')">
-            <i class="fas fa-gamepad text-lg"></i>
-            <span>Arena</span>
+        <div class="nav-item" data-page="support" onclick="openSupportDeskModal()">
+            <i class="fas fa-headset text-lg"></i>
+            <span>সাপোর্ট</span>
         </div>
         <div class="nav-item" data-page="wallet" onclick="navigateTo('wallet-page')">
             <i class="fas fa-wallet text-lg"></i>
             <span>ডিপোজিট</span>
         </div>
-        <div class="nav-item flex items-center justify-center" onclick="navigateTo('withdraw-page')">
+        <div class="nav-item flex items-center justify-center" onclick="navigateTo('home-page')">
             <div class="floating-center-btn shadow-lg">
-                <i class="fas fa-money-bill-wave text-xl"></i>
+                <i class="fas fa-gamepad text-2xl"></i>
             </div>
-            <span class="text-[9px] font-black text-rose-400 mt-1">উত্তোলন</span>
+            <span class="text-[10px] font-black text-blue-400 mt-1">Play</span>
         </div>
-        <div class="nav-item" data-page="refer" onclick="navigateTo('refer-page')">
-            <i class="fas fa-gift text-lg"></i>
-            <span>রেফার</span>
+        <div class="nav-item" data-page="history" onclick="navigateTo('history-page')">
+            <i class="fas fa-history text-lg"></i>
+            <span>হিস্ট্রি</span>
         </div>
-        <div class="nav-item" data-page="support" onclick="navigateTo('support-page')">
-            <i class="fas fa-headset text-lg"></i>
-            <span>সাপোর্ট</span>
+        <div class="nav-item" data-page="profile" onclick="navigateTo('profile-page')">
+            <i class="fas fa-user-circle text-lg"></i>
+            <span>প্রোফাইল</span>
         </div>
     </nav>
 
-    <!-- ======================= MODALS / DIALOGS ======================= -->
+    <!-- FULL SCREEN LIVE SUPPORT CHAT DESK OVERLAY -->
+    <div id="support-desk-overlay">
+        <div class="tg-top-bar">
+            <button class="text-white text-lg pr-2" onclick="closeSupportDeskModal()"><i class="fas fa-arrow-left"></i></button>
+            <div class="flex items-center gap-3 flex-1 overflow-hidden">
+                <img src="https://i.postimg.cc/L4YZZKsv/IMG-20260919-214336-790.jpg" class="w-10 h-10 rounded-full border border-sky-400 object-cover" alt="Support">
+                <div class="overflow-hidden">
+                    <h4 class="text-sm font-bold text-white truncate flex items-center gap-1">
+                        <span>LUDO HUB Support</span>
+                        <i class="fas fa-check-circle text-sky-400 text-xs"></i>
+                    </h4>
+                    <p class="text-[10px] text-sky-400 font-semibold">লাইভ সাপোর্ট টিম (Online)</p>
+                </div>
+            </div>
+            <a href="https://wa.me/8801827750260" target="_blank" class="px-2.5 py-1 bg-emerald-600 text-white rounded-lg text-xs font-bold flex items-center gap-1">
+                <i class="fab fa-whatsapp"></i> WA
+            </a>
+            <button onclick="closeSupportDeskModal()" class="text-slate-400 hover:text-white p-2"><i class="fas fa-times text-lg"></i></button>
+        </div>
 
-    <!-- BIND E-WALLET MODAL (FROM FILE 1) -->
+        <div class="tg-chat-body" id="chat-messages">
+            <div class="msg-row admin">
+                <div class="msg-bubble">
+                    হ্যালো! <b>LUDO HUB Helpdesk</b> এ আপনাকে স্বাগতম। আপনার টুর্নামেন্ট বা পেমেন্ট সংক্রান্ত যেকোনো প্রশ্ন লিখুন।
+                </div>
+            </div>
+        </div>
+
+        <!-- Typing Indicator -->
+        <div id="typing-box" class="px-4 py-1.5 bg-[#17212b] text-[11px] text-sky-400 font-bold hidden items-center gap-2">
+            <i class="fas fa-pencil-alt"></i> <span>এডমিন টাইপ করছেন...</span>
+        </div>
+
+        <div class="tg-bottom-bar">
+            <input type="text" id="chat-text-input" class="tg-input" placeholder="মেসেজ লিখুন..." oninput="handleTypingEvent()" onkeydown="if(event.key==='Enter') sendSupportMessage()">
+            <button class="tg-send-btn" onclick="sendSupportMessage()">
+                <i class="fas fa-paper-plane text-sm"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- MODALS -->
+
+    <!-- BIND E-WALLET MODAL -->
     <div id="bind-wallet-modal" class="hidden fixed inset-0 bg-black/75 flex items-center justify-center z-[98] p-4 backdrop-blur-sm">
         <div class="bg-[#11192d] border border-white/10 rounded-3xl p-5 w-full max-w-sm space-y-4 relative shadow-2xl text-left">
             <div class="flex items-center justify-between border-b border-white/10 pb-2.5">
@@ -1051,6 +1045,7 @@
                     <input type="text" id="join-player-name-input" class="w-full p-3 rounded-xl bg-[#090f1d] border border-blue-500/30 text-white font-bold text-xs focus:border-blue-500 outline-none pr-8">
                     <i class="fas fa-user-edit absolute right-3 top-3 text-slate-400 text-xs"></i>
                 </div>
+                <p class="text-[10px] text-slate-400">আপনার গেমের আসল প্লেয়ার নামটি এখানে দিন।</p>
             </div>
 
             <div class="flex gap-2 pt-1">
@@ -1138,7 +1133,7 @@
                 </div>
                 <div>
                     <h3 class="font-bold text-white text-base leading-tight">নোটিফিকেশন সেন্টার</h3>
-                    <p class="text-[11px] text-slate-400">সকল সিস্টেম, রুম কোড ও ডিপোজিট আপডেট</p>
+                    <p class="text-[11px] text-slate-400">সকল সিস্টেম ও আপডেট</p>
                 </div>
             </div>
             <button onclick="toggleNotificationModal()" class="p-2 bg-slate-800 text-slate-300 rounded-xl">
@@ -1148,9 +1143,8 @@
         <div id="notification-list-container" class="space-y-3 flex-grow overflow-y-auto pb-10"></div>
     </div>
 
-    <!-- ======================= APPLICATION JAVASCRIPT LOGIC ======================= -->
+    <!-- ======================= APPLICATION JAVASCRIPT ======================= -->
     <script>
-        // Realtime Firebase Integration
         const firebaseConfig = {
             apiKey: "AIzaSyAEV4zkuTcRYIFP2AMmKJTyDUTzSYLnbbM",
             authDomain: "used-mail-shop.firebaseapp.com",
@@ -1208,6 +1202,7 @@
         let selectedBindMethod = 'Nagad';
         let selectedWithdrawCardId = null;
         let typingTimer = null;
+        let currentHistoryTab = 'matches';
 
         window.onload = async function() {
             try {
@@ -1287,7 +1282,7 @@
         }
 
         function initFirebaseListeners() {
-            // User Balance & Wallets
+            // Balance & Wallets
             database.ref(`users/${activeUser.id}`).on('value', snap => {
                 if (snap.exists()) {
                     const u = snap.val();
@@ -1297,7 +1292,7 @@
                 }
             });
 
-            // App Settings / Config
+            // Config
             database.ref('config').on('value', snap => {
                 if (snap.exists()) {
                     appConfig = { ...appConfig, ...snap.val() };
@@ -1313,7 +1308,7 @@
                 applyGameSettingsUI();
             });
 
-            // Time & Status Controlled Withdrawals
+            // Withdraw Control (Time & Status)
             database.ref('withdraw_settings').on('value', snap => {
                 if (snap.exists()) {
                     withdrawSettings = { ...withdrawSettings, ...snap.val() };
@@ -1338,9 +1333,6 @@
                 }
                 renderMatches();
             });
-
-            // Withdraw History
-            loadWithdrawHistory();
         }
 
         function applyGameSettingsUI() {
@@ -1395,14 +1387,14 @@
             const submitBtn = document.getElementById('btn-submit-withdraw');
 
             if (!check.allowed) {
-                banner.classList.remove('hidden');
-                bannerText.textContent = check.msg;
+                if (banner) banner.classList.remove('hidden');
+                if (bannerText) bannerText.textContent = check.msg;
                 if (submitBtn) {
                     submitBtn.disabled = true;
                     submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
                 }
             } else {
-                banner.classList.add('hidden');
+                if (banner) banner.classList.add('hidden');
                 if (submitBtn) {
                     submitBtn.disabled = false;
                     submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
@@ -1437,10 +1429,10 @@
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
 
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.bottom-nav .nav-item').forEach(el => el.classList.remove('active'));
             let navKey = pageId.replace('-page', '');
             if (navKey === 'home' || navKey === 'matches') navKey = 'home';
-            const activeNav = document.querySelector(`.nav-item[data-page="${navKey}"]`);
+            const activeNav = document.querySelector(`.bottom-nav .nav-item[data-page="${navKey}"]`);
             if (activeNav) activeNav.classList.add('active');
 
             if (pageId === 'withdraw-page') {
@@ -1448,6 +1440,7 @@
                 checkWithdrawStatus();
             }
             if (pageId === 'refer-page') loadReferralData();
+            if (pageId === 'history-page') renderHistory(currentHistoryTab);
         }
 
         function closeModal(id) {
@@ -1500,7 +1493,9 @@
                 container.innerHTML = `
                     <div class="bg-[#121a2d] p-8 rounded-3xl text-center space-y-2 border border-white/5">
                         <i class="fas fa-gamepad text-3xl text-slate-500"></i>
-                        <h4 class="text-sm font-bold text-slate-300">কোনো ম্যাচ পাওয়া যায়নি।</h4>
+                        <h4 class="text-sm font-bold text-slate-300">
+                            ${currentActiveFilter === 'joined' ? 'আপনি এখনো কোনো ম্যাচে জয়েন করেননি।' : 'কোনো ম্যাচ পাওয়া যায়নি।'}
+                        </h4>
                     </div>`;
                 return;
             }
@@ -1606,6 +1601,7 @@
             document.getElementById('join-match-modal').classList.remove('hidden');
         }
 
+        // AUTO-REDIRECT TO JOINED LIST AFTER CONFIRMATION
         function confirmJoinMatch() {
             if (!pendingJoinMatchId) return;
             const m = realtimeMatches.find(x => x.id === pendingJoinMatchId);
@@ -1616,16 +1612,36 @@
 
             if (activeUser.balance < m.fee) return showToast("পর্যাপ্ত ব্যালেন্স নেই!", "error");
 
+            // Deduct Balance
             database.ref(`users/${activeUser.id}/balance`).transaction(curr => (curr || 0) - m.fee);
+            
+            // Add Player to Match
             database.ref(`matches/${m.id}/players/${activeUser.id}`).set({
                 uid: activeUser.id,
                 name: name,
                 joinedAt: Date.now()
             });
 
+            // Save in user activity history
+            database.ref(`users/${activeUser.id}/history/${m.id}`).set({
+                type: "MATCH",
+                matchNo: m.matchNo || '',
+                matchId: m.id,
+                gameType: m.gameType || 'ludo',
+                roomCode: m.roomCode || "WAITING",
+                fee: m.fee,
+                prize: m.prize,
+                status: "JOINED",
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                timestamp: Date.now()
+            });
+
             closeModal('join-match-modal');
             showToast("ম্যাচে সফলভাবে জয়েন করেছেন!", "success");
             pendingJoinMatchId = null;
+
+            // রিডাইরেক্ট: ব্যবহারকারী যেন বিভ্রান্ত না হয় তাই সরাসরি 'আমার জয়েন লিস্ট'-এ নেওয়া হলো
+            filterMatches('joined', document.getElementById('btn-joined-list-toggle'));
         }
 
         function handleManualRefund(id) {
@@ -1635,6 +1651,7 @@
             if (confirm(`আপনি কি ৳${m.fee} রিফান্ড নিতে চান?`)) {
                 database.ref(`matches/${m.id}/players/${activeUser.id}`).remove();
                 database.ref(`users/${activeUser.id}/balance`).transaction(curr => (curr || 0) + m.fee);
+                database.ref(`users/${activeUser.id}/history/${m.id}`).update({ status: "REFUNDED" });
                 showToast(`৳${m.fee} রিফান্ড দেওয়া হয়েছে!`, "success");
             }
         }
@@ -1793,7 +1810,7 @@
             }
         }
 
-        // ================= WITHDRAWAL SYSTEM (TIME & BOUND WALLET PROTECTED) =================
+        // ================= WITHDRAWAL SYSTEM =================
         function loadWithdrawPageUI() {
             const fee = appConfig.withdrawFee || 10;
             const minWithdraw = appConfig.minWithdraw || 100;
@@ -1900,7 +1917,6 @@
         }
 
         async function submitWithdrawalRequest() {
-            // Check withdraw window & status from firebase
             const statusCheck = isWithdrawAllowedNow();
             if (!statusCheck.allowed) {
                 return showToast(statusCheck.msg, "error");
@@ -1930,13 +1946,11 @@
             btn.textContent = "Processing...";
 
             try {
-                // Deduct balance safely
                 await database.ref(`users/${activeUser.id}/balance`).transaction(curr => {
-                    if ((curr || 0) < totalDebit) return; // Abort
+                    if ((curr || 0) < totalDebit) return;
                     return curr - totalDebit;
                 });
 
-                // Add to withdrawals list
                 await database.ref('withdrawals').push({
                     userId: String(activeUser.id),
                     userName: activeUser.name,
@@ -1950,8 +1964,9 @@
                 });
 
                 amountInput.value = '';
-                showToast("উত্তোলন অনুরোধ সম্পন্ন হয়েছে! ২৪ ঘণ্টার মধ্যে পেইড হবে।", "success");
-                loadWithdrawHistory();
+                showToast("উত্তোলন অনুরোধ সফল হয়েছে!", "success");
+                navigateTo('history-page');
+                switchHistoryTab('withdrawals');
             } catch (e) {
                 showToast("উত্তোলন ব্যর্থ হয়েছে!", "error");
             } finally {
@@ -1960,35 +1975,90 @@
             }
         }
 
-        function loadWithdrawHistory() {
-            const list = document.getElementById('withdraw-history-list');
-            if (!list) return;
-
-            database.ref('withdrawals').orderByChild('userId').equalTo(String(activeUser.id)).on('value', snap => {
-                if (!snap.exists()) {
-                    list.innerHTML = `<p class="text-center text-xs text-slate-400 py-3 bg-[#11192d] rounded-2xl border border-white/5">কোনো উত্তোলন রেকর্ড নেই</p>`;
-                    return;
+        // ================= HISTORY TAB ENGINE =================
+        function switchHistoryTab(tab) {
+            currentHistoryTab = tab;
+            ['matches', 'deposits', 'withdrawals'].forEach(t => {
+                const btn = document.getElementById(`btn-tab-hist-${t}`);
+                if (btn) {
+                    btn.className = t === tab 
+                        ? 'p-2.5 rounded-xl bg-blue-600 text-white font-bold text-xs shadow' 
+                        : 'p-2.5 rounded-xl bg-slate-800 text-slate-400 font-bold text-xs';
                 }
-
-                const records = [];
-                snap.forEach(c => { records.unshift({ id: c.key, ...c.val() }); });
-
-                list.innerHTML = records.map(r => `
-                    <div class="bg-[#11192d] p-3.5 rounded-2xl border border-white/10 flex justify-between items-center text-xs">
-                        <div>
-                            <p class="font-black text-white">${r.method} (${r.accountNumber})</p>
-                            <p class="text-[10px] text-slate-400 mt-0.5">ফি: ৳${(r.fee || 10).toFixed(2)}</p>
-                        </div>
-                        <div class="text-right">
-                            <span class="font-black text-white block font-mono">৳${parseFloat(r.amount).toFixed(2)}</span>
-                            <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded ${
-                                r.status === 'approved' ? 'bg-emerald-500/20 text-emerald-400' :
-                                r.status === 'rejected' ? 'bg-rose-500/20 text-rose-400' : 'bg-amber-500/20 text-amber-400'
-                            }">${r.status}</span>
-                        </div>
-                    </div>
-                `).join('');
             });
+            renderHistory(tab);
+        }
+
+        function renderHistory(tab) {
+            const container = document.getElementById('history-content-container');
+            if (!container) return;
+
+            if (tab === 'matches') {
+                database.ref(`users/${activeUser.id}/history`).once('value', snap => {
+                    if (!snap.exists()) {
+                        container.innerHTML = `<div class="text-center text-slate-500 py-10 text-xs">কোনো ম্যাচ রেকর্ড পাওয়া যায়নি।</div>`;
+                        return;
+                    }
+                    const list = [];
+                    snap.forEach(c => list.unshift(c.val()));
+                    container.innerHTML = list.map(h => `
+                        <div class="bg-[#121a2d] p-3 rounded-2xl border border-white/5 flex items-center justify-between text-xs">
+                            <div>
+                                <h5 class="font-bold text-white">${(h.gameType || 'GAME').toUpperCase()} Match ${h.matchNo || ''}</h5>
+                                <span class="text-[10px] text-slate-400">ফি: ৳${h.fee} • রুম কোড: <b class="text-amber-400">${h.roomCode || 'Pending'}</b></span>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-lg font-black text-[10px] ${
+                                h.status === 'COMPLETED' ? 'bg-emerald-500/20 text-emerald-400' :
+                                h.status === 'REFUNDED' ? 'bg-rose-500/20 text-rose-400' : 'bg-blue-500/20 text-blue-400'
+                            }">${h.status}</span>
+                        </div>
+                    `).join('');
+                });
+            } else if (tab === 'deposits') {
+                database.ref(`users/${activeUser.id}/deposits`).limitToLast(15).once('value', snap => {
+                    if (!snap.exists()) {
+                        container.innerHTML = `<div class="text-center text-slate-500 py-10 text-xs">কোনো ডিপোজিট রেকর্ড নেই।</div>`;
+                        return;
+                    }
+                    let html = '';
+                    snap.forEach(c => {
+                        const d = c.val();
+                        html = `
+                            <div class="bg-[#121a2d] p-3 rounded-2xl border border-white/5 flex items-center justify-between text-xs mb-2">
+                                <div>
+                                    <h5 class="font-bold text-white">ডিপোজিট</h5>
+                                    <span class="text-[10px] text-slate-400 font-mono">${d.txid}</span>
+                                </div>
+                                <span class="font-black text-emerald-400">+৳${parseFloat(d.amount).toFixed(2)}</span>
+                            </div>` + html;
+                    });
+                    container.innerHTML = html;
+                });
+            } else {
+                database.ref('withdrawals').orderByChild('userId').equalTo(String(activeUser.id)).once('value', snap => {
+                    if (!snap.exists()) {
+                        container.innerHTML = `<div class="text-center text-slate-500 py-10 text-xs">কোনো উত্তোলন রেকর্ড নেই।</div>`;
+                        return;
+                    }
+                    const records = [];
+                    snap.forEach(c => records.unshift(c.val()));
+                    container.innerHTML = records.map(r => `
+                        <div class="bg-[#11192d] p-3.5 rounded-2xl border border-white/10 flex justify-between items-center text-xs">
+                            <div>
+                                <p class="font-black text-white">${r.method} (${r.accountNumber})</p>
+                                <p class="text-[10px] text-slate-400 mt-0.5">ফি: ৳${(r.fee || 10).toFixed(2)}</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="font-black text-white block font-mono">৳${parseFloat(r.amount).toFixed(2)}</span>
+                                <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded ${
+                                    r.status === 'approved' ? 'bg-emerald-500/20 text-emerald-400' :
+                                    r.status === 'rejected' ? 'bg-rose-500/20 text-rose-400' : 'bg-amber-500/20 text-amber-400'
+                                }">${r.status}</span>
+                            </div>
+                        </div>
+                    `).join('');
+                });
+            }
         }
 
         // ================= REFERRAL SYSTEM =================
@@ -2053,15 +2123,22 @@
             }
         }
 
-        // ================= SUPPORT LIVE CHAT DESK =================
+        // ================= FULL SCREEN SUPPORT LIVE DESK =================
+        function openSupportDeskModal() {
+            document.getElementById('support-desk-overlay').classList.add('active');
+        }
+
+        function closeSupportDeskModal() {
+            document.getElementById('support-desk-overlay').classList.remove('active');
+        }
+
         function initSupportDirectChat(uid) {
             database.ref('support_chats/' + uid).on('value', snap => {
                 const body = document.getElementById('chat-messages');
                 body.innerHTML = `
                     <div class="msg-row admin">
                         <div class="msg-bubble">
-                            হ্যালো! <b>𝐋𝐔𝐃𝐎 𝐇𝐔𝐁</b> এ আপনাকে স্বাগতম। যেকোনো সমস্যা বিস্তারিত লিখে জানান।
-                            <div class="text-[9px] text-slate-400 text-right mt-1">Official Desk</div>
+                            হ্যালো! <b>LUDO HUB Helpdesk</b> এ আপনাকে স্বাগতম। যেকোনো সমস্যা বিস্তারিত লিখে জানান।
                         </div>
                     </div>`;
 
@@ -2081,7 +2158,6 @@
                 }
             });
 
-            // Listen typing
             database.ref('typing/' + uid).on('value', snap => {
                 const data = snap.val();
                 const typingBox = document.getElementById('typing-box');
