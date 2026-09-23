@@ -353,7 +353,7 @@
                     <i class="fas fa-bullhorn text-xs"></i> নোটিশ:
                 </span>
                 <marquee id="main-notice-marquee" class="text-xs text-slate-300 font-semibold" behavior="scroll" direction="left">
-                    👉 🎁 প্লেয়ার পূর্ণ হলেই সাথে সাথে রুম কোড জেনারেট হবে। টুর্নামেন্ট শুরু হওয়ার আগ পর্যন্ত যেকোনো সময় রিফান্ড নেওয়া যাবে।
+                    👉 🎁 ম্যাচ শুরুর ৫ মিনিট আগ পর্যন্ত রিফান্ড নেওয়া যাবে। নির্ধারিত সময়ে স্লট পূর্ণ না হলে স্বয়ংক্রিয়ভাবে ১০০% টাকা রিফান্ড হয়ে যাবে।
                 </marquee>
             </div>
 
@@ -364,10 +364,8 @@
                 <div class="h-[1px] bg-slate-700/60 flex-1"></div>
             </div>
 
-            <!-- DYNAMIC ARENA CARDS CONTAINER (CONTROLLED FROM FIREBASE) -->
-            <div id="game-categories-container" class="space-y-3">
-                <!-- Dynamically Rendered From Firebase with Admin Hide & Logo Update Support -->
-            </div>
+            <!-- DYNAMIC ARENA CARDS CONTAINER -->
+            <div id="game-categories-container" class="space-y-3"></div>
         </div>
 
         <!-- ======================= 2. MATCHES LIST PAGE ======================= -->
@@ -395,7 +393,7 @@
                 </button>
             </div>
 
-            <!-- FILTER PILLS -->
+            <!-- FILTER PILLS (1v1 REPLACED WITH JOIN 1) -->
             <div class="filter-container-box">
                 <div class="filter-tab-pill active" onclick="filterMatches('all', this)">
                     <div class="tab-title"><i class="fas fa-layer-group text-[10px]"></i> সব ম্যাচ</div>
@@ -405,9 +403,9 @@
                     <div class="tab-title"><i class="fas fa-bolt text-[10px]"></i> স্পেশাল</div>
                     <span class="filter-badge badge-pink" id="filter-count-special">0</span>
                 </div>
-                <div class="filter-tab-pill" onclick="filterMatches('1v1', this)">
-                    <div class="tab-title"><i class="fas fa-user-friends text-[10px]"></i> 1v1 মোড</div>
-                    <span class="filter-badge badge-green" id="filter-count-1v1">0</span>
+                <div class="filter-tab-pill" onclick="filterMatches('join1', this)">
+                    <div class="tab-title"><i class="fas fa-user-plus text-[10px]"></i> Join 1</div>
+                    <span class="filter-badge badge-green" id="filter-count-join1">0</span>
                 </div>
                 <div class="filter-tab-pill" onclick="filterMatches('multi', this)">
                     <div class="tab-title"><i class="fas fa-users text-[10px]"></i> 1v2/1v3</div>
@@ -476,7 +474,7 @@
             </div>
         </div>
 
-        <!-- ======================= 4. PURE MATCH HISTORY (1V1 TO 1V3 WITH PERMANENT OPPONENT) ======================= -->
+        <!-- ======================= 4. PURE MATCH HISTORY ======================= -->
         <div id="history-page" class="sub-page space-y-4">
             <div class="flex items-center justify-between pb-1">
                 <div class="flex items-center gap-2">
@@ -536,7 +534,7 @@
                 </button>
             </div>
 
-            <!-- REFERRAL GUIDELINE AS REQUESTED -->
+            <!-- REFERRAL GUIDELINE -->
             <div class="bg-[#052e16]/60 border border-emerald-500/30 p-4 rounded-3xl space-y-3">
                 <h4 class="text-xs font-black text-emerald-400 flex items-center gap-2">
                     <i class="fas fa-gift"></i> রেফারেল ইনকাম রুলস:
@@ -803,8 +801,9 @@
                 <div class="font-bold text-white flex items-center gap-1">
                     <i class="fas fa-shield-alt text-blue-400"></i> টুর্নামেন্ট নিয়মাবলী:
                 </div>
-                <p>১. ম্যাচ পূর্ণ হওয়ার আগ পর্যন্ত রিফান্ড নেওয়া যাবে। পূর্ণ হলেই রিফান্ড লক হবে।</p>
-                <p>২. রুম কোড এডমিন সাবমিট করার সাথে সাথেই আপনি দেখতে পাবেন।</p>
+                <p>১. খেলা শুরুর ৫ মিনিট আগ পর্যন্ত রিফান্ড নেওয়া যাবে। এরপর রিফান্ড লক হয়ে যাবে।</p>
+                <p>২. সময় অনুযায়ী স্লট ফুল না হলে সম্পূর্ণ টাকা স্বয়ংক্রিয়ভাবে ফেরত দেওয়া হবে।</p>
+                <p>৩. রুম কোড এডমিন সাবমিট করার সাথে সাথেই আপনি দেখতে পাবেন।</p>
             </div>
 
             <div class="flex gap-2 pt-1">
@@ -1003,6 +1002,9 @@
             initRealtimeFirebaseSync();
             checkReturnPaymentStatus();
 
+            // Periodic Check for Refund Lock and Auto Cancellation
+            setInterval(checkMatchTimingRules, 10000);
+
             setTimeout(() => {
                 const loader = document.getElementById('preloader');
                 loader.style.opacity = '0';
@@ -1067,7 +1069,6 @@
             showToast(`🔥 ${title} - Coming soon! খুব শীঘ্রই এটি চালু হবে।`, 'info');
         }
 
-        // ================= SWITCH AND OPEN GAME ARENAS =================
         function openGameArena(title, categoryKey) {
             selectedGameCategory = categoryKey;
             document.getElementById('arena-header-title').textContent = title;
@@ -1078,7 +1079,6 @@
 
         // ================= FIREBASE REALTIME MATCH SYNC =================
         function initRealtimeFirebaseSync() {
-            // Listen to Dynamic Referral URL
             database.ref('settings/referral_base_url').on('value', snap => {
                 if (snap.exists() && snap.val()) {
                     firebaseReferralBaseUrl = snap.val();
@@ -1086,7 +1086,6 @@
                 }
             });
 
-            // Listen to Game Categories (Admin can Hide or Change Logo Link)
             database.ref('game_categories').on('value', snap => {
                 const data = snap.val();
                 if (data) {
@@ -1097,7 +1096,6 @@
                 renderGameCategories();
             });
 
-            // Listen to Matches (supports 1v1, 1v2, 1v3)
             const matchesRef = database.ref('matches');
             matchesRef.on('value', snapshot => {
                 const data = snapshot.val();
@@ -1115,9 +1113,12 @@
                         m.current = m.playersList.length;
                         m.myJoined = m.players && m.players[activeUser.id] !== undefined;
 
+                        // Default match starting time if not present (e.g. 20 mins from creation)
+                        m.startTime = m.startTime || (m.createdAt ? m.createdAt + (25 * 60 * 1000) : Date.now() + (20 * 60 * 1000));
+
                         realtimeMatches.push(m);
 
-                        // Realtime In-App notification on Room Code publish
+                        // In-App alert when Room Code is generated
                         if (m.myJoined && m.roomCode && m.roomCode.trim() !== "" && !m.notifiedCode) {
                             triggerRoomCodeLiveNotification(m);
                             m.notifiedCode = true;
@@ -1127,11 +1128,11 @@
                     seedDefaultMatches();
                 }
 
+                checkMatchTimingRules();
                 renderMatches();
                 renderPureMatchHistory();
             });
 
-            // Listen for User Balance
             database.ref(`users/${activeUser.id}/balance`).on('value', snap => {
                 if (snap.exists()) {
                     activeUser.balance = parseFloat(snap.val()) || 0;
@@ -1139,7 +1140,6 @@
                 }
             });
 
-            // Listen for Pure Match History
             database.ref(`users/${activeUser.id}/history`).on('value', snap => {
                 pureMatchHistory = [];
                 if (snap.exists()) {
@@ -1148,7 +1148,6 @@
                 renderPureMatchHistory();
             });
 
-            // Listen for Notifications
             database.ref(`users/${activeUser.id}/notifications`).on('value', snap => {
                 notifications = [];
                 if (snap.exists()) {
@@ -1160,7 +1159,6 @@
                 renderNotifications();
             });
 
-            // Referral Stats
             database.ref(`users/${activeUser.id}/referrals`).on('value', snap => {
                 if(snap.exists()) {
                     const refs = snap.val();
@@ -1191,6 +1189,49 @@
             loadLeaderboard();
         }
 
+        // ================= TIMING & AUTO REFUND ENGINE =================
+        function checkMatchTimingRules() {
+            const now = Date.now();
+            realtimeMatches.forEach(m => {
+                if (m.status === 'COMPLETED' || m.status === 'CANCELLED') return;
+
+                // Rule 1: Auto cancel and auto refund if start time exceeded and slots are not full
+                if (m.startTime && now >= m.startTime && m.current < m.max) {
+                    processAutoCancelAndRefund(m);
+                }
+            });
+        }
+
+        function processAutoCancelAndRefund(match) {
+            // Cancel and remove match from DB
+            database.ref(`matches/${match.id}`).remove();
+
+            if (match.players) {
+                Object.keys(match.players).forEach(uid => {
+                    const p = match.players[uid];
+                    // Refund to user balance
+                    database.ref(`users/${uid}/balance`).transaction(curr => (curr || 0) + match.fee);
+                    database.ref(`users/${uid}/history/${match.id}`).update({
+                        status: "REFUNDED",
+                        refundReason: "সময়মতো স্লট পূর্ণ না হওয়ায় ম্যাচ বাতিল ও অটো-রিফান্ড সম্পন্ন",
+                        refundTime: Date.now()
+                    });
+                    database.ref(`users/${uid}/notifications`).push({
+                        title: "অটো-রিফান্ড সম্পন্ন ⚠️",
+                        message: `ম্যাচ ${match.matchNo}-এ নির্ধারিত সময়ে স্লট পূর্ণ না হওয়ায় আপনার ৳${match.fee} স্বয়ংক্রিয়ভাবে ওয়ালেটে ফেরত দেওয়া হয়েছে।`,
+                        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                        timestamp: Date.now()
+                    });
+                });
+            }
+        }
+
+        function formatMatchTime(timestamp) {
+            if (!timestamp) return 'অপেক্ষারত';
+            const d = new Date(timestamp);
+            return d.toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit', hour12: true });
+        }
+
         function seedDefaultCategories() {
             const initial = {
                 ludo: { name: "Ludo King (লুডো কিং)", icon: "https://cdn-icons-png.flaticon.com/512/806/806131.png", subtitle: "১v১, ১v২ ও ১v৩ লাইভ চ্যালেঞ্জ", hidden: false, tag: "HOT", color: "blue" },
@@ -1202,15 +1243,18 @@
             database.ref('game_categories').set(initial);
         }
 
+        // MATCH ID STARTS FROM #5010
         function seedDefaultMatches() {
+            const now = Date.now();
             const defaults = [
-                { matchNo: "#1001", gameType: "ludo", mode: "1v1", max: 2, fee: 50, prize: 90, isSpecial: true, roomCode: "", status: "waiting", createdAt: Date.now() },
-                { matchNo: "#1002", gameType: "ludo", mode: "1v3", max: 4, fee: 30, prize: 105, isSpecial: false, roomCode: "", status: "waiting", createdAt: Date.now() },
-                { matchNo: "#1003", gameType: "snake", mode: "1v1", max: 2, fee: 40, prize: 72, isSpecial: false, roomCode: "", status: "waiting", createdAt: Date.now() },
-                { matchNo: "#1004", gameType: "snake", mode: "1v2", max: 3, fee: 30, prize: 80, isSpecial: true, roomCode: "", status: "waiting", createdAt: Date.now() },
-                { matchNo: "#2001", gameType: "freefire", mode: "1v1", max: 2, fee: 100, prize: 180, isSpecial: false, roomCode: "", status: "waiting", createdAt: Date.now() },
-                { matchNo: "#3001", gameType: "carrom", mode: "1v1", max: 2, fee: 40, prize: 70, isSpecial: false, roomCode: "", status: "waiting", createdAt: Date.now() },
-                { matchNo: "#4001", gameType: "bead16", mode: "1v1", max: 2, fee: 30, prize: 50, isSpecial: false, roomCode: "", status: "waiting", createdAt: Date.now() }
+                { matchNo: "#5010", gameType: "ludo", mode: "1v1", max: 2, fee: 50, prize: 90, isSpecial: true, roomCode: "", status: "waiting", startTime: now + (30 * 60 * 1000), createdAt: now },
+                { matchNo: "#5011", gameType: "ludo", mode: "1v1", max: 2, fee: 30, prize: 55, isSpecial: false, roomCode: "", status: "waiting", startTime: now + (15 * 60 * 1000), createdAt: now },
+                { matchNo: "#5012", gameType: "ludo", mode: "1v3", max: 4, fee: 20, prize: 70, isSpecial: false, roomCode: "", status: "waiting", startTime: now + (20 * 60 * 1000), createdAt: now },
+                { matchNo: "#5013", gameType: "snake", mode: "1v1", max: 2, fee: 40, prize: 72, isSpecial: false, roomCode: "", status: "waiting", startTime: now + (18 * 60 * 1000), createdAt: now },
+                { matchNo: "#5014", gameType: "snake", mode: "1v2", max: 3, fee: 30, prize: 80, isSpecial: true, roomCode: "", status: "waiting", startTime: now + (45 * 60 * 1000), createdAt: now },
+                { matchNo: "#5015", gameType: "freefire", mode: "1v1", max: 2, fee: 100, prize: 180, isSpecial: false, roomCode: "", status: "waiting", startTime: now + (25 * 60 * 1000), createdAt: now },
+                { matchNo: "#5016", gameType: "carrom", mode: "1v1", max: 2, fee: 40, prize: 70, isSpecial: false, roomCode: "", status: "waiting", startTime: now + (35 * 60 * 1000), createdAt: now },
+                { matchNo: "#5017", gameType: "bead16", mode: "1v1", max: 2, fee: 30, prize: 50, isSpecial: false, roomCode: "", status: "waiting", startTime: now + (40 * 60 * 1000), createdAt: now }
             ];
             defaults.forEach(item => database.ref('matches').push(item));
         }
@@ -1223,7 +1267,7 @@
             let html = '';
 
             gameCategories.forEach(g => {
-                if (g.hidden === true) return; // Admin can hide by setting hidden: true
+                if (g.hidden === true) return;
 
                 let borderColor = 'border-blue-500/30';
                 let tagBg = 'bg-rose-500 text-white';
@@ -1252,7 +1296,6 @@
                 </div>`;
             });
 
-            // 5. LIVE AUTO LUDO (AS REQUESTED: KEPT AS PREVIOUS & SHOWS COMING SOON ON CLICK)
             html += `
             <div onclick="showComingSoonAlert('লাইভ অটো লুডু')" class="bg-[#121a2d] rounded-3xl p-4 border border-cyan-500/20 cursor-pointer hover:border-cyan-500/50 transition relative overflow-hidden">
                 <div class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-cyan-500 text-slate-950 text-[10px] font-black uppercase tracking-wider flex items-center gap-1 shadow">
@@ -1302,10 +1345,13 @@
             const joinedMatches = categoryMatches.filter(m => m.myJoined);
             document.getElementById('joined-count-badge').textContent = joinedMatches.length;
 
+            // JOIN 1: Match where either exactly 1 player has joined OR exactly 1 slot is remaining
+            const isJoin1Match = (m) => (m.current === 1 || (m.max - m.current) === 1);
+
             const availableMatches = categoryMatches.filter(m => !m.myJoined && m.current < m.max);
             document.getElementById('filter-count-all').textContent = availableMatches.length;
             document.getElementById('filter-count-special').textContent = availableMatches.filter(m => m.isSpecial).length;
-            document.getElementById('filter-count-1v1').textContent = availableMatches.filter(m => m.mode === '1v1').length;
+            document.getElementById('filter-count-join1').textContent = availableMatches.filter(isJoin1Match).length;
             document.getElementById('filter-count-multi').textContent = availableMatches.filter(m => m.mode === '1v2' || m.mode === '1v3').length;
 
             let displayList = [];
@@ -1314,7 +1360,7 @@
             } else {
                 displayList = availableMatches;
                 if (currentActiveFilter === 'special') displayList = displayList.filter(m => m.isSpecial);
-                else if (currentActiveFilter === '1v1') displayList = displayList.filter(m => m.mode === '1v1');
+                else if (currentActiveFilter === 'join1') displayList = displayList.filter(isJoin1Match);
                 else if (currentActiveFilter === 'multi') displayList = displayList.filter(m => m.mode === '1v2' || m.mode === '1v3');
             }
 
@@ -1329,11 +1375,18 @@
                 return;
             }
 
+            const now = Date.now();
+
             container.innerHTML = displayList.map(m => {
                 const maxPlayers = m.max || 2;
                 const isFull = m.current >= maxPlayers;
                 const hasRoomCode = m.roomCode && m.roomCode.trim() !== "";
                 const modeLabel = m.mode ? m.mode.toUpperCase() : (maxPlayers === 4 ? '1V3' : maxPlayers === 3 ? '1V2' : '1V1');
+
+                // 5 minutes refund lock calculation
+                const timeDiff = m.startTime ? (m.startTime - now) : 99999999;
+                const isWithin5Min = timeDiff <= (5 * 60 * 1000); // 5 minutes or less
+                const isRefundLocked = isFull || isWithin5Min;
 
                 return `
                 <div class="match-card p-4 space-y-3.5 border border-slate-200">
@@ -1351,10 +1404,17 @@
                                     ` : ''}
                                 </h3>
                                 <div class="flex items-center gap-2 mt-0.5">
-                                    <span class="px-2 py-0.5 rounded-full ${m.isSpecial ? 'bg-purple-100 text-purple-700' : 'bg-rose-100 text-rose-600'} font-bold text-[10px] flex items-center gap-1">
-                                        <span class="w-1.5 h-1.5 rounded-full ${m.isSpecial ? 'bg-purple-600' : 'bg-rose-600'} animate-ping"></span> 
-                                        ${m.isSpecial ? `${maxPlayers} জন পূর্ণ হলেই শুরু হবে` : 'লাইভ টুর্নামেন্ট চ্যালেঞ্জ'}
-                                    </span>
+                                    ${m.isSpecial ? `
+                                        <span class="px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 font-bold text-[10px] flex items-center gap-1">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-purple-600 animate-ping"></span> 
+                                            ${maxPlayers} জন পূর্ণ হলেই শুরু হবে
+                                        </span>
+                                    ` : `
+                                        <span class="px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-700 font-bold text-[10px] flex items-center gap-1">
+                                            <i class="fas fa-clock text-blue-600 text-[10px]"></i> 
+                                            শুরু: <b>${formatMatchTime(m.startTime)}</b>
+                                        </span>
+                                    `}
                                 </div>
                             </div>
                         </div>
@@ -1386,7 +1446,7 @@
 
                     <div>
                         ${m.myJoined ? `
-                            ${!isFull ? `
+                            ${!isRefundLocked ? `
                                 <div class="grid grid-cols-2 gap-2 pt-1">
                                     <button onclick="handleManualRefund('${m.id}')" class="py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs shadow flex items-center justify-center gap-1 active:scale-95 transition">
                                         <i class="fas fa-undo"></i> রিফান্ড নিন
@@ -1398,7 +1458,7 @@
                             ` : `
                                 ${!hasRoomCode ? `
                                     <div class="grid grid-cols-2 gap-2 pt-1">
-                                        <button disabled class="py-2.5 rounded-xl bg-slate-200 text-slate-400 font-black text-xs flex items-center justify-center gap-1 cursor-not-allowed">
+                                        <button disabled class="py-2.5 rounded-xl bg-slate-200 text-slate-400 font-black text-xs flex items-center justify-center gap-1 cursor-not-allowed" title="খেলা শুরুর ৫ মিনিট আগে বা ম্যাচ পূর্ণ হলে রিফান্ড লক থাকে">
                                             <i class="fas fa-lock"></i> রিফান্ড লক
                                         </button>
                                         <div class="py-2.5 rounded-xl bg-amber-50 text-amber-700 border border-amber-300 font-extrabold text-xs flex items-center justify-center gap-1.5 animate-pulse">
@@ -1455,7 +1515,7 @@
             showToast("গেমটি ওপেন করে কোড দিয়ে জয়েন করুন!", "info");
         }
 
-        // ================= JOIN MATCH (WITH PERMANENT OPPONENT SNAPSHOT) =================
+        // ================= JOIN MATCH =================
         function openJoinMatchModal(id) {
             const m = realtimeMatches.find(x => x.id === id);
             if (!m) return;
@@ -1496,9 +1556,7 @@
                 joinedAt: Date.now()
             };
 
-            // Save player into Match
             database.ref(`matches/${m.id}/players/${activeUser.id}`).set(playerPayload).then(() => {
-                // Read current players snapshot to preserve permanently in History
                 database.ref(`matches/${m.id}/players`).once('value', pSnap => {
                     const currentPlayers = pSnap.val() ? Object.values(pSnap.val()) : [playerPayload];
 
@@ -1510,8 +1568,9 @@
                         mode: m.mode || '1v1',
                         fee: m.fee,
                         prize: m.prize,
+                        startTime: m.startTime || null,
                         status: "JOINED",
-                        playersSnapshot: currentPlayers, // Permanent opponent history
+                        playersSnapshot: currentPlayers,
                         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                         timestamp: Date.now()
                     };
@@ -1521,7 +1580,7 @@
 
             database.ref(`users/${activeUser.id}/notifications`).push({
                 title: "ম্যাচে সফল জয়েন!",
-                message: `আপনি সফলভাবে ${m.matchNo} ম্যাচে জয়েন করেছেন। প্লেয়ার পূর্ণ হলেই রুম কোড পাবেন।`,
+                message: `আপনি সফলভাবে ${m.matchNo} ম্যাচে জয়েন করেছেন। ম্যাচ শুরুর আগেই রুম কোড পাবেন।`,
                 time: "Just now"
             });
 
@@ -1530,13 +1589,19 @@
             pendingJoinMatchId = null;
         }
 
-        // ================= REFUND =================
+        // ================= MANUAL REFUND (BEFORE 5 MINS & NOT FULL) =================
         function handleManualRefund(id) {
             const m = realtimeMatches.find(x => x.id === id);
             if (!m || !m.myJoined) return;
 
             if (m.current >= m.max) {
                 return showToast("ম্যাচ পূর্ণ হয়ে যাওয়ায় রিফান্ড অপশন লক করা হয়েছে!", "warning");
+            }
+
+            const now = Date.now();
+            const timeDiff = m.startTime ? (m.startTime - now) : 99999999;
+            if (timeDiff <= (5 * 60 * 1000)) {
+                return showToast("খেলা শুরুর ৫ মিনিট বাকি থাকায় রিফান্ড অপশন লক করা হয়েছে!", "warning");
             }
 
             if (confirm(`আপনি কি ম্যাচটি থেকে বের হয়ে ৳${m.fee} রিফান্ড নিতে চান?`)) {
@@ -1620,21 +1685,18 @@
                     return showToast("এই ম্যাচটি ইতিমধ্যে সম্পন্ন হয়ে গেছে!", "error");
                 }
 
-                // Update Match to Completed
                 database.ref(`matches/${foundMatch.id}`).update({
                     status: "COMPLETED",
                     resultSubmittedBy: activeUser.id,
                     submittedAt: Date.now()
                 });
 
-                // Update User Match History to WIN
                 database.ref(`users/${activeUser.id}/history/${foundMatch.id}`).update({
                     status: "WIN",
                     roomCode: room,
                     completedAt: Date.now()
                 });
 
-                // Trigger Referral Match Win Commission (2 TAKA TO INVITER)
                 checkAndGiveReferralWinCommission(activeUser.id, foundMatch.matchNo);
 
                 database.ref(`users/${activeUser.id}/notifications`).push({
@@ -1659,7 +1721,6 @@
             database.ref(`users/${winnerUid}/referredBy`).once('value', snap => {
                 if (snap.exists() && snap.val()) {
                     const inviterId = snap.val();
-                    // Add 2 TK Win Commission to Inviter
                     database.ref(`users/${inviterId}/balance`).transaction(curr => (curr || 0) + 2);
                     database.ref(`users/${inviterId}/refer_earnings`).transaction(curr => (curr || 0) + 2);
 
@@ -1684,7 +1745,6 @@
                     refItemRef.once('value', rSnap => {
                         const rData = rSnap.val() || {};
                         if (!rData.hasFirstDepositBonusGiven) {
-                            // Give 10 TK Bonus to Inviter
                             database.ref(`users/${inviterId}/balance`).transaction(curr => (curr || 0) + 10);
                             database.ref(`users/${inviterId}/refer_earnings`).transaction(curr => (curr || 0) + 10);
 
@@ -1702,7 +1762,7 @@
             });
         }
 
-        // ================= PURE MATCH HISTORY ENGINE (1V1 TO 1V3 WITH PERMANENT OPPONENTS) =================
+        // ================= PURE MATCH HISTORY ENGINE =================
         function renderPureMatchHistory() {
             const container = document.getElementById('pure-match-history-container');
             if (!container) return;
@@ -1730,7 +1790,6 @@
                     p2Name = opponentList[0].name || p2Name;
                 }
 
-                // Colors: Refund = Yellow, Win = Green, Loss = Red
                 let statusColor = "text-amber-400 bg-amber-500/10 border-amber-500/30";
                 let statusText = item.status;
 
@@ -1758,7 +1817,6 @@
                     </div>
 
                     ${isOneVsOne ? `
-                        <!-- 1V1 TELEGRAM AVATAR VS AVATAR DISPLAY -->
                         <div class="bg-[#090f1d] p-3 rounded-2xl border border-white/5 flex items-center justify-around relative">
                             <div class="flex flex-col items-center gap-1">
                                 <div class="w-12 h-12 rounded-full border-2 border-emerald-500 p-0.5 overflow-hidden shadow-lg bg-slate-800">
@@ -1779,7 +1837,6 @@
                             </div>
                         </div>
                     ` : `
-                        <!-- MULTI-PLAYER (1v2, 1v3) PERMANENT OPPONENT LIST -->
                         <div class="bg-[#090f1d] p-3 rounded-2xl border border-white/5 space-y-2">
                             <span class="text-[10px] text-slate-400 uppercase font-black">ম্যাচ প্লেয়ারগণ (${item.mode.toUpperCase()}):</span>
                             <div class="flex items-center gap-2 overflow-x-auto pb-1">
@@ -2010,7 +2067,6 @@
                             return (curr || 0) + depositAmount;
                         });
 
-                        // Check & Trigger Referral First Deposit 10 TK Bonus
                         checkAndGiveFirstDepositReferralBonus(uid, depositAmount);
 
                         database.ref(`users/${uid}/notifications`).push({
