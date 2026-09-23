@@ -10,9 +10,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Fonts & Icons -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800;900&family=Hind+Siliguri:wght@500;700&family=Poppins:wght@400;500;600;700&family=Russo+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Hind+Siliguri:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&family=Russo+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -26,6 +24,9 @@
             --surface-card: #0f172a;
             --card-border: rgba(255, 255, 255, 0.08);
             --tg-blue: #2AABEE;
+            --tg-surface: #17212b;
+            --chat-my: #2b5278;
+            --chat-admin: #1e2c3a;
         }
 
         body {
@@ -35,7 +36,6 @@
             -webkit-user-select: none;
             user-select: none;
             overflow-x: hidden;
-            touch-action: pan-y;
         }
 
         input, textarea, .selectable-text {
@@ -43,7 +43,7 @@
             user-select: text;
         }
 
-        /* FAST PRELOADER */
+        /* ATTRACTIVE PRELOADER */
         #preloader {
             position: fixed;
             inset: 0;
@@ -53,30 +53,30 @@
             align-items: center;
             justify-content: center;
             z-index: 99999;
-            transition: opacity 0.25s ease, visibility 0.25s ease;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
         }
         .dice-spinner {
-            width: 60px;
-            height: 60px;
+            width: 72px;
+            height: 72px;
             background: linear-gradient(135deg, #3b82f6, #ec4899);
-            border-radius: 18px;
+            border-radius: 22px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
+            font-size: 34px;
             color: #fff;
-            box-shadow: 0 0 25px rgba(59, 130, 246, 0.5);
-            animation: diceRotate 1.2s infinite cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            box-shadow: 0 0 35px rgba(59, 130, 246, 0.7);
+            animation: diceRotate 1.4s infinite cubic-bezier(0.68, -0.55, 0.27, 1.55);
         }
         @keyframes diceRotate {
             0% { transform: rotate(0deg) scale(0.9); }
-            50% { transform: rotate(180deg) scale(1.1); }
+            50% { transform: rotate(180deg) scale(1.15); }
             100% { transform: rotate(360deg) scale(0.9); }
         }
 
         .gaming-header {
             background: rgba(11, 18, 33, 0.96);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(14px);
             border-bottom: 1px solid var(--card-border);
             position: sticky;
             top: 0;
@@ -94,7 +94,7 @@
             margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            height: 66px;
+            height: 72px;
             z-index: 50;
             padding: 0 4px;
         }
@@ -105,39 +105,45 @@
             align-items: center;
             justify-content: center;
             color: #718096;
-            font-size: 0.68rem;
+            font-size: 0.70rem;
             font-weight: 700;
             cursor: pointer;
-            gap: 2px;
-            transition: color 0.15s ease;
+            gap: 3px;
+            transition: all 0.22s ease;
         }
-        .nav-item.active { color: #38bdf8; }
+        .nav-item.active {
+            color: #38bdf8;
+        }
 
         .floating-center-btn {
             position: relative;
-            top: -14px;
-            width: 52px;
-            height: 52px;
+            top: -18px;
+            width: 58px;
+            height: 58px;
             border-radius: 50%;
             background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             color: #ffffff;
-            box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
-            border: 3.5px solid #090f1d;
+            box-shadow: 0 0 25px rgba(99, 102, 241, 0.6);
+            border: 4px solid #090f1d;
             cursor: pointer;
+            transition: all 0.25s ease;
         }
-        .floating-center-btn:active { transform: scale(0.92); }
+        .floating-center-btn:active {
+            transform: scale(0.92);
+        }
 
+        /* Filter Pills */
         .filter-container-box {
             background: #090e1d;
             border: 1.5px solid rgba(255, 255, 255, 0.08);
-            border-radius: 18px;
-            padding: 4px;
+            border-radius: 20px;
+            padding: 5px;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 4px;
+            gap: 5px;
         }
 
         .filter-tab-pill {
@@ -145,66 +151,112 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 7px 2px;
-            border-radius: 12px;
+            padding: 8px 3px;
+            border-radius: 14px;
             cursor: pointer;
+            transition: all 0.22s ease;
             background: rgba(18, 27, 49, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.04);
-            gap: 3px;
+            gap: 4px;
         }
+
+        .filter-tab-pill .tab-title {
+            font-size: 0.66rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            color: #94a3b8;
+            white-space: nowrap;
+        }
+
         .filter-tab-pill.active {
             background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             border: 1px solid #60a5fa;
-            box-shadow: 0 0 12px rgba(37, 99, 235, 0.4);
+            box-shadow: 0 0 15px rgba(37, 99, 235, 0.5);
         }
-        .filter-tab-pill.active .tab-title { color: #ffffff; }
+        .filter-tab-pill.active .tab-title {
+            color: #ffffff;
+        }
+
+        .filter-badge {
+            font-size: 0.68rem;
+            font-weight: 900;
+            padding: 1px 8px;
+            border-radius: 9999px;
+            line-height: 1.3;
+            display: inline-block;
+        }
+        .filter-badge.badge-white { background: #ffffff; color: #1e3a8a; }
+        .filter-badge.badge-pink { background: #451a2d; color: #f43f5e; border: 1px solid rgba(244, 63, 94, 0.2); }
+        .filter-badge.badge-green { background: #063c2c; color: #10b981; border: 1px solid rgba(168, 85, 247, 0.2); }
+        .filter-badge.badge-purple { background: #2e1065; color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.2); }
 
         .match-card {
             background: #ffffff;
             color: #0f172a;
-            border-radius: 20px;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+            border-radius: 24px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
             position: relative;
             overflow: hidden;
-            contain: content;
+            transition: all 0.25s ease;
         }
 
         .platinum-card {
             background: radial-gradient(circle at 100% 0%, #1e1b4b 0%, #0d1527 60%, #0a0f1d 100%);
-            border-radius: 22px;
-            border: 1.5px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .platinum-card::before {
+            content: '';
+            position: absolute;
+            inset: -1.5px;
+            border-radius: 25px;
+            padding: 1.5px;
+            background: linear-gradient(135deg, #06b6d4, #ec4899, #f59e0b);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
         }
 
         .action-row-item {
             background: #121a2d;
-            border-radius: 16px;
+            border-radius: 18px;
             border: 1px solid rgba(255, 255, 255, 0.05);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 12px 14px;
+            padding: 14px 16px;
             cursor: pointer;
+            transition: all 0.2s ease;
         }
         .action-row-item:active { transform: scale(0.98); }
 
         .sub-page { display: none; }
-        .sub-page.active { display: block; }
+        .sub-page.active { display: block; animation: fadeIn 0.25s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* QUICK AMOUNT PILLS */
         .quick-amount-pill {
             background: #ffffff;
             border: 1.5px solid #cbd5e1;
-            padding: 10px 4px;
-            border-radius: 14px;
+            padding: 11px 6px;
+            border-radius: 16px;
             font-weight: 800;
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             color: #334155;
             cursor: pointer;
+            transition: all 0.2s ease;
             text-align: center;
         }
         .quick-amount-pill.selected {
             border-color: #2563eb !important;
             background: #2563eb !important;
             color: #ffffff !important;
+            box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
         }
 
         .btn-gateway-pay {
@@ -212,20 +264,26 @@
             color: white;
             font-weight: 800;
             border-radius: 16px;
-            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3);
+            transition: all 0.25s ease;
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.35);
         }
+        .btn-gateway-pay:active { transform: scale(0.98); }
+
         .btn-withdraw-red {
             background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
             color: white;
             font-weight: 800;
             border-radius: 16px;
-            box-shadow: 0 6px 20px rgba(225, 29, 72, 0.3);
+            transition: all 0.25s ease;
+            box-shadow: 0 8px 25px rgba(225, 29, 72, 0.35);
         }
+        .btn-withdraw-red:active { transform: scale(0.98); }
 
         .wallet-type-tab {
             border: 1.5px solid #e2e8f0;
             background: #ffffff;
             color: #334155;
+            transition: all 0.2s;
         }
         .wallet-type-tab.active {
             border-color: #e11d48;
@@ -237,40 +295,71 @@
             background-color: #f8fafc;
             border: 1.5px solid #cbd5e1;
             color: #1e293b;
-            outline: none;
+            transition: all 0.2s;
         }
         .input-field:focus {
             border-color: #2563eb;
             background-color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+            outline: none;
         }
 
         /* FLOATING TELEGRAM LIVE SUPPORT BUTTON */
         .floating-telegram-btn {
             position: fixed;
-            bottom: 78px;
-            right: 16px;
-            width: 50px;
-            height: 50px;
+            bottom: 84px;
+            right: 18px;
+            width: 54px;
+            height: 54px;
             border-radius: 50%;
             background: linear-gradient(135deg, #2AABEE 0%, #229ed9 100%);
             color: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.4rem;
-            box-shadow: 0 6px 20px rgba(42, 171, 238, 0.4);
+            font-size: 1.55rem;
+            box-shadow: 0 8px 25px rgba(42, 171, 238, 0.45);
             z-index: 60;
             cursor: pointer;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid rgba(255, 255, 255, 0.35);
         }
         .floating-telegram-btn:active { transform: scale(0.92); }
+        .floating-telegram-btn .pulse-ring {
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 2px solid #2AABEE;
+            animation: supportPulse 2s infinite;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+        @keyframes supportPulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            70% { transform: scale(1.2); opacity: 0; }
+            100% { transform: scale(1.2); opacity: 0; }
+        }
+        .floating-support-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background: #ef4444;
+            color: white;
+            font-size: 10px;
+            font-weight: 900;
+            padding: 2px 6px;
+            border-radius: 9999px;
+            border: 2px solid #ffffff;
+            display: none;
+        }
 
+        /* LIVE SUPPORT MODAL */
         #support-modal-overlay {
             position: fixed;
             inset: 0;
             z-index: 120;
             background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(8px);
             display: none;
             align-items: center;
             justify-content: center;
@@ -285,70 +374,132 @@
             display: flex;
             flex-direction: column;
             position: relative;
+            overflow: hidden;
             font-family: 'Poppins', sans-serif;
         }
+        .tg-top-bar {
+            background: #17212b;
+            color: #fff;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+        .tg-exit-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .tg-chat-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            overflow: hidden;
+        }
+        .tg-avatar-wrap img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #2AABEE;
+        }
+        .tg-chat-body {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: radial-gradient(circle at 50% 20%, #172435 0%, #0a1017 100%);
+        }
+        .msg-row { display: flex; align-items: flex-end; gap: 8px; width: 100%; }
+        .msg-row.admin { justify-content: flex-start; }
+        .msg-row.user { justify-content: flex-end; }
+        .msg-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+        .msg-bubble { max-width: 86%; padding: 11px 14px; border-radius: 16px; font-size: 0.86rem; line-height: 1.45; color: #fff; word-break: break-word; box-shadow: 0 4px 12px rgba(0,0,0,0.25); }
+        .msg-row.admin .msg-bubble { background: #1e2c3a; border-bottom-left-radius: 4px; }
+        .msg-row.user .msg-bubble { background: #2b5278; border-bottom-right-radius: 4px; }
+        .msg-time { font-size: 0.65rem; color: rgba(255,255,255,0.5); text-align: right; margin-top: 5px; }
+        .tg-bottom-bar { background: #17212b; padding: 8px 12px; display: flex; align-items: center; gap: 8px; border-top: 1px solid rgba(255,255,255,0.08); }
+        .tg-input { flex: 1; padding: 10px 16px; border-radius: 22px; border: 1px solid rgba(255,255,255,0.12); outline: none; font-size: 0.88rem; background: #0e1621; color: #fff; }
+        .tg-send-btn { background: #2AABEE; color: #fff; width: 42px; height: 42px; border-radius: 50%; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
     </style>
 </head>
 <body class="max-w-md mx-auto relative min-h-screen pb-24 text-slate-100">
 
-    <!-- PRELOADER -->
+    <!-- ATTRACTIVE PRELOADER -->
     <div id="preloader">
-        <div class="dice-spinner mb-3">
+        <div class="dice-spinner mb-4">
             <i class="fas fa-dice"></i>
         </div>
-        <h2 class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-sky-300 to-amber-300" style="font-family: 'Russo One', sans-serif;">LUDO HUB</h2>
-        <p class="text-xs font-semibold text-slate-400 mt-1 flex items-center gap-1.5">
-            <i class="fas fa-spinner fa-spin text-sky-400 text-xs"></i> দ্রুত লোড হচ্ছে...
+        <h2 class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-sky-300 to-amber-300 tracking-wider" style="font-family: 'Russo One', sans-serif;">LUDO HUB</h2>
+        <p class="text-xs font-bold text-slate-400 mt-2 flex items-center gap-2">
+            <i class="fas fa-spinner fa-spin text-sky-400"></i> সার্ভার থেকে ম্যাচ সিঙ্ক হচ্ছে...
         </p>
     </div>
 
-    <!-- TOAST NOTIFICATIONS -->
+    <!-- TOAST CONTAINER -->
     <div id="toast-container" class="fixed top-4 left-1/2 -translate-x-1/2 z-[110] w-11/12 max-w-sm flex flex-col gap-2 pointer-events-none"></div>
 
     <!-- FLOATING LIVE SUPPORT BUTTON -->
     <div id="floating-support-btn" class="floating-telegram-btn" onclick="openSupportModal()" title="লাইভ সাপোর্ট">
+        <div class="pulse-ring"></div>
         <i class="fab fa-telegram-plane"></i>
+        <span id="floating-support-badge" class="floating-support-badge">0</span>
     </div>
 
-    <!-- LIVE CHAT MODAL OVERLAY (DEDICATED FIREBASE INSTANCE) -->
+    <!-- LIVE CHAT MODAL OVERLAY -->
     <div id="support-modal-overlay">
         <div id="support-chat-wrapper">
-            <div class="bg-[#17212b] p-3 flex items-center justify-between border-b border-white/10">
-                <div class="flex items-center gap-2.5">
-                    <button class="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center text-white" onclick="closeSupportModal()">
-                        <i class="fas fa-arrow-left text-xs"></i>
-                    </button>
-                    <div class="flex items-center gap-2">
-                        <img src="https://i.postimg.cc/vmSBzy63/file-00000000eb4c81faa545e57c85285455.png" class="w-8 h-8 rounded-full border border-sky-400" alt="Support">
-                        <div>
-                            <h4 class="font-bold text-xs text-white">LUDO HUB Support</h4>
-                            <p class="text-[10px] text-[#2AABEE]">24/7 লাইভ হেল্পডেস্ক</p>
-                        </div>
+            <div class="tg-top-bar">
+                <button class="tg-exit-btn" onclick="closeSupportModal()" title="বন্ধ করুন">
+                    <i data-lucide="arrow-left" class="w-5 h-5 text-white"></i>
+                </button>
+                <div class="tg-chat-user">
+                    <div class="tg-avatar-wrap">
+                        <img src="https://i.postimg.cc/vmSBzy63/file-00000000eb4c81faa545e57c85285455.png" alt="Support">
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-sm text-white">LUDO HUB Support</h4>
+                        <p class="text-[11px] text-[#2AABEE] font-semibold">24/7 লাইভ হেল্পডেস্ক</p>
                     </div>
                 </div>
             </div>
 
-            <div class="flex-1 p-3 overflow-y-auto space-y-3 bg-[#0a1017]" id="chat-messages">
-                <div class="flex gap-2">
-                    <div class="bg-[#1e2c3a] p-3 rounded-2xl text-xs max-w-[85%] text-slate-200">
-                        হ্যালো! <b>LUDO HUB</b> সাপোর্টে স্বাগতম। ডিপোজিট, উইথড্র, বা টুর্নামেন্ট সংক্রান্ত কোনো সহায়তার জন্য এখানে মেসেজ দিন।
+            <div class="tg-chat-body" id="chat-messages">
+                <div class="msg-row admin">
+                    <img src="https://i.postimg.cc/vmSBzy63/file-00000000eb4c81faa545e57c85285455.png" class="msg-avatar" alt="Admin">
+                    <div class="msg-bubble">
+                        হ্যালো! <b>LUDO HUB</b> সাপোর্টে স্বাগতম। ডিপোজিট, উইথড্র, বা টুর্নামেন্ট সংক্রান্ত যেকোনো সহায়তার জন্য মেসেজ দিন।
+                        <div class="msg-time">Support Team</div>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-[#17212b] p-2.5 flex items-center gap-2 border-t border-white/10">
-                <input type="text" id="chat-text-input" class="flex-1 bg-[#0e1621] border border-white/10 rounded-full px-3.5 py-2 text-xs text-white outline-none" placeholder="মেসেজ লিখুন..." onkeydown="if(event.key==='Enter') sendSupportMessage()">
-                <button class="w-9 h-9 rounded-full bg-[#2AABEE] text-white flex items-center justify-center flex-shrink-0" onclick="sendSupportMessage()">
-                    <i class="fas fa-paper-plane text-xs"></i>
+            <div class="tg-bottom-bar">
+                <input type="text" id="chat-text-input" class="tg-input" placeholder="মেসেজ লিখুন..." onkeydown="if(event.key==='Enter') sendSupportMessage()">
+                <button class="tg-send-btn" onclick="sendSupportMessage()">
+                    <i class="fas fa-paper-plane"></i>
                 </button>
             </div>
         </div>
     </div>
 
     <!-- TOP HEADER -->
-    <header class="gaming-header px-4 py-2.5 flex items-center justify-between">
+    <header class="gaming-header px-4 py-3 flex items-center justify-between">
         <div class="flex items-center gap-2.5">
-            <div class="w-9 h-9 rounded-full border border-amber-400/50 p-0.5 overflow-hidden shadow bg-slate-900 cursor-pointer" onclick="navigateTo('home-page')">
+            <div class="w-10 h-10 rounded-full border border-amber-400/50 p-0.5 overflow-hidden shadow-lg bg-slate-900 cursor-pointer" onclick="navigateTo('home-page')">
                 <img id="header-avatar" src="https://i.postimg.cc/L4YZZKsv/IMG-20260919-214336-790.jpg" class="w-full h-full object-cover rounded-full" alt="User">
             </div>
             <div>
@@ -356,18 +507,18 @@
             </div>
         </div>
 
-        <div class="flex items-center gap-2">
-            <button onclick="openSupportModal()" class="w-8 h-8 rounded-full bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 flex items-center justify-center">
-                <i class="fas fa-headset text-xs"></i>
+        <div class="flex items-center gap-2.5">
+            <button onclick="openSupportModal()" class="w-9 h-9 rounded-full bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 flex items-center justify-center hover:bg-cyan-500/30 transition shadow">
+                <i class="fas fa-headset text-sm"></i>
             </button>
 
-            <button onclick="toggleNotificationModal()" class="w-8 h-8 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center relative">
-                <i class="fas fa-bell text-xs"></i>
-                <span id="notif-badge" class="w-2 h-2 rounded-full bg-red-500 absolute top-1 right-1 hidden"></span>
+            <button onclick="toggleNotificationModal()" class="w-9 h-9 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center relative hover:bg-amber-500/30 transition shadow">
+                <i class="fas fa-bell text-sm"></i>
+                <span id="notif-badge" class="w-2 h-2 rounded-full bg-red-500 absolute top-1.5 right-1.5 hidden animate-ping"></span>
             </button>
 
-            <div onclick="navigateTo('wallet-page')" class="flex items-center gap-1.5 bg-[#151f38] border border-amber-400/30 px-2.5 py-1 rounded-full cursor-pointer">
-                <div class="w-4 h-4 rounded-full bg-amber-400 flex items-center justify-center text-slate-950 font-black text-[10px]">৳</div>
+            <div onclick="navigateTo('wallet-page')" class="flex items-center gap-1.5 bg-[#151f38] border border-amber-400/30 px-3 py-1.5 rounded-full cursor-pointer hover:border-amber-400 transition shadow">
+                <div class="w-5 h-5 rounded-full bg-amber-400 flex items-center justify-center text-slate-950 font-black text-xs">৳</div>
                 <span id="header-balance-val" class="text-xs font-black text-white">0.00</span>
             </div>
         </div>
@@ -376,126 +527,138 @@
     <!-- MAIN BODY PAGES -->
     <main class="p-3.5 space-y-4">
 
-        <!-- 1. HOME ARENA PAGE -->
-        <div id="home-page" class="sub-page active space-y-3.5">
-            <div class="rounded-3xl overflow-hidden relative border border-white/10 shadow-lg bg-gradient-to-r from-blue-900 to-indigo-950 p-4 flex items-center justify-between">
+        <!-- ======================= 1. HOME ARENA PAGE ======================= -->
+        <div id="home-page" class="sub-page active space-y-4">
+            <!-- BANNER -->
+            <div class="rounded-3xl overflow-hidden relative border border-white/10 shadow-2xl bg-gradient-to-r from-blue-900 to-indigo-950 p-4 flex items-center justify-between min-h-[140px]">
                 <div class="relative z-10 space-y-1.5 max-w-[65%]">
-                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-300 text-[9px] font-black uppercase tracking-wider border border-sky-400/30">
-                        <i class="fab fa-telegram text-[10px]"></i> Official Channel
-                    </span>
-                    <h2 class="text-base font-black leading-tight text-white">JOIN OUR <span class="text-sky-400">TELEGRAM</span></h2>
-                    <p class="text-[10.5px] text-slate-300">ম্যাচ রুম কোড ও আপডেট পেতে এখনি যোগ দিন।</p>
-                    <a href="https://t.me/EXPERTearn_team" target="_blank" class="inline-block mt-1 px-3 py-1 bg-[#2AABEE] text-white rounded-lg text-xs font-black shadow">
-                        জয়েন করুন <i class="fas fa-arrow-right ml-0.5 text-[9px]"></i>
+                    <div class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-sky-500/20 text-sky-300 text-[10px] font-black uppercase tracking-wider border border-sky-400/30">
+                        <i class="fab fa-telegram text-xs"></i> Official Channel
+                    </div>
+                    <h2 class="text-lg font-black leading-tight text-white tracking-wide">JOIN OUR <span class="text-sky-400">TELEGRAM</span> COMMUNITY</h2>
+                    <p class="text-[11px] text-slate-300 font-semibold">ম্যাচ রুম কোড ও দ্রুত আপডেট পেতে এখনি জয়েন করুন।</p>
+                    <a href="https://t.me/EXPERTearn_team" target="_blank" class="inline-block mt-1 px-4 py-1.5 bg-[#2AABEE] hover:bg-[#229ed9] text-white rounded-xl text-xs font-black shadow-lg">
+                        জয়েন করুন <i class="fas fa-arrow-right ml-1 text-[10px]"></i>
                     </a>
                 </div>
-                <div class="w-20 h-20 flex items-center justify-center relative">
-                    <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" class="w-16 h-16 object-contain" alt="Telegram">
+                <div class="w-28 h-28 flex items-center justify-center relative">
+                    <div class="absolute inset-0 bg-sky-500/20 rounded-full blur-xl"></div>
+                    <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" class="w-20 h-20 object-contain relative z-10" alt="Telegram">
                 </div>
             </div>
 
-            <div class="bg-[#121a2d] border border-amber-500/20 rounded-xl px-3 py-2 flex items-center gap-2 text-xs">
-                <span class="text-amber-400 font-extrabold whitespace-nowrap flex items-center gap-1">
-                    <i class="fas fa-bullhorn text-[11px]"></i> নোটিশ:
+            <!-- SCROLLING NOTICE -->
+            <div class="bg-[#121a2d] border border-amber-500/20 rounded-2xl px-3.5 py-2.5 flex items-center gap-2 shadow-inner">
+                <span class="text-amber-400 font-extrabold text-xs whitespace-nowrap flex items-center gap-1">
+                    <i class="fas fa-bullhorn text-xs"></i> নোটিশ:
                 </span>
-                <marquee class="text-[11.5px] text-slate-300 font-medium" behavior="scroll" direction="left">
-                    👉 🎁 ম্যাচ শুরুর ৫ মিনিট আগ পর্যন্ত রিফান্ড নেওয়া যাবে। স্লট পূর্ণ না হলে ১০০% টাকা স্বয়ংক্রিয় রিফান্ড হবে।
+                <marquee id="main-notice-marquee" class="text-xs text-slate-300 font-semibold" behavior="scroll" direction="left">
+                    👉 🎁 ম্যাচ শুরুর ৫ মিনিট আগ পর্যন্ত রিফান্ড নেওয়া যাবে। নির্ধারিত সময়ে স্লট পূর্ণ না হলে স্বয়ংক্রিয়ভাবে ১০০% টাকা রিফান্ড হয়ে যাবে।
                 </marquee>
             </div>
 
-            <div class="flex items-center justify-center gap-2 pt-0.5">
+            <!-- TITLE -->
+            <div class="flex items-center justify-center gap-3 pt-1">
                 <div class="h-[1px] bg-slate-700/60 flex-1"></div>
-                <h3 class="text-[11px] font-black tracking-widest text-slate-400 uppercase" style="font-family: 'Russo One', sans-serif;">LIVE ARENA TOURNAMENTS</h3>
+                <h3 class="text-xs font-black tracking-widest text-slate-400 uppercase" style="font-family: 'Russo One', sans-serif;">LIVE ARENA TOURNAMENTS</h3>
                 <div class="h-[1px] bg-slate-700/60 flex-1"></div>
             </div>
 
-            <div id="game-categories-container" class="space-y-2.5"></div>
+            <!-- DYNAMIC ARENA CARDS CONTAINER -->
+            <div id="game-categories-container" class="space-y-3"></div>
         </div>
 
-        <!-- 2. MATCHES LIST PAGE -->
-        <div id="matches-page" class="sub-page space-y-3">
-            <div class="bg-gradient-to-r from-blue-900 via-indigo-950 to-slate-900 p-3.5 rounded-2xl border border-white/10 shadow text-center relative">
-                <button onclick="navigateTo('home-page')" class="w-7 h-7 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10 absolute left-3 top-3">
+        <!-- ======================= 2. MATCHES LIST PAGE ======================= -->
+        <div id="matches-page" class="sub-page space-y-3.5">
+            <div class="bg-gradient-to-r from-blue-900 via-indigo-950 to-slate-900 p-4 rounded-3xl border border-white/10 shadow-lg text-center relative">
+                <button onclick="navigateTo('home-page')" class="w-8 h-8 rounded-full bg-slate-800/80 text-white flex items-center justify-center border border-white/10 absolute left-3 top-3.5">
                     <i class="fas fa-arrow-left text-xs"></i>
                 </button>
-                <h2 class="text-lg font-black text-amber-400 tracking-wider inline-block" id="arena-header-title" style="font-family: 'Russo One', sans-serif;">
-                    LUDO KING
+                <h2 class="text-xl font-black text-amber-400 tracking-wider inline-block" id="arena-header-title" style="font-family: 'Russo One', sans-serif;">
+                    LUDO KING (লুডো কিং)
                 </h2>
-                <p class="text-[10.5px] text-slate-300">লাইভ টুর্নামেন্ট চ্যালেঞ্জ</p>
+                <p class="text-[11px] text-slate-300 mt-0.5">লাইভ টুর্নামেন্ট ও ইনস্ট্যান্ট উইথড্র সিস্টেম</p>
             </div>
 
+            <!-- ACTION BAR -->
             <div class="grid grid-cols-2 gap-2">
-                <button onclick="openUploadResultModal()" class="py-2.5 px-3 rounded-xl bg-emerald-600 text-white text-xs font-black flex items-center justify-center gap-1.5 shadow active:scale-95 transition">
-                    <i class="fas fa-cloud-upload-alt"></i> <span>আপলোড রেজাল্ট</span>
+                <button onclick="openUploadResultModal()" class="py-2.5 px-3 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black flex items-center justify-center gap-2 shadow-md active:scale-95 transition">
+                    <i class="fas fa-cloud-upload-alt text-sm"></i>
+                    <span>আপলোড রেজাল্ট</span>
                 </button>
-                <button onclick="filterMatches('joined', this)" class="py-2.5 px-3 rounded-xl bg-blue-600 text-white text-xs font-black flex items-center justify-center gap-1.5 shadow active:scale-95 transition">
-                    <i class="fas fa-list-check"></i> <span>জয়েন লিস্ট (<span id="joined-count-badge">0</span>)</span>
+
+                <button onclick="filterMatches('joined', this)" id="btn-joined-list-toggle" class="py-2.5 px-3 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 text-white text-xs font-black flex items-center justify-center gap-2 shadow-md active:scale-95 transition">
+                    <i class="fas fa-list-check text-sm"></i>
+                    <span>আমার জয়েন লিস্ট (<span id="joined-count-badge">0</span>)</span>
                 </button>
             </div>
 
             <!-- FILTER PILLS -->
             <div class="filter-container-box">
                 <div class="filter-tab-pill active" onclick="filterMatches('all', this)">
-                    <div class="tab-title text-[10px]"><i class="fas fa-layer-group text-[9px]"></i> সব</div>
-                    <span class="text-[10px] font-bold" id="filter-count-all">0</span>
+                    <div class="tab-title"><i class="fas fa-layer-group text-[10px]"></i> সব ম্যাচ</div>
+                    <span class="filter-badge badge-white" id="filter-count-all">0</span>
                 </div>
                 <div class="filter-tab-pill" onclick="filterMatches('special', this)">
-                    <div class="tab-title text-[10px]"><i class="fas fa-bolt text-[9px]"></i> স্পেশাল</div>
-                    <span class="text-[10px] font-bold text-pink-400" id="filter-count-special">0</span>
+                    <div class="tab-title"><i class="fas fa-bolt text-[10px]"></i> স্পেশাল</div>
+                    <span class="filter-badge badge-pink" id="filter-count-special">0</span>
                 </div>
                 <div class="filter-tab-pill" onclick="filterMatches('join1', this)">
-                    <div class="tab-title text-[10px]"><i class="fas fa-user-plus text-[9px]"></i> Join 1</div>
-                    <span class="text-[10px] font-bold text-emerald-400" id="filter-count-join1">0</span>
+                    <div class="tab-title"><i class="fas fa-user-plus text-[10px]"></i> Join 1</div>
+                    <span class="filter-badge badge-green" id="filter-count-join1">0</span>
                 </div>
                 <div class="filter-tab-pill" onclick="filterMatches('multi', this)">
-                    <div class="tab-title text-[10px]"><i class="fas fa-users text-[9px]"></i> 1v2/3</div>
-                    <span class="text-[10px] font-bold text-purple-400" id="filter-count-multi">0</span>
+                    <div class="tab-title"><i class="fas fa-users text-[10px]"></i> 1v2/1v3</div>
+                    <span class="filter-badge badge-purple" id="filter-count-multi">0</span>
                 </div>
             </div>
 
+            <!-- MATCH CARDS CONTAINER -->
             <div id="tournament-matches-container" class="space-y-3 pt-1"></div>
         </div>
 
-        <!-- 3. DEPOSIT PAGE -->
-        <div id="wallet-page" class="sub-page space-y-3.5">
-            <div class="bg-gradient-to-br from-blue-600 via-indigo-600 to-slate-900 p-4 rounded-3xl text-white shadow-lg flex items-center justify-between">
-                <div>
-                    <span class="bg-emerald-400/20 text-emerald-300 text-[9px] font-black px-2 py-0.5 rounded-full uppercase border border-emerald-400/30 mb-1 inline-block">
-                        100% Instant
-                    </span>
-                    <h2 class="text-lg font-black">Deposit Wallet</h2>
-                    <p class="text-[11px] text-blue-200">bKash, Nagad, Rocket</p>
-                </div>
-                <div class="text-right bg-white/10 p-2.5 rounded-2xl border border-white/15">
-                    <span class="text-[9px] text-blue-200 uppercase font-bold block">Wallet Balance</span>
-                    <span id="deposit-page-balance" class="text-base font-black text-white">৳0.00</span>
+        <!-- ======================= 3. DEPOSIT PAGE (EXACT FROM FILE 1) ======================= -->
+        <div id="wallet-page" class="sub-page space-y-4">
+            <div class="bg-gradient-to-br from-blue-600 via-indigo-600 to-slate-900 p-5 rounded-3xl text-white shadow-xl relative overflow-hidden">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="bg-emerald-400/20 text-emerald-300 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider border border-emerald-400/30 flex items-center gap-1.5 w-max mb-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> 100% Instant
+                        </span>
+                        <h2 class="text-xl font-black">Deposit Wallet</h2>
+                        <p class="text-xs text-blue-200 mt-0.5">bKash, Nagad, Rocket & Cards</p>
+                    </div>
+                    <div class="text-right bg-white/10 backdrop-blur-md p-3 rounded-2xl border border-white/15">
+                        <span class="text-[10px] text-blue-200 uppercase font-bold tracking-wider block">Wallet Balance</span>
+                        <span id="deposit-page-balance" class="text-lg font-black text-white">৳0.00</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="bg-white p-4 rounded-3xl border border-slate-200 shadow-sm space-y-3.5 text-slate-800">
-                <div class="flex items-center justify-between bg-slate-50 p-2.5 rounded-xl border border-slate-200">
-                    <span class="text-[10px] font-extrabold text-slate-500 uppercase">Accepted Gateway</span>
+            <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-4 text-slate-800">
+                <div class="flex items-center justify-between bg-slate-50 p-2.5 px-3.5 rounded-2xl border border-slate-200">
+                    <span class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider">Accepted Gateway</span>
                     <div class="flex items-center gap-1.5">
-                        <span class="px-2 py-0.5 text-[9px] font-black bg-[#e2136e]/10 text-[#e2136e] rounded border border-[#e2136e]/20">bKash</span>
-                        <span class="px-2 py-0.5 text-[9px] font-black bg-[#f7941d]/10 text-[#ea580c] rounded border border-[#f7941d]/20">Nagad</span>
-                        <span class="px-2 py-0.5 text-[9px] font-black bg-[#8b5cf6]/10 text-[#7c3aed] rounded border border-[#8b5cf6]/20">Rocket</span>
+                        <span class="px-2 py-0.5 text-[10px] font-black bg-[#e2136e]/10 text-[#e2136e] rounded-md border border-[#e2136e]/20">bKash</span>
+                        <span class="px-2 py-0.5 text-[10px] font-black bg-[#f7941d]/10 text-[#ea580c] rounded-md border border-[#f7941d]/20">Nagad</span>
+                        <span class="px-2 py-0.5 text-[10px] font-black bg-[#8b5cf6]/10 text-[#7c3aed] rounded-md border border-[#8b5cf6]/20">Rocket</span>
                     </div>
                 </div>
 
                 <div>
-                    <div class="flex justify-between items-center mb-1">
-                        <label class="text-xs font-black text-slate-700">টাকার পরিমাণ (BDT)</label>
-                        <span class="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded border border-blue-100">মিনিমাম: ৳১০</span>
+                    <div class="flex justify-between items-center mb-1.5">
+                        <label for="amountInput" class="text-xs font-black text-slate-700">টাকার পরিমাণ (BDT)</label>
+                        <span id="deposit-min-badge" class="text-[10.5px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100">মিনিমাম: ৳১০</span>
                     </div>
                     <div class="relative">
-                        <input id="amountInput" type="number" step="1" value="50" min="10" placeholder="50" oninput="handleAutoAmountInput()" class="w-full p-3 pl-8 rounded-xl input-field text-xl font-black text-slate-800 border-2 border-blue-200 text-center font-mono">
-                        <span class="absolute left-3 top-3 text-slate-400 font-black text-lg">৳</span>
+                        <input id="amountInput" type="number" step="1" value="50" min="10" placeholder="50" oninput="handleAutoAmountInput()" class="w-full p-3.5 pl-10 rounded-2xl input-field text-2xl font-black text-slate-800 border-2 border-blue-200 focus:border-blue-600 text-center font-mono">
+                        <span class="absolute left-4 top-3.5 text-slate-400 font-black text-xl">৳</span>
                     </div>
                 </div>
 
                 <div>
-                    <span class="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-1.5">দ্রুত সিলেক্ট করুন</span>
-                    <div class="grid grid-cols-3 gap-1.5">
+                    <span class="block text-[11px] font-extrabold text-slate-400 uppercase tracking-wider mb-2">দ্রুত সিলেক্ট করুন</span>
+                    <div class="grid grid-cols-3 gap-2">
                         <button type="button" onclick="setAutoQuickAmount(10)" class="quick-amount-pill">10 BDT</button>
                         <button type="button" onclick="setAutoQuickAmount(50)" class="quick-amount-pill selected">50 BDT</button>
                         <button type="button" onclick="setAutoQuickAmount(100)" class="quick-amount-pill">100 BDT</button>
@@ -505,311 +668,335 @@
                     </div>
                 </div>
 
-                <button id="btnPayGateway" onclick="initiatePaymentGateway()" class="w-full py-3.5 rounded-xl btn-gateway-pay text-xs flex items-center justify-center gap-2 cursor-pointer shadow">
-                    <i class="fas fa-lock text-amber-300"></i>
+                <button id="btnPayGateway" onclick="initiatePaymentGateway()" class="w-full py-4 rounded-2xl btn-gateway-pay text-sm flex items-center justify-center gap-2 cursor-pointer shadow-lg">
+                    <i data-lucide="lock" class="w-4 h-4 text-amber-300"></i>
                     <span>পেমেন্ট গেটওয়েতে এগিয়ে যান</span>
                 </button>
             </div>
         </div>
 
-        <!-- 4. WITHDRAWAL PAGE -->
-        <div id="withdraw-page" class="sub-page space-y-3.5">
+        <!-- ======================= 4. WITHDRAWAL PAGE (IN PROFILE) ======================= -->
+        <div id="withdraw-page" class="sub-page space-y-4">
             <div class="flex items-center gap-2 pb-1">
-                <button onclick="navigateTo('profile-page')" class="w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10">
-                    <i class="fas fa-arrow-left text-xs"></i>
+                <button onclick="navigateTo('profile-page')" class="w-9 h-9 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10">
+                    <i class="fas fa-arrow-left text-sm"></i>
                 </button>
-                <h2 class="text-sm font-black text-white">উত্তোলন (Withdrawal)</h2>
+                <h2 class="text-base font-black text-white" style="font-family: 'Russo One', sans-serif;">উত্তোলন (Withdrawal)</h2>
             </div>
 
-            <div class="bg-gradient-to-br from-rose-600 via-pink-600 to-slate-900 p-4 rounded-3xl text-white shadow-lg flex items-center justify-between">
-                <div>
-                    <h2 class="text-base font-black">উত্তোলন (Withdrawal)</h2>
-                    <p class="text-[10px] text-rose-100">বিকাশ, নগদ বা রকেটে ব্যালেন্স উত্তোলন</p>
-                </div>
-                <div class="text-right bg-white/10 p-2 rounded-2xl border border-white/15">
-                    <span class="text-[9px] text-rose-200 uppercase font-bold block">তোলার যোগ্য</span>
-                    <span id="withdraw-main-wallet-bal" class="text-base font-black text-white">৳0.00</span>
+            <div class="bg-gradient-to-br from-rose-600 via-pink-600 to-slate-900 p-5 rounded-3xl text-white shadow-xl relative overflow-hidden">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-xl font-black">উত্তোলন (Withdrawal)</h2>
+                        <p class="text-xs text-rose-100 mt-0.5">বিকাশ, নগদ বা রকেটে ব্যালেন্স উত্তোলন</p>
+                    </div>
+                    <div class="text-right bg-white/10 backdrop-blur-md p-3 rounded-2xl border border-white/15">
+                        <span class="text-[10px] text-rose-200 uppercase font-bold tracking-wider block">তোলার যোগ্য</span>
+                        <span id="withdraw-main-wallet-bal" class="text-lg font-black text-white">৳0.00</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="bg-white p-4 rounded-3xl border border-slate-200 shadow-sm space-y-3 text-slate-800">
+            <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-4 text-slate-800">
                 <div class="flex items-center justify-between">
                     <span class="text-xs font-bold text-slate-800">আবদ্ধ E-Wallet (<span id="bound-wallet-count">0</span>/3)</span>
-                    <button onclick="openBindWalletModal()" class="text-xs font-bold text-rose-600 bg-rose-50 px-2.5 py-1 rounded-xl">
+                    <button onclick="openBindWalletModal()" class="text-xs font-bold text-rose-600 bg-rose-50 px-2.5 py-1 rounded-xl hover:bg-rose-100 transition">
                         + ওয়ালেট যোগ
                     </button>
                 </div>
 
-                <div id="bound-wallets-container" class="space-y-2"></div>
+                <div id="bound-wallets-container" class="space-y-2.5"></div>
 
-                <div class="space-y-1 pt-1 border-t border-slate-100 text-xs">
-                    <div class="flex justify-between text-slate-600 font-semibold">
+                <div class="space-y-1.5 pt-2 border-t border-slate-100">
+                    <div class="flex justify-between text-xs text-slate-600 font-semibold">
                         <span>উত্তোলন ফি:</span>
                         <span class="font-black text-rose-600">৳১০.০০</span>
                     </div>
-                    <div class="flex justify-between text-slate-600 font-semibold">
+                    <div class="flex justify-between text-xs text-slate-600 font-semibold">
                         <span>সর্বনিম্ন উত্তোলন:</span>
                         <span class="font-black text-slate-800">৳১০০.০০</span>
                     </div>
                 </div>
 
-                <div class="space-y-1">
-                    <label class="block text-xs font-bold text-slate-700">উত্তোলনের পরিমাণ:</label>
-                    <input id="withdraw-amount-input" type="number" step="1" min="100" placeholder="100 ~ 20,000" class="w-full p-2.5 rounded-xl input-field text-xs font-bold font-mono">
+                <div class="space-y-1 pt-1">
+                    <label class="block text-xs font-bold text-slate-700">উত্তোলনের পরিমাণ (পূর্ণসংখ্যা):</label>
+                    <input id="withdraw-amount-input" type="number" step="1" min="100" placeholder="100 ~ 20,000" class="w-full p-3 rounded-2xl input-field text-sm font-bold font-mono">
                 </div>
 
-                <button onclick="submitWithdrawalRequest()" id="btn-submit-withdraw" class="w-full py-3.5 btn-withdraw-red text-xs flex items-center justify-center gap-1.5 shadow">
-                    <i class="fas fa-check-circle"></i>
+                <button onclick="submitWithdrawalRequest()" id="btn-submit-withdraw" class="w-full py-4 btn-withdraw-red text-sm flex items-center justify-center gap-2 cursor-pointer shadow-lg">
+                    <i data-lucide="check-circle" class="w-4 h-4"></i>
                     <span>উত্তোলন রিকোয়েস্ট পাঠান</span>
                 </button>
             </div>
 
-            <div class="bg-white p-4 rounded-3xl border border-slate-200 shadow-sm space-y-2 text-slate-800">
-                <h3 class="text-xs font-black uppercase text-slate-600 flex items-center gap-1.5">
-                    <i class="fas fa-history text-rose-500"></i>
-                    <span>উত্তোলন হিস্ট্রি (History)</span>
+            <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-3 text-slate-800">
+                <h3 class="text-xs font-black uppercase tracking-wider text-slate-600 flex items-center gap-2">
+                    <i data-lucide="history" class="w-4 h-4 text-rose-500"></i>
+                    <span>উত্তোলন হিস্ট্রি (Withdraw History)</span>
                 </h3>
-                <div id="withdraw-history-list" class="space-y-1.5"></div>
+                <div id="withdraw-history-list" class="space-y-2"></div>
             </div>
         </div>
 
-        <!-- 5. TRANSFER PAGE -->
-        <div id="transfer-page" class="sub-page space-y-3.5">
+        <!-- ======================= 5. TRANSFER PAGE (IN PROFILE) ======================= -->
+        <div id="transfer-page" class="sub-page space-y-4">
             <div class="flex items-center gap-2 pb-1">
-                <button onclick="navigateTo('profile-page')" class="w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10">
-                    <i class="fas fa-arrow-left text-xs"></i>
+                <button onclick="navigateTo('profile-page')" class="w-9 h-9 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10">
+                    <i class="fas fa-arrow-left text-sm"></i>
                 </button>
-                <h2 class="text-sm font-black text-white">ব্যালেন্স ট্রান্সফার</h2>
+                <h2 class="text-base font-black text-white" style="font-family: 'Russo One', sans-serif;">ব্যালেন্স ট্রান্সফার</h2>
             </div>
 
-            <div class="bg-gradient-to-br from-amber-600 via-orange-600 to-slate-900 p-4 rounded-3xl text-white shadow-lg flex items-center justify-between">
-                <div>
-                    <h2 class="text-base font-black">Balance Transfer</h2>
-                    <p class="text-[10px] text-amber-100">টেলিগ্রাম আইডিতে ব্যালেন্স পাঠান</p>
-                </div>
-                <div class="text-right bg-white/10 p-2 rounded-2xl border border-white/15">
-                    <span class="text-[9px] text-amber-200 uppercase font-bold block">চার্জ</span>
-                    <span class="text-sm font-black text-white">২% ফি</span>
+            <div class="bg-gradient-to-br from-amber-600 via-orange-600 to-slate-900 p-5 rounded-3xl text-white shadow-xl relative overflow-hidden">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-xl font-black">Balance Transfer</h2>
+                        <p class="text-xs text-amber-100 mt-0.5">টেলিগ্রাম আইডিতে সরাসরি ব্যালেন্স ট্রান্সফার</p>
+                    </div>
+                    <div class="text-right bg-white/10 backdrop-blur-md p-3 rounded-2xl border border-white/15">
+                        <span class="text-[10px] text-amber-200 uppercase font-bold tracking-wider block">চার্জ</span>
+                        <span class="text-base font-black text-white">২% ফি</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="bg-white p-4 rounded-3xl border border-slate-200 shadow-sm space-y-3 text-slate-800">
+            <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-4 text-slate-800">
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">প্রাপকের Telegram ID</label>
-                    <input id="send-recipient-id" oninput="handleRecipientLookup(this.value)" type="text" placeholder="যেমন: 6954647230" class="w-full p-2.5 rounded-xl input-field text-xs font-mono font-bold">
+                    <input id="send-recipient-id" oninput="handleRecipientLookup(this.value)" type="text" placeholder="যেমন: 6954647230" class="w-full p-3 rounded-2xl input-field text-sm font-mono font-bold">
                     
-                    <div id="recipient-preview-card" class="hidden mt-2 p-2 bg-slate-50 border rounded-xl flex items-center justify-between text-xs">
+                    <div id="recipient-preview-card" class="hidden mt-2 p-2.5 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between text-xs">
                         <div class="flex items-center gap-2">
-                            <div class="w-7 h-7 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-[10px]" id="rec-preview-avatar">?</div>
+                            <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold" id="rec-preview-avatar">?</div>
                             <div>
-                                <h5 class="font-bold text-slate-800 text-xs" id="rec-preview-name">Loading...</h5>
-                                <span class="text-[9px] text-slate-500 font-mono" id="rec-preview-id">ID: --</span>
+                                <h5 class="font-bold text-slate-800" id="rec-preview-name">Loading...</h5>
+                                <span class="text-[10px] text-slate-500 font-mono" id="rec-preview-id">ID: --</span>
                             </div>
                         </div>
-                        <span class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-emerald-100 text-emerald-700">Active</span>
+                        <span class="px-2 py-0.5 rounded-md text-[10px] font-black uppercase bg-emerald-100 text-emerald-700">Active</span>
                     </div>
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">টাকার পরিমাণ (BDT)</label>
-                    <input id="send-amount" type="number" step="1" min="10" placeholder="মিনিমাম ১০ টাকা" class="w-full p-2.5 rounded-xl input-field text-xs font-bold font-mono">
+                    <input id="send-amount" type="number" step="1" min="10" placeholder="মিনিমাম ১০ টাকা" class="w-full p-3 rounded-2xl input-field text-sm font-bold font-mono">
                 </div>
 
-                <button id="submit-send-btn" onclick="handleSendBalance()" class="w-full py-3.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow active:scale-98 transition">
-                    <i class="fas fa-paper-plane"></i>
+                <button id="submit-send-btn" onclick="handleSendBalance()" class="w-full py-4 rounded-2xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg active:scale-98 transition">
+                    <i data-lucide="send" class="w-4 h-4"></i>
                     <span>ব্যালেন্স পাঠান (Send Balance)</span>
                 </button>
             </div>
 
-            <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between text-slate-800 text-xs">
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between text-slate-800">
                 <div>
-                    <span class="font-bold block">আপনার Telegram ID</span>
-                    <span id="my-receive-id-display" class="font-mono font-black text-blue-600 text-xs">ID: 00000000</span>
+                    <span class="text-xs font-bold text-slate-800 block">আপনার Telegram ID</span>
+                    <span id="my-receive-id-display" class="text-xs font-mono font-black text-blue-600">ID: 00000000</span>
                 </div>
-                <button onclick="copyMyReceiveId()" class="px-2.5 py-1 bg-blue-50 text-blue-600 font-bold rounded-lg border border-blue-200">
+                <button onclick="copyMyReceiveId()" class="px-3 py-1.5 bg-blue-50 text-blue-600 font-bold text-xs rounded-xl border border-blue-200 hover:bg-blue-100 transition">
                     কপি আইডি
                 </button>
             </div>
         </div>
 
-        <!-- 6. REFERRAL PROGRAM PAGE -->
-        <div id="refer-page" class="sub-page space-y-3.5">
+        <!-- ======================= 6. REFERRAL PROGRAM PAGE (EXACT FROM FILE 1) ======================= -->
+        <div id="refer-page" class="sub-page space-y-4">
             <div class="flex items-center gap-2 pb-1">
-                <button onclick="navigateTo('home-page')" class="w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10">
-                    <i class="fas fa-arrow-left text-xs"></i>
+                <button onclick="navigateTo('home-page')" class="w-9 h-9 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10">
+                    <i class="fas fa-arrow-left text-sm"></i>
                 </button>
-                <h2 class="text-sm font-black text-white">রেফারেল প্রোগ্রাম</h2>
+                <h2 class="text-base font-black text-white" style="font-family: 'Russo One', sans-serif;">রেফারেল প্রোগ্রাম</h2>
             </div>
 
-            <div class="bg-gradient-to-br from-indigo-900 via-blue-900 to-slate-900 p-4 rounded-3xl text-white shadow-lg space-y-1">
-                <div class="flex items-center justify-between">
-                    <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[9px] font-black uppercase border border-emerald-400/30">
+            <div class="bg-gradient-to-br from-indigo-900 via-blue-900 to-slate-900 p-5 rounded-3xl text-white shadow-xl relative overflow-hidden">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-black uppercase tracking-wider border border-emerald-400/30">
                         Instant Reward
                     </span>
-                    <span class="text-xs font-black text-amber-300 bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/20">
+                    <span id="refer-rate-badge" class="text-xs font-black text-amber-300 bg-amber-400/10 px-2.5 py-0.5 rounded-lg border border-amber-400/20">
                         ৳১০ / রেফার
                     </span>
                 </div>
-                <h2 class="text-base font-black pt-1">Refer & Earn Program</h2>
-                <p class="text-[10.5px] text-blue-200">বন্ধুদের ইনভাইট করুন এবং রেফার বোনাস উপভোগ করুন!</p>
+                <h2 class="text-xl font-black">Refer & Earn Program</h2>
+                <p class="text-xs text-blue-200 mt-1">আপনার বন্ধুদের ইনভাইট করুন এবং রেফার বোনাস উপভোগ করুন!</p>
             </div>
 
-            <div class="grid grid-cols-2 gap-2 text-center">
-                <div class="bg-[#121a2d] p-3 rounded-2xl border border-white/10">
-                    <p class="text-[9px] font-bold text-slate-400 uppercase">মোট রেফারেল</p>
-                    <p id="ref-stat-total" class="text-lg font-black text-white mt-0.5">0</p>
+            <div class="grid grid-cols-2 gap-2.5 text-center">
+                <div class="bg-[#121a2d] p-4 rounded-2xl border border-white/10 shadow-sm">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase">মোট রেফারেল</p>
+                    <p id="ref-stat-total" class="text-xl font-black text-white mt-1">0</p>
                 </div>
-                <div class="bg-[#121a2d] p-3 rounded-2xl border border-white/10">
-                    <p class="text-[9px] font-bold text-slate-400 uppercase">রেফার থেকে আয়</p>
-                    <p id="ref-stat-earned" class="text-lg font-black text-emerald-400 mt-0.5">৳0.00</p>
+                <div class="bg-[#121a2d] p-4 rounded-2xl border border-white/10 shadow-sm">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase">রেফার থেকে আয়</p>
+                    <p id="ref-stat-earned" class="text-xl font-black text-emerald-400 mt-1">৳0.00</p>
                 </div>
             </div>
 
-            <div class="bg-[#121a2d] p-3.5 rounded-2xl border border-white/10 space-y-2.5">
-                <span class="text-xs font-black text-slate-300 block">আপনার রেফারেল লিংক:</span>
-                <div class="bg-black/40 p-2 rounded-xl border border-white/10 flex items-center justify-between">
+            <div class="bg-[#121a2d] p-4 rounded-2xl border border-white/10 shadow-sm space-y-3">
+                <span class="text-xs font-black text-slate-300 block">আপনার ব্যক্তিগত রেফারেল লিংক:</span>
+                <div class="bg-black/40 p-2.5 rounded-xl border border-white/10 flex items-center justify-between">
                     <span id="dedicated-ref-link-display" class="text-xs font-mono text-slate-300 truncate mr-2 select-all">Loading...</span>
-                    <button onclick="copyReferralLink()" class="px-3 py-1 bg-blue-600 text-white rounded-lg text-xs font-bold active:scale-95 transition">
-                        কপি
+                    <button onclick="copyReferralLink()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold flex items-center gap-1 active:scale-95 transition">
+                        <i data-lucide="copy" class="w-3.5 h-3.5"></i> কপি
                     </button>
                 </div>
 
-                <button onclick="shareReferralLinkTelegram()" class="w-full py-2.5 bg-[#0088cc] text-white font-extrabold text-xs rounded-xl flex items-center justify-center gap-1.5 shadow active:scale-98">
-                    <i class="fab fa-telegram-plane"></i>
+                <button onclick="shareReferralLinkTelegram()" class="w-full py-3 bg-[#0088cc] hover:bg-[#0077b5] text-white font-extrabold text-xs rounded-xl flex items-center justify-center gap-2 shadow transition active:scale-98">
+                    <i data-lucide="send" class="w-4 h-4"></i>
                     <span>টেলিগ্রামে বন্ধুদের সাথে শেয়ার করুন</span>
                 </button>
             </div>
 
-            <div class="bg-[#121a2d] p-3.5 rounded-2xl border border-white/10 space-y-2">
+            <div class="bg-[#121a2d] p-4 rounded-2xl border border-white/10 shadow-sm space-y-3">
                 <div class="flex items-center justify-between">
                     <h3 class="text-xs font-black uppercase text-slate-300">রেফার করা ইউজার তালিকা</h3>
                     <span id="ref-list-count-badge" class="text-xs text-blue-400 font-bold">০ জন</span>
                 </div>
-                <div id="referred-users-list-container" class="space-y-1.5 text-xs text-slate-400">
-                    <div class="p-2 bg-black/20 rounded text-center">এখনো কোনো রেফারেল নেই।</div>
-                </div>
+                <div id="referred-users-list-container" class="space-y-2"></div>
             </div>
         </div>
 
-        <!-- 7. PURE MATCH HISTORY -->
-        <div id="history-page" class="sub-page space-y-3.5">
+        <!-- ======================= 7. PURE MATCH HISTORY ======================= -->
+        <div id="history-page" class="sub-page space-y-4">
             <div class="flex items-center justify-between pb-1">
                 <div class="flex items-center gap-2">
-                    <button onclick="navigateTo('home-page')" class="w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10">
-                        <i class="fas fa-arrow-left text-xs"></i>
+                    <button onclick="navigateTo('home-page')" class="w-9 h-9 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10">
+                        <i class="fas fa-arrow-left text-sm"></i>
                     </button>
-                    <h2 class="text-sm font-black text-white">টুর্নামেন্ট ম্যাচ হিস্ট্রি</h2>
+                    <h2 class="text-base font-black text-white" style="font-family: 'Russo One', sans-serif;">টুর্নামেন্ট ম্যাচ হিস্ট্রি</h2>
                 </div>
+                <span class="text-[10px] bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full border border-white/10 font-bold">ম্যাচ রেকর্ডস</span>
             </div>
-            <div id="pure-match-history-container" class="space-y-2.5"></div>
+
+            <div id="pure-match-history-container" class="space-y-3 min-h-[300px]"></div>
         </div>
 
-        <!-- 8. LEADERBOARD PAGE -->
-        <div id="leaderboard-page" class="sub-page space-y-3.5">
+        <!-- ======================= 8. LEADERBOARD PAGE ======================= -->
+        <div id="leaderboard-page" class="sub-page space-y-4">
             <div class="flex items-center gap-2 pb-1">
-                <button onclick="navigateTo('profile-page')" class="w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10">
-                    <i class="fas fa-arrow-left text-xs"></i>
+                <button onclick="navigateTo('profile-page')" class="w-9 h-9 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10">
+                    <i class="fas fa-arrow-left text-sm"></i>
                 </button>
-                <h2 class="text-sm font-black text-white">টপ প্লেয়ার লিডারবোর্ড</h2>
+                <h2 class="text-base font-black text-white" style="font-family: 'Russo One', sans-serif;">টপ প্লেয়ার লিডারবোর্ড</h2>
             </div>
-            <div id="leaderboard-list-container" class="space-y-2"></div>
+
+            <div class="bg-gradient-to-r from-amber-600 via-yellow-600 to-orange-600 p-4 rounded-3xl text-center space-y-1 shadow-lg">
+                <i class="fas fa-trophy text-3xl text-amber-200"></i>
+                <h3 class="text-base font-black text-white">সর্বোচ্চ ম্যাচ বিজয়ী ও টপ র‍্যাংক</h3>
+                <p class="text-[11px] text-amber-100 font-semibold">লাইভ টুর্নামেন্ট খেলে শীর্ষে থাকুন ও বিশেষ পুরস্কার জিতুন!</p>
+            </div>
+
+            <div id="leaderboard-list-container" class="space-y-2.5"></div>
         </div>
 
-        <!-- 9. PROFILE PAGE -->
-        <div id="profile-page" class="sub-page space-y-3.5">
+        <!-- ======================= 9. PROFILE PAGE ======================= -->
+        <div id="profile-page" class="sub-page space-y-4">
             <div class="flex items-center justify-between">
-                <button onclick="navigateTo('home-page')" class="w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10">
-                    <i class="fas fa-arrow-left text-xs"></i>
+                <button onclick="navigateTo('home-page')" class="w-9 h-9 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10">
+                    <i class="fas fa-arrow-left text-sm"></i>
                 </button>
-                <h2 class="text-sm font-black text-white">My Profile</h2>
-                <div class="w-8"></div>
+                <h2 class="text-base font-black text-white" style="font-family: 'Russo One', sans-serif;">My Profile</h2>
+                <div class="w-9"></div>
             </div>
 
-            <div class="rounded-3xl bg-[#11192d] border border-white/10 p-4 text-center shadow-lg">
-                <div class="w-18 h-18 mx-auto mb-2">
-                    <img id="user-profile-img" src="https://i.postimg.cc/L4YZZKsv/IMG-20260919-214336-790.jpg" class="w-16 h-16 mx-auto object-cover rounded-full border-2 border-amber-400 shadow bg-slate-800" alt="Profile">
+            <div class="relative rounded-3xl overflow-hidden bg-[#11192d] border border-white/10 p-5 text-center shadow-xl">
+                <div class="relative w-24 h-24 mx-auto mb-3 mt-2">
+                    <img id="user-profile-img" src="https://i.postimg.cc/L4YZZKsv/IMG-20260919-214336-790.jpg" class="w-full h-full object-cover rounded-full border-4 border-amber-400 shadow-2xl bg-slate-800" alt="Profile">
                 </div>
-                <h3 id="profile-name-text" class="text-base font-black text-white tracking-wide uppercase" style="font-family: 'Russo One', sans-serif;">PLAYER</h3>
-                <div class="inline-flex items-center gap-1.5 mt-1 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-bold text-xs" onclick="copyMyReceiveId()">
+
+                <h3 id="profile-name-text" class="text-xl font-black text-white tracking-wide uppercase" style="font-family: 'Russo One', sans-serif;">PLAYER</h3>
+
+                <div class="inline-flex items-center gap-2 mt-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-black text-xs cursor-pointer shadow-sm" onclick="copyMyReceiveId()">
+                    <i class="fas fa-fingerprint"></i>
                     <span id="profile-uid-display">UID: 00000</span>
-                    <i class="fas fa-copy text-[10px]"></i>
+                    <i class="fas fa-copy text-xs ml-0.5"></i>
                 </div>
             </div>
 
-            <!-- WALLET CARD -->
-            <div class="platinum-card p-4 space-y-3">
-                <div class="flex items-center justify-between text-xs">
-                    <span class="text-[10px] font-black tracking-widest text-cyan-300 uppercase">LUDO HUB WALLET</span>
-                    <span class="text-[10px] text-slate-400">STATUS: ACTIVE</span>
+            <!-- PLATINUM VIRTUAL WALLET CARD -->
+            <div class="platinum-card p-5 space-y-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-shield-alt text-cyan-400"></i>
+                        <span class="text-xs font-black tracking-widest text-cyan-300 uppercase">LUDO HUB PLATINUM</span>
+                    </div>
+                    <div class="flex items-center -space-x-2">
+                        <div class="w-5 h-5 rounded-full bg-rose-500 opacity-90"></div>
+                        <div class="w-5 h-5 rounded-full bg-amber-400 opacity-90"></div>
+                    </div>
                 </div>
+
                 <div>
-                    <span class="text-[9px] font-extrabold text-slate-400 uppercase block">TOTAL BALANCE</span>
-                    <div class="text-2xl font-black text-white mt-0.5">৳<span id="card-total-bal">0.00</span></div>
+                    <span class="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block">TOTAL BALANCE</span>
+                    <div class="text-3xl font-black text-white tracking-tight mt-0.5 flex items-baseline gap-1">
+                        <span>৳</span><span id="card-total-bal">0.00</span>
+                    </div>
                 </div>
-                <div class="grid grid-cols-2 gap-2 pt-2 border-t border-white/10 text-xs">
+
+                <div class="grid grid-cols-2 gap-4 pt-3 border-t border-white/10 text-xs">
                     <div>
-                        <span class="text-[9px] font-bold text-slate-400 uppercase block">DEPOSIT</span>
-                        <span id="card-deposit-bal" class="font-bold text-amber-400">৳ 0.00</span>
+                        <span class="text-[10px] font-bold text-slate-400 uppercase block">MAIN DEPOSIT</span>
+                        <span id="card-deposit-bal" class="text-base font-black text-amber-400 mt-0.5 block">৳ 0.00</span>
                     </div>
                     <div>
-                        <span class="text-[9px] font-bold text-slate-400 uppercase block">WINNING</span>
-                        <span id="card-winning-bal" class="font-bold text-emerald-400">৳ 0.00</span>
+                        <span class="text-[10px] font-bold text-slate-400 uppercase block">WINNING BAL</span>
+                        <span id="card-winning-bal" class="text-base font-black text-emerald-400 mt-0.5 block">৳ 0.00</span>
                     </div>
                 </div>
             </div>
 
             <!-- PROFILE MENU OPTIONS -->
-            <div class="space-y-2 pt-1">
+            <div class="space-y-2 pt-2">
                 <div onclick="navigateTo('withdraw-page')" class="action-row-item border-l-4 border-l-rose-500">
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-8 h-8 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center text-sm">
-                            <i class="fas fa-arrow-down"></i>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-2xl bg-rose-500/20 text-rose-400 flex items-center justify-center text-lg">
+                            <i data-lucide="arrow-down-to-line" class="w-5 h-5"></i>
                         </div>
                         <div>
-                            <h5 class="text-xs font-bold text-white">উত্তোলন (Withdrawal)</h5>
-                            <p class="text-[10px] text-slate-400">বিকাশ, নগদ, রকেটে ক্যাশআউট</p>
+                            <h5 class="text-sm font-black text-white">উত্তোলন (Withdrawal)</h5>
+                            <p class="text-[11px] text-slate-400">বিকাশ, নগদ, রকেটে টাকা উত্তোলন করুন</p>
                         </div>
                     </div>
-                    <i class="fas fa-chevron-right text-rose-400 text-xs"></i>
+                    <i class="fas fa-chevron-right text-rose-400 text-sm"></i>
                 </div>
 
                 <div onclick="navigateTo('transfer-page')" class="action-row-item border-l-4 border-l-orange-500">
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-8 h-8 rounded-xl bg-orange-500/20 text-orange-400 flex items-center justify-center text-sm">
-                            <i class="fas fa-exchange-alt"></i>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-2xl bg-orange-500/20 text-orange-400 flex items-center justify-center text-lg">
+                            <i data-lucide="arrow-left-right" class="w-5 h-5"></i>
                         </div>
                         <div>
-                            <h5 class="text-xs font-bold text-white">ব্যালেন্স ট্রান্সফার (Transfer)</h5>
-                            <p class="text-[10px] text-slate-400">আইডিতে সরাসরি ব্যালেন্স পাঠান</p>
+                            <h5 class="text-sm font-black text-white">ব্যালেন্স ট্রান্সফার (Transfer)</h5>
+                            <p class="text-[11px] text-slate-400">টেলিগ্রাম আইডিতে সরাসরি ব্যালেন্স পাঠান</p>
                         </div>
                     </div>
-                    <i class="fas fa-chevron-right text-orange-400 text-xs"></i>
+                    <i class="fas fa-chevron-right text-orange-400 text-sm"></i>
                 </div>
 
                 <div onclick="navigateTo('leaderboard-page')" class="action-row-item border-l-4 border-l-yellow-500">
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-8 h-8 rounded-xl bg-yellow-500/20 text-yellow-400 flex items-center justify-center text-sm">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-2xl bg-yellow-500/20 text-yellow-400 flex items-center justify-center text-lg">
                             <i class="fas fa-trophy"></i>
                         </div>
                         <div>
-                            <h5 class="text-xs font-bold text-white">Leaderboard (লিডারবোর্ড)</h5>
-                            <p class="text-[10px] text-slate-400">টপ প্লেয়ার ও র‍্যাংক তালিকা</p>
+                            <h5 class="text-sm font-black text-white">Leaderboard (লিডারবোর্ড)</h5>
+                            <p class="text-[11px] text-slate-400">টপ প্লেয়ার ও সর্বাধিক ম্যাচ তালিকা</p>
                         </div>
                     </div>
-                    <i class="fas fa-chevron-right text-yellow-400 text-xs"></i>
+                    <i class="fas fa-chevron-right text-yellow-400 text-sm"></i>
                 </div>
 
                 <div onclick="openRedeemModal()" class="action-row-item border-l-4 border-l-purple-500">
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-8 h-8 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-sm">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-2xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-lg">
                             <i class="fas fa-ticket-alt"></i>
                         </div>
                         <div>
-                            <h5 class="text-xs font-bold text-white">Redeem Promo Code</h5>
-                            <p class="text-[10px] text-slate-400">গিফট বা বোনাস কোড রিডিম করুন</p>
+                            <h5 class="text-sm font-black text-white">Redeem Promo Code</h5>
+                            <p class="text-[11px] text-slate-400">গিফট বা বোনাস কোড রিডিম করুন</p>
                         </div>
                     </div>
-                    <i class="fas fa-chevron-right text-purple-400 text-xs"></i>
+                    <i class="fas fa-chevron-right text-purple-400 text-sm"></i>
                 </div>
             </div>
         </div>
@@ -819,106 +1006,177 @@
     <!-- BOTTOM NAVIGATION -->
     <nav class="bottom-nav">
         <div class="nav-item" data-page="wallet" onclick="navigateTo('wallet-page')">
-            <i class="fas fa-wallet text-base"></i>
+            <i class="fas fa-wallet text-lg"></i>
             <span>ডিপোজিট</span>
         </div>
         <div class="nav-item" data-page="refer" onclick="navigateTo('refer-page')">
-            <i class="fas fa-gift text-base"></i>
+            <i class="fas fa-gift text-lg"></i>
             <span>রেফার</span>
         </div>
         <div class="nav-item flex items-center justify-center" onclick="navigateTo('home-page')">
-            <div class="floating-center-btn shadow">
-                <i class="fas fa-gamepad text-xl"></i>
+            <div class="floating-center-btn shadow-lg">
+                <i class="fas fa-gamepad text-2xl"></i>
             </div>
-            <span class="text-[9px] font-black text-blue-400 mt-1">Play</span>
+            <span class="text-[10px] font-black text-blue-400 mt-1">Play</span>
         </div>
         <div class="nav-item" data-page="history" onclick="navigateTo('history-page')">
-            <i class="fas fa-history text-base"></i>
+            <i class="fas fa-history text-lg"></i>
             <span>হিস্ট্রি</span>
         </div>
         <div class="nav-item" data-page="profile" onclick="navigateTo('profile-page')">
-            <i class="fas fa-user-circle text-base"></i>
+            <i class="fas fa-user-circle text-lg"></i>
             <span>প্রোফাইল</span>
         </div>
     </nav>
 
     <!-- MODALS -->
-    <!-- BIND WALLET MODAL -->
+    <!-- BIND E-WALLET MODAL -->
     <div id="bind-wallet-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[88] p-4 backdrop-blur-sm">
-        <div class="bg-white rounded-3xl p-4 w-full max-w-sm space-y-3 shadow-2xl text-slate-800">
-            <div class="flex items-center justify-between border-b pb-2">
-                <h3 class="text-xs font-bold text-slate-800">ই-ওয়ালেট বাঁধুন (সর্বোচ্চ ৩টি)</h3>
-                <button onclick="closeBindWalletModal()" class="text-slate-500"><i class="fas fa-times"></i></button>
+        <div class="bg-white rounded-3xl p-5 w-full max-w-sm space-y-4 relative shadow-2xl text-slate-800">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+                <h3 class="text-sm font-bold text-slate-800">ই-ওয়ালেট বাঁধুন (সর্বোচ্চ ৩টি)</h3>
+                <button onclick="closeBindWalletModal()" class="p-1 rounded-full bg-slate-100 text-slate-500">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
             </div>
-            <div class="grid grid-cols-4 gap-1">
-                <button type="button" onclick="selectWithdrawWalletType('Nagad', this)" class="wallet-type-tab active py-1.5 rounded-lg text-[10px] font-bold border">Nagad</button>
-                <button type="button" onclick="selectWithdrawWalletType('BKash', this)" class="wallet-type-tab py-1.5 rounded-lg text-[10px] font-bold border">BKash</button>
-                <button type="button" onclick="selectWithdrawWalletType('Rocket', this)" class="wallet-type-tab py-1.5 rounded-lg text-[10px] font-bold border">Rocket</button>
-                <button type="button" onclick="selectWithdrawWalletType('Binance', this)" class="wallet-type-tab py-1.5 rounded-lg text-[10px] font-bold border">Binance</button>
+
+            <div class="space-y-1.5">
+                <label class="block text-xs font-semibold text-slate-600">প্রকার নির্বাচন করুন</label>
+                <div class="grid grid-cols-4 gap-1.5">
+                    <button type="button" onclick="selectWithdrawWalletType('Nagad', this)" class="wallet-type-tab active py-2 rounded-xl text-[11px] font-bold text-center border">Nagad</button>
+                    <button type="button" onclick="selectWithdrawWalletType('BKash', this)" class="wallet-type-tab py-2 rounded-xl text-[11px] font-bold text-center border">BKash</button>
+                    <button type="button" onclick="selectWithdrawWalletType('Rocket', this)" class="wallet-type-tab py-2 rounded-xl text-[11px] font-bold text-center border">Rocket</button>
+                    <button type="button" onclick="selectWithdrawWalletType('Binance', this)" class="wallet-type-tab py-2 rounded-xl text-[11px] font-bold text-center border">Binance</button>
+                </div>
             </div>
-            <input id="bind-wallet-name" type="text" placeholder="* প্রাপকের নাম" class="w-full p-2.5 rounded-xl bg-slate-100 text-xs outline-none">
-            <input id="bind-wallet-number" type="text" placeholder="* নম্বর / একাউন্ট" class="w-full p-2.5 rounded-xl bg-slate-100 text-xs font-mono outline-none">
+
+            <div class="bg-[#f1f5f9] p-3 rounded-2xl">
+                <input id="bind-wallet-name" type="text" placeholder="* প্রাপকের পূর্ণ নাম লিখুন" class="w-full bg-transparent text-xs text-slate-800 outline-none font-semibold">
+            </div>
+
+            <div class="bg-[#f1f5f9] p-3 rounded-2xl">
+                <input id="bind-wallet-number" type="text" placeholder="* একাউন্ট নম্বর লিখুন" class="w-full bg-transparent text-xs text-slate-800 outline-none font-mono font-semibold">
+            </div>
+
             <div class="flex gap-2 pt-1">
-                <button onclick="closeBindWalletModal()" class="w-1/2 py-2 bg-slate-100 font-bold rounded-lg text-xs">বাতিল</button>
-                <button onclick="saveNewBoundWallet()" class="w-1/2 py-2 bg-red-600 text-white font-bold rounded-lg text-xs">সংরক্ষণ</button>
+                <button onclick="closeBindWalletModal()" class="w-1/2 py-2.5 bg-slate-100 font-bold rounded-xl text-xs text-slate-600">বাতিল</button>
+                <button onclick="saveNewBoundWallet()" id="btn-save-bound-wallet" class="w-1/2 py-2.5 bg-red-600 text-white font-bold rounded-xl text-xs shadow-md">সংরক্ষণ করুন</button>
             </div>
         </div>
     </div>
 
     <!-- JOIN MATCH MODAL -->
     <div id="join-match-modal" class="hidden fixed inset-0 z-[95] bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
-        <div class="bg-[#11192d] border border-blue-500/40 rounded-3xl p-4 w-full max-w-sm space-y-3 text-left">
+        <div class="bg-[#11192d] border border-blue-500/40 rounded-3xl p-5 w-full max-w-sm space-y-4 shadow-2xl relative text-left">
             <div class="flex items-center justify-between pb-2 border-b border-white/10">
-                <h4 class="text-xs font-black text-white" id="join-modal-match-title">TOURNAMENT MATCH</h4>
-                <button onclick="closeModal('join-match-modal')" class="text-slate-400"><i class="fas fa-times"></i></button>
+                <div class="flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-sm"><i class="fas fa-trophy"></i></span>
+                    <div>
+                        <h4 class="text-sm font-black text-white" id="join-modal-match-title">TOURNAMENT MATCH</h4>
+                        <span class="text-[10px] text-cyan-400 font-bold" id="join-modal-match-mode">Match Confirmation</span>
+                    </div>
+                </div>
+                <button onclick="closeModal('join-match-modal')" class="text-slate-400 hover:text-white p-1">
+                    <i class="fas fa-times text-sm"></i>
+                </button>
             </div>
-            <div class="grid grid-cols-2 gap-2 bg-[#090f1d] p-2.5 rounded-xl text-center">
-                <div><span class="text-[9px] text-slate-400 block uppercase">এন্ট্রি ফি</span><h5 class="text-sm font-black text-rose-400" id="join-modal-fee">৳0</h5></div>
-                <div><span class="text-[9px] text-slate-400 block uppercase">জিতলে পাবেন</span><h5 class="text-sm font-black text-emerald-400" id="join-modal-prize">৳0</h5></div>
+
+            <div class="grid grid-cols-2 gap-2 bg-[#090f1d] p-3 rounded-2xl border border-white/5">
+                <div>
+                    <span class="text-[10px] font-bold text-slate-400 uppercase">এন্ট্রি ফি (Entry Fee)</span>
+                    <h5 class="text-base font-black text-rose-400" id="join-modal-fee">৳0</h5>
+                </div>
+                <div>
+                    <span class="text-[10px] font-bold text-slate-400 uppercase">জিতলে পাবেন (Winning)</span>
+                    <h5 class="text-base font-black text-emerald-400" id="join-modal-prize">৳0</h5>
+                </div>
             </div>
-            <div>
-                <label class="text-[11px] font-bold text-slate-300 block mb-1">ইন-গেম নাম:</label>
-                <input type="text" id="join-player-name-input" class="w-full p-2.5 rounded-xl bg-[#090f1d] border border-white/10 text-white text-xs outline-none">
+
+            <div class="space-y-1.5">
+                <label class="text-xs font-black text-slate-300 block">ইন-গেম প্লেয়ারের নাম:</label>
+                <div class="relative">
+                    <input type="text" id="join-player-name-input" class="w-full p-3 rounded-xl bg-[#090f1d] border border-blue-500/30 text-white font-bold text-xs focus:border-blue-500 outline-none pr-8">
+                    <i class="fas fa-user-edit absolute right-3 top-3 text-slate-400 text-xs"></i>
+                </div>
             </div>
+
+            <div class="bg-blue-950/30 border-l-4 border-blue-500 p-2.5 rounded-r-xl text-[11px] text-slate-300 space-y-1 leading-relaxed">
+                <div class="font-bold text-white flex items-center gap-1">
+                    <i class="fas fa-shield-alt text-blue-400"></i> টুর্নামেন্ট নিয়মাবলী:
+                </div>
+                <p>১. খেলা শুরুর ৫ মিনিট আগ পর্যন্ত রিফান্ড নেওয়া যাবে। এরপর রিফান্ড লক হয়ে যাবে।</p>
+                <p>২. সময় অনুযায়ী স্লট ফুল না হলে সম্পূর্ণ টাকা স্বয়ংক্রিয়ভাবে ফেরত দেওয়া হবে।</p>
+            </div>
+
             <div class="flex gap-2 pt-1">
-                <button onclick="closeModal('join-match-modal')" class="w-1/3 py-2.5 bg-slate-800 font-bold rounded-xl text-xs text-slate-300">বাতিল</button>
-                <button onclick="confirmJoinMatch()" class="w-2/3 py-2.5 bg-blue-600 text-white font-bold rounded-xl text-xs">কনফার্ম জয়েন</button>
+                <button onclick="closeModal('join-match-modal')" class="w-1/3 py-3 bg-slate-800 hover:bg-slate-700 font-bold rounded-xl text-xs text-slate-300">
+                    বাতিল
+                </button>
+                <button onclick="confirmJoinMatch()" class="w-2/3 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black rounded-xl text-xs shadow-lg">
+                    কনফার্ম জয়েন করুন
+                </button>
             </div>
         </div>
     </div>
 
     <!-- UPLOAD RESULT MODAL -->
-    <div id="upload-result-modal" class="hidden fixed inset-0 bg-black/85 z-[95] flex items-center justify-center p-4">
-        <div class="bg-[#11192d] rounded-3xl p-4 w-full max-w-sm border border-white/10 space-y-3">
-            <div class="flex items-center justify-between pb-1.5 border-b border-white/10">
-                <h4 class="text-xs font-black text-white">ফলাফল আপলোড করুন</h4>
-                <button onclick="closeModal('upload-result-modal')" class="text-slate-400"><i class="fas fa-times"></i></button>
+    <div id="upload-result-modal" class="hidden fixed inset-0 bg-black/85 z-[95] backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-[#11192d] rounded-3xl p-5 w-full max-w-sm border border-white/10 space-y-4 text-center">
+            <div class="flex items-center justify-between pb-2 border-b border-white/10 text-left">
+                <div class="flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm"><i class="fas fa-trophy"></i></span>
+                    <h4 class="text-sm font-black text-white">ফলাফল আপলোড করুন</h4>
+                </div>
+                <button onclick="closeModal('upload-result-modal')" class="text-slate-400 hover:text-white p-1">
+                    <i class="fas fa-times text-sm"></i>
+                </button>
             </div>
-            <input id="input-result-room" type="text" placeholder="রুম কোড লিখুন" class="w-full p-2.5 rounded-xl bg-[#090f1d] border border-white/10 text-white text-xs outline-none">
+
+            <div class="text-left space-y-1">
+                <label class="text-[11px] font-bold text-slate-300">ম্যাচ রুম কোড:</label>
+                <input id="input-result-room" type="text" placeholder="সঠিক রুম কোড লিখুন" class="w-full p-3 rounded-xl bg-[#090f1d] border border-white/10 text-white text-xs outline-none focus:border-emerald-500">
+            </div>
+
             <div class="flex gap-2">
-                <button onclick="closeModal('upload-result-modal')" class="w-1/2 py-2 bg-slate-800 font-bold rounded-xl text-xs text-slate-300">বাতিল</button>
-                <button onclick="submitMatchResult()" id="btn-submit-result" class="w-1/2 py-2 bg-emerald-600 text-white font-bold rounded-xl text-xs">জমা দিন</button>
+                <button onclick="closeModal('upload-result-modal')" class="w-1/2 py-2.5 bg-slate-800 font-bold rounded-xl text-xs text-slate-300">বাতিল</button>
+                <button onclick="submitMatchResult()" id="btn-submit-result" class="w-1/2 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs">ভেরিফাই ও জমা দিন</button>
             </div>
         </div>
     </div>
 
     <!-- NOTIFICATION MODAL -->
     <div id="notification-modal" class="hidden fixed inset-0 bg-[#070c18] z-[95] flex flex-col p-4">
-        <div class="flex items-center justify-between bg-[#141e33] p-3 rounded-2xl border border-white/10 mb-3">
-            <h3 class="font-bold text-white text-sm">নোটিফিকেশন</h3>
-            <button onclick="toggleNotificationModal()" class="text-slate-300"><i class="fas fa-times"></i></button>
+        <div class="flex items-center justify-between bg-[#141e33] p-4 rounded-2xl border border-white/10 mb-4">
+            <div class="flex items-center gap-2.5">
+                <div class="p-2 bg-amber-500/20 text-amber-400 rounded-xl">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-white text-base leading-tight">নোটিফিকেশন সেন্টার</h3>
+                    <p class="text-[11px] text-slate-400">সকল সিস্টেম, রুম কোড ও ডিপোজিট আপডেট</p>
+                </div>
+            </div>
+            <button onclick="toggleNotificationModal()" class="p-2 bg-slate-800 text-slate-300 rounded-xl">
+                <i class="fas fa-times"></i>
+            </button>
         </div>
-        <div id="notification-list-container" class="space-y-2 flex-grow overflow-y-auto"></div>
+        <div id="notification-list-container" class="space-y-3 flex-grow overflow-y-auto pb-10"></div>
     </div>
 
-    <!-- REDEEM MODAL -->
-    <div id="redeem-code-modal" class="hidden fixed inset-0 bg-black/70 z-[95] flex items-center justify-center p-4">
-        <div class="bg-[#141e33] rounded-3xl p-5 w-full max-w-sm border border-white/10 space-y-3 text-center">
-            <h3 class="text-sm font-black text-white">Redeem Promo Code</h3>
-            <input id="input-redeem-code" type="text" placeholder="ENTER CODE" class="w-full p-3 rounded-xl bg-[#090f1d] text-center font-mono font-bold text-white uppercase text-base outline-none">
+    <!-- REDEEM CODE MODAL -->
+    <div id="redeem-code-modal" class="hidden fixed inset-0 bg-black/70 z-[95] backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-[#141e33] rounded-3xl p-6 w-full max-w-sm border border-white/10 space-y-4 text-center">
+            <div class="w-14 h-14 bg-purple-500/20 text-purple-400 rounded-full flex items-center justify-center mx-auto text-2xl border border-purple-500/30">
+                <i class="fas fa-gift"></i>
+            </div>
+            <div>
+                <h3 class="text-base font-black text-white">Redeem Promo Code</h3>
+                <p class="text-xs text-slate-400 mt-1">আপনার উপহার বা প্রোমো কোডটি নিচে দিয়ে রিডিম করুন।</p>
+            </div>
+            <input id="input-redeem-code" type="text" placeholder="ENTER CODE" class="w-full p-3.5 rounded-2xl bg-[#090f1d] border border-white/10 text-center font-mono font-black text-white uppercase tracking-widest text-lg outline-none">
             <div class="flex gap-2 pt-1">
-                <button onclick="closeModal('redeem-code-modal')" class="w-1/2 py-2.5 bg-slate-800 font-bold rounded-xl text-xs text-slate-300">বাতিল</button>
-                <button onclick="handleRedeemSubmit()" class="w-1/2 py-2.5 bg-purple-600 text-white font-bold rounded-xl text-xs">রিডিম</button>
+                <button onclick="closeModal('redeem-code-modal')" class="w-1/2 py-3 bg-slate-800 font-bold rounded-xl text-xs text-slate-300">বাতিল</button>
+                <button onclick="handleRedeemSubmit()" class="w-1/2 py-3 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-xl text-xs">রিডিম করুন</button>
             </div>
         </div>
     </div>
@@ -938,7 +1196,7 @@
         const supportApp = firebase.initializeApp(supportFirebaseConfig, "supportAppInstance");
         const supportDb = supportApp.database();
 
-        // 2. MAIN APPLICATION (SINGLE CONFIGURED FIREBASE INSTANCE)
+        // 2. MAIN APPLICATION (SINGLE UNIFIED FIREBASE INSTANCE)
         const mainFirebaseConfig = {
             apiKey: "AIzaSyAEV4zkuTcRYIFP2AMmKJTyDUTzSYLnbbM",
             authDomain: "used-mail-shop.firebaseapp.com",
@@ -972,12 +1230,6 @@
         let recipientDebounceTimer = null;
         let pureMatchHistory = [];
 
-        // LAZY LOADING FLAGS
-        let isHistoryLoaded = false;
-        let isLeaderboardLoaded = false;
-        let isReferralsLoaded = false;
-        let isWithdrawHistoryLoaded = false;
-
         window.addEventListener('DOMContentLoaded', () => {
             if (window.Telegram?.WebApp) {
                 const tg = window.Telegram.WebApp;
@@ -994,14 +1246,17 @@
 
             updateUserInterface();
 
-            const preloader = document.getElementById('preloader');
-            if (preloader) {
-                preloader.style.opacity = '0';
-                preloader.style.visibility = 'hidden';
-                setTimeout(() => preloader.remove(), 250);
-            }
+            setTimeout(() => {
+                const preloader = document.getElementById('preloader');
+                if (preloader) {
+                    preloader.style.opacity = '0';
+                    preloader.style.visibility = 'hidden';
+                    setTimeout(() => preloader.remove(), 400);
+                }
+            }, 500);
 
             initMainFirebaseSync();
+            if (window.lucide) lucide.createIcons();
         });
 
         function updateUserInterface() {
@@ -1022,6 +1277,9 @@
             const refLink = `https://t.me/Gmail_HUB7bot?start=ref_${activeUser.id}`;
             const refEl = document.getElementById('dedicated-ref-link-display');
             if (refEl) refEl.textContent = refLink;
+
+            renderBoundWallets();
+            if (window.lucide) lucide.createIcons();
         }
 
         function showToast(msg, type = 'info') {
@@ -1039,37 +1297,33 @@
 
         // ================= SINGLE FIREBASE SYNC (MAIN) =================
         function initMainFirebaseSync() {
-            // Balance sync
             database.ref(`users/${activeUser.id}/balance`).on('value', snap => {
                 if (snap.exists()) {
                     activeUser.balance = parseFloat(snap.val()) || 0;
-                    requestAnimationFrame(updateUserInterface);
+                    updateUserInterface();
                 }
             });
 
-            // Bound wallets sync
             database.ref(`users/${activeUser.id}/boundWallets`).on('value', snap => {
                 activeUser.boundWallets = snap.exists() ? snap.val() : [];
                 renderBoundWallets();
             });
 
-            // Categories
-            database.ref('game_categories').once('value', snap => {
+            database.ref('game_categories').on('value', snap => {
                 const data = snap.val();
                 if (data) {
                     gameCategories = Object.keys(data).map(k => ({ key: k, ...data[k] }));
                 } else {
                     gameCategories = [
-                        { key: "ludo", name: "Ludo King (লুডো কিং)", icon: "https://cdn-icons-png.flaticon.com/512/806/806131.png", subtitle: "১v১, ১v২ ও ১v৩ লাইভ", tag: "HOT" },
-                        { key: "snake", name: "Snake King (সাপ লুডু)", icon: "https://cdn-icons-png.flaticon.com/512/2865/2865488.png", subtitle: "ক্লাসিক স্নেক টুর্নামেন্ট", tag: "NEW" },
-                        { key: "freefire", name: "Free Fire (ফ্রি ফায়ার)", icon: "https://cdn-icons-png.flaticon.com/512/808/808439.png", subtitle: "CS Matches", tag: "PLAY" },
-                        { key: "carrom", name: "Carrom Board", icon: "https://cdn-icons-png.flaticon.com/512/3655/3655613.png", subtitle: "Classic Board", tag: "PLAY" }
+                        { key: "ludo", name: "Ludo King (লুডো কিং)", icon: "https://cdn-icons-png.flaticon.com/512/806/806131.png", subtitle: "১v১, ১v২ ও ১v৩ লাইভ চ্যালেঞ্জ", tag: "HOT", color: "blue" },
+                        { key: "snake", name: "Snake King (সাপ লুডু)", icon: "https://cdn-icons-png.flaticon.com/512/2865/2865488.png", subtitle: "ক্লাসিক স্নেক অ্যান্ড ল্যাডার", tag: "NEW", color: "teal" },
+                        { key: "freefire", name: "Free Fire (ফ্রি ফায়ার)", icon: "https://cdn-icons-png.flaticon.com/512/808/808439.png", subtitle: "CS & Battle Royale Matches", tag: "PLAY", color: "orange" },
+                        { key: "carrom", name: "Carrom Board (ক্যারাম বোর্ড)", icon: "https://cdn-icons-png.flaticon.com/512/3655/3655613.png", subtitle: "Classic Board Challenge", tag: "PLAY", color: "emerald" }
                     ];
                 }
                 renderGameCategories();
             });
 
-            // Matches
             database.ref('matches').on('value', snap => {
                 const data = snap.val();
                 realtimeMatches = [];
@@ -1081,6 +1335,7 @@
                         m.max = m.max || 2;
                         m.current = m.players ? Object.keys(m.players).length : 0;
                         m.myJoined = m.players && m.players[activeUser.id] !== undefined;
+                        m.startTime = m.startTime || (Date.now() + 20 * 60 * 1000);
                         realtimeMatches.push(m);
                     });
                 }
@@ -1094,7 +1349,7 @@
             const target = document.getElementById(pageId);
             if (target) {
                 target.classList.add('active');
-                window.scrollTo({ top: 0, behavior: 'instant' });
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
 
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
@@ -1108,10 +1363,12 @@
             const activeNav = document.querySelector(`.nav-item[data-page="${navMap[pageId]}"]`);
             if (activeNav) activeNav.classList.add('active');
 
-            if (pageId === 'history-page' && !isHistoryLoaded) loadPureMatchHistory();
-            if (pageId === 'leaderboard-page' && !isLeaderboardLoaded) loadLeaderboard();
-            if (pageId === 'refer-page' && !isReferralsLoaded) loadReferralsData();
-            if (pageId === 'withdraw-page' && !isWithdrawHistoryLoaded) loadWithdrawHistory();
+            if (pageId === 'history-page') loadPureMatchHistory();
+            if (pageId === 'leaderboard-page') loadLeaderboard();
+            if (pageId === 'refer-page') loadReferralsData();
+            if (pageId === 'withdraw-page') loadWithdrawHistory();
+
+            if (window.lucide) lucide.createIcons();
         }
 
         function closeModal(id) {
@@ -1122,18 +1379,27 @@
         function renderGameCategories() {
             const container = document.getElementById('game-categories-container');
             if (!container) return;
-            container.innerHTML = gameCategories.map(g => `
-                <div onclick="openGameArena('${g.name}', '${g.key}')" class="bg-[#121a2d] rounded-2xl p-3.5 border border-blue-500/20 cursor-pointer flex items-center justify-between active:scale-[0.99] transition">
-                    <div class="flex items-center gap-3">
-                        <img src="${g.icon}" class="w-11 h-11 object-cover rounded-xl bg-slate-900 p-1" alt="${g.name}">
+
+            let html = '';
+            gameCategories.forEach(g => {
+                html += `
+                <div onclick="openGameArena('${g.name}', '${g.key}')" class="bg-[#121a2d] rounded-3xl p-4 border border-blue-500/30 cursor-pointer hover:scale-[1.01] transition relative overflow-hidden shadow-lg">
+                    <div class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-rose-500 text-white text-[10px] font-black uppercase tracking-wider shadow">
+                        ${g.tag || 'PLAY'}
+                    </div>
+                    <div class="flex items-center gap-3.5">
+                        <div class="w-14 h-14 rounded-2xl bg-slate-900 border border-white/10 p-1 flex items-center justify-center shadow-md">
+                            <img src="${g.icon}" class="w-full h-full object-cover rounded-xl" alt="${g.name}">
+                        </div>
                         <div>
-                            <h4 class="text-sm font-black text-white">${g.name}</h4>
-                            <p class="text-[10px] text-slate-400 font-bold">${g.subtitle || 'লাইভ টুর্নামেন্ট'}</p>
+                            <h4 class="text-base font-black text-white">${g.name}</h4>
+                            <p class="text-xs text-slate-400 font-bold mt-0.5">${g.subtitle || 'লাইভ টুর্নামেন্ট চ্যালেঞ্জ'}</p>
+                            <span class="text-[11px] text-emerald-400 font-extrabold">(ম্যাচগুলো লাইভ রয়েছে)</span>
                         </div>
                     </div>
-                    <span class="px-2 py-0.5 rounded-full bg-rose-500 text-white text-[9px] font-black">${g.tag || 'PLAY'}</span>
-                </div>
-            `).join('');
+                </div>`;
+            });
+            container.innerHTML = html;
         }
 
         function openGameArena(title, categoryKey) {
@@ -1173,37 +1439,66 @@
             else if (currentActiveFilter === 'multi') displayList = displayList.filter(m => m.mode === '1v2' || m.mode === '1v3');
 
             if (displayList.length === 0) {
-                container.innerHTML = `<div class="p-6 text-center text-xs text-slate-400">কোনো ম্যাচ পাওয়া যায়নি।</div>`;
+                container.innerHTML = `<div class="bg-[#121a2d] p-8 rounded-3xl text-center text-sm font-bold text-slate-300 border border-white/5">কোনো ম্যাচ পাওয়া যায়নি।</div>`;
                 return;
             }
 
-            container.innerHTML = displayList.map(m => `
-                <div class="match-card p-3.5 space-y-2.5">
+            const now = Date.now();
+            container.innerHTML = displayList.map(m => {
+                const maxPlayers = m.max || 2;
+                const isFull = m.current >= maxPlayers;
+                const hasRoomCode = m.roomCode && m.roomCode.trim() !== "";
+                const timeDiff = m.startTime ? (m.startTime - now) : 99999999;
+                const isRefundLocked = isFull || (timeDiff <= (5 * 60 * 1000));
+
+                return `
+                <div class="match-card p-4 space-y-3.5 border border-slate-200">
                     <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <span class="text-xs font-black text-slate-800">${(m.gameType || 'GAME').toUpperCase()} ${m.matchNo}</span>
-                            ${m.isSpecial ? '<span class="px-1.5 py-0.5 rounded bg-amber-500 text-white text-[8px] font-black">SPECIAL</span>' : ''}
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center font-bold text-blue-600">🎮</div>
+                            <div>
+                                <h3 class="text-sm font-black text-slate-900 flex items-center gap-1.5">
+                                    ${(m.gameType || 'GAME').toUpperCase()} - Match ${m.matchNo}
+                                    ${m.isSpecial ? '<span class="px-1.5 py-0.5 rounded bg-amber-500 text-white text-[9px] font-black">SPECIAL</span>' : ''}
+                                </h3>
+                                <span class="text-[10px] text-blue-600 font-bold">শুরু: ${new Date(m.startTime).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</span>
+                            </div>
                         </div>
-                        <span class="text-[10px] text-blue-600 font-bold">${m.mode || '1v1'}</span>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-2 text-center py-1.5 bg-slate-50 rounded-xl border border-slate-200">
-                        <div><span class="text-[9px] text-slate-400 block">Total Prize</span><span class="text-xs font-black text-slate-800">৳${m.prize}</span></div>
-                        <div><span class="text-[9px] text-slate-400 block">Entry Fee</span><span class="text-xs font-black text-slate-800">৳${m.fee}</span></div>
+                    <div class="grid grid-cols-3 gap-2 text-center py-2 px-3 rounded-2xl bg-slate-50 border border-slate-200">
+                        <div><span class="text-[10px] font-bold text-slate-400 block uppercase">Total Prize</span><span class="text-base font-black text-slate-800">৳${m.prize}</span></div>
+                        <div class="flex items-center justify-center"><span class="px-2.5 py-1 rounded-lg bg-gradient-to-r from-rose-500 to-amber-500 text-white font-black text-xs shadow">${(m.mode || '1v1').toUpperCase()}</span></div>
+                        <div><span class="text-[10px] font-bold text-slate-400 block uppercase">Entry Fee</span><span class="text-base font-black text-slate-800">৳${m.fee}</span></div>
+                    </div>
+
+                    <div class="space-y-1">
+                        <div class="w-full h-2 rounded-full bg-slate-200 overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-orange-500 to-rose-600 rounded-full transition-all duration-300" style="width: ${(m.current / maxPlayers) * 100}%;"></div>
+                        </div>
+                        <div class="flex justify-between text-[11px] font-black text-slate-600">
+                            <span>${m.current} / ${maxPlayers} Players</span>
+                            <span class="${isFull ? 'text-rose-600' : 'text-blue-600'} uppercase">${isFull ? 'FULL' : 'SLOTS OPEN'}</span>
+                        </div>
                     </div>
 
                     <div>
                         ${m.myJoined ? `
-                            ${m.roomCode ? `<button onclick="navigator.clipboard.writeText('${m.roomCode}'); showToast('কোড কপি হয়েছে', 'success')" class="w-full py-2 bg-emerald-600 text-white rounded-xl font-bold text-xs">রুম কোড: ${m.roomCode}</button>`
-                            : `<button disabled class="w-full py-2 bg-slate-200 text-slate-500 rounded-xl font-bold text-xs">রুম কোড অপেক্ষা...</button>`}
+                            ${!isRefundLocked ? `
+                                <button onclick="handleManualRefund('${m.id}')" class="w-full py-2.5 rounded-xl bg-amber-500 font-black text-xs text-slate-950 shadow">রিফান্ড নিন (৳${m.fee})</button>
+                            ` : `
+                                ${hasRoomCode ? `
+                                    <button onclick="navigator.clipboard.writeText('${m.roomCode}'); showToast('কোড কপি হয়েছে', 'success')" class="w-full py-2.5 bg-emerald-600 text-white rounded-xl font-black text-xs shadow">রুম কোড: ${m.roomCode}</button>
+                                ` : `<button disabled class="w-full py-2.5 bg-slate-200 text-slate-500 rounded-xl font-bold text-xs">রুম কোড তৈরি হচ্ছে...</button>`}
+                            `}
                         ` : `
-                            <button onclick="openJoinMatchModal('${m.id}')" class="w-full py-2.5 bg-blue-600 text-white font-bold rounded-xl text-xs active:scale-98 transition">
-                                JOIN (৳${m.fee})
+                            <button onclick="openJoinMatchModal('${m.id}')" class="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 text-white font-black text-xs shadow-md active:scale-95 transition">
+                                JOIN MATCH (৳${m.fee})
                             </button>
                         `}
                     </div>
-                </div>
-            `).join('');
+                </div>`;
+            }).join('');
         }
 
         function openJoinMatchModal(id) {
@@ -1246,6 +1541,18 @@
             });
         }
 
+        function handleManualRefund(id) {
+            const m = realtimeMatches.find(x => x.id === id);
+            if (!m || !m.myJoined) return;
+
+            if (confirm(`আপনি কি ম্যাচটি থেকে বের হয়ে ৳${m.fee} রিফান্ড নিতে চান?`)) {
+                database.ref(`matches/${m.id}/players/${activeUser.id}`).remove();
+                database.ref(`users/${activeUser.id}/balance`).transaction(curr => (curr || 0) + m.fee);
+                database.ref(`users/${activeUser.id}/history/${m.id}`).update({ status: "REFUNDED", refundTime: Date.now() });
+                showToast(`৳${m.fee} রিফান্ড যোগ করা হয়েছে`, "success");
+            }
+        }
+
         function openUploadResultModal() {
             document.getElementById('input-result-room').value = '';
             document.getElementById('upload-result-modal').classList.remove('hidden');
@@ -1274,23 +1581,27 @@
 
         function loadPureMatchHistory() {
             database.ref(`users/${activeUser.id}/history`).on('value', snap => {
-                isHistoryLoaded = true;
                 const container = document.getElementById('pure-match-history-container');
                 if (!snap.exists()) {
-                    container.innerHTML = `<div class="p-8 text-center text-xs text-slate-400">এখনো কোনো টুর্নামেন্ট ম্যাচ খেলেননি।</div>`;
+                    container.innerHTML = `<div class="bg-[#121a2d] p-8 rounded-3xl text-center border border-white/5 text-xs font-bold text-slate-400">এখনো কোনো টুর্নামেন্ট ম্যাচ খেলেননি।</div>`;
                     return;
                 }
                 let items = [];
                 snap.forEach(c => items.unshift(c.val()));
                 container.innerHTML = items.map(item => `
-                    <div class="bg-[#121a2d] p-3 rounded-2xl border border-white/5 space-y-1.5 text-xs">
-                        <div class="flex justify-between items-center">
-                            <span class="font-black text-white">${item.matchNo || 'MATCH'}</span>
-                            <span class="font-bold px-2 py-0.5 rounded text-[10px] ${item.status==='WIN'?'bg-emerald-500 text-white':'bg-blue-500/20 text-blue-400'}">${item.status}</span>
+                    <div class="bg-[#121a2d] p-4 rounded-3xl border border-white/5 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-0.5 rounded-lg bg-blue-500/20 text-blue-400 text-[10px] font-black uppercase tracking-wider">${(item.mode || '1v1').toUpperCase()}</span>
+                                <h4 class="text-xs font-black text-white">${(item.gameType || 'GAME').toUpperCase()} ${item.matchNo}</h4>
+                            </div>
+                            <span class="px-2.5 py-0.5 rounded-full border text-[10px] font-black ${item.status==='WIN'?'text-emerald-400 bg-emerald-500/10 border-emerald-500/30':'text-amber-400 bg-amber-500/10 border-amber-500/30'}">
+                                ${item.status}
+                            </span>
                         </div>
-                        <div class="flex justify-between text-slate-400 text-[11px]">
-                            <span>এন্ট্রি: ৳${item.fee || 0} • প্রাইজ: ৳${item.prize || 0}</span>
-                            <span>${item.time || ''}</span>
+                        <div class="flex items-center justify-between text-[11px] text-slate-400 pt-1 border-t border-white/5">
+                            <span>এন্ট্রি ফি: <b class="text-white">৳${item.fee}</b> • প্রাইজ: <b class="text-emerald-400">৳${item.prize}</b></span>
+                            <span>${item.time}</span>
                         </div>
                     </div>
                 `).join('');
@@ -1317,7 +1628,7 @@
 
             const btn = document.getElementById('btnPayGateway');
             btn.disabled = true;
-            btn.innerHTML = 'প্রসেসিং হচ্ছে...';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> প্রসেসিং হচ্ছে...';
 
             try {
                 const res = await fetch('/api/payment?action=create', {
@@ -1338,7 +1649,8 @@
                 showToast('সার্ভার কানেকশন সমস্যা', 'error');
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-lock text-amber-300"></i> <span>পেমেন্ট গেটওয়েতে এগিয়ে যান</span>';
+                btn.innerHTML = '<i data-lucide="lock" class="w-4 h-4 text-amber-300"></i> <span>পেমেন্ট গেটওয়েতে এগিয়ে যান</span>';
+                if (window.lucide) lucide.createIcons();
             }
         }
 
@@ -1349,7 +1661,7 @@
             document.getElementById('bound-wallet-count').textContent = wallets.length;
 
             if (wallets.length === 0) {
-                container.innerHTML = `<div class="p-2.5 text-center text-xs text-slate-400 bg-slate-50 border border-dashed rounded-xl">কোনো E-Wallet যুক্ত নেই</div>`;
+                container.innerHTML = `<div class="p-3 text-center text-xs text-slate-400 bg-slate-50 border border-dashed rounded-xl">কোনো E-Wallet যুক্ত করা নেই</div>`;
                 return;
             }
             if (!selectedWithdrawCardId && wallets.length > 0) selectedWithdrawCardId = wallets[0].id;
@@ -1357,9 +1669,12 @@
             container.innerHTML = wallets.map(w => {
                 const isSelected = selectedWithdrawCardId === w.id;
                 return `
-                    <div onclick="selectedWithdrawCardId='${w.id}'; renderBoundWallets();" class="p-2.5 rounded-xl border cursor-pointer flex justify-between items-center text-xs ${isSelected ? 'border-rose-500 bg-rose-50/60' : 'border-slate-200'}">
-                        <div><b>${w.method}</b> - ${w.number}</div>
-                        ${isSelected ? '<span class="text-[9px] bg-rose-600 text-white px-2 py-0.5 rounded-full font-bold">Selected</span>' : ''}
+                    <div onclick="selectedWithdrawCardId='${w.id}'; renderBoundWallets();" class="p-3 rounded-2xl border cursor-pointer flex items-center justify-between transition ${isSelected ? 'border-rose-500 bg-rose-50/60' : 'border-slate-200 bg-white'}">
+                        <div>
+                            <span class="font-black text-xs text-slate-800">${w.method} - ${w.number}</span>
+                            <span class="text-[10px] text-slate-400 block">${w.name}</span>
+                        </div>
+                        ${isSelected ? '<span class="text-[10px] font-black bg-rose-600 text-white px-2 py-0.5 rounded-full">Selected</span>' : ''}
                     </div>`;
             }).join('');
         }
@@ -1367,6 +1682,7 @@
         function openBindWalletModal() {
             if ((activeUser.boundWallets || []).length >= 3) return showToast("সর্বোচ্চ ৩টি ওয়ালেট যোগ করতে পারবেন", "error");
             document.getElementById('bind-wallet-modal').classList.remove('hidden');
+            if (window.lucide) lucide.createIcons();
         }
         function closeBindWalletModal() {
             document.getElementById('bind-wallet-modal').classList.add('hidden');
@@ -1379,7 +1695,7 @@
         function saveNewBoundWallet() {
             const name = document.getElementById('bind-wallet-name').value.trim();
             const number = document.getElementById('bind-wallet-number').value.trim();
-            if (!name || !number) return showToast("নাম এবং নম্বর দিন", "error");
+            if (!name || !number) return showToast("নাম এবং অ্যাকাউন্ট নম্বর দিন", "error");
 
             const current = activeUser.boundWallets || [];
             const newCard = { id: 'card_' + Date.now(), method: selectedBindMethod, name, number };
@@ -1390,7 +1706,7 @@
                 selectedWithdrawCardId = newCard.id;
                 closeBindWalletModal();
                 renderBoundWallets();
-                showToast("ওয়ালেট যুক্ত হয়েছে", "success");
+                showToast("ওয়ালেট সফলভাবে যুক্ত হয়েছে", "success");
             });
         }
 
@@ -1401,8 +1717,8 @@
             const amount = parseInt(document.getElementById('withdraw-amount-input').value, 10);
             const totalDebit = amount + 10;
 
-            if (isNaN(amount) || amount < 100 || amount > 20000) return showToast("উত্তোলন ৳১০০ থেকে ৳২০,০০০ হতে হবে", "error");
-            if (activeUser.balance < totalDebit) return showToast(`পর্যাপ্ত ব্যালেন্স নেই! (ফি সহ ৳${totalDebit})`, "error");
+            if (isNaN(amount) || amount < 100 || amount > 20000) return showToast("উত্তোলনের পরিমাণ ৳১০০ থেকে ৳২০,০০০ হতে হবে", "error");
+            if (activeUser.balance < totalDebit) return showToast(`পর্যাপ্ত ব্যালেন্স নেই! (ফি সহ প্রয়োজন ৳${totalDebit})`, "error");
 
             const btn = document.getElementById('btn-submit-withdraw');
             btn.disabled = true;
@@ -1444,24 +1760,23 @@
         }
 
         function loadWithdrawHistory() {
-            isWithdrawHistoryLoaded = true;
             const list = document.getElementById('withdraw-history-list');
-            list.innerHTML = `<div class="p-2 text-center text-xs text-slate-400">লোড হচ্ছে...</div>`;
+            list.innerHTML = `<div class="p-3 text-center text-xs text-slate-400">লোড হচ্ছে...</div>`;
 
             database.ref(`users/${activeUser.id}/withdrawals`).limitToLast(10).once('value', snap => {
                 if (!snap.exists()) {
-                    list.innerHTML = `<div class="p-2 text-center text-xs text-slate-400">কোনো হিস্ট্রি নেই</div>`;
+                    list.innerHTML = `<div class="p-3 text-center text-xs text-slate-400">কোনো হিস্ট্রি নেই</div>`;
                     return;
                 }
                 let items = [];
                 snap.forEach(c => items.unshift(c.val()));
                 list.innerHTML = items.map(r => `
-                    <div class="p-2 bg-slate-50 border rounded-xl flex justify-between items-center text-xs">
+                    <div class="p-2.5 bg-slate-50 border rounded-xl flex justify-between items-center text-xs">
                         <div>
                             <span class="font-bold text-slate-800">${r.method} (${r.accountNumber})</span>
-                            <span class="text-[9px] text-slate-400 block">৳${r.amount} + ফি ৳${r.fee}</span>
+                            <span class="text-[10px] text-slate-400 block">৳${r.amount} + ফি ৳${r.fee}</span>
                         </div>
-                        <span class="font-black uppercase text-[9px] px-2 py-0.5 rounded ${r.status==='approved'?'bg-emerald-100 text-emerald-700':'bg-amber-100 text-amber-800'}">${r.status}</span>
+                        <span class="font-black uppercase text-[10px] px-2 py-0.5 rounded ${r.status==='approved'?'bg-emerald-100 text-emerald-700':'bg-amber-100 text-amber-800'}">${r.status}</span>
                     </div>`).join('');
             });
         }
@@ -1522,7 +1837,7 @@
                     document.getElementById('send-amount').value = '';
                     document.getElementById('send-recipient-id').value = '';
                     document.getElementById('recipient-preview-card').classList.add('hidden');
-                    showToast("ব্যালেন্স ট্রান্সফার সফল হয়েছে", "success");
+                    showToast("ব্যালেন্স ট্রান্সফার সম্পন্ন হয়েছে", "success");
                 } else {
                     showToast("ব্যালেন্স ট্রান্সফার ব্যর্থ হয়েছে", "error");
                 }
@@ -1541,7 +1856,6 @@
         }
 
         function loadReferralsData() {
-            isReferralsLoaded = true;
             database.ref(`users/${activeUser.id}/referrals`).once('value', snap => {
                 const container = document.getElementById('referred-users-list-container');
                 if (snap.exists()) {
@@ -1552,9 +1866,9 @@
                     document.getElementById('ref-list-count-badge').textContent = `${count} জন`;
 
                     container.innerHTML = Object.values(refs).map(u => `
-                        <div class="p-2 bg-black/40 border border-white/5 rounded-xl flex justify-between items-center text-xs">
+                        <div class="p-2.5 bg-black/40 border border-white/5 rounded-xl flex justify-between items-center text-xs">
                             <span class="font-bold text-white">${u.name || 'User'}</span>
-                            <span class="text-[9px] font-black text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">+৳১০</span>
+                            <span class="text-[10px] font-black text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">+৳১০</span>
                         </div>
                     `).join('');
                 }
@@ -1563,7 +1877,6 @@
 
         // ================= LEADERBOARD =================
         function loadLeaderboard() {
-            isLeaderboardLoaded = true;
             const container = document.getElementById('leaderboard-list-container');
             database.ref('users').limitToLast(10).once('value', snap => {
                 if (!snap.exists()) {
@@ -1577,10 +1890,10 @@
                 });
                 leaders.sort((a,b) => b.balance - a.balance);
                 container.innerHTML = leaders.map((l, idx) => `
-                    <div class="bg-[#121a2d] p-2.5 rounded-xl border border-white/5 flex items-center justify-between text-xs">
-                        <div class="flex items-center gap-2">
+                    <div class="bg-[#121a2d] p-3 rounded-2xl border border-white/5 flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-2.5">
                             <span class="font-bold text-amber-400">#${idx+1}</span>
-                            <img src="${l.photo}" class="w-7 h-7 rounded-full object-cover">
+                            <img src="${l.photo}" class="w-8 h-8 rounded-full object-cover">
                             <span class="font-bold text-white">${l.name}</span>
                         </div>
                         <span class="font-mono font-bold text-emerald-400">৳${l.balance.toFixed(2)}</span>
@@ -1607,7 +1920,7 @@
                     const bonus = parseFloat(snap.val().amount || 20);
                     database.ref(`users/${activeUser.id}/balance`).transaction(curr => (curr || 0) + bonus);
                     closeModal('redeem-code-modal');
-                    showToast(`৳${bonus} বোনাস যুক্ত হয়েছে`, "success");
+                    showToast(`অভিনন্দন! ৳${bonus} বোনাস যুক্ত হয়েছে`, "success");
                 } else {
                     showToast("ভুল প্রোমো কোড!", "error");
                 }
@@ -1618,6 +1931,7 @@
         function openSupportModal() {
             document.getElementById('support-modal-overlay').style.display = 'flex';
             loadThreadMessages(activeUser.id);
+            if (window.lucide) lucide.createIcons();
         }
 
         function closeSupportModal() {
@@ -1628,9 +1942,11 @@
             supportDb.ref('support_chats/' + uid).on('value', snap => {
                 const body = document.getElementById('chat-messages');
                 body.innerHTML = `
-                    <div class="flex gap-2">
-                        <div class="bg-[#1e2c3a] p-2.5 rounded-2xl text-xs max-w-[85%] text-slate-200">
-                            হ্যালো! <b>LUDO HUB</b> সাপোর্টে স্বাগতম। আপনার সমস্যা বা মেসেজ এখানে লিখুন।
+                    <div class="msg-row admin">
+                        <img src="https://i.postimg.cc/vmSBzy63/file-00000000eb4c81faa545e57c85285455.png" class="msg-avatar" alt="Admin">
+                        <div class="msg-bubble">
+                            হ্যালো! <b>LUDO HUB</b> সাপোর্টে স্বাগতম। ডিপোজিট, উইথড্র, বা টুর্নামেন্ট সংক্রান্ত যেকোনো সহায়তার জন্য মেসেজ দিন।
+                            <div class="msg-time">Support Team</div>
                         </div>
                     </div>`;
 
@@ -1639,10 +1955,11 @@
                         const m = c.val();
                         const isAdm = m.sender === 'admin';
                         body.innerHTML += `
-                            <div class="flex gap-2 ${isAdm ? 'justify-start' : 'justify-end'}">
-                                <div class="p-2.5 rounded-2xl text-xs max-w-[85%] ${isAdm ? 'bg-[#1e2c3a] text-white' : 'bg-[#2b5278] text-white'}">
+                            <div class="msg-row ${isAdm ? 'admin' : 'user'}">
+                                ${isAdm ? `<img src="https://i.postimg.cc/vmSBzy63/file-00000000eb4c81faa545e57c85285455.png" class="msg-avatar">` : ''}
+                                <div class="msg-bubble">
                                     <div>${m.text}</div>
-                                    <div class="text-[9px] text-slate-400 text-right mt-1">${m.time || ''}</div>
+                                    <div class="msg-time">${m.time || ''}</div>
                                 </div>
                             </div>`;
                     });
