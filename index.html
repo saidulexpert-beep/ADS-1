@@ -2853,7 +2853,6 @@
             spawnNewSpecialMatch("ludo", 50, 90, 2, "1v1");
         }
 
-        // ================= TZSMMPAY PAYMENT GATEWAY INTEGRATION =================
         async function initiatePaymentGateway() {
             const amount = document.getElementById('deposit-amount-input').value.trim();
             if (!amount || parseFloat(amount) <= 0) return showToast('সঠিক এমাউন্ট লিখুন', 'error');
@@ -2862,18 +2861,12 @@
             btn.disabled = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> প্রসেসিং হচ্ছে...';
 
-            let returnUrl = window.location.href.split('?')[0];
-            if (!returnUrl.startsWith('http')) {
-                returnUrl = 'https://used-mail-shop.firebaseapp.com';
-            }
-
+            const returnUrl = window.location.href.split('?')[0];
             const payload = {
-                cus_name: activeUser.name || 'Customer',
-                cus_email: activeUser.email || `${activeUser.id}@telegram.org`,
-                cus_number: '01700000000',
-                amount: parseFloat(amount),
+                amount: String(amount),
                 success_url: returnUrl + "?status=success",
-                cancel_url: returnUrl + "?status=cancel"
+                cancel_url: returnUrl + "?status=cancel",
+                metadata: { uid: activeUser.id, phone: activeUser.email }
             };
 
             try {
@@ -2882,21 +2875,16 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-                
                 const data = await res.json();
-                
-                let payUrl = data.payment_url || data.url || (data.data && (data.data.payment_url || data.data.url));
-
-                if (payUrl) {
-                    window.location.href = payUrl;
-                } else {
-                    const errMsg = data.message || data.error || (data.data && data.data.message) || JSON.stringify(data);
-                    alert('গেটওয়ে বার্তা: ' + errMsg);
+                let payUrl = data.payment_url || data.url || (data.data && data.data.payment_url);
+                if (payUrl) window.location.href = payUrl;
+                else {
+                    showToast(data.message || 'পেমেন্ট গেটওয়েতে সমস্যা হচ্ছে!', 'error');
                     btn.disabled = false;
                     btn.innerHTML = '<i class="fas fa-lock text-amber-300"></i> Continue to Payment';
                 }
-            } catch (err) {
-                alert('কানেকশন সমস্যা: ' + err.message);
+            } catch (e) {
+                showToast('সার্ভার কানেকশন ব্যর্থ হয়েছে', 'error');
                 btn.disabled = false;
                 btn.innerHTML = '<i class="fas fa-lock text-amber-300"></i> Continue to Payment';
             }
@@ -2904,21 +2892,20 @@
 
         async function checkReturnPaymentStatus() {
             const urlParams = new URLSearchParams(window.location.search);
-            const transactionId = urlParams.get('trx_id') || urlParams.get('trxId') || urlParams.get('transaction_id') || urlParams.get('txid');
+            const transactionId = urlParams.get('transactionId') || urlParams.get('transaction_id') || urlParams.get('txid');
+            const urlStatus = urlParams.get('status');
 
-            if (transactionId) {
+            if (transactionId || urlStatus === 'success') {
                 showToast('পেমেন্ট ভেরিফাই করা হচ্ছে...');
-
                 try {
-                    const res = await fetch(`/api/payment?action=verify&trx_id=${transactionId}`);
+                    const res = await fetch('/api/payment?action=verify', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ transaction_id: transactionId })
+                    });
                     const data = await res.json();
-
-                    const apiStatus = data.status ? String(data.status).toUpperCase() : "";
-                    const isSuccess = apiStatus === "SUCCESS" || apiStatus === "COMPLETED" || data.status === true || data.status_code === 200;
-
-                    if (isSuccess) {
-                        let depositAmount = parseFloat(data.amount || data.payable_amount || 0);
-
+                    if (data.status === "SUCCESS" || data.payment_status === "COMPLETED" || data.success === true) {
+                        let depositAmount = parseFloat(data.amount || urlParams.get('paymentAmount') || 0);
                         if (depositAmount > 0) {
                             activeUser.depositBalance += depositAmount;
                             updateUserInterface();
@@ -2958,11 +2945,9 @@
                             showToast(`৳${depositAmount} গেমিং ব্যালেন্সে যোগ হয়েছে!`, 'success');
                             window.history.replaceState({}, document.title, window.location.pathname);
                         }
-                    } else {
-                        showToast(data.message || 'ভেরিফিকেশন সম্পন্ন হয়নি', 'error');
                     }
                 } catch (e) {
-                    showToast('ভেরিফিকেশন রিকোয়েস্টে সমস্যা হয়েছে', 'error');
+                    showToast('ভেরিফিকেশনে সমস্যা দেখা দিয়েছে', 'error');
                 }
             }
         }
