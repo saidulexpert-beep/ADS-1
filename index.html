@@ -47,12 +47,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .dot {
-            width: 14px;
-            height: 14px;
+            width: 12px;
+            height: 12px;
             background-color: #38bdf8;
             border-radius: 50%;
             animation: dotBounce 1.4s infinite ease-in-out both;
@@ -220,7 +220,7 @@
         }
         .filter-badge.badge-white { background: #ffffff; color: #1e3a8a; }
         .filter-badge.badge-pink { background: #451a2d; color: #f43f5e; border: 1px solid rgba(244, 63, 94, 0.2); }
-        .filter-badge.badge-green { background: #063c2c; color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2); }
+        .filter-badge.badge-green { background: #063c2c; color: #10b981; border: 1px solid rgba(160, 185, 129, 0.2); }
         .filter-badge.badge-purple { background: #2e1065; color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.2); }
 
         .match-card {
@@ -242,7 +242,9 @@
             justify-content: space-between;
             padding: 14px 16px;
             cursor: pointer;
+            transition: background 0.2s;
         }
+        .action-row-item:hover { background: #18223a; }
 
         .sub-page { display: none; }
         .sub-page.active { display: block; }
@@ -354,7 +356,7 @@
     <!-- TOP HEADER -->
     <header class="gaming-header px-4 py-3 flex items-center justify-between">
         <div class="flex items-center gap-2.5">
-            <div class="w-10 h-10 rounded-full border border-amber-400/50 p-0.5 overflow-hidden shadow-lg bg-slate-900 cursor-pointer" onclick="navigateTo('home-page')">
+            <div class="w-10 h-10 rounded-full border border-amber-400/50 p-0.5 overflow-hidden shadow-lg bg-slate-900 cursor-pointer" onclick="navigateTo('profile-page')">
                 <img id="header-avatar" src="https://i.postimg.cc/L4YZZKsv/IMG-20260919-214336-790.jpg" class="w-full h-full object-cover rounded-full" alt="User">
             </div>
             <div>
@@ -616,7 +618,7 @@
                 <div id="refer-rules-container" class="space-y-2 text-xs text-slate-300 leading-relaxed">
                     <p class="flex items-start gap-2">
                         <span class="w-5 h-5 rounded-full bg-emerald-500 text-slate-950 font-black flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">১</span>
-                        <span>আপনার বন্ধু <b>একসাথে প্রথম ডিপোজিটে ১০০ টাকা বা তার বেশি</b> ডিপোজিট করলেই কেবল আপনি <b>১০ টাকা রেফার বোনাস</b> পাবেন। প্রথমবার ১০০ টাকার কম ডিপোজিট করলে কোনো বোনাস পাবেন না।</span>
+                        <span>আপনার বন্ধু <b>একসাথে প্রথম ডিপোজিটে ১০০ টাকা বা তার বেশি</b> ডিপোজিট করলেই কেবল আপনি <b>১০ টাকা রেফার বোনাস</b> পাবেন।</span>
                     </p>
                     <p class="flex items-start gap-2">
                         <span class="w-5 h-5 rounded-full bg-cyan-500 text-slate-950 font-black flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">২</span>
@@ -706,57 +708,97 @@
             </div>
         </div>
 
-        <!-- 7. PROFILE PAGE -->
+        <!-- 7. ENHANCED PROFILE PAGE (UID = Telegram Chat ID) -->
         <div id="profile-page" class="sub-page space-y-4">
             <div class="flex items-center justify-between">
                 <button onclick="navigateTo('home-page')" class="w-9 h-9 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10">
                     <i class="fas fa-arrow-left text-sm"></i>
                 </button>
-                <h2 class="text-base font-black text-white" style="font-family: 'Russo One', sans-serif;">My Profile</h2>
+                <h2 class="text-base font-black text-white" style="font-family: 'Russo One', sans-serif;">Player Profile</h2>
                 <div class="w-9"></div>
             </div>
 
-            <div class="relative rounded-3xl overflow-hidden bg-[#11192d] border border-white/10 p-5 text-center shadow-xl">
-                <div class="relative w-24 h-24 mx-auto mb-3 mt-2">
+            <!-- Profile Overview Card -->
+            <div class="relative rounded-3xl overflow-hidden bg-gradient-to-b from-[#172544] via-[#10192e] to-[#0a1120] border border-blue-500/30 p-5 shadow-2xl text-center">
+                <div class="absolute top-3 right-3">
+                    <span class="px-2.5 py-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-[10px] font-black rounded-full flex items-center gap-1 shadow-sm">
+                        <i class="fas fa-shield-check text-xs"></i> VERIFIED PLAYER
+                    </span>
+                </div>
+
+                <div class="relative w-24 h-24 mx-auto mb-2 mt-2">
                     <img id="user-profile-img" src="https://i.postimg.cc/L4YZZKsv/IMG-20260919-214336-790.jpg" class="w-full h-full object-cover rounded-full border-4 border-amber-400 shadow-2xl bg-slate-800" alt="Profile">
                 </div>
+
                 <h3 id="profile-name-text" class="text-xl font-black text-white tracking-wide uppercase" style="font-family: 'Russo One', sans-serif;">PLAYER</h3>
-                <div class="inline-flex items-center gap-2 mt-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-black text-xs cursor-pointer shadow-sm" onclick="copyReferralLink()">
-                    <i class="fas fa-fingerprint"></i>
-                    <span id="profile-uid-display">UID: 00000</span>
-                    <i class="fas fa-copy text-xs ml-0.5"></i>
+                <p id="profile-username-display" class="text-xs font-bold text-slate-400 mt-0.5">@player</p>
+
+                <!-- UID Card (Telegram Chat ID) -->
+                <div class="inline-flex items-center gap-2 mt-3 px-4 py-1.5 rounded-full bg-cyan-500/15 border border-cyan-500/40 text-cyan-300 font-mono font-bold text-xs cursor-pointer shadow-sm active:scale-95 transition" onclick="copyTelegramUID()">
+                    <i class="fas fa-id-card text-xs"></i>
+                    <span>UID (Chat ID): <b id="profile-uid-display" class="text-white">6954647230</b></span>
+                    <i class="fas fa-copy text-xs ml-1 text-cyan-400"></i>
                 </div>
             </div>
 
-            <div class="space-y-2 pt-2">
-                <div onclick="navigateTo('leaderboard-page')" class="action-row-item border-l-4 border-l-yellow-500">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-2xl bg-yellow-500/20 text-yellow-400 flex items-center justify-center text-lg"><i class="fas fa-trophy"></i></div>
-                        <div>
-                            <h5 class="text-sm font-black text-white">Leaderboard (লিডারবোর্ড)</h5>
-                            <p class="text-[11px] text-slate-400">৭ দিনের সাপ্তাহিক শীর্ষ বিজয়ী তালিকা</p>
-                        </div>
-                    </div>
-                    <i class="fas fa-chevron-right text-yellow-400 text-sm"></i>
+            <!-- Stats Matrix -->
+            <div class="grid grid-cols-3 gap-2 text-center">
+                <div class="bg-[#121a2d] border border-white/5 p-3 rounded-2xl shadow">
+                    <span class="text-[10px] font-black text-slate-400 block uppercase">মোট খেলা ম্যাচ</span>
+                    <span id="prof-stat-played" class="text-base font-black text-white mt-1 block">0</span>
                 </div>
+                <div class="bg-[#121a2d] border border-emerald-500/20 p-3 rounded-2xl shadow">
+                    <span class="text-[10px] font-black text-emerald-400 block uppercase">বিজয় (Wins)</span>
+                    <span id="prof-stat-wins" class="text-base font-black text-emerald-400 mt-1 block">0</span>
+                </div>
+                <div class="bg-[#121a2d] border border-amber-500/20 p-3 rounded-2xl shadow">
+                    <span class="text-[10px] font-black text-amber-400 block uppercase">উইন রেট %</span>
+                    <span id="prof-stat-winrate" class="text-base font-black text-amber-400 mt-1 block">0%</span>
+                </div>
+            </div>
 
+            <!-- Balance Quick View in Profile -->
+            <div class="grid grid-cols-2 gap-2">
+                <div class="bg-[#121a2d] border border-blue-500/20 p-3.5 rounded-2xl shadow">
+                    <span class="text-[10px] font-black text-blue-400 uppercase block">গেমিং ওয়ালেট</span>
+                    <span id="prof-gaming-bal" class="text-lg font-black text-white mt-0.5 block">৳0</span>
+                </div>
+                <div class="bg-[#121a2d] border border-emerald-500/20 p-3.5 rounded-2xl shadow">
+                    <span class="text-[10px] font-black text-emerald-400 uppercase block">উইনিং ওয়ালেট</span>
+                    <span id="prof-winning-bal" class="text-lg font-black text-emerald-400 mt-0.5 block">৳0</span>
+                </div>
+            </div>
+
+            <!-- Profile Menu Items -->
+            <div class="space-y-2 pt-1">
                 <div onclick="navigateTo('wallet-page')" class="action-row-item border-l-4 border-l-amber-500">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg"><i class="fas fa-wallet"></i></div>
                         <div>
-                            <h5 class="text-sm font-black text-white">My Wallet</h5>
-                            <p class="text-[11px] text-slate-400">গেমিং ও উইনিং ওয়ালেট ব্যালেন্স</p>
+                            <h5 class="text-sm font-black text-white">My Wallet & Balance</h5>
+                            <p class="text-[11px] text-slate-400">ডিপোজিট, উত্তোলন ও ওয়ালেট বিবরণ</p>
                         </div>
                     </div>
                     <i class="fas fa-chevron-right text-amber-400 text-sm"></i>
+                </div>
+
+                <div onclick="navigateTo('leaderboard-page')" class="action-row-item border-l-4 border-l-yellow-500">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-2xl bg-yellow-500/20 text-yellow-400 flex items-center justify-center text-lg"><i class="fas fa-trophy"></i></div>
+                        <div>
+                            <h5 class="text-sm font-black text-white">Leaderboard Ranking</h5>
+                            <p class="text-[11px] text-slate-400">সাপ্তাহিক শীর্ষ খেলোয়াড়দের তালিকা</p>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-right text-yellow-400 text-sm"></i>
                 </div>
 
                 <div onclick="navigateTo('refer-page')" class="action-row-item border-l-4 border-l-emerald-500">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg"><i class="fas fa-user-friends"></i></div>
                         <div>
-                            <h5 class="text-sm font-black text-white">Referrals Program</h5>
-                            <p class="text-[11px] text-slate-400">গেমিং ব্যালেন্স বোনাস ক্লেইম করুন</p>
+                            <h5 class="text-sm font-black text-white">Refer & Earn System</h5>
+                            <p class="text-[11px] text-slate-400">বন্ধু ইনভাইট করে আনলিমিটেড ইনকাম</p>
                         </div>
                     </div>
                     <i class="fas fa-chevron-right text-emerald-400 text-sm"></i>
@@ -764,13 +806,24 @@
 
                 <div onclick="openRedeemModal()" class="action-row-item border-l-4 border-l-purple-500">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-2xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-lg"><i class="fas fa-ticket-alt"></i></div>
+                        <div class="w-10 h-10 rounded-2xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-lg"><i class="fas fa-gift"></i></div>
                         <div>
                             <h5 class="text-sm font-black text-white">Redeem Promo Code</h5>
-                            <p class="text-[11px] text-slate-400">গিফট বা বোনাস কোড রিডিম করুন</p>
+                            <p class="text-[11px] text-slate-400">গিফট বা বোনাস কুপন কোড ক্লেইম করুন</p>
                         </div>
                     </div>
                     <i class="fas fa-chevron-right text-purple-400 text-sm"></i>
+                </div>
+
+                <div onclick="navigateTo('support-page')" class="action-row-item border-l-4 border-l-cyan-500">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-2xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-lg"><i class="fas fa-headset"></i></div>
+                        <div>
+                            <h5 class="text-sm font-black text-white">Help & Support Desk</h5>
+                            <p class="text-[11px] text-slate-400">২৪/৭ লাইভ কাস্টমার সাপোর্ট</p>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-right text-cyan-400 text-sm"></i>
                 </div>
             </div>
         </div>
@@ -1198,7 +1251,8 @@
             id: "6954647230",
             chatId: "6954647230",
             name: "SAIDUL",
-            email: "player@ludohub.com",
+            username: "@saidul_gamer",
+            email: "6954647230@telegram.org",
             gameName: "SAIDUL",
             photo: "https://i.postimg.cc/L4YZZKsv/IMG-20260919-214336-790.jpg",
             balance: 0.00,
@@ -1206,7 +1260,9 @@
             depositBalance: 0.00,
             referralWallet: 0.00,
             lastReferralClaim: 0,
-            referredBy: null
+            referredBy: null,
+            totalMatchesPlayed: 0,
+            totalMatchesWon: 0
         };
 
         let referralConfig = {
@@ -1234,7 +1290,6 @@
 
         let leaderboardCycleEnd = Date.now() + (7 * 24 * 60 * 60 * 1000);
 
-        // Tracking internal client balance changes to distinguish them from admin direct adjustments
         let initialDepositLoaded = false;
         let prevDepositBal = 0;
         let initialWinningLoaded = false;
@@ -1268,6 +1323,7 @@
                     activeUser.id = String(tgUser.id);
                     activeUser.chatId = String(tgUser.id);
                     activeUser.name = `${tgUser.first_name || ''} ${tgUser.last_name || ''}`.trim() || "PLAYER";
+                    activeUser.username = tgUser.username ? `@${tgUser.username}` : `@id_${activeUser.id}`;
                     activeUser.gameName = activeUser.name;
                     activeUser.email = tgUser.username ? `${tgUser.username}@telegram.org` : `${activeUser.id}@telegram.org`;
                     if (tgUser.photo_url) activeUser.photo = tgUser.photo_url;
@@ -1285,6 +1341,7 @@
 
             userDb.ref(`users/${activeUser.id}/profile`).update({
                 name: activeUser.name,
+                username: activeUser.username,
                 photo: activeUser.photo,
                 uid: activeUser.id,
                 lastSeen: Date.now()
@@ -1334,6 +1391,7 @@
             }
         }
 
+        // ================= PARSE MATCH TIME (SUPPORT ANY FIREBASE FORMAT) =================
         function parseMatchStartTime(timeVal) {
             if (!timeVal) return null;
             if (typeof timeVal === 'number') return timeVal;
@@ -1371,14 +1429,12 @@
 
         // ================= DUAL FIREBASE SYNC ENGINE =================
         function initRealtimeFirebaseSync() {
-            // [CONTENT DB] - Live Notice
             contentDb.ref('settings/notice').on('value', snap => {
                 if (snap.exists() && snap.val()) {
                     document.getElementById('main-notice-marquee').textContent = snap.val();
                 }
             });
 
-            // [CONTENT DB] - Leaderboard Cycle End
             contentDb.ref('settings/leaderboard_cycle_end').on('value', snap => {
                 if (snap.exists() && snap.val()) {
                     leaderboardCycleEnd = parseInt(snap.val());
@@ -1388,7 +1444,6 @@
                 }
             });
 
-            // [CONTENT DB] - Referral Config
             contentDb.ref('settings/referral').on('value', snap => {
                 if (snap.exists() && snap.val()) {
                     referralConfig = Object.assign(referralConfig, snap.val());
@@ -1397,14 +1452,12 @@
                 }
             });
 
-            // [CONTENT DB] - Admin Config
             contentDb.ref('settings/admin_config').on('value', snap => {
                 if (snap.exists() && snap.val()) {
                     adminConfig = Object.assign(adminConfig, snap.val());
                 }
             });
 
-            // [CONTENT DB] - Game Categories
             contentDb.ref('game_categories').on('value', snap => {
                 const data = snap.val();
                 if (data) {
@@ -1414,7 +1467,6 @@
                 }
             });
 
-            // [CONTENT DB] - Realtime Matches Sync
             contentDb.ref('matches').on('value', snapshot => {
                 const data = snapshot.val();
                 realtimeMatches = [];
@@ -1439,6 +1491,7 @@
                         if (m.isSpecial) {
                             m.expiresAt = m.expiresAt || (m.createdAt ? m.createdAt + (30 * 60 * 1000) : Date.now() + (30 * 60 * 1000));
                         } else {
+                            m.rawStartTime = m.startTime;
                             m.startTime = parseMatchStartTime(m.startTime) || (m.createdAt ? m.createdAt + (25 * 60 * 1000) : Date.now() + (20 * 60 * 1000));
                         }
 
@@ -1472,7 +1525,7 @@
                 renderPureMatchHistory();
             });
 
-            // [USER DB] - Strict Balance Listeners with Admin Direct Change Detection
+            // User Balances
             userDb.ref(`users/${activeUser.id}/depositBalance`).on('value', snap => {
                 const newBal = parseFloat(snap.val()) || 0;
                 if (initialDepositLoaded) {
@@ -1538,7 +1591,6 @@
                 activeUser.lastReferralClaim = parseInt(snap.val()) || 0;
             });
 
-            // [USER DB] - Timeline Transactions
             userDb.ref(`users/${activeUser.id}/transactions`).on('value', snap => {
                 allTransactions = [];
                 if (snap.exists()) {
@@ -1547,14 +1599,15 @@
                 renderUnifiedTransactionsList();
             });
 
-            // [USER DB] - Pure Match History
             userDb.ref(`users/${activeUser.id}/history`).on('value', snap => {
                 pureMatchHistory = [];
-                if (snap.exists()) snap.forEach(c => { pureMatchHistory.unshift(c.val()); });
+                if (snap.exists()) {
+                    snap.forEach(c => { pureMatchHistory.unshift(c.val()); });
+                }
+                updateProfileStats();
                 renderPureMatchHistory();
             });
 
-            // [USER DB] - User Notifications
             userDb.ref(`users/${activeUser.id}/notifications`).on('value', snap => {
                 notifications = [];
                 if (snap.exists()) {
@@ -1566,7 +1619,6 @@
                 renderNotifications();
             });
 
-            // [USER DB] - Referral Network
             userDb.ref(`users/${activeUser.id}/referrals`).on('value', snap => {
                 const container = document.getElementById('referred-users-list-container');
                 if (!container) return;
@@ -1593,7 +1645,7 @@
                                 </div>
                                 <div>
                                     <h4 class="font-black text-white text-xs">${r.name || 'Friend'}</h4>
-                                    <span class="text-[10px] font-mono text-slate-400">ID: ${r.uid}</span>
+                                    <span class="text-[10px] font-mono text-slate-400">UID: ${r.uid}</span>
                                 </div>
                             </div>
                             <div>
@@ -1623,14 +1675,6 @@
                 document.getElementById('ref-stat-earn').textContent = `৳${earn.toFixed(2)}`;
             });
 
-            // [CONTENT DB] - Leaderboard Requests Listening
-            contentDb.ref(`admin_leaderboard_requests`).orderByChild('status').equalTo('APPROVED').on('child_added', snap => {
-                const req = snap.val();
-                if (req && !req.distributed) {
-                    processLeaderboardApprovedPayout(snap.key, req);
-                }
-            });
-
             loadLeaderboard();
         }
 
@@ -1658,310 +1702,61 @@
                     gameLink: "",
                     status: "waiting",
                     createdAt: now,
-                    expiresAt: now + (30 * 60 * 1000),
+                    expiresAt: now + (30 * 60 * 1000), // 30 Minutes
                     order: 1
                 };
                 contentDb.ref('matches').push(newSpecial);
             });
         }
 
-        // ================= CLAIM REFERRAL BONUS =================
-        function claimReferralBonus() {
-            const minClaim = referralConfig.minClaimAmount || 30;
-            const now = Date.now();
-            const oneDayMs = 24 * 60 * 60 * 1000;
-
-            if (activeUser.referralWallet < minClaim) {
-                return showToast(`সর্বনিম্ন ৳${minClaim} রেফারেল ব্যালেন্স হলে ক্লেইম করা যাবে!`, 'error');
-            }
-
-            if (activeUser.lastReferralClaim && (now - activeUser.lastReferralClaim < oneDayMs)) {
-                const remainingTime = oneDayMs - (now - activeUser.lastReferralClaim);
-                const hrs = Math.floor(remainingTime / (1000 * 60 * 60));
-                const mins = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
-                return showToast(`আপনি দিনে একবার ক্লেইম করতে পারবেন। আর ${hrs} ঘণ্টা ${mins} মিনিট অপেক্ষা করুন।`, 'warning');
-            }
-
-            const claimAmount = activeUser.referralWallet;
-            const btn = document.getElementById('btn-claim-referral');
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> প্রসেসিং...';
-
-            skipAdminDepLog = true;
-            activeUser.referralWallet = 0;
-            activeUser.depositBalance += claimAmount;
-            activeUser.lastReferralClaim = now;
-
-            updateUserInterface();
-            document.getElementById('ref-claimable-bal').textContent = `৳0.00`;
-
-            userDb.ref(`users/${activeUser.id}`).update({
-                referralWallet: 0,
-                depositBalance: activeUser.depositBalance,
-                lastReferralClaim: now
-            }).then(() => {
-                logTransactionAndNotification(activeUser.id, {
-                    type: "REFERRAL_CLAIM",
-                    title: "রেফারেল কমিশন ক্লেইম",
-                    amount: claimAmount,
-                    isCredit: true,
-                    notifTitle: "রেফারেল বোনাস ক্লেইম সফল! 🎁",
-                    notifMsg: `৳${claimAmount.toFixed(2)} রেফারেল ব্যালেন্স আপনার গেমিং একাউন্টে যোগ হয়েছে।`
-                });
-
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-hand-holding-dollar text-sm"></i> <span>Claim Bonus</span>';
-                showToast(`🎉 অভিনন্দন! ৳${claimAmount.toFixed(2)} গেমিং ব্যালেন্সে যোগ হয়েছে!`, 'success');
-            }).catch(e => {
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-hand-holding-dollar text-sm"></i> <span>Claim Bonus</span>';
-                showToast('ক্লেইম করতে সমস্যা হয়েছে!', 'error');
-            });
-        }
-
-        // ================= 7 DAYS LEADERBOARD COUNTDOWN & RESET =================
-        function updateLeaderboard7DayCountdown() {
-            const now = Date.now();
-            let distance = leaderboardCycleEnd - now;
-
-            if (distance <= 0) {
-                resetLeaderboardWeek();
-                return;
-            }
-
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            const timerStr = `${String(days).padStart(2, '0')}d ${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m ${String(seconds).padStart(2, '0')}s`;
-            const el = document.getElementById('leaderboard-7d-countdown');
-            if (el) el.textContent = timerStr;
-        }
-
-        function resetLeaderboardWeek() {
-            userDb.ref('users').once('value').then(snap => {
-                let userArray = [];
-                if (snap.exists()) {
-                    snap.forEach(c => {
-                        const u = c.val() || {};
-                        const prof = u.profile || {};
-                        const pts = parseInt(u.weeklyPoints || 0);
-                        if (pts > 0) {
-                            userArray.push({
-                                uid: c.key,
-                                name: prof.name || u.name || 'Player',
-                                points: pts
-                            });
-                        }
-                    });
-                }
-
-                userArray.sort((a, b) => b.points - a.points);
-                const top1 = userArray[0] || null;
-                const top2 = userArray[1] || null;
-                const top3 = userArray[2] || null;
-
-                const top1Str = top1 ? `${top1.name} (UID: ${top1.uid} | ${top1.points} pts)` : 'None';
-                const top2Str = top2 ? `${top2.name} (UID: ${top2.uid} | ${top2.points} pts)` : 'None';
-                const top3Str = top3 ? `${top3.name} (UID: ${top3.uid} | ${top3.points} pts)` : 'None';
-
-                const adminMsg = `🏆 <b>সাপ্তাহিক লিডারবোর্ড চক্র সম্পন্ন হয়েছে! [LUDO HUB]</b>\n\n` +
-                                 `🥇 <b>১ম স্থান:</b> ${top1Str} -> প্রাইজ: ৳১০০ (Gaming)\n` +
-                                 `🥈 <b>২য় স্থান:</b> ${top2Str} -> প্রাইজ: ৳৫০ (Gaming)\n` +
-                                 `🥉 <b>৩য় স্থান:</b> ${top3Str} -> প্রাইজ: ৳২০ (Gaming)\n\n` +
-                                 `⚠️ <i>'admin_leaderboard_requests' নোড থেকে রিকোয়েস্টটি 'APPROVED' করুন।</i>`;
-
-                if (adminConfig.botToken && adminConfig.adminChatId) {
-                    fetch(`https://api.telegram.org/bot${adminConfig.botToken}/sendMessage`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ chat_id: adminConfig.adminChatId, text: adminMsg, parse_mode: 'HTML' })
-                    }).catch(e => console.log(e));
-                }
-
-                const newReqRef = contentDb.ref('admin_leaderboard_requests').push();
-                newReqRef.set({
-                    completedAt: Date.now(),
-                    winners: {
-                        top1: top1 ? { uid: top1.uid, name: top1.name, prize: 100, points: top1.points } : null,
-                        top2: top2 ? { uid: top2.uid, name: top2.name, prize: 50, points: top2.points } : null,
-                        top3: top3 ? { uid: top3.uid, name: top3.name, prize: 20, points: top3.points } : null
-                    },
-                    status: "PENDING",
-                    distributed: false
-                });
-
-                const updates = {};
-                snap.forEach(c => {
-                    updates[`users/${c.key}/weeklyPoints`] = 0;
-                });
-                userDb.ref().update(updates);
-
-                const nextCycle = Date.now() + (7 * 24 * 60 * 60 * 1000);
-                contentDb.ref('settings/leaderboard_cycle_end').set(nextCycle);
-                leaderboardCycleEnd = nextCycle;
-
-                loadLeaderboard();
-            });
-        }
-
-        function processLeaderboardApprovedPayout(reqKey, req) {
-            if (!req.winners || req.distributed) return;
-
-            contentDb.ref(`admin_leaderboard_requests/${reqKey}`).update({
-                distributed: true,
-                distributedAt: Date.now()
-            });
-
-            const winners = [req.winners.top1, req.winners.top2, req.winners.top3].filter(Boolean);
-
-            winners.forEach((w, idx) => {
-                if (w.uid && w.prize > 0) {
-                    if (w.uid === activeUser.id) skipAdminDepLog = true;
-                    userDb.ref(`users/${w.uid}/depositBalance`).transaction(curr => (curr || 0) + w.prize);
-
-                    logTransactionAndNotification(w.uid, {
-                        type: "LEADERBOARD_PRIZE",
-                        title: `সাপ্তাহিক লিডারবোর্ড পুরস্কার (${idx + 1}ম স্থান)`,
-                        amount: w.prize,
-                        isCredit: true,
-                        notifTitle: "🏆 লিডারবোর্ড পুরস্কার অনুমোদিত!",
-                        notifMsg: `অভিনন্দন! সাপ্তাহিক লিডারবোর্ডে ${idx + 1}ম স্থান অর্জনের জন্য আপনার গেমিং ব্যালেন্সে ৳${w.prize} যোগ করা হয়েছে।`
-                    });
-                }
-            });
-        }
-
-        function loadLeaderboard() {
-            const container = document.getElementById('leaderboard-list-container');
-            if (!container) return;
-
-            userDb.ref('users').once('value').then(snapshot => {
-                let userArray = [];
-                if (snapshot.exists()) {
-                    snapshot.forEach(c => {
-                        const u = c.val() || {};
-                        const prof = u.profile || {};
-                        const points = parseInt(u.weeklyPoints !== undefined ? u.weeklyPoints : 0);
-                        const wins = points; 
-
-                        userArray.push({
-                            uid: c.key,
-                            name: prof.name || u.name || 'Player',
-                            photo: prof.photo || u.photo || 'https://cdn-icons-png.flaticon.com/512/847/847969.png',
-                            wins: wins,
-                            points: points
-                        });
-                    });
-                }
-
-                userArray.sort((a, b) => b.points - a.points);
-
-                const myRankIndex = userArray.findIndex(x => x.uid === activeUser.id);
-                const myRank = myRankIndex !== -1 ? (myRankIndex + 1) : userArray.length + 1;
-                const myData = myRankIndex !== -1 ? userArray[myRankIndex] : { wins: 0, points: 0 };
-
-                document.getElementById('lb-you-avatar').src = activeUser.photo;
-                document.getElementById('lb-you-name').innerHTML = `${activeUser.name} <span class="text-[10px] text-sky-400 font-bold">(আপনি)</span>`;
-                document.getElementById('lb-you-wins').textContent = `${myData.wins} টি`;
-                document.getElementById('lb-you-points').textContent = myData.points;
-                document.getElementById('lb-you-rank').textContent = `#${myRank}`;
-
-                if (userArray.length === 0 || userArray.every(u => u.points === 0)) {
-                    container.innerHTML = `<div class="p-5 text-center text-xs text-slate-400">এই সপ্তাহে এখনো কোনো প্লেয়ার ম্যাচ জয়লাভ করেনি।</div>`;
-                    return;
-                }
-
-                let listHtml = '';
-                userArray.forEach((user, index) => {
-                    const rank = index + 1;
-                    let badgeHtml = '';
-                    let prizeHtml = '';
-                    let rankBg = 'bg-[#121a2d] border border-white/5';
-
-                    if (rank === 1) {
-                        badgeHtml = `<span class="px-2.5 py-0.5 rounded-full bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 font-black text-[10px] shadow flex items-center gap-1"><i class="fas fa-crown text-[10px]"></i> TOP 1</span>`;
-                        prizeHtml = `<span class="text-[11px] font-black text-amber-300">গেমিং পুরস্কার ৳১০০</span>`;
-                        rankBg = 'bg-gradient-to-r from-[#201808] to-[#121a2d] border-2 border-amber-400/50';
-                    } else if (rank === 2) {
-                        badgeHtml = `<span class="px-2.5 py-0.5 rounded-full bg-gradient-to-r from-slate-200 to-slate-400 text-slate-950 font-black text-[10px] shadow flex items-center gap-1"><i class="fas fa-medal text-[10px]"></i> TOP 2</span>`;
-                        prizeHtml = `<span class="text-[11px] font-black text-slate-300">গেমিং পুরস্কার ৳৫০</span>`;
-                        rankBg = 'bg-gradient-to-r from-[#171c26] to-[#121a2d] border-2 border-slate-400/50';
-                    } else if (rank === 3) {
-                        badgeHtml = `<span class="px-2.5 py-0.5 rounded-full bg-gradient-to-r from-amber-700 to-orange-600 text-white font-black text-[10px] shadow flex items-center gap-1"><i class="fas fa-award text-[10px]"></i> TOP 3</span>`;
-                        prizeHtml = `<span class="text-[11px] font-black text-orange-400">গেমিং পুরস্কার ৳২০</span>`;
-                        rankBg = 'bg-gradient-to-r from-[#26150a] to-[#121a2d] border-2 border-amber-600/50';
-                    } else {
-                        badgeHtml = `<span class="w-6 h-6 rounded-full bg-slate-800 text-slate-400 text-xs font-bold flex items-center justify-center font-mono">#${rank}</span>`;
-                        prizeHtml = `<span class="text-[10px] font-bold text-slate-500">${user.points} Pts</span>`;
-                    }
-
-                    listHtml += `
-                    <div class="${rankBg} p-3 rounded-2xl flex items-center justify-between shadow-sm">
-                        <div class="flex items-center gap-3">
-                            ${badgeHtml}
-                            <div class="w-10 h-10 rounded-full overflow-hidden border border-white/10 flex-shrink-0 bg-slate-900">
-                                <img src="${user.photo}" class="w-full h-full object-cover" alt="${user.name}">
-                            </div>
-                            <div>
-                                <h4 class="text-xs font-black text-white flex items-center gap-1">
-                                    ${user.name}
-                                    ${user.uid === activeUser.id ? '<span class="text-[9px] bg-blue-500 text-white px-1.5 rounded">You</span>' : ''}
-                                </h4>
-                                <span class="text-[10px] text-slate-400 font-bold block">${user.wins} ম্যাচ উইন</span>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            ${prizeHtml}
-                            <span class="text-[10px] font-bold text-emerald-400 block">${user.points} Points</span>
-                        </div>
-                    </div>`;
-                });
-
-                container.innerHTML = listHtml;
-            });
-        }
-
-        // ================= REFERRAL REGISTRATION =================
-        function registerUserReferral(inviterId) {
-            const userRef = userDb.ref(`users/${activeUser.id}`);
-            userRef.once('value', snapshot => {
-                const u = snapshot.val() || {};
-                if (!u.referredBy) {
-                    userRef.update({ referredBy: inviterId });
-                    userDb.ref(`users/${inviterId}/referrals/${activeUser.id}`).set({
-                        uid: activeUser.id,
-                        name: activeUser.name,
-                        photo: activeUser.photo,
-                        hasFirstDepositBonusGiven: false,
-                        isAccountActive: false,
-                        joinedAt: Date.now()
-                    });
-                }
-            });
-        }
-
-        // ================= MATCH TIMING & REFUND ENGINE =================
+        // ================= AUTO-REFUND & REGENERATION (FOR SPECIAL & TOMORROW MATCHES) =================
         function checkMatchTimingRules() {
             const now = Date.now();
 
             realtimeMatches.forEach(m => {
                 if (m.status === 'COMPLETED' || m.status === 'CANCELLED') return;
 
+                // 1. SPECIAL MATCH: If not full in 30 mins -> Refund, Delete & Create New Special Match
                 if (m.isSpecial) {
                     if (now >= m.expiresAt && m.current < m.max) {
-                        processAutoCancelAndRefund(m, "স্পেশাল ম্যাচের ৩০ মিনিটের মধ্যে ফুল না হওয়ায় রিফান্ড সম্পন্ন।");
+                        processAutoCancelAndRefund(m, "স্পেশাল ম্যাচ ৩০ মিনিটে পূর্ণ না হওয়ায় স্বয়ংক্রিয় রিফান্ড সম্পন্ন।");
                         spawnNewSpecialMatch(m.gameType, m.fee, m.prize, m.max, m.mode);
                     }
-                } else {
+                } 
+                // 2. REGULAR MATCH: If not full at scheduled time -> Refund, Delete & Reschedule for Tomorrow same time
+                else {
                     if (m.startTime && now >= m.startTime && m.current < m.max) {
-                        processAutoCancelAndRefund(m, "নির্ধারিত সময় শেষ হওয়ার সাথে সাথে ম্যাচ ফুল না হওয়ায় অটো-রিফান্ড সম্পন্ন।");
+                        processAutoCancelAndRefund(m, "নির্ধারিত সময়ে ম্যাচ পূর্ণ না হওয়ায় রিফান্ড এবং ম্যাচটি আগামীকালের জন্য শিডিউল করা হলো।");
+                        rescheduleMatchForTomorrow(m);
                     }
                 }
             });
 
             updateMatchCountdowns();
+        }
+
+        function rescheduleMatchForTomorrow(m) {
+            contentDb.ref('settings/last_match_number').transaction(curr => (curr || 5020) + 1, (err, committed, snap) => {
+                const nextNo = `#${snap.val()}`;
+                const tomorrowStartTime = (m.startTime ? m.startTime + (24 * 60 * 60 * 1000) : Date.now() + (24 * 60 * 60 * 1000));
+                
+                const rescheduled = {
+                    matchNo: nextNo,
+                    gameType: m.gameType || 'ludo',
+                    mode: m.mode || '1v1',
+                    max: m.max || 2,
+                    fee: m.fee,
+                    prize: m.prize,
+                    isSpecial: false,
+                    roomCode: "",
+                    gameLink: "",
+                    status: "waiting",
+                    createdAt: Date.now(),
+                    startTime: tomorrowStartTime,
+                    order: m.order || 50
+                };
+                contentDb.ref('matches').push(rescheduled);
+            });
         }
 
         function processAutoCancelAndRefund(match, reason) {
@@ -1994,7 +1789,7 @@
             const adminChatId = adminConfig.adminChatId;
             const botToken = adminConfig.botToken;
 
-            const playerListStr = (match.playersList || []).map(p => `• ${p.name} (ID: ${p.uid})`).join('\n') || "N/A";
+            const playerListStr = (match.playersList || []).map(p => `• ${p.name} (UID: ${p.uid})`).join('\n') || "N/A";
 
             const msg = `🚨 <b>ম্যাচ ফুল হয়ে গেছে! অবিলম্বে রুম কোড দিন! [LUDO HUB]</b>\n\n` +
                         `🎮 <b>গেম:</b> ${(match.gameType).toUpperCase()}\n` +
@@ -2012,17 +1807,9 @@
                     body: JSON.stringify({ chat_id: adminChatId, text: msg, parse_mode: 'HTML' })
                 }).catch(e => console.log(e));
             }
-
-            contentDb.ref('admin_alerts').push({
-                type: "MATCH_FULL",
-                matchId: match.id,
-                matchNo: match.matchNo,
-                gameType: match.gameType,
-                timestamp: Date.now()
-            });
         }
 
-        // ================= MATCH CARDS RENDERING =================
+        // ================= MATCH CARDS RENDERING & 5-MIN REFUND LOCK =================
         function filterMatches(type, el) {
             document.querySelectorAll('.filter-tab-pill').forEach(f => f.classList.remove('active'));
             if (el && el.classList.contains('filter-tab-pill')) el.classList.add('active');
@@ -2095,7 +1882,7 @@
                                     ${m.isSpecial ? `
                                         <span class="px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 font-bold text-[10px] flex items-center gap-1">
                                             <span class="w-1.5 h-1.5 rounded-full bg-purple-600 animate-ping"></span> 
-                                            ${maxPlayers} জন পূর্ণ হলেই শুরু হবে (৩০ মি.)
+                                            ${maxPlayers} জন পূর্ণ হলেই শুরু (৩০ মি.)
                                         </span>
                                     ` : `
                                         ${isWithin5Min ? `
@@ -2211,7 +1998,7 @@
             });
         }
 
-        // ================= JOIN MATCH & REFUND =================
+        // ================= JOIN & REFUND ACTIONS =================
         function openJoinMatchModal(id) {
             const m = realtimeMatches.find(x => x.id === id);
             if (!m) return;
@@ -2334,7 +2121,7 @@
             }
         }
 
-        // ================= RESULT UPLOAD & STRICT REFERRAL COMMISSION =================
+        // ================= RESULT UPLOAD & REFERRAL COMMISSION =================
         function openUploadResultModal() {
             document.getElementById('input-result-room').value = '';
             document.getElementById('screenshot-preview-img').classList.add('hidden');
@@ -2434,7 +2221,7 @@
                     }
                 });
 
-                // STRICT REFERRAL COMMISSION
+                // REFERRAL COMMISSION
                 userDb.ref(`users/${activeUser.id}`).once('value', uSnap => {
                     const u = uSnap.val() || {};
                     const inviterUid = u.referredBy;
@@ -2531,6 +2318,21 @@
                 showToast("উত্তোলন অনুরোধ সফলভাবে পাঠানো হয়েছে!", "success");
                 navigateTo('wallet-page');
             }, 600);
+        }
+
+        // ================= PROFILE STATS UPDATE =================
+        function updateProfileStats() {
+            const total = pureMatchHistory.length;
+            const wins = pureMatchHistory.filter(h => h.status === 'WIN').length;
+            const winRate = total > 0 ? Math.round((wins / total) * 100) : 0;
+
+            const statPlayed = document.getElementById('prof-stat-played');
+            const statWins = document.getElementById('prof-stat-wins');
+            const statWinRate = document.getElementById('prof-stat-winrate');
+
+            if (statPlayed) statPlayed.textContent = total;
+            if (statWins) statWins.textContent = wins;
+            if (statWinRate) statWinRate.textContent = `${winRate}%`;
         }
 
         // ================= PURE MATCH HISTORY =================
@@ -2635,7 +2437,162 @@
             }).join('');
         }
 
-        // ================= GAME CATEGORIES =================
+        // ================= GENERAL HELPERS & UI UPDATES =================
+        function updateUserInterface() {
+            const total = (activeUser.depositBalance + activeUser.winningBalance);
+            activeUser.balance = total;
+
+            document.getElementById('header-balance-val').textContent = total.toFixed(0);
+            document.getElementById('wallet-top-badge').textContent = `৳${total.toFixed(0)}`;
+            document.getElementById('wallet-total-bal-display').textContent = `৳${total.toFixed(0)}`;
+            document.getElementById('gaming-bal-text').textContent = `৳${activeUser.depositBalance.toFixed(0)}`;
+            document.getElementById('winning-bal-text').textContent = `৳${activeUser.winningBalance.toFixed(0)}`;
+            document.getElementById('withdraw-available-bal').textContent = `৳${activeUser.winningBalance.toFixed(0)}`;
+
+            // Profile fields
+            document.getElementById('profile-name-text').textContent = activeUser.name.toUpperCase();
+            document.getElementById('profile-username-display').textContent = activeUser.username;
+            document.getElementById('profile-uid-display').textContent = activeUser.id; // Telegram Chat ID
+            document.getElementById('user-profile-img').src = activeUser.photo;
+            document.getElementById('header-avatar').src = activeUser.photo;
+
+            const profGamingBal = document.getElementById('prof-gaming-bal');
+            const profWinningBal = document.getElementById('prof-winning-bal');
+            if (profGamingBal) profGamingBal.textContent = `৳${activeUser.depositBalance.toFixed(0)}`;
+            if (profWinningBal) profWinningBal.textContent = `৳${activeUser.winningBalance.toFixed(0)}`;
+
+            updateReferralDisplay();
+        }
+
+        function copyTelegramUID() {
+            navigator.clipboard.writeText(activeUser.id).then(() => {
+                showToast(`UID (Chat ID): ${activeUser.id} কপি হয়েছে!`, "success");
+            });
+        }
+
+        function formatMatchTime(timestamp) {
+            if (!timestamp) return 'অপেক্ষারত';
+            const d = new Date(timestamp);
+            if (isNaN(d.getTime())) return 'অপেক্ষারত';
+            return d.toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit', hour12: true });
+        }
+
+        function showToast(msg, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `p-3 rounded-xl shadow-xl text-xs font-bold flex items-center gap-2 border-l-4 ${
+                type === 'success' ? 'bg-emerald-950 text-emerald-200 border-emerald-500' :
+                type === 'error' ? 'bg-rose-950 text-rose-200 border-rose-500' :
+                type === 'warning' ? 'bg-amber-950 text-amber-200 border-amber-500' :
+                'bg-slate-900 text-slate-200 border-blue-500'
+            }`;
+            toast.innerHTML = `<i class="fas fa-info-circle text-sm"></i> <span>${msg}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        function showComingSoonAlert(t) { showToast(`🔥 ${t} - খুব শীঘ্রই চালু হবে!`, 'info'); }
+
+        function navigateTo(pageId) {
+            const dotLoader = document.getElementById('page-dot-loader');
+            if (dotLoader) dotLoader.style.display = 'flex';
+
+            setTimeout(() => {
+                document.querySelectorAll('.sub-page').forEach(p => p.classList.remove('active'));
+                const target = document.getElementById(pageId);
+                if (target) {
+                    target.classList.add('active');
+                    window.scrollTo({ top: 0, behavior: 'instant' });
+                }
+
+                document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+                const activeNav = document.querySelector(`.nav-item[data-page="${pageId.replace('-page','')}"]`);
+                if (activeNav) activeNav.classList.add('active');
+
+                if (pageId === 'history-page') renderPureMatchHistory();
+                if (pageId === 'leaderboard-page') loadLeaderboard();
+                if (pageId === 'profile-page') updateProfileStats();
+
+                if (dotLoader) dotLoader.style.display = 'none';
+            }, 180);
+        }
+
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+        function openGameArena(title, categoryKey) {
+            selectedGameCategory = categoryKey;
+            document.getElementById('arena-header-title').textContent = title;
+            currentActiveFilter = 'all';
+            navigateTo('matches-page');
+            renderMatches();
+        }
+
+        function setQuickDeposit(val) { document.getElementById('deposit-amount-input').value = val; }
+        function getGameIcon(type) {
+            const cat = gameCategories.find(c => c.key === type);
+            return (cat && cat.icon) ? cat.icon : 'https://cdn-icons-png.flaticon.com/512/806/806131.png';
+        }
+
+        function copyMatchRoomCode(code) {
+            navigator.clipboard.writeText(code).then(() => showToast(`রুম কোড [${code}] কপি হয়েছে!`, "success"));
+        }
+
+        function launchGameApp(gameType, customGameLink) {
+            if (customGameLink && customGameLink.trim() !== "") {
+                window.open(customGameLink.trim(), '_blank');
+            } else {
+                showToast("গেমটি ওপেন করে কোড দিয়ে জয়েন করুন!", "info");
+            }
+        }
+
+        function triggerRoomCodeLiveNotification(m) {
+            showToast(`🎉 ম্যাচ ${m.matchNo}-এর রুম কোড: ${m.roomCode}`, 'success');
+            userDb.ref(`users/${activeUser.id}/notifications`).push({
+                title: `রুম কোড প্রদান করা হয়েছে 🔑`,
+                message: `ম্যাচ ${m.matchNo}-এর রুম কোড: ${m.roomCode}। খেলায় যোগ দিন।`,
+                time: new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit', hour12: true }),
+                timestamp: Date.now()
+            });
+        }
+
+        function toggleNotificationModal() { document.getElementById('notification-modal').classList.toggle('hidden'); }
+        function openRedeemModal() { document.getElementById('redeem-code-modal').classList.remove('hidden'); }
+        
+        function renderNotifications() {
+            const container = document.getElementById('notification-list-container');
+            if (!container) return;
+
+            if (notifications.length === 0) {
+                container.innerHTML = `<div class="p-8 text-center text-xs text-slate-400">কোনো নোটিফিকেশন নেই</div>`;
+                return;
+            }
+
+            container.innerHTML = notifications.map(n => `
+                <div class="bg-[#121a2d] p-3.5 rounded-2xl border border-white/5 space-y-1 shadow">
+                    <div class="flex items-center justify-between">
+                        <h5 class="font-black text-xs text-amber-400">${n.title}</h5>
+                        <span class="text-[10px] text-slate-500 font-mono">${n.time || ''}</span>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">${n.message}</p>
+                </div>
+            `).join('');
+        }
+
+        function copyReferralLink() {
+            navigator.clipboard.writeText(`${referralConfig.baseUrl}${activeUser.id}`).then(() => showToast("লিংক কপি হয়েছে!", "success"));
+        }
+        function shareReferralLinkTelegram() {
+            const url = `https://t.me/share/url?url=${encodeURIComponent(referralConfig.baseUrl + activeUser.id)}&text=Join+Ludo+Hub`;
+            window.open(url, '_blank');
+        }
+        function updateReferralRulesUI() {
+            document.getElementById('ref-config-badge').textContent = `৳${referralConfig.firstDepositBonus} / ১০০৳ ১ম ডিপোজিটে`;
+            document.getElementById('ref-reward-tag').textContent = `${referralConfig.firstDepositBonus} টাকা + ${referralConfig.matchWinCommission} টাকা কমিশন`;
+        }
+        function updateReferralDisplay() {
+            const l = document.getElementById('ref-link-display-full');
+            if (l) l.textContent = `${referralConfig.baseUrl}${activeUser.id}`;
+        }
+
         function renderGameCategories() {
             const container = document.getElementById('game-categories-container');
             if (!container) return;
@@ -2691,7 +2648,7 @@
             container.innerHTML = html;
         }
 
-        // ================= SUPPORT DESK MODAL =================
+        // ================= SUPPORT CHAT =================
         function openSupportDeskModal() {
             document.getElementById('support-desk-overlay').classList.add('active');
             loadChatMessages(activeUser.id);
@@ -2789,148 +2746,188 @@
             }).join('');
         }
 
-        // ================= GENERAL HELPERS =================
-        function updateUserInterface() {
-            const total = (activeUser.depositBalance + activeUser.winningBalance);
-            activeUser.balance = total;
+        // ================= LEADERBOARD =================
+        function updateLeaderboard7DayCountdown() {
+            const now = Date.now();
+            let distance = leaderboardCycleEnd - now;
 
-            document.getElementById('header-balance-val').textContent = total.toFixed(0);
-            document.getElementById('wallet-top-badge').textContent = `৳${total.toFixed(0)}`;
-            document.getElementById('wallet-total-bal-display').textContent = `৳${total.toFixed(0)}`;
-            document.getElementById('gaming-bal-text').textContent = `৳${activeUser.depositBalance.toFixed(0)}`;
-            document.getElementById('winning-bal-text').textContent = `৳${activeUser.winningBalance.toFixed(0)}`;
-            document.getElementById('withdraw-available-bal').textContent = `৳${activeUser.winningBalance.toFixed(0)}`;
+            if (distance <= 0) {
+                distance = 0;
+            }
 
-            document.getElementById('profile-name-text').textContent = activeUser.name.toUpperCase();
-            document.getElementById('profile-uid-display').textContent = `UID: ${activeUser.id.slice(-5)}`;
-            document.getElementById('user-profile-img').src = activeUser.photo;
-            document.getElementById('header-avatar').src = activeUser.photo;
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            updateReferralDisplay();
+            const timerStr = `${String(days).padStart(2, '0')}d ${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m ${String(seconds).padStart(2, '0')}s`;
+            const el = document.getElementById('leaderboard-7d-countdown');
+            if (el) el.textContent = timerStr;
         }
 
-        function formatMatchTime(timestamp) {
-            if (!timestamp) return 'অপেক্ষারত';
-            const d = new Date(timestamp);
-            if (isNaN(d.getTime())) return 'অপেক্ষারত';
-            return d.toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit', hour12: true });
-        }
+        function loadLeaderboard() {
+            const container = document.getElementById('leaderboard-list-container');
+            if (!container) return;
 
-        function showToast(msg, type = 'info') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = `p-3 rounded-xl shadow-xl text-xs font-bold flex items-center gap-2 border-l-4 ${
-                type === 'success' ? 'bg-emerald-950 text-emerald-200 border-emerald-500' :
-                type === 'error' ? 'bg-rose-950 text-rose-200 border-rose-500' :
-                type === 'warning' ? 'bg-amber-950 text-amber-200 border-amber-500' :
-                'bg-slate-900 text-slate-200 border-blue-500'
-            }`;
-            toast.innerHTML = `<i class="fas fa-info-circle text-sm"></i> <span>${msg}</span>`;
-            container.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
-        }
+            userDb.ref('users').once('value').then(snapshot => {
+                let userArray = [];
+                if (snapshot.exists()) {
+                    snapshot.forEach(c => {
+                        const u = c.val() || {};
+                        const prof = u.profile || {};
+                        const points = parseInt(u.weeklyPoints !== undefined ? u.weeklyPoints : 0);
+                        const wins = points; 
 
-        function showComingSoonAlert(t) { showToast(`🔥 ${t} - খুব শীঘ্রই চালু হবে!`, 'info'); }
-
-        function navigateTo(pageId) {
-            const dotLoader = document.getElementById('page-dot-loader');
-            if (dotLoader) dotLoader.style.display = 'flex';
-
-            setTimeout(() => {
-                document.querySelectorAll('.sub-page').forEach(p => p.classList.remove('active'));
-                const target = document.getElementById(pageId);
-                if (target) {
-                    target.classList.add('active');
-                    window.scrollTo({ top: 0, behavior: 'instant' });
+                        userArray.push({
+                            uid: c.key,
+                            name: prof.name || u.name || 'Player',
+                            photo: prof.photo || u.photo || 'https://cdn-icons-png.flaticon.com/512/847/847969.png',
+                            wins: wins,
+                            points: points
+                        });
+                    });
                 }
 
-                document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-                const activeNav = document.querySelector(`.nav-item[data-page="${pageId.replace('-page','')}"]`);
-                if (activeNav) activeNav.classList.add('active');
+                userArray.sort((a, b) => b.points - a.points);
 
-                if (pageId === 'history-page') renderPureMatchHistory();
-                if (pageId === 'leaderboard-page') loadLeaderboard();
+                const myRankIndex = userArray.findIndex(x => x.uid === activeUser.id);
+                const myRank = myRankIndex !== -1 ? (myRankIndex + 1) : userArray.length + 1;
+                const myData = myRankIndex !== -1 ? userArray[myRankIndex] : { wins: 0, points: 0 };
 
-                if (dotLoader) dotLoader.style.display = 'none';
-            }, 180);
-        }
+                document.getElementById('lb-you-avatar').src = activeUser.photo;
+                document.getElementById('lb-you-name').innerHTML = `${activeUser.name} <span class="text-[10px] text-sky-400 font-bold">(আপনি)</span>`;
+                document.getElementById('lb-you-wins').textContent = `${myData.wins} টি`;
+                document.getElementById('lb-you-points').textContent = myData.points;
+                document.getElementById('lb-you-rank').textContent = `#${myRank}`;
 
-        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
-        function openGameArena(title, categoryKey) {
-            selectedGameCategory = categoryKey;
-            document.getElementById('arena-header-title').textContent = title;
-            currentActiveFilter = 'all';
-            navigateTo('matches-page');
-            renderMatches();
-        }
+                if (userArray.length === 0 || userArray.every(u => u.points === 0)) {
+                    container.innerHTML = `<div class="p-5 text-center text-xs text-slate-400">এই সপ্তাহে এখনো কোনো প্লেয়ার ম্যাচ জয়লাভ করেনি।</div>`;
+                    return;
+                }
 
-        function setQuickDeposit(val) { document.getElementById('deposit-amount-input').value = val; }
-        function getGameIcon(type) {
-            const cat = gameCategories.find(c => c.key === type);
-            return (cat && cat.icon) ? cat.icon : 'https://cdn-icons-png.flaticon.com/512/806/806131.png';
-        }
+                let listHtml = '';
+                userArray.forEach((user, index) => {
+                    const rank = index + 1;
+                    let badgeHtml = '';
+                    let prizeHtml = '';
+                    let rankBg = 'bg-[#121a2d] border border-white/5';
 
-        function copyMatchRoomCode(code) {
-            navigator.clipboard.writeText(code).then(() => showToast(`রুম কোড [${code}] কপি হয়েছে!`, "success"));
-        }
+                    if (rank === 1) {
+                        badgeHtml = `<span class="px-2.5 py-0.5 rounded-full bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 font-black text-[10px] shadow flex items-center gap-1"><i class="fas fa-crown text-[10px]"></i> TOP 1</span>`;
+                        prizeHtml = `<span class="text-[11px] font-black text-amber-300">গেমিং পুরস্কার ৳১০০</span>`;
+                        rankBg = 'bg-gradient-to-r from-[#201808] to-[#121a2d] border-2 border-amber-400/50';
+                    } else if (rank === 2) {
+                        badgeHtml = `<span class="px-2.5 py-0.5 rounded-full bg-gradient-to-r from-slate-200 to-slate-400 text-slate-950 font-black text-[10px] shadow flex items-center gap-1"><i class="fas fa-medal text-[10px]"></i> TOP 2</span>`;
+                        prizeHtml = `<span class="text-[11px] font-black text-slate-300">গেমিং পুরস্কার ৳৫০</span>`;
+                        rankBg = 'bg-gradient-to-r from-[#171c26] to-[#121a2d] border-2 border-slate-400/50';
+                    } else if (rank === 3) {
+                        badgeHtml = `<span class="px-2.5 py-0.5 rounded-full bg-gradient-to-r from-amber-700 to-orange-600 text-white font-black text-[10px] shadow flex items-center gap-1"><i class="fas fa-award text-[10px]"></i> TOP 3</span>`;
+                        prizeHtml = `<span class="text-[11px] font-black text-orange-400">গেমিং পুরস্কার ৳২০</span>`;
+                        rankBg = 'bg-gradient-to-r from-[#26150a] to-[#121a2d] border-2 border-amber-600/50';
+                    } else {
+                        badgeHtml = `<span class="w-6 h-6 rounded-full bg-slate-800 text-slate-400 text-xs font-bold flex items-center justify-center font-mono">#${rank}</span>`;
+                        prizeHtml = `<span class="text-[10px] font-bold text-slate-500">${user.points} Pts</span>`;
+                    }
 
-        function launchGameApp(gameType, customGameLink) {
-            if (customGameLink && customGameLink.trim() !== "") {
-                window.open(customGameLink.trim(), '_blank');
-            } else {
-                showToast("গেমটি ওপেন করে কোড দিয়ে জয়েন করুন!", "info");
-            }
-        }
+                    listHtml += `
+                    <div class="${rankBg} p-3 rounded-2xl flex items-center justify-between shadow-sm">
+                        <div class="flex items-center gap-3">
+                            ${badgeHtml}
+                            <div class="w-10 h-10 rounded-full overflow-hidden border border-white/10 flex-shrink-0 bg-slate-900">
+                                <img src="${user.photo}" class="w-full h-full object-cover" alt="${user.name}">
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-black text-white flex items-center gap-1">
+                                    ${user.name}
+                                    ${user.uid === activeUser.id ? '<span class="text-[9px] bg-blue-500 text-white px-1.5 rounded">You</span>' : ''}
+                                </h4>
+                                <span class="text-[10px] text-slate-400 font-bold block">${user.wins} ম্যাচ উইন</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            ${prizeHtml}
+                            <span class="text-[10px] font-bold text-emerald-400 block">${user.points} Points</span>
+                        </div>
+                    </div>`;
+                });
 
-        function triggerRoomCodeLiveNotification(m) {
-            showToast(`🎉 ম্যাচ ${m.matchNo}-এর রুম কোড: ${m.roomCode}`, 'success');
-            userDb.ref(`users/${activeUser.id}/notifications`).push({
-                title: `রুম কোড প্রদান করা হয়েছে 🔑`,
-                message: `ম্যাচ ${m.matchNo}-এর রুম কোড: ${m.roomCode}। খেলায় যোগ দিন।`,
-                time: new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit', hour12: true }),
-                timestamp: Date.now()
+                container.innerHTML = listHtml;
             });
         }
 
-        function toggleNotificationModal() { document.getElementById('notification-modal').classList.toggle('hidden'); }
-        function openRedeemModal() { document.getElementById('redeem-code-modal').classList.remove('hidden'); }
-        
-        function renderNotifications() {
-            const container = document.getElementById('notification-list-container');
-            if (!container) return;
+        // ================= REFERRAL BONUS CLAIM =================
+        function claimReferralBonus() {
+            const minClaim = referralConfig.minClaimAmount || 30;
+            const now = Date.now();
+            const oneDayMs = 24 * 60 * 60 * 1000;
 
-            if (notifications.length === 0) {
-                container.innerHTML = `<div class="p-8 text-center text-xs text-slate-400">কোনো নোটিফিকেশন নেই</div>`;
-                return;
+            if (activeUser.referralWallet < minClaim) {
+                return showToast(`সর্বনিম্ন ৳${minClaim} রেফারেল ব্যালেন্স হলে ক্লেইম করা যাবে!`, 'error');
             }
 
-            container.innerHTML = notifications.map(n => `
-                <div class="bg-[#121a2d] p-3.5 rounded-2xl border border-white/5 space-y-1 shadow">
-                    <div class="flex items-center justify-between">
-                        <h5 class="font-black text-xs text-amber-400">${n.title}</h5>
-                        <span class="text-[10px] text-slate-500 font-mono">${n.time || ''}</span>
-                    </div>
-                    <p class="text-xs text-slate-300 leading-relaxed">${n.message}</p>
-                </div>
-            `).join('');
+            if (activeUser.lastReferralClaim && (now - activeUser.lastReferralClaim < oneDayMs)) {
+                const remainingTime = oneDayMs - (now - activeUser.lastReferralClaim);
+                const hrs = Math.floor(remainingTime / (1000 * 60 * 60));
+                const mins = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+                return showToast(`আপনি দিনে একবার ক্লেইম করতে পারবেন। আর ${hrs} ঘণ্টা ${mins} মিনিট অপেক্ষা করুন।`, 'warning');
+            }
+
+            const claimAmount = activeUser.referralWallet;
+            const btn = document.getElementById('btn-claim-referral');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> প্রসেসিং...';
+
+            skipAdminDepLog = true;
+            activeUser.referralWallet = 0;
+            activeUser.depositBalance += claimAmount;
+            activeUser.lastReferralClaim = now;
+
+            updateUserInterface();
+            document.getElementById('ref-claimable-bal').textContent = `৳0.00`;
+
+            userDb.ref(`users/${activeUser.id}`).update({
+                referralWallet: 0,
+                depositBalance: activeUser.depositBalance,
+                lastReferralClaim: now
+            }).then(() => {
+                logTransactionAndNotification(activeUser.id, {
+                    type: "REFERRAL_CLAIM",
+                    title: "রেফারেল কমিশন ক্লেইম",
+                    amount: claimAmount,
+                    isCredit: true,
+                    notifTitle: "রেফারেল বোনাস ক্লেইম সফল! 🎁",
+                    notifMsg: `৳${claimAmount.toFixed(2)} রেফারেল ব্যালেন্স আপনার গেমিং একাউন্টে যোগ হয়েছে।`
+                });
+
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-hand-holding-dollar text-sm"></i> <span>Claim Bonus</span>';
+                showToast(`🎉 অভিনন্দন! ৳${claimAmount.toFixed(2)} গেমিং ব্যালেন্সে যোগ হয়েছে!`, 'success');
+            }).catch(e => {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-hand-holding-dollar text-sm"></i> <span>Claim Bonus</span>';
+                showToast('ক্লেইম করতে সমস্যা হয়েছে!', 'error');
+            });
         }
 
-        function copyReferralLink() {
-            navigator.clipboard.writeText(`${referralConfig.baseUrl}${activeUser.id}`).then(() => showToast("লিংক কপি হয়েছে!", "success"));
-        }
-        function shareReferralLinkTelegram() {
-            const url = `https://t.me/share/url?url=${encodeURIComponent(referralConfig.baseUrl + activeUser.id)}&text=Join+Ludo+Hub`;
-            window.open(url, '_blank');
-        }
-        function updateReferralRulesUI() {
-            document.getElementById('ref-config-badge').textContent = `৳${referralConfig.firstDepositBonus} / ১০০৳ ১ম ডিপোজিটে`;
-            document.getElementById('ref-reward-tag').textContent = `${referralConfig.firstDepositBonus} টাকা + ${referralConfig.matchWinCommission} টাকা কমিশন`;
-        }
-        function updateReferralDisplay() {
-            const l = document.getElementById('ref-link-display-full');
-            if (l) l.textContent = `${referralConfig.baseUrl}${activeUser.id}`;
+        function registerUserReferral(inviterId) {
+            const userRef = userDb.ref(`users/${activeUser.id}`);
+            userRef.once('value', snapshot => {
+                const u = snapshot.val() || {};
+                if (!u.referredBy) {
+                    userRef.update({ referredBy: inviterId });
+                    userDb.ref(`users/${inviterId}/referrals/${activeUser.id}`).set({
+                        uid: activeUser.id,
+                        name: activeUser.name,
+                        photo: activeUser.photo,
+                        hasFirstDepositBonusGiven: false,
+                        isAccountActive: false,
+                        joinedAt: Date.now()
+                    });
+                }
+            });
         }
 
+        // ================= AUTOMATED GATEWAY PAYMENT =================
         async function initiatePaymentGateway() {
             const amount = document.getElementById('deposit-amount-input').value.trim();
             if (!amount || parseFloat(amount) <= 0) return showToast('সঠিক এমাউন্ট লিখুন', 'error');
@@ -2968,24 +2965,18 @@
             }
         }
 
-        // ================= FIX: STRICT TRANSACTION IDEMPOTENCY (NO REPEAT ON RELOAD) =================
         async function checkReturnPaymentStatus() {
             const urlParams = new URLSearchParams(window.location.search);
             const transactionId = urlParams.get('transactionId') || urlParams.get('transaction_id') || urlParams.get('txid');
             const urlStatus = urlParams.get('status');
 
             if (transactionId || urlStatus === 'success') {
-                // Instantly remove URL parameters to prevent repeated balance increase on reload
                 window.history.replaceState({}, document.title, window.location.pathname);
-
                 if (!transactionId) return;
 
-                // Check Firebase idempotency - verify if already credited
                 const procRef = userDb.ref(`processed_payments/${transactionId}`);
                 const procSnap = await procRef.once('value');
-                if (procSnap.exists()) {
-                    return; // Already processed!
-                }
+                if (procSnap.exists()) return;
 
                 showToast('পেমেন্ট ভেরিফাই করা হচ্ছে...');
                 try {
@@ -2998,7 +2989,6 @@
                     if (data.status === "SUCCESS" || data.payment_status === "COMPLETED" || data.success === true) {
                         let depositAmount = parseFloat(data.amount || urlParams.get('paymentAmount') || 0);
                         if (depositAmount > 0) {
-                            // Mark processed immediately
                             await procRef.set({
                                 uid: activeUser.id,
                                 amount: depositAmount,
@@ -3018,7 +3008,6 @@
                                 meta: { txid: transactionId }
                             });
 
-                            // STRICT FIRST DEPOSIT & REFERRAL LOGIC
                             userDb.ref(`users/${activeUser.id}`).once('value', uSnap => {
                                 const u = uSnap.val() || {};
                                 const inviterId = u.referredBy;
@@ -3067,6 +3056,7 @@
             }
         }
 
+        // ================= REDEEM CODE =================
         function handleRedeemSubmit() {
             const code = document.getElementById('input-redeem-code').value.trim().toUpperCase();
             if (!code) return showToast("প্রোমো কোডটি দিন", "error");
