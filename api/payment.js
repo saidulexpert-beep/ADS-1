@@ -10,7 +10,7 @@ export default async function handler(req, res) {
         return res.status(200).end();
     }
 
-    const API_KEY = process.env.TZ_API_KEY || 'IBqczPjssNoCKEP2';
+    const API_KEY = process.env.TZ_API_KEY || 'nWDiDXEmgVjTZSU0TY';
     const { action } = req.query;
 
     try {
