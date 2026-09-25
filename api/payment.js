@@ -1,44 +1,84 @@
-async function initiatePayment() {
-    if (!currentUser) return showToastPopup('প্রথমে লগইন করুন');
-    const amount = document.getElementById('amountInput').value.trim();
-    if (!amount || parseFloat(amount) <= 0) return showToastPopup('সঠিক এমাউন্ট লিখুন');
+// api/payment.js
 
-    const btn = document.getElementById('btnPayGateway');
-    btn.disabled = true; 
-    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
+export default async function handler(req, res) {
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-    const returnUrl = window.location.origin + window.location.pathname;
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
 
-    const payload = {
-        cus_name: currentUser.email.split('@')[0] || 'User',
-        cus_email: currentUser.email,
-        cus_number: '01700000000',
-        success_url: returnUrl + "?status=success",
-        cancel_url: returnUrl + "?status=cancel",
-        callback_url: returnUrl + "?status=callback",
-        amount: parseFloat(amount)
-    };
+    const API_KEY = process.env.TZ_API_KEY || 'IBqczPjssNoCKEP2';
+    const { action } = req.query;
 
     try {
-        const res = await fetch('/api/payment?action=create', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
-        
-        const data = await res.json();
-        let payUrl = data.payment_url || data.url || (data.data && (data.data.payment_url || data.data.url));
+        if (action === 'create' && req.method === 'POST') {
+            const { cus_name, cus_email, cus_number, amount, success_url, cancel_url } = req.body;
 
-        if (payUrl) {
-            window.location.href = payUrl;
-        } else {
-            showToastPopup(data.message || 'পেমেন্ট গেটওয়েতে সমস্যা হচ্ছে!');
-            btn.disabled = false; 
-            btn.innerHTML = '<i class="fa-solid fa-lock" style="color: #facc15;"></i> Continue to Payment';
+            // লাইভ ডোমেইন নিশ্চিত করা (যদি লোকালহোস্টে থাকেন)
+            const fallbackDomain = 'https://used-mail-shop.firebaseapp.com';
+            const validSuccessUrl = (success_url && success_url.startsWith('http')) ? success_url : fallbackDomain;
+            const validCancelUrl = (cancel_url && cancel_url.startsWith('http')) ? cancel_url : fallbackDomain;
+
+            const payload = {
+                api_key: API_KEY,
+                cus_name: cus_name || 'Customer',
+                cus_email: cus_email || 'test@mail.com',
+                cus_number: cus_number || '01711111111',
+                amount: Number(amount),
+                success_url: validSuccessUrl,
+                cancel_url: validCancelUrl,
+                callback_url: validSuccessUrl,
+                redirect: true
+            };
+
+            const response = await fetch('https://tzsmmpay.com/api/payment/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const textResponse = await response.text();
+            let data;
+            try {
+                data = JSON.parse(textResponse);
+            } catch (e) {
+                return res.status(500).json({ 
+                    status: false, 
+                    message: 'Gateway returned non-JSON response', 
+                    raw: textResponse 
+                });
+            }
+
+            return res.status(response.status).json(data);
         }
-    } catch (err) {
-        showToastPopup('সার্ভার কানেকশন ব্যর্থ হয়েছে');
-        btn.disabled = false; 
-        btn.innerHTML = '<i class="fa-solid fa-lock" style="color: #facc15;"></i> Continue to Payment';
+
+        else if (action === 'verify') {
+            const trx_id = req.query.trx_id || (req.body && req.body.trx_id);
+
+            if (!trx_id) {
+                return res.status(400).json({ status: false, message: 'trx_id প্রদান করা হয়নি' });
+            }
+
+            const response = await fetch(`https://tzsmmpay.com/api/payment/verify?api_key=${API_KEY}&trx_id=${encodeURIComponent(trx_id)}`, {
+                headers: { 'Accept': 'application/json' }
+            });
+
+            const data = await response.json();
+            return res.status(response.status).json(data);
+        }
+
+        return res.status(400).json({ status: false, message: 'Invalid Action' });
+
+    } catch (error) {
+        return res.status(500).json({ 
+            status: false, 
+            message: error.message || 'সার্ভার কানেকশনে সমস্যা' 
+        });
     }
 }
