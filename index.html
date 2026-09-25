@@ -339,7 +339,7 @@
     <!-- MAIN BODY PAGES -->
     <main class="p-3.5 space-y-4">
 
-        <!-- ======================= 1. HOME ARENA PAGE (INSTANT LOAD) ======================= -->
+        <!-- ======================= 1. HOME ARENA PAGE ======================= -->
         <div id="home-page" class="sub-page active space-y-4">
             <!-- BANNER -->
             <div class="rounded-3xl overflow-hidden relative border border-white/10 shadow-2xl bg-gradient-to-r from-blue-900 to-indigo-950 p-4 flex items-center justify-between min-h-[140px]">
@@ -498,11 +498,10 @@
                 <span class="text-[10px] bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full border border-white/10 font-bold">ম্যাচ রেকর্ডস</span>
             </div>
 
-            <!-- PURE MATCH HISTORY CONTAINER -->
             <div id="pure-match-history-container" class="space-y-3 min-h-[300px]"></div>
         </div>
 
-        <!-- ======================= 5. REFERRAL PROGRAM PAGE (WITH CLAIM FEATURE) ======================= -->
+        <!-- ======================= 5. REFERRAL PROGRAM PAGE ======================= -->
         <div id="refer-page" class="sub-page space-y-4">
             <div class="flex items-center gap-2 pb-1">
                 <button onclick="navigateTo('profile-page')" class="w-9 h-9 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10">
@@ -524,7 +523,7 @@
                 </div>
             </div>
 
-            <!-- REFERRAL CLAIM CARD (NEW CLAIM ENGINE) -->
+            <!-- REFERRAL CLAIM CARD -->
             <div class="bg-gradient-to-r from-emerald-950 via-[#0d2218] to-slate-900 p-4 rounded-3xl border border-emerald-500/30 shadow-xl flex items-center justify-between">
                 <div>
                     <span class="text-[11px] font-bold text-emerald-300 block">ক্লেইমযোগ্য রেফারেল ব্যালেন্স:</span>
@@ -602,7 +601,7 @@
             </div>
         </div>
 
-        <!-- ======================= 6. 7-DAYS LEADERBOARD PAGE (UPDATED WITH REVERSE COUNTDOWN & YOU CARD) ======================= -->
+        <!-- ======================= 6. 7-DAYS LEADERBOARD PAGE ======================= -->
         <div id="leaderboard-page" class="sub-page space-y-4">
             <div class="flex items-center gap-2 pb-1">
                 <button onclick="navigateTo('profile-page')" class="w-9 h-9 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10">
@@ -668,7 +667,7 @@
             <!-- TOP PLAYERS LIST CONTAINER -->
             <div class="space-y-2.5">
                 <div class="flex items-center justify-between px-1">
-                    <h4 class="text-xs font-black text-slate-300 uppercase tracking-wider">র‍্যাঙ্কিং তালিকা</h4>
+                    <h4 class="text-xs font-black text-slate-300 uppercase tracking-wider">র‍্যাঙ্কিং তালিকা (১ জয় = ১ পয়েন্ট)</h4>
                     <span class="text-[10px] font-bold text-amber-400">সাপ্তাহিক রিয়েলটাইম রেকর্ড</span>
                 </div>
                 <div id="leaderboard-list-container" class="space-y-2"></div>
@@ -780,7 +779,6 @@
                     ৳0
                 </div>
 
-                <!-- UNIFIED TIMELINE BUTTON -->
                 <button onclick="openTransactionsModal()" class="w-full py-2.5 rounded-2xl bg-white/20 hover:bg-white/30 text-white font-black text-xs flex items-center justify-center gap-2 backdrop-blur-md transition">
                     <i class="fas fa-list-alt text-sm"></i>
                     <span>একসাথে সকল লেনদেন বিবরণী দেখুন</span>
@@ -862,7 +860,7 @@
             </div>
         </div>
 
-        <!-- ======================= 10. WITHDRAW PAGE (WINNING BALANCE ONLY) ======================= -->
+        <!-- ======================= 10. WITHDRAW PAGE ======================= -->
         <div id="withdraw-page" class="sub-page space-y-4">
             <div class="flex items-center justify-between pb-1">
                 <div class="flex items-center gap-2.5">
@@ -1214,7 +1212,6 @@
         // 7 DAYS LEADERBOARD CYCLE TIME TRACKING
         let leaderboardCycleEnd = Date.now() + (7 * 24 * 60 * 60 * 1000);
 
-        // ZERO LAG PRE-DEFINED CATEGORIES (INSTANT RENDER)
         let gameCategories = [
             { key: "ludo", name: "Ludo King (লুডো কিং)", icon: "https://cdn-icons-png.flaticon.com/512/806/806131.png", subtitle: "১v১, ১v২ ও ১v৩ লাইভ চ্যালেঞ্জ", hidden: false, tag: "HOT", color: "blue", order: 1 },
             { key: "snake", name: "Snake King (সাপ লুডু)", icon: "https://cdn-icons-png.flaticon.com/512/2865/2865488.png", subtitle: "ক্লাসিক স্নেক অ্যান্ড ল্যাডার টুর্নামেন্ট", hidden: false, tag: "NEW", color: "teal", order: 2 },
@@ -1223,7 +1220,6 @@
             { key: "bead16", name: "Bead 16 (১৬ গুটি)", icon: "https://cdn-icons-png.flaticon.com/512/3076/3076891.png", subtitle: "ঐতিহ্যবাহী ১৬ গুটি চ্যালেঞ্জ", hidden: false, tag: "PLAY NOW", color: "purple", order: 5 }
         ];
 
-        // INSTANT EXECUTION: Zero delay load from LocalStorage cache
         try {
             const cachedMatches = localStorage.getItem('cache_matches');
             if (cachedMatches) realtimeMatches = JSON.parse(cachedMatches);
@@ -1270,7 +1266,6 @@
             setInterval(checkMatchTimingRules, 1000);
             setInterval(updateLeaderboard7DayCountdown, 1000);
 
-            // PRELOADER HIDE TIMER
             setTimeout(() => {
                 const loader = document.getElementById('preloader');
                 if (loader) {
@@ -1279,6 +1274,34 @@
                 }
             }, 800);
         });
+
+        // PARSE FIREBASE TIME (FLEXIBLE FORMAT SUPPORT)
+        function parseMatchStartTime(timeVal) {
+            if (!timeVal) return null;
+            if (typeof timeVal === 'number') return timeVal;
+            if (!isNaN(Number(timeVal))) return Number(timeVal);
+
+            // Handle standard date strings
+            const parsed = Date.parse(timeVal);
+            if (!isNaN(parsed)) return parsed;
+
+            // Handle "10:30 PM" or "04:15 AM" format for today
+            const timeMatch = String(timeVal).match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i);
+            if (timeMatch) {
+                let [_, hours, minutes, period] = timeMatch;
+                hours = parseInt(hours);
+                minutes = parseInt(minutes);
+                if (period) {
+                    if (period.toUpperCase() === 'PM' && hours < 12) hours += 12;
+                    if (period.toUpperCase() === 'AM' && hours === 12) hours = 0;
+                }
+                const now = new Date();
+                const d = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes, 0, 0);
+                return d.getTime();
+            }
+
+            return null;
+        }
 
         // ================= FAST REALTIME FIREBASE SYNC =================
         function initRealtimeFirebaseSync() {
@@ -1332,10 +1355,11 @@
                         m.current = m.playersList.length;
                         m.myJoined = m.players && m.players[activeUser.id] !== undefined;
 
+                        // FLEXIBLE START TIME FIX
                         if (m.isSpecial) {
                             m.expiresAt = m.expiresAt || (m.createdAt ? m.createdAt + (30 * 60 * 1000) : Date.now() + (30 * 60 * 1000));
                         } else {
-                            m.startTime = m.startTime || (m.createdAt ? m.createdAt + (25 * 60 * 1000) : Date.now() + (20 * 60 * 1000));
+                            m.startTime = parseMatchStartTime(m.startTime) || (m.createdAt ? m.createdAt + (25 * 60 * 1000) : Date.now() + (20 * 60 * 1000));
                         }
 
                         realtimeMatches.push(m);
@@ -1349,7 +1373,7 @@
                             }
                         }
 
-                        // NOTIFY ADMIN VIA TELEGRAM BOT DIRECTLY ON MATCH FULL
+                        // NOTIFY ADMIN ON FULL
                         if (m.current >= m.max && !m.adminNotifiedFull) {
                             notifyAdminViaTelegramDirect(m);
                             database.ref(`matches/${m.id}`).update({ adminNotifiedFull: true });
@@ -1419,7 +1443,7 @@
                 renderNotifications();
             });
 
-            // REFERRED USERS REALTIME SYNC AND RENDER
+            // REFERRED USERS
             database.ref(`users/${activeUser.id}/referrals`).on('value', snap => {
                 const container = document.getElementById('referred-users-list-container');
                 if (!container) return;
@@ -1479,7 +1503,7 @@
             loadLeaderboard();
         }
 
-        // ================= CLAIM REFERRAL BONUS (30 TK MIN & 1 PER DAY) =================
+        // ================= CLAIM REFERRAL BONUS =================
         function claimReferralBonus() {
             const minClaim = referralConfig.minClaimAmount || 30;
             const now = Date.now();
@@ -1530,15 +1554,15 @@
             });
         }
 
-        // ================= 7 DAYS LEADERBOARD COUNTDOWN & ENGINE =================
+        // ================= 7 DAYS LEADERBOARD COUNTDOWN & RESET =================
         function updateLeaderboard7DayCountdown() {
             const now = Date.now();
             let distance = leaderboardCycleEnd - now;
 
             if (distance <= 0) {
-                leaderboardCycleEnd = now + (7 * 24 * 60 * 60 * 1000);
-                database.ref('settings/leaderboard_cycle_end').set(leaderboardCycleEnd);
-                distance = leaderboardCycleEnd - now;
+                // RESET LEADERBOARD AND NOTIFY ADMIN
+                resetLeaderboardWeek();
+                return;
             }
 
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -1551,6 +1575,67 @@
             if (el) el.textContent = timerStr;
         }
 
+        function resetLeaderboardWeek() {
+            database.ref('users').once('value').then(snap => {
+                let userArray = [];
+                if (snap.exists()) {
+                    snap.forEach(c => {
+                        const u = c.val() || {};
+                        const prof = u.profile || {};
+                        const pts = parseInt(u.weeklyPoints || 0);
+                        if (pts > 0) {
+                            userArray.push({
+                                uid: c.key,
+                                name: prof.name || u.name || 'Player',
+                                points: pts
+                            });
+                        }
+                    });
+                }
+
+                userArray.sort((a, b) => b.points - a.points);
+                const top1 = userArray[0] ? `${userArray[0].name} (${userArray[0].points} pts)` : 'None';
+                const top2 = userArray[1] ? `${userArray[1].name} (${userArray[1].points} pts)` : 'None';
+                const top3 = userArray[2] ? `${userArray[2].name} (${userArray[2].points} pts)` : 'None';
+
+                // SEND NOTICE/REQUEST TO ADMIN
+                const adminMsg = `🏆 <b>সাপ্তাহিক লিডারবোর্ড সম্পন্ন হয়েছে! [LUDO HUB]</b>\n\n` +
+                                 `🥇 <b>১ম স্থান (Top 1):</b> ${top1} -> প্রাইজ: ৳১০০\n` +
+                                 `🥈 <b>২য় স্থান (Top 2):</b> ${top2} -> প্রাইজ: ৳৫০\n` +
+                                 `🥉 <b>৩য় স্থান (Top 3):</b> ${top3} -> প্রাইজ: ৳২০\n\n` +
+                                 `⚠️ <i>দয়া করে উইনারদের প্রাইজ প্রদান সম্পন্ন করুন। নতুন সপ্তাহ শুরু হয়েছে!</i>`;
+
+                if (adminConfig.botToken && adminConfig.adminChatId) {
+                    fetch(`https://api.telegram.org/bot${adminConfig.botToken}/sendMessage`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ chat_id: adminConfig.adminChatId, text: adminMsg, parse_mode: 'HTML' })
+                    }).catch(e => console.log(e));
+                }
+
+                // RECORD TO ADMIN REQUESTS IN FIREBASE
+                database.ref('admin_leaderboard_requests').push({
+                    completedAt: Date.now(),
+                    winners: { top1, top2, top3 },
+                    userArray: userArray.slice(0, 10),
+                    status: "PENDING_PAYOUT"
+                });
+
+                // RESET WEEKLY POINTS FOR ALL USERS
+                const updates = {};
+                snap.forEach(c => {
+                    updates[`users/${c.key}/weeklyPoints`] = 0;
+                });
+                const nextCycle = Date.now() + (7 * 24 * 60 * 60 * 1000);
+                updates['settings/leaderboard_cycle_end'] = nextCycle;
+                leaderboardCycleEnd = nextCycle;
+
+                database.ref().update(updates).then(() => {
+                    loadLeaderboard();
+                });
+            });
+        }
+
         function loadLeaderboard() {
             const container = document.getElementById('leaderboard-list-container');
             if (!container) return;
@@ -1561,24 +1646,21 @@
                     snapshot.forEach(c => {
                         const u = c.val() || {};
                         const prof = u.profile || {};
-                        let wins = 0;
-                        if (u.history) {
-                            Object.values(u.history).forEach(h => {
-                                if (h.status === 'WIN') wins++;
-                            });
-                        }
+                        // 1 MATCH WIN = 1 POINT
+                        const points = parseInt(u.weeklyPoints !== undefined ? u.weeklyPoints : 0);
+                        const wins = points; 
+
                         userArray.push({
                             uid: c.key,
                             name: prof.name || u.name || 'Player',
                             photo: prof.photo || u.photo || 'https://cdn-icons-png.flaticon.com/512/847/847969.png',
                             wins: wins,
-                            points: wins * 10
+                            points: points
                         });
                     });
                 }
 
-                // Sort by wins / points
-                userArray.sort((a, b) => b.wins - a.wins || b.points - a.points);
+                userArray.sort((a, b) => b.points - a.points);
 
                 // Update "YOU" Card
                 const myRankIndex = userArray.findIndex(x => x.uid === activeUser.id);
@@ -1591,12 +1673,11 @@
                 document.getElementById('lb-you-points').textContent = myData.points;
                 document.getElementById('lb-you-rank').textContent = `#${myRank}`;
 
-                if (userArray.length === 0) {
-                    container.innerHTML = `<div class="p-5 text-center text-xs text-slate-400">এখনো কোনো প্লেয়ার ম্যাচ জয়লাভ করেনি।</div>`;
+                if (userArray.length === 0 || userArray.every(u => u.points === 0)) {
+                    container.innerHTML = `<div class="p-5 text-center text-xs text-slate-400">এই সপ্তাহে এখনো কোনো প্লেয়ার ম্যাচ জয়লাভ করেনি।</div>`;
                     return;
                 }
 
-                // Render Top Players with Top 1, Top 2, Top 3 Badges
                 let listHtml = '';
                 userArray.forEach((user, index) => {
                     const rank = index + 1;
@@ -1638,7 +1719,7 @@
                         </div>
                         <div class="text-right">
                             ${prizeHtml}
-                            <span class="text-[10px] font-bold text-emerald-400 block">${user.wins * 10} Points</span>
+                            <span class="text-[10px] font-bold text-emerald-400 block">${user.points} Points</span>
                         </div>
                     </div>`;
                 });
@@ -1647,7 +1728,7 @@
             });
         }
 
-        // ================= REFERRAL REGISTRATION FIX =================
+        // ================= REFERRAL REGISTRATION =================
         function registerUserReferral(inviterId) {
             const userRef = database.ref(`users/${activeUser.id}`);
             userRef.once('value', snapshot => {
@@ -1740,17 +1821,21 @@
             });
         }
 
+        // NOTIFY ADMIN VIA TELEGRAM BOT DIRECTLY ON MATCH FULL
         function notifyAdminViaTelegramDirect(match) {
             const adminChatId = adminConfig.adminChatId;
             const botToken = adminConfig.botToken;
 
-            const msg = `🚨 <b>ম্যাচ ফুল হয়ে গেছে! [LUDO HUB]</b>\n\n` +
+            const playerListStr = (match.playersList || []).map(p => `• ${p.name} (ID: ${p.uid})`).join('\n') || "N/A";
+
+            const msg = `🚨 <b>ম্যাচ ফুল হয়ে গেছে! অবিলম্বে রুম কোড দিন! [LUDO HUB]</b>\n\n` +
                         `🎮 <b>গেম:</b> ${(match.gameType).toUpperCase()}\n` +
-                        `🔢 <b>ম্যাচ:</b> ${match.matchNo}\n` +
+                        `🔢 <b>ম্যাচ নম্বর:</b> ${match.matchNo}\n` +
                         `⚔️ <b>মোড:</b> ${match.mode} (${match.max} Players)\n` +
                         `💵 <b>ফি:</b> ৳${match.fee} | <b>প্রাইজ:</b> ৳${match.prize}\n` +
                         `👥 <b>স্লট:</b> ${match.current}/${match.max} (FULL)\n\n` +
-                        `👉 <i>অবিলম্বে অ্যাপে গিয়ে রুম কোড সাবমিট করুন!</i>`;
+                        `📋 <b>প্লেয়ারদের তালিকা:</b>\n${playerListStr}\n\n` +
+                        `👉 <i>অ্যাপে বা অ্যাডমিন প্যানেলে গিয়ে ম্যাচ রুম কোড প্রদান করুন।</i>`;
 
             if (botToken && adminChatId) {
                 fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
@@ -1759,6 +1844,15 @@
                     body: JSON.stringify({ chat_id: adminChatId, text: msg, parse_mode: 'HTML' })
                 }).catch(e => console.log(e));
             }
+
+            // Save Alert to Firebase
+            database.ref('admin_alerts').push({
+                type: "MATCH_FULL",
+                matchId: match.id,
+                matchNo: match.matchNo,
+                gameType: match.gameType,
+                timestamp: Date.now()
+            });
         }
 
         // ================= MATCH CARDS RENDERING =================
@@ -1811,7 +1905,7 @@
                 const modeLabel = m.mode ? m.mode.toUpperCase() : (maxPlayers === 4 ? '1V3' : maxPlayers === 3 ? '1V2' : '1V1');
 
                 const timeDiff = m.startTime ? (m.startTime - now) : 99999999;
-                const isWithin5Min = !m.isSpecial && timeDiff <= (5 * 60 * 1000);
+                const isWithin5Min = !m.isSpecial && timeDiff <= (5 * 60 * 1000) && timeDiff > 0;
                 const isRefundLocked = isFull || isWithin5Min;
 
                 return `
@@ -1925,7 +2019,7 @@
             }).join('');
         }
 
-        // COUNTDOWN TIMER (5 MINUTES ONLY)
+        // COUNTDOWN TIMER
         function updateMatchCountdowns() {
             const now = Date.now();
             realtimeMatches.forEach(m => {
@@ -2004,7 +2098,7 @@
             const playerPayload = {
                 uid: activeUser.id,
                 name: chosenName,
-                photo: activeUser.photo,
+                photo: activeUser.photo || 'https://i.postimg.cc/L4YZZKsv/IMG-20260919-214336-790.jpg',
                 joinedAt: Date.now()
             };
 
@@ -2066,7 +2160,7 @@
             }
         }
 
-        // ================= RESULT UPLOAD & STRICT WINNING PRIZE =================
+        // ================= RESULT UPLOAD & 1 WIN = 1 POINT =================
         function openUploadResultModal() {
             document.getElementById('input-result-room').value = '';
             document.getElementById('screenshot-preview-img').classList.add('hidden');
@@ -2126,6 +2220,9 @@
                 updateUserInterface();
                 database.ref(`users/${activeUser.id}/winningBalance`).set(activeUser.winningBalance);
 
+                // LEADERBOARD: 1 WIN = 1 POINT
+                database.ref(`users/${activeUser.id}/weeklyPoints`).transaction(c => (c || 0) + 1);
+
                 recordTransaction(activeUser.id, {
                     type: "MATCH_WIN",
                     title: `ম্যাচ জয় প্রাইজ (${foundMatch.matchNo})`,
@@ -2139,13 +2236,30 @@
                     completedAt: Date.now()
                 });
 
+                // UPDATE PLAYERS HISTORY SNAPSHOT
+                const playersMap = foundMatch.players || {};
+                const playersArray = Object.values(playersMap);
+
                 database.ref(`users/${activeUser.id}/history/${foundMatch.id}`).update({
                     status: "WIN",
                     roomCode: room,
+                    playersSnapshot: playersArray,
                     completedAt: Date.now()
                 });
 
-                // LIFETIME REFERRAL COMMISSION TO INVITER (ADDED TO REFERRAL WALLET)
+                // Set others to LOSS
+                Object.keys(playersMap).forEach(uid => {
+                    if (uid !== activeUser.id) {
+                        database.ref(`users/${uid}/history/${foundMatch.id}`).update({
+                            status: "LOSS",
+                            roomCode: room,
+                            playersSnapshot: playersArray,
+                            completedAt: Date.now()
+                        });
+                    }
+                });
+
+                // COMMISSION TO INVITER
                 database.ref(`users/${activeUser.id}/referredBy`).once('value', inviterSnap => {
                     const inviterUid = inviterSnap.val();
                     if (inviterUid) {
@@ -2165,7 +2279,7 @@
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = 'ভেরিফাই ও জমা দিন';
                 closeModal('upload-result-modal');
-                showToast(`🎉 অভিনন্দন! ৳${prize} আপনার জয়ের ব্যালেন্সে যোগ হয়েছে!`, "success");
+                showToast(`🎉 অভিনন্দন! ৳${prize} আপনার জয়ের ব্যালেন্সে ও ১ লিডারবোর্ড পয়েন্ট যুক্ত হয়েছে!`, "success");
             }).catch(err => {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = 'ভেরিফাই ও জমা দিন';
@@ -2226,7 +2340,7 @@
             }, 600);
         }
 
-        // ================= PURE MATCH HISTORY (DYNAMIC OPPONENT IMAGE) =================
+        // ================= PURE MATCH HISTORY (ACCURATE OPPONENT IMAGE FIX) =================
         function renderPureMatchHistory() {
             const container = document.getElementById('pure-match-history-container');
             if (!container) return;
@@ -2243,18 +2357,23 @@
             container.innerHTML = pureMatchHistory.map(item => {
                 const isOneVsOne = (item.mode === '1v1' || !item.mode);
                 
-                // Fetch dynamic player info from realtime match if available
+                // Fetch dynamic player info from realtime match or snapshot
                 const liveMatch = realtimeMatches.find(m => m.id === item.matchId);
-                const players = (liveMatch && liveMatch.players) ? Object.values(liveMatch.players) : (item.playersSnapshot || []);
+                let players = [];
+                if (liveMatch && liveMatch.players) {
+                    players = Object.values(liveMatch.players);
+                } else if (item.playersSnapshot && Array.isArray(item.playersSnapshot)) {
+                    players = item.playersSnapshot;
+                }
 
-                let p1Photo = activeUser.photo;
+                let p1Photo = activeUser.photo || "https://i.postimg.cc/L4YZZKsv/IMG-20260919-214336-790.jpg";
                 let p2Photo = "https://cdn-icons-png.flaticon.com/512/847/847969.png";
-                let p2Name = "প্লেয়ারের অপেক্ষা...";
+                let p2Name = "প্রতিপক্ষ প্লেয়ার";
 
-                const opponentList = players.filter(p => p.uid !== activeUser.id);
+                const opponentList = players.filter(p => String(p.uid) !== String(activeUser.id));
                 if (opponentList.length > 0) {
                     p2Photo = opponentList[0].photo || p2Photo;
-                    p2Name = opponentList[0].name || "প্রতিপক্ষ";
+                    p2Name = opponentList[0].name || p2Name;
                 }
 
                 let statusColor = "text-amber-400 bg-amber-500/10 border-amber-500/30";
@@ -2298,7 +2417,7 @@
 
                             <div class="flex flex-col items-center gap-1">
                                 <div class="w-12 h-12 rounded-full border-2 border-rose-500 p-0.5 overflow-hidden shadow-lg bg-slate-800">
-                                    <img src="${p2Photo}" class="w-full h-full object-cover rounded-full" alt="Opponent">
+                                    <img src="${p2Photo}" class="w-full h-full object-cover rounded-full" onerror="this.src='https://cdn-icons-png.flaticon.com/512/847/847969.png'" alt="Opponent">
                                 </div>
                                 <span class="text-[10px] font-bold text-slate-400 truncate max-w-[80px]">${p2Name}</span>
                             </div>
@@ -2309,7 +2428,7 @@
                             <div class="flex items-center gap-2 overflow-x-auto pb-1">
                                 ${players.map(p => `
                                     <div class="flex items-center gap-1.5 bg-slate-800/80 px-2 py-1 rounded-xl border border-white/5 flex-shrink-0">
-                                        <img src="${p.photo || 'https://cdn-icons-png.flaticon.com/512/847/847969.png'}" class="w-5 h-5 rounded-full object-cover">
+                                        <img src="${p.photo || 'https://cdn-icons-png.flaticon.com/512/847/847969.png'}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/847/847969.png'" class="w-5 h-5 rounded-full object-cover">
                                         <span class="text-[10px] text-slate-300 font-bold truncate max-w-[60px]">${p.name}</span>
                                     </div>
                                 `).join('')}
@@ -2511,6 +2630,7 @@
         function formatMatchTime(timestamp) {
             if (!timestamp) return 'অপেক্ষারত';
             const d = new Date(timestamp);
+            if (isNaN(d.getTime())) return 'অপেক্ষারত';
             return d.toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit', hour12: true });
         }
 
@@ -2669,7 +2789,6 @@
                                 txid: transactionId
                             });
 
-                            // FIRST DEPOSIT REFERRAL BONUS ENGINE (GOES TO REFERRAL WALLET)
                             database.ref(`users/${activeUser.id}`).once('value', uSnap => {
                                 const u = uSnap.val() || {};
                                 if (u.referredBy && !u.hasDeposited) {
