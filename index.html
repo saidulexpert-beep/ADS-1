@@ -43,7 +43,6 @@
             user-select: text;
         }
 
-        /* 3 DOTS WAVE ANIMATION */
         .dots {
             display: flex;
             align-items: center;
@@ -67,7 +66,6 @@
             40% { transform: scale(1); opacity: 1; }
         }
 
-        /* MAIN PRELOADER */
         #preloader {
             position: fixed;
             inset: 0;
@@ -80,7 +78,6 @@
             transition: opacity 0.4s ease, visibility 0.4s ease;
         }
 
-        /* PER-PAGE DOT LOADER OVERLAY */
         #page-dot-loader {
             position: fixed;
             inset: 0;
@@ -250,7 +247,6 @@
         .sub-page { display: none; }
         .sub-page.active { display: block; }
 
-        /* SUPPORT DESK OVERLAY */
         #support-desk-overlay {
             position: fixed;
             inset: 0;
@@ -405,7 +401,7 @@
                 </div>
             </div>
 
-            <!-- SCROLLING NOTICE -->
+            <!-- SCROLLING NOTICE (FIREBASE 2 CONTROLLED) -->
             <div class="bg-[#121a2d] border border-amber-500/20 rounded-2xl px-3.5 py-2.5 flex items-center gap-2 shadow-inner">
                 <span class="text-amber-400 font-extrabold text-xs whitespace-nowrap flex items-center gap-1">
                     <i class="fas fa-bullhorn text-xs"></i> নোটিশ:
@@ -422,6 +418,7 @@
                 <div class="h-[1px] bg-slate-700/60 flex-1"></div>
             </div>
 
+            <!-- DYNAMIC LIVE ARENA (FIREBASE 2 CONTROLLED) -->
             <div id="game-categories-container" class="space-y-3"></div>
         </div>
 
@@ -449,7 +446,6 @@
                 </button>
             </div>
 
-            <!-- FILTER PILLS -->
             <div class="filter-container-box">
                 <div class="filter-tab-pill active" onclick="filterMatches('all', this)">
                     <div class="tab-title"><i class="fas fa-layer-group text-[10px]"></i> সব ম্যাচ</div>
@@ -472,7 +468,7 @@
             <div id="tournament-matches-container" class="space-y-3 pt-1"></div>
         </div>
 
-        <!-- 3. FULL PAGE SUPPORT HUB -->
+        <!-- 3. SUPPORT PAGE -->
         <div id="support-page" class="sub-page space-y-4">
             <div class="flex items-center gap-2 pb-1">
                 <button onclick="navigateTo('home-page')" class="w-9 h-9 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10">
@@ -558,14 +554,13 @@
                         <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-black uppercase tracking-wider border border-emerald-400/30 inline-flex items-center gap-1">
                             <i class="fas fa-bolt text-amber-300"></i> Instant Payout
                         </span>
-                        <span id="ref-config-badge" class="text-[11px] font-black text-amber-400 bg-amber-400/10 px-2.5 py-0.5 rounded-lg border border-amber-400/20">৳১০ / একটিভ রেফার</span>
+                        <span id="ref-config-badge" class="text-[11px] font-black text-amber-400 bg-amber-400/10 px-2.5 py-0.5 rounded-lg border border-amber-400/20">৳১০ / ১০০৳ ১ম ডিপোজিটে</span>
                     </div>
                     <h2 class="text-lg font-black tracking-tight text-white">Refer & Earn Program</h2>
                     <p class="text-xs text-blue-200">আপনার বন্ধুদের ইনভাইট করুন। রেফার ব্যালেন্স ক্লেইম করলে তা সরাসরি গেমিং ব্যালেন্সে জমা হবে!</p>
                 </div>
             </div>
 
-            <!-- REFERRAL CLAIM CARD -->
             <div class="bg-gradient-to-r from-emerald-950 via-[#0d2218] to-slate-900 p-4 rounded-3xl border border-emerald-500/30 shadow-xl flex items-center justify-between">
                 <div>
                     <span class="text-[11px] font-bold text-emerald-300 block">ক্লেইমযোগ্য রেফারেল ব্যালেন্স:</span>
@@ -596,7 +591,7 @@
             <div class="bg-[#121a2d] p-4 rounded-3xl border border-white/10 shadow-lg space-y-3">
                 <div class="flex items-center justify-between">
                     <span class="text-xs font-black text-slate-300">আপনার ব্যক্তিগত রেফারেল লিংক:</span>
-                    <span id="ref-reward-tag" class="text-[10px] text-cyan-400 font-bold bg-cyan-500/10 px-2 py-0.5 rounded-md">১০ টাকা + ২ টাকা বোনাস</span>
+                    <span id="ref-reward-tag" class="text-[10px] text-cyan-400 font-bold bg-cyan-500/10 px-2 py-0.5 rounded-md">১০ টাকা + ২ টাকা কমিশন</span>
                 </div>
 
                 <div class="bg-black/40 p-2.5 rounded-2xl border border-white/10 flex items-center justify-between">
@@ -613,6 +608,7 @@
                 </button>
             </div>
 
+            <!-- STRICT REFERRAL RULES -->
             <div class="bg-[#052e16]/60 border border-emerald-500/30 p-4 rounded-3xl space-y-3">
                 <h4 class="text-xs font-black text-emerald-400 flex items-center gap-2">
                     <i class="fas fa-gift"></i> রেফারেল ইনকাম ও ক্লেইম রুলস:
@@ -620,11 +616,11 @@
                 <div id="refer-rules-container" class="space-y-2 text-xs text-slate-300 leading-relaxed">
                     <p class="flex items-start gap-2">
                         <span class="w-5 h-5 rounded-full bg-emerald-500 text-slate-950 font-black flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">১</span>
-                        <span>আপনার বন্ধু প্রথমবার <b>১০০ টাকা</b> ডিপোজিট করলে সাথে সাথে আপনি <b>১০ টাকা</b> রেফার ব্যালেন্স পাবেন।</span>
+                        <span>আপনার বন্ধু <b>একসাথে প্রথম ডিপোজিটে ১০০ টাকা বা তার বেশি</b> ডিপোজিট করলেই কেবল আপনি <b>১০ টাকা রেফার বোনাস</b> পাবেন। প্রথমবার ১০০ টাকার কম ডিপোজিট করলে কোনো বোনাস পাবেন না।</span>
                     </p>
                     <p class="flex items-start gap-2">
                         <span class="w-5 h-5 rounded-full bg-cyan-500 text-slate-950 font-black flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">২</span>
-                        <span>রেফার করা বন্ধু ম্যাচ উইন হলে আপনি প্রতি ম্যাচ থেকে <b>২ টাকা কমিশন</b> পাবেন!</span>
+                        <span>বন্ধু ন্যূনতম ১০০ টাকা ডিপোজিট করে অ্যাকাউন্ট একটিভ করলে, পরবর্তীতে সে যত ম্যাচ উইন হবে প্রতি ম্যাচ থেকে আপনি <b>২ টাকা কমিশন</b> পাবেন। (১০০ টাকা ডিপোজিট না করা পর্যন্ত কোনো কমিশন পাবেন না)।</span>
                     </p>
                     <p class="flex items-start gap-2">
                         <span class="w-5 h-5 rounded-full bg-amber-500 text-slate-950 font-black flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">৩</span>
@@ -642,7 +638,7 @@
             </div>
         </div>
 
-        <!-- 6. 7-DAYS LEADERBOARD PAGE -->
+        <!-- 6. LEADERBOARD PAGE -->
         <div id="leaderboard-page" class="sub-page space-y-4">
             <div class="flex items-center gap-2 pb-1">
                 <button onclick="navigateTo('profile-page')" class="w-9 h-9 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10">
@@ -678,7 +674,6 @@
                 </div>
             </div>
 
-            <!-- "YOU" RANK CARD -->
             <div id="leaderboard-you-card" class="bg-gradient-to-r from-blue-950 via-[#13223f] to-slate-900 border-2 border-blue-500/50 p-4 rounded-3xl shadow-xl flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <div class="relative">
@@ -795,7 +790,6 @@
                 </div>
             </div>
 
-            <!-- TOTAL BALANCE BANNER -->
             <div class="wallet-banner-card space-y-4">
                 <div class="flex items-center gap-1.5 text-white/90 text-sm font-bold">
                     <i class="fas fa-shopping-bag"></i>
@@ -810,7 +804,6 @@
                 </button>
             </div>
 
-            <!-- GAMING BALANCE CARD -->
             <div class="wallet-item-box">
                 <div class="flex items-center gap-3">
                     <div class="w-12 h-12 rounded-2xl bg-[#1e293b] flex items-center justify-center text-sky-400 text-xl border border-white/5">
@@ -828,7 +821,6 @@
                 </button>
             </div>
 
-            <!-- WINNING BALANCE CARD -->
             <div class="wallet-item-box">
                 <div class="flex items-center gap-3">
                     <div class="w-12 h-12 rounded-2xl bg-[#1e293b] flex items-center justify-center text-amber-400 text-xl border border-white/5">
@@ -1174,7 +1166,7 @@
 
     <!-- ======================= DUAL FIREBASE APPLICATION LOGIC ======================= -->
     <script>
-        // FIREBASE 1: User Database (Profiles, Balances, History, Transactions, Referrals)
+        // FIREBASE 1: User & Balance Engine
         const firebaseConfig1 = {
             apiKey: "AIzaSyAEV4zkuTcRYIFP2AMmKJTyDUTzSYLnbbM",
             authDomain: "used-mail-shop.firebaseapp.com",
@@ -1185,7 +1177,7 @@
             appId: "1:251382358623:web:a567a9349d1fd87277b1ea"
         };
 
-        // FIREBASE 2: Content & Global Operations Database (Matches, Chats, Settings, Requests, Promo)
+        // FIREBASE 2: Content, Arena, Matches & Operations Engine
         const firebaseConfig2 = { 
             apiKey: "AIzaSyAWcpuG1If1KwpQ1oZbfQEUUSC2_uQs0zg", 
             authDomain: "earn-fire-88ed3.firebaseapp.com", 
@@ -1196,7 +1188,6 @@
             appId: "1:60636949306:web:d1886ced195ca9ab037e03" 
         };
 
-        // DUAL INSTANCE INITIALIZATION
         const userApp = firebase.initializeApp(firebaseConfig1, "USER_ENGINE");
         const contentApp = firebase.initializeApp(firebaseConfig2, "CONTENT_ENGINE");
 
@@ -1306,7 +1297,6 @@
             }, 800);
         });
 
-        // PARSE MATCH START TIME
         function parseMatchStartTime(timeVal) {
             if (!timeVal) return null;
             if (typeof timeVal === 'number') return timeVal;
@@ -1344,6 +1334,13 @@
 
         // ================= DUAL FIREBASE SYNC ENGINE =================
         function initRealtimeFirebaseSync() {
+            // [CONTENT DB] - Live Notice
+            contentDb.ref('settings/notice').on('value', snap => {
+                if (snap.exists() && snap.val()) {
+                    document.getElementById('main-notice-marquee').textContent = snap.val();
+                }
+            });
+
             // [CONTENT DB] - Leaderboard Cycle End
             contentDb.ref('settings/leaderboard_cycle_end').on('value', snap => {
                 if (snap.exists() && snap.val()) {
@@ -1370,7 +1367,7 @@
                 }
             });
 
-            // [CONTENT DB] - Game Categories
+            // [CONTENT DB] - Game Categories (Live Arena Control)
             contentDb.ref('game_categories').on('value', snap => {
                 const data = snap.val();
                 if (data) {
@@ -1380,7 +1377,7 @@
                 }
             });
 
-            // [CONTENT DB] - Realtime Matches
+            // [CONTENT DB] - Realtime Matches Sync & Auto-Regen Check
             contentDb.ref('matches').on('value', snapshot => {
                 const data = snapshot.val();
                 realtimeMatches = [];
@@ -1418,6 +1415,7 @@
                             }
                         }
 
+                        // When special match is full -> Notify admin & instantly spawn a new special match!
                         if (m.current >= m.max && !m.adminNotifiedFull) {
                             notifyAdminViaTelegramDirect(m);
                             contentDb.ref(`matches/${m.id}`).update({ adminNotifiedFull: true });
@@ -1431,15 +1429,16 @@
 
                     realtimeMatches.sort((a, b) => (a.order || 0) - (b.order || 0));
                     try { localStorage.setItem('cache_matches', JSON.stringify(realtimeMatches)); } catch(e){}
-                } else {
-                    seedSequentialMatches();
                 }
+
+                // Make sure at least one open special match always exists
+                ensureSpecialMatchAvailability();
 
                 renderMatches();
                 renderPureMatchHistory();
             });
 
-            // [USER DB] - Strict Balances
+            // [USER DB] - Strict Balance Listeners
             userDb.ref(`users/${activeUser.id}/depositBalance`).on('value', snap => {
                 activeUser.depositBalance = parseFloat(snap.val()) || 0;
                 updateUserInterface();
@@ -1496,7 +1495,7 @@
                     const refs = snap.val();
                     const list = Object.values(refs);
                     const total = list.length;
-                    const activeCount = list.filter(r => r.isAccountActive || r.hasFirstDepositBonusGiven).length;
+                    const activeCount = list.filter(r => r.isAccountActive).length;
 
                     document.getElementById('ref-stat-total').textContent = total;
                     document.getElementById('ref-stat-active').textContent = activeCount;
@@ -1504,7 +1503,7 @@
 
                     let refHtml = '';
                     list.forEach(r => {
-                        const isActive = r.isAccountActive || r.hasFirstDepositBonusGiven;
+                        const isActive = r.isAccountActive === true;
                         const userImg = r.photo || 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
                         refHtml += `
                         <div class="bg-black/30 p-3 rounded-2xl border border-white/5 flex items-center justify-between shadow-sm">
@@ -1520,11 +1519,11 @@
                             <div>
                                 ${isActive ? `
                                     <span class="px-2.5 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-lg text-[10px] font-black flex items-center gap-1">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Active
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Active (১০০৳+)
                                     </span>
                                 ` : `
                                     <span class="px-2.5 py-1 bg-amber-500/20 text-amber-300 border border-amber-500/30 rounded-lg text-[10px] font-bold">
-                                        Pending
+                                        Pending (<১০০৳)
                                     </span>
                                 `}
                             </div>
@@ -1553,6 +1552,37 @@
             });
 
             loadLeaderboard();
+        }
+
+        // ================= SPECIAL MATCH AUTO-REGENERATION ENGINE =================
+        function ensureSpecialMatchAvailability() {
+            const hasSpecial = realtimeMatches.some(m => m.isSpecial && m.current < m.max);
+            if (!hasSpecial) {
+                spawnNewSpecialMatch("ludo", 50, 90, 2, "1v1");
+            }
+        }
+
+        function spawnNewSpecialMatch(gameType = "ludo", fee = 50, prize = 90, max = 2, mode = "1v1") {
+            contentDb.ref('settings/last_match_number').transaction(curr => (curr || 5020) + 1, (err, committed, snap) => {
+                const nextNo = `#${snap.val()}`;
+                const now = Date.now();
+                const newSpecial = {
+                    matchNo: nextNo,
+                    gameType: gameType,
+                    mode: mode,
+                    max: max,
+                    fee: fee,
+                    prize: prize,
+                    isSpecial: true,
+                    roomCode: "",
+                    gameLink: "",
+                    status: "waiting",
+                    createdAt: now,
+                    expiresAt: now + (30 * 60 * 1000),
+                    order: 1
+                };
+                contentDb.ref('matches').push(newSpecial);
+            });
         }
 
         // ================= CLAIM REFERRAL BONUS =================
@@ -1696,6 +1726,11 @@
         function processLeaderboardApprovedPayout(reqKey, req) {
             if (!req.winners || req.distributed) return;
 
+            contentDb.ref(`admin_leaderboard_requests/${reqKey}`).update({
+                distributed: true,
+                distributedAt: Date.now()
+            });
+
             const winners = [req.winners.top1, req.winners.top2, req.winners.top3].filter(Boolean);
 
             winners.forEach((w, idx) => {
@@ -1716,11 +1751,6 @@
                         timestamp: Date.now()
                     });
                 }
-            });
-
-            contentDb.ref(`admin_leaderboard_requests/${reqKey}`).update({
-                distributed: true,
-                distributedAt: Date.now()
             });
         }
 
@@ -1883,29 +1913,6 @@
                     });
                 });
             }
-        }
-
-        function spawnNewSpecialMatch(gameType = "ludo", fee = 50, prize = 90, max = 2, mode = "1v1") {
-            contentDb.ref('settings/last_match_number').transaction(curr => (curr || 5020) + 1, (err, committed, snap) => {
-                const nextNo = `#${snap.val()}`;
-                const now = Date.now();
-                const newSpecial = {
-                    matchNo: nextNo,
-                    gameType: gameType,
-                    mode: mode,
-                    max: max,
-                    fee: fee,
-                    prize: prize,
-                    isSpecial: true,
-                    roomCode: "",
-                    gameLink: "",
-                    status: "waiting",
-                    createdAt: now,
-                    expiresAt: now + (30 * 60 * 1000),
-                    order: 1
-                };
-                contentDb.ref('matches').push(newSpecial);
-            });
         }
 
         function notifyAdminViaTelegramDirect(match) {
@@ -2244,7 +2251,7 @@
             }
         }
 
-        // ================= RESULT UPLOAD =================
+        // ================= RESULT UPLOAD & STRICT REFERRAL COMMISSION =================
         function openUploadResultModal() {
             document.getElementById('input-result-room').value = '';
             document.getElementById('screenshot-preview-img').classList.add('hidden');
@@ -2334,24 +2341,32 @@
                     }
                 });
 
-                userDb.ref(`users/${activeUser.id}/referredBy`).once('value', inviterSnap => {
-                    const inviterUid = inviterSnap.val();
+                // STRICT REFERRAL COMMISSION: ONLY IF THE REFERRED USER DEPOSITED >= 100
+                userDb.ref(`users/${activeUser.id}`).once('value', uSnap => {
+                    const u = uSnap.val() || {};
+                    const inviterUid = u.referredBy;
                     if (inviterUid) {
-                        const comm = referralConfig.matchWinCommission || 2;
-                        userDb.ref(`users/${inviterUid}/referralWallet`).transaction(c => (c || 0) + comm);
-                        userDb.ref(`users/${inviterUid}/refer_earnings`).transaction(c => (c || 0) + comm);
-                        
-                        recordTransaction(inviterUid, {
-                            type: "REFERRAL_COMMISSION",
-                            title: `রেফারেল ম্যাচ কমিশন (${activeUser.name})`,
-                            amount: comm,
-                            isCredit: true
+                        userDb.ref(`users/${inviterUid}/referrals/${activeUser.id}`).once('value', refSnap => {
+                            const refData = refSnap.val() || {};
+                            if (refData.isAccountActive === true) {
+                                const comm = referralConfig.matchWinCommission || 2;
+                                userDb.ref(`users/${inviterUid}/referralWallet`).transaction(c => (c || 0) + comm);
+                                userDb.ref(`users/${inviterUid}/refer_earnings`).transaction(c => (c || 0) + comm);
+                                
+                                recordTransaction(inviterUid, {
+                                    type: "REFERRAL_COMMISSION",
+                                    title: `রেফারেল ম্যাচ কমিশন (${activeUser.name})`,
+                                    amount: comm,
+                                    isCredit: true
+                                });
+                            }
                         });
                     }
                 });
 
                 contentDb.ref(`matches/${foundMatch.id}`).remove();
 
+                // Instantly spawn a new special match if the completed one was special
                 if (foundMatch.isSpecial) {
                     spawnNewSpecialMatch(foundMatch.gameType, foundMatch.fee, foundMatch.prize, foundMatch.max, foundMatch.mode);
                 }
@@ -2805,15 +2820,12 @@
             window.open(url, '_blank');
         }
         function updateReferralRulesUI() {
-            document.getElementById('ref-config-badge').textContent = `৳${referralConfig.firstDepositBonus} / একটিভ রেফার`;
-            document.getElementById('ref-reward-tag').textContent = `${referralConfig.firstDepositBonus} টাকা + ${referralConfig.matchWinCommission} টাকা বোনাস`;
+            document.getElementById('ref-config-badge').textContent = `৳${referralConfig.firstDepositBonus} / ১০০৳ ১ম ডিপোজিটে`;
+            document.getElementById('ref-reward-tag').textContent = `${referralConfig.firstDepositBonus} টাকা + ${referralConfig.matchWinCommission} টাকা কমিশন`;
         }
         function updateReferralDisplay() {
             const l = document.getElementById('ref-link-display-full');
             if (l) l.textContent = `${referralConfig.baseUrl}${activeUser.id}`;
-        }
-        function seedSequentialMatches() {
-            spawnNewSpecialMatch("ludo", 50, 90, 2, "1v1");
         }
 
         async function initiatePaymentGateway() {
@@ -2853,12 +2865,16 @@
             }
         }
 
+        // ================= FIX: PREVENT AUTOMATIC/REPEATED BALANCE INCREASE =================
         async function checkReturnPaymentStatus() {
             const urlParams = new URLSearchParams(window.location.search);
             const transactionId = urlParams.get('transactionId') || urlParams.get('transaction_id') || urlParams.get('txid');
             const urlStatus = urlParams.get('status');
 
             if (transactionId || urlStatus === 'success') {
+                // Instantly remove URL params to prevent repeated processing on reload
+                window.history.replaceState({}, document.title, window.location.pathname);
+
                 showToast('পেমেন্ট ভেরিফাই করা হচ্ছে...');
                 try {
                     const res = await fetch('/api/payment?action=verify', {
@@ -2870,43 +2886,58 @@
                     if (data.status === "SUCCESS" || data.payment_status === "COMPLETED" || data.success === true) {
                         let depositAmount = parseFloat(data.amount || urlParams.get('paymentAmount') || 0);
                         if (depositAmount > 0) {
-                            activeUser.depositBalance += depositAmount;
-                            updateUserInterface();
-                            userDb.ref(`users/${activeUser.id}/depositBalance`).set(activeUser.depositBalance);
+                            userDb.ref(`users/${activeUser.id}/depositBalance`).transaction(curr => (curr || 0) + depositAmount);
 
                             recordTransaction(activeUser.id, {
                                 type: "DEPOSIT",
                                 title: "গেমিং ব্যালেন্স ডিপোজিট",
                                 amount: depositAmount,
                                 isCredit: true,
-                                txid: transactionId
+                                txid: transactionId || "GATEWAY"
                             });
 
+                            // STRICT FIRST DEPOSIT & REFERRAL LOGIC
                             userDb.ref(`users/${activeUser.id}`).once('value', uSnap => {
                                 const u = uSnap.val() || {};
-                                if (u.referredBy && !u.hasDeposited) {
-                                    userDb.ref(`users/${activeUser.id}/hasDeposited`).set(true);
-                                    if (depositAmount >= (referralConfig.firstDepositMin || 100)) {
+                                const inviterId = u.referredBy;
+                                const isFirstDeposit = !u.depositHistoryCount || u.depositHistoryCount === 0;
+
+                                const newCount = (u.depositHistoryCount || 0) + 1;
+                                const newTotalDep = (u.totalDeposited || 0) + depositAmount;
+
+                                userDb.ref(`users/${activeUser.id}`).update({
+                                    depositHistoryCount: newCount,
+                                    totalDeposited: newTotalDep
+                                });
+
+                                if (inviterId) {
+                                    // Rule 1: FIRST DEPOSIT ONLY AND MUST BE >= 100 FOR BONUS
+                                    if (isFirstDeposit && depositAmount >= (referralConfig.firstDepositMin || 100)) {
                                         const bonus = referralConfig.firstDepositBonus || 10;
-                                        userDb.ref(`users/${u.referredBy}/referralWallet`).transaction(c => (c || 0) + bonus);
-                                        userDb.ref(`users/${u.referredBy}/refer_earnings`).transaction(c => (c || 0) + bonus);
-                                        userDb.ref(`users/${u.referredBy}/referrals/${activeUser.id}`).update({
+                                        userDb.ref(`users/${inviterId}/referralWallet`).transaction(c => (c || 0) + bonus);
+                                        userDb.ref(`users/${inviterId}/refer_earnings`).transaction(c => (c || 0) + bonus);
+                                        userDb.ref(`users/${inviterId}/referrals/${activeUser.id}`).update({
                                             isAccountActive: true,
                                             hasFirstDepositBonusGiven: true
                                         });
 
-                                        recordTransaction(u.referredBy, {
+                                        recordTransaction(inviterId, {
                                             type: "REFERRAL_BONUS",
-                                            title: `প্রথম ডিপোজিট রেফারেল বোনাস (${activeUser.name})`,
+                                            title: `১ম ডিপোজিট রেফার বোনাস (${activeUser.name})`,
                                             amount: bonus,
                                             isCredit: true
+                                        });
+                                    } 
+                                    // Rule 2: If first deposit was < 100, but now reached >= 100 -> only activate for match win commission
+                                    else if (newTotalDep >= 100 || depositAmount >= 100) {
+                                        userDb.ref(`users/${inviterId}/referrals/${activeUser.id}`).update({
+                                            isAccountActive: true
                                         });
                                     }
                                 }
                             });
 
                             showToast(`৳${depositAmount} গেমিং ব্যালেন্সে যোগ হয়েছে!`, 'success');
-                            window.history.replaceState({}, document.title, window.location.pathname);
                         }
                     }
                 } catch (e) {
@@ -2922,9 +2953,7 @@
             contentDb.ref(`promo_codes/${code}`).once('value', snap => {
                 if (snap.exists() && snap.val().active) {
                     const bonus = parseFloat(snap.val().amount || 20);
-                    activeUser.depositBalance += bonus;
-                    updateUserInterface();
-                    userDb.ref(`users/${activeUser.id}/depositBalance`).set(activeUser.depositBalance);
+                    userDb.ref(`users/${activeUser.id}/depositBalance`).transaction(curr => (curr || 0) + bonus);
 
                     recordTransaction(activeUser.id, {
                         type: "PROMO",
