@@ -595,7 +595,7 @@
                 <div>
                     <span class="text-[11px] font-bold text-emerald-300 block">ক্লেইমযোগ্য রেফারেল ব্যালেন্স:</span>
                     <h3 id="ref-claimable-bal" class="text-2xl font-black text-emerald-400 mt-0.5">৳0.00</h3>
-                    <span class="text-[10px] text-slate-400 font-semibold block">*সর্বনিম্ন ৳৩০ হলে দিনে ১ বার গেমিং ব্যালেন্সে যোগ হবে</span>
+                    <span class="text-[10px] text-slate-400 font-semibold">*সর্বনিম্ন ৳৩০ হলে দিনে ১ বার গেমিং ব্যালেন্সে যোগ হবে</span>
                 </div>
                 <button onclick="claimReferralBonus()" id="btn-claim-referral" class="px-4 py-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 text-slate-950 font-black text-xs shadow-lg flex items-center gap-1.5 transition active:scale-95">
                     <i class="fas fa-hand-holding-dollar text-sm"></i>
@@ -1342,27 +1342,38 @@
             }, 800);
         });
 
-        // PARSE MATCH START TIME
+        // ================= PARSE MATCH START TIME (SUPPORTS "TODAY - 11:00 AM", "TOMORROW - 03:30 PM", ISO, ETC.) =================
         function parseMatchStartTime(timeVal) {
             if (!timeVal) return null;
             if (typeof timeVal === 'number') return timeVal;
             if (!isNaN(Number(timeVal))) return Number(timeVal);
 
-            const parsed = Date.parse(timeVal);
+            let str = String(timeVal).trim();
+            const now = new Date();
+
+            let dayOffset = 0;
+            if (/^TODAY\s*[-–:]?\s*/i.test(str)) {
+                dayOffset = 0;
+                str = str.replace(/^TODAY\s*[-–:]?\s*/i, '').trim();
+            } else if (/^TOMORROW\s*[-–:]?\s*/i.test(str)) {
+                dayOffset = 1;
+                str = str.replace(/^TOMORROW\s*[-–:]?\s*/i, '').trim();
+            }
+
+            const parsed = Date.parse(str);
             if (!isNaN(parsed)) return parsed;
 
-            const timeMatch = String(timeVal).match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i);
+            const timeMatch = str.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i);
             if (timeMatch) {
                 let [_, hours, minutes, period] = timeMatch;
-                hours = parseInt(hours);
-                minutes = parseInt(minutes);
+                hours = parseInt(hours, 10);
+                minutes = parseInt(minutes, 10);
                 if (period) {
                     if (period.toUpperCase() === 'PM' && hours < 12) hours += 12;
                     if (period.toUpperCase() === 'AM' && hours === 12) hours = 0;
                 }
-                const now = new Date();
-                const d = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes, 0, 0);
-                return d.getTime();
+                const targetDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + dayOffset, hours, minutes, 0, 0);
+                return targetDate.getTime();
             }
 
             return null;
@@ -1411,7 +1422,6 @@
                 if (data) {
                     Object.keys(data).forEach(key => {
                         const m = data[key];
-                        // If marked completed, ignore here (it will also be removed immediately)
                         if (m.status === 'COMPLETED') return;
 
                         m.id = key;
@@ -1419,11 +1429,14 @@
                         m.mode = m.mode || (m.max === 4 ? '1v3' : m.max === 3 ? '1v2' : '1v1');
                         m.max = m.max || (m.mode === '1v3' ? 4 : m.mode === '1v2' ? 3 : 2);
                         m.order = m.order !== undefined ? m.order : 100;
+                        m.roomCode = m.roomCode || "";
+                        m.gameLink = m.gameLink || "";
 
                         m.playersList = m.players ? Object.values(m.players) : [];
                         m.current = m.playersList.length;
                         m.myJoined = m.players && m.players[activeUser.id] !== undefined;
 
+                        // SPECIAL vs NORMAL MATCH TIMING
                         if (m.isSpecial) {
                             m.expiresAt = m.expiresAt || (m.createdAt ? m.createdAt + (30 * 60 * 1000) : Date.now() + (30 * 60 * 1000));
                         } else {
@@ -1602,7 +1615,7 @@
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> প্রসেসিং...';
 
             activeUser.referralWallet = 0;
-            activeUser.depositBalance += claimAmount; // Added to Gaming Balance as required
+            activeUser.depositBalance += claimAmount;
             activeUser.lastReferralClaim = now;
 
             updateUserInterface();
@@ -1677,7 +1690,6 @@
                 const top2Str = top2 ? `${top2.name} (UID: ${top2.uid} | ${top2.points} pts)` : 'None';
                 const top3Str = top3 ? `${top3.name} (UID: ${top3.uid} | ${top3.points} pts)` : 'None';
 
-                // SEND NOTICE/REQUEST TO ADMIN VIA TELEGRAM
                 const adminMsg = `🏆 <b>সাপ্তাহিক লিডারবোর্ড চক্র সম্পন্ন হয়েছে! [LUDO HUB]</b>\n\n` +
                                  `🥇 <b>১ম স্থান:</b> ${top1Str} -> প্রাইজ: ৳১০০ (Gaming)\n` +
                                  `🥈 <b>২য় স্থান:</b> ${top2Str} -> প্রাইজ: ৳৫০ (Gaming)\n` +
@@ -1692,7 +1704,6 @@
                     }).catch(e => console.log(e));
                 }
 
-                // RECORD TO ADMIN REQUESTS IN FIREBASE FOR APPROVAL
                 const newReqRef = database.ref('admin_leaderboard_requests').push();
                 newReqRef.set({
                     completedAt: Date.now(),
@@ -1705,7 +1716,6 @@
                     distributed: false
                 });
 
-                // RESET WEEKLY POINTS FOR ALL USERS
                 const updates = {};
                 snap.forEach(c => {
                     updates[`users/${c.key}/weeklyPoints`] = 0;
@@ -1720,7 +1730,6 @@
             });
         }
 
-        // PROCESS APPROVED LEADERBOARD PAYOUT TO WINNERS' GAMING BALANCE
         function processLeaderboardApprovedPayout(reqKey, req) {
             if (!req.winners || req.distributed) return;
 
@@ -1728,7 +1737,6 @@
 
             winners.forEach((w, idx) => {
                 if (w.uid && w.prize > 0) {
-                    // Added to Gaming Balance as required
                     database.ref(`users/${w.uid}/depositBalance`).transaction(curr => (curr || 0) + w.prize);
 
                     recordTransaction(w.uid, {
@@ -1778,7 +1786,6 @@
 
                 userArray.sort((a, b) => b.points - a.points);
 
-                // Update "YOU" Card
                 const myRankIndex = userArray.findIndex(x => x.uid === activeUser.id);
                 const myRank = myRankIndex !== -1 ? (myRankIndex + 1) : userArray.length + 1;
                 const myData = myRankIndex !== -1 ? userArray[myRankIndex] : { wins: 0, points: 0 };
@@ -1863,21 +1870,24 @@
             });
         }
 
-        // ================= MATCH TIMING & 5-MINUTE COUNTDOWN ENGINE =================
+        // ================= MATCH TIMING, REFUND & 5-MINUTE ENGINE =================
         function checkMatchTimingRules() {
             const now = Date.now();
 
             realtimeMatches.forEach(m => {
                 if (m.status === 'COMPLETED' || m.status === 'CANCELLED') return;
 
+                // 1. Special Matches (30 Mins Expiration & Refund)
                 if (m.isSpecial) {
                     if (now >= m.expiresAt && m.current < m.max) {
                         processAutoCancelAndRefund(m, "স্পেশাল ম্যাচের ৩০ মিনিটের মধ্যে ফুল না হওয়ায় রিফান্ড সম্পন্ন।");
                         spawnNewSpecialMatch(m.gameType, m.fee, m.prize, m.max, m.mode);
                     }
-                } else {
+                } 
+                // 2. Normal Matches (Firebase Start Time Check & Refund if not FULL)
+                else {
                     if (m.startTime && now >= m.startTime && m.current < m.max) {
-                        processAutoCancelAndRefund(m, "নির্ধারিত সময়ে ম্যাচ স্লট ফুল না হওয়ায় অটো-রিফান্ড সম্পন্ন।");
+                        processAutoCancelAndRefund(m, "নির্ধারিত সময় শেষ হওয়ার সাথে সাথে ম্যাচ ফুল না হওয়ায় অটো-রিফান্ড সম্পন্ন।");
                     }
                 }
             });
@@ -1886,10 +1896,12 @@
         }
 
         function processAutoCancelAndRefund(match, reason) {
+            // Delete match from Firebase
             database.ref(`matches/${match.id}`).remove();
 
             if (match.players) {
                 Object.keys(match.players).forEach(uid => {
+                    // Added back to Gaming Balance (depositBalance)
                     database.ref(`users/${uid}/depositBalance`).transaction(curr => (curr || 0) + match.fee);
 
                     recordTransaction(uid, {
@@ -1907,7 +1919,7 @@
 
                     database.ref(`users/${uid}/notifications`).push({
                         title: "ম্যাচ রিফান্ড সম্পন্ন ⚠️",
-                        message: `${match.matchNo}-এ ${reason} আপনার ৳${match.fee} গেমিং ব্যালেন্সে যোগ হয়েছে।`,
+                        message: `${match.matchNo}-এ ${reason} আপনার ৳${match.fee} গেমিং ব্যালেন্সে রিফান্ড যোগ হয়েছে।`,
                         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                         timestamp: Date.now()
                     });
@@ -1928,6 +1940,7 @@
                     prize: prize,
                     isSpecial: true,
                     roomCode: "",
+                    gameLink: "",
                     status: "waiting",
                     createdAt: now,
                     expiresAt: now + (30 * 60 * 1000),
@@ -1937,7 +1950,7 @@
             });
         }
 
-        // NOTIFY ADMIN VIA TELEGRAM BOT DIRECTLY ON MATCH FULL
+        // ================= NOTIFY ADMIN VIA TELEGRAM DIRECTLY ON MATCH FULL =================
         function notifyAdminViaTelegramDirect(match) {
             const adminChatId = adminConfig.adminChatId;
             const botToken = adminConfig.botToken;
@@ -1951,7 +1964,7 @@
                         `💵 <b>ফি:</b> ৳${match.fee} | <b>প্রাইজ:</b> ৳${match.prize}\n` +
                         `👥 <b>স্লট:</b> ${match.current}/${match.max} (FULL)\n\n` +
                         `📋 <b>প্লেয়ারদের তালিকা:</b>\n${playerListStr}\n\n` +
-                        `👉 <i>অ্যাপে বা অ্যাডমিন প্যানেলে গিয়ে ম্যাচ রুম কোড প্রদান করুন।</i>`;
+                        `👉 <i>ফায়ারবেস ডেটাবেজে গিয়ে ম্যাচের roomCode ও gameLink প্রদান করুন।</i>`;
 
             if (botToken && adminChatId) {
                 fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
@@ -2043,7 +2056,7 @@
                                     ${m.isSpecial ? `
                                         <span class="px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 font-bold text-[10px] flex items-center gap-1">
                                             <span class="w-1.5 h-1.5 rounded-full bg-purple-600 animate-ping"></span> 
-                                            ${maxPlayers} জন পূর্ণ হলেই শুরু হবে
+                                            ${maxPlayers} জন পূর্ণ হলেই শুরু হবে (৩০ মি.)
                                         </span>
                                     ` : `
                                         ${isWithin5Min ? `
@@ -2112,7 +2125,7 @@
                                         <button onclick="copyMatchRoomCode('${m.roomCode}')" class="py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs shadow-md flex items-center justify-center gap-1.5 transition active:scale-95">
                                             <i class="fas fa-copy"></i> কোড: ${m.roomCode}
                                         </button>
-                                        <button onclick="launchGameApp('${m.gameType}')" class="py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-black text-xs shadow-md flex items-center justify-center gap-1.5 transition active:scale-95">
+                                        <button onclick="launchGameApp('${m.gameType}', '${m.gameLink}')" class="py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-black text-xs shadow-md flex items-center justify-center gap-1.5 transition active:scale-95">
                                             <i class="fas fa-play"></i> Play Game
                                         </button>
                                     </div>
@@ -2134,7 +2147,7 @@
             }).join('');
         }
 
-        // COUNTDOWN TIMER
+        // ================= 5-MINUTE COUNTDOWN TIMER UPDATER =================
         function updateMatchCountdowns() {
             const now = Date.now();
             realtimeMatches.forEach(m => {
@@ -2271,7 +2284,7 @@
                     refundTime: Date.now()
                 });
 
-                showToast(`৳${m.fee} রিফান্ড যোগ করা হয়েছে!`, "success");
+                showToast(`৳${m.fee} গেমিং ব্যালেন্সে রিফান্ড যোগ করা হয়েছে!`, "success");
             }
         }
 
@@ -2345,11 +2358,9 @@
                     isCredit: true
                 });
 
-                // UPDATE PLAYERS HISTORY SNAPSHOT
                 const playersMap = foundMatch.players || {};
                 const playersArray = Object.values(playersMap);
 
-                // Update winner history
                 database.ref(`users/${activeUser.id}/history/${foundMatch.id}`).update({
                     status: "WIN",
                     roomCode: room,
@@ -2357,7 +2368,6 @@
                     completedAt: Date.now()
                 });
 
-                // Update loser(s) history
                 Object.keys(playersMap).forEach(uid => {
                     if (uid !== activeUser.id) {
                         database.ref(`users/${uid}/history/${foundMatch.id}`).update({
@@ -2389,7 +2399,6 @@
                 // AUTO-DELETE MATCH FROM REALTIME MATCHES TO KEEP ARENA CLEAN
                 database.ref(`matches/${foundMatch.id}`).remove();
 
-                // IF SPECIAL MATCH, SPAWN NEXT IMMEDIATELY
                 if (foundMatch.isSpecial) {
                     spawnNewSpecialMatch(foundMatch.gameType, foundMatch.fee, foundMatch.prize, foundMatch.max, foundMatch.mode);
                 }
@@ -2815,7 +2824,14 @@
             navigator.clipboard.writeText(code).then(() => showToast(`রুম কোড [${code}] কপি হয়েছে!`, "success"));
         }
 
-        function launchGameApp(t) { showToast("গেমটি ওপেন করে কোড দিয়ে জয়েন করুন!", "info"); }
+        function launchGameApp(gameType, customGameLink) {
+            if (customGameLink && customGameLink.trim() !== "") {
+                window.open(customGameLink.trim(), '_blank');
+            } else {
+                showToast("গেমটি ওপেন করে কোড দিয়ে জয়েন করুন!", "info");
+            }
+        }
+
         function triggerRoomCodeLiveNotification(m) {
             showToast(`🎉 ম্যাচ ${m.matchNo}-এর রুম কোড: ${m.roomCode}`, 'success');
         }
