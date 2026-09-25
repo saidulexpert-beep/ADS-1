@@ -43,6 +43,37 @@
             user-select: text;
         }
 
+        /* ATTRACTIVE PRELOADER */
+        #preloader {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at center, #0f1c3f 0%, #060b17 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        .dice-spinner {
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, #3b82f6, #ec4899);
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
+            color: #fff;
+            box-shadow: 0 0 35px rgba(59, 130, 246, 0.7);
+            animation: diceRotate 1.4s infinite cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        @keyframes diceRotate {
+            0% { transform: rotate(0deg) scale(0.9); }
+            50% { transform: rotate(180deg) scale(1.15); }
+            100% { transform: rotate(360deg) scale(0.9); }
+        }
+
         .countdown-badge {
             font-family: 'Share Tech Mono', monospace;
             letter-spacing: 1px;
@@ -263,6 +294,17 @@
     </style>
 </head>
 <body class="max-w-md mx-auto relative min-h-screen pb-24 text-slate-100">
+
+    <!-- ATTRACTIVE PRELOADER -->
+    <div id="preloader">
+        <div class="dice-spinner mb-4">
+            <i class="fas fa-dice"></i>
+        </div>
+        <h2 class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-sky-300 to-amber-300 tracking-wider" style="font-family: 'Russo One', sans-serif;">LUDO HUB</h2>
+        <p class="text-xs font-bold text-slate-400 mt-2 flex items-center gap-2">
+            <i class="fas fa-spinner fa-spin text-sky-400"></i> সার্ভার থেকে ম্যাচ সিঙ্ক হচ্ছে...
+        </p>
+    </div>
 
     <div id="toast-container" class="fixed top-4 left-1/2 -translate-x-1/2 z-[110] w-11/12 max-w-sm flex flex-col gap-2 pointer-events-none"></div>
 
@@ -1227,6 +1269,15 @@
 
             setInterval(checkMatchTimingRules, 1000);
             setInterval(updateLeaderboard7DayCountdown, 1000);
+
+            // PRELOADER HIDE TIMER
+            setTimeout(() => {
+                const loader = document.getElementById('preloader');
+                if (loader) {
+                    loader.style.opacity = '0';
+                    loader.style.visibility = 'hidden';
+                }
+            }, 800);
         });
 
         // ================= FAST REALTIME FIREBASE SYNC =================
