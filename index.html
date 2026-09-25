@@ -15,7 +15,6 @@
 
     <style>
         :root {
-            --theme-color: #e2136e; 
             --brand-purple: #7854f7;
             --brand-blue: #3b5bfd;
             --text-dark: #1e293b;
@@ -159,7 +158,7 @@
 
             <div class="input-box-wrap">
                 <label for="amountInput">আপনি কত টাকা ডিপোজিট করতে চান লিখুন</label>
-                <input type="number" id="amountInput" class="amount-field" value="500" placeholder="500" min="10">
+                <input type="number" id="amountInput" class="amount-field" value="10" placeholder="10" min="1">
             </div>
 
             <button id="btnPayGateway" class="btn-continue-gradient" onclick="initiatePayment()">
@@ -189,9 +188,6 @@
 </div>
 
 <script>
-    // TZ SMM Pay API KEY
-    const TZ_API_KEY = "IBqczPjssNoCKEP2";
-
     const firebaseConfig = {
       apiKey: "AIzaSyAEV4zkuTcRYIFP2AMmKJTyDUTzSYLnbbM",
       authDomain: "used-mail-shop.firebaseapp.com",
@@ -263,7 +259,7 @@
         });
     }
 
-    // TZ SMM Pay API-এর মাধ্যমে পেমেন্ট তৈরি
+    // পেমেন্ট শুরু করার ফাংশন
     async function initiatePayment() {
         if (!currentUser) return showToastPopup('প্রথমে লগইন করুন');
         const amount = document.getElementById('amountInput').value.trim();
@@ -273,70 +269,64 @@
         btn.disabled = true; 
         btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
 
-        const returnUrl = window.location.origin + window.location.pathname;
+        let returnUrl = window.location.href.split('?')[0];
+        if (!returnUrl.startsWith('http')) {
+            returnUrl = 'https://used-mail-shop.firebaseapp.com';
+        }
 
         const payload = {
-            api_key: TZ_API_KEY,
-            cus_name: currentUser.email.split('@')[0] || 'User',
+            cus_name: currentUser.email.split('@')[0] || 'Customer',
             cus_email: currentUser.email,
             cus_number: '01700000000',
-            success_url: returnUrl + "?status=success",
-            cancel_url: returnUrl + "?status=cancel",
-            callback_url: returnUrl + "?status=callback",
             amount: parseFloat(amount),
-            redirect: true
+            success_url: returnUrl + "?status=success",
+            cancel_url: returnUrl + "?status=cancel"
         };
 
         try {
-            const res = await fetch('https://tzsmmpay.com/api/payment/create', {
+            const res = await fetch('/api/payment?action=create', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
             
             const data = await res.json();
             
-            // গেটওয়ে রেসপন্স থেকে পেমেন্ট লিংক বের করা
-            let payUrl = data.payment_url || data.url || (data.data && data.data.payment_url) || (data.data && data.data.url);
+            // পেমেন্ট ইউআরএল চেক
+            let payUrl = data.payment_url || data.url || (data.data && (data.data.payment_url || data.data.url));
 
             if (payUrl) {
                 window.location.href = payUrl;
             } else {
-                showToastPopup(data.message || 'পেমেন্ট গেটওয়েতে সমস্যা হচ্ছে!');
+                const errMsg = data.message || data.error || (data.data && data.data.message) || JSON.stringify(data);
+                alert('গেটওয়ে বার্তা: ' + errMsg);
                 btn.disabled = false; 
                 btn.innerHTML = '<i class="fa-solid fa-lock" style="color: #facc15;"></i> Continue to Payment';
             }
         } catch (err) {
-            console.error(err);
-            showToastPopup('গেটওয়ে কানেকশন ব্যর্থ হয়েছে!');
+            alert('কানেকশন সমস্যা: ' + err.message);
             btn.disabled = false; 
             btn.innerHTML = '<i class="fa-solid fa-lock" style="color: #facc15;"></i> Continue to Payment';
         }
     }
 
-    // TZ SMM Pay API-এর মাধ্যমে পেমেন্ট ভেরিফিকেশন
+    // পেমেন্ট শেষে ভেরিফাই করার ফাংশন
     async function checkReturnPaymentStatus() {
         const urlParams = new URLSearchParams(window.location.search);
-        // TZ SMM Pay সাধারণতঃ trx_id, transaction_id অথবা trxId পাঠায়
         const transactionId = urlParams.get('trx_id') || urlParams.get('trxId') || urlParams.get('transaction_id') || urlParams.get('txid');
-        const urlStatus = urlParams.get('status');
 
         if (transactionId) {
             showToastPopup('পেমেন্ট ভেরিফাই করা হচ্ছে...');
 
             try {
-                const verifyUrl = `https://tzsmmpay.com/api/payment/verify?api_key=${TZ_API_KEY}&trx_id=${transactionId}`;
-                const res = await fetch(verifyUrl);
+                const res = await fetch(`/api/payment?action=verify&trx_id=${transactionId}`);
                 const data = await res.json();
 
-                // স্ট্যাটাস চেক
                 const apiStatus = data.status ? String(data.status).toUpperCase() : "";
                 const isSuccess = apiStatus === "SUCCESS" || apiStatus === "COMPLETED" || data.status === true || data.status_code === 200;
 
                 if (isSuccess) {
-                    let depositAmount = parseFloat(data.amount || data.payable_amount || urlParams.get('amount') || 0);
+                    let depositAmount = parseFloat(data.amount || data.payable_amount || 0);
 
                     if (depositAmount > 0) {
                         savePaymentAndUpdateBalance(depositAmount, transactionId, data);
@@ -344,19 +334,13 @@
                         document.getElementById('displayAmount').textContent = depositAmount + " BDT";
                         changeStep(5);
                         window.history.replaceState({}, document.title, window.location.pathname);
-                    } else {
-                        showToastPopup('অ্যামাউন্ট পাওয়া যায়নি');
                     }
                 } else {
-                    showToastPopup(data.message || 'পেমেন্ট ভেরিফিকেশন সম্পন্ন হয়নি');
+                    showToastPopup(data.message || 'ভেরিফিকেশন সম্পন্ন হয়নি');
                 }
             } catch (e) {
-                console.error(e);
                 showToastPopup('ভেরিফিকেশন রিকোয়েস্টে সমস্যা হয়েছে');
             }
-        } else if (urlStatus === 'cancel') {
-            showToastPopup('পেমেন্ট বাতিল করা হয়েছে');
-            window.history.replaceState({}, document.title, window.location.pathname);
         }
     }
 
