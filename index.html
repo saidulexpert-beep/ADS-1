@@ -401,7 +401,7 @@
                 </div>
             </div>
 
-            <!-- SCROLLING NOTICE (FIREBASE 2 CONTROLLED) -->
+            <!-- SCROLLING NOTICE -->
             <div class="bg-[#121a2d] border border-amber-500/20 rounded-2xl px-3.5 py-2.5 flex items-center gap-2 shadow-inner">
                 <span class="text-amber-400 font-extrabold text-xs whitespace-nowrap flex items-center gap-1">
                     <i class="fas fa-bullhorn text-xs"></i> নোটিশ:
@@ -418,7 +418,7 @@
                 <div class="h-[1px] bg-slate-700/60 flex-1"></div>
             </div>
 
-            <!-- DYNAMIC LIVE ARENA (FIREBASE 2 CONTROLLED) -->
+            <!-- DYNAMIC LIVE ARENA -->
             <div id="game-categories-container" class="space-y-3"></div>
         </div>
 
@@ -620,7 +620,7 @@
                     </p>
                     <p class="flex items-start gap-2">
                         <span class="w-5 h-5 rounded-full bg-cyan-500 text-slate-950 font-black flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">২</span>
-                        <span>বন্ধু ন্যূনতম ১০০ টাকা ডিপোজিট করে অ্যাকাউন্ট একটিভ করলে, পরবর্তীতে সে যত ম্যাচ উইন হবে প্রতি ম্যাচ থেকে আপনি <b>২ টাকা কমিশন</b> পাবেন। (১০০ টাকা ডিপোজিট না করা পর্যন্ত কোনো কমিশন পাবেন না)।</span>
+                        <span>বন্ধু ন্যূনতম ১০০ টাকা ডিপোজিট করে অ্যাকাউন্ট একটিভ করলে, পরবর্তীতে সে যত ম্যাচ উইন হবে প্রতি ম্যাচ থেকে আপনি <b>২ টাকা কমিশন</b> পাবেন।</span>
                     </p>
                     <p class="flex items-start gap-2">
                         <span class="w-5 h-5 rounded-full bg-amber-500 text-slate-950 font-black flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">৩</span>
@@ -1136,7 +1136,7 @@
                 </div>
                 <div>
                     <h3 class="font-bold text-white text-base leading-tight">নোটিফিকেশন সেন্টার</h3>
-                    <p class="text-[11px] text-slate-400">সকল সিস্টেম, রুম কোড ও ডিপোজিট আপডেট</p>
+                    <p class="text-[11px] text-slate-400">সকল সিস্টেম, ব্যালেন্স, রুম কোড ও ট্রানজ্যাকশন আপডেট</p>
                 </div>
             </div>
             <button onclick="toggleNotificationModal()" class="p-2 bg-slate-800 text-slate-300 rounded-xl">
@@ -1234,6 +1234,14 @@
 
         let leaderboardCycleEnd = Date.now() + (7 * 24 * 60 * 60 * 1000);
 
+        // Tracking internal client balance changes to distinguish them from admin direct adjustments
+        let initialDepositLoaded = false;
+        let prevDepositBal = 0;
+        let initialWinningLoaded = false;
+        let prevWinningBal = 0;
+        let skipAdminDepLog = false;
+        let skipAdminWinLog = false;
+
         let gameCategories = [
             { key: "ludo", name: "Ludo King (লুডো কিং)", icon: "https://cdn-icons-png.flaticon.com/512/806/806131.png", subtitle: "১v১, ১v২ ও ১v৩ লাইভ চ্যালেঞ্জ", hidden: false, tag: "HOT", color: "blue", order: 1 },
             { key: "snake", name: "Snake King (সাপ লুডু)", icon: "https://cdn-icons-png.flaticon.com/512/2865/2865488.png", subtitle: "ক্লাসিক স্নেক অ্যান্ড ল্যাডার টুর্নামেন্ট", hidden: false, tag: "NEW", color: "teal", order: 2 },
@@ -1296,6 +1304,35 @@
                 }
             }, 800);
         });
+
+        // ================= UNIFIED LOGGING (TRANSACTIONS & NOTIFICATIONS) =================
+        function logTransactionAndNotification(uid, { type, title, amount, isCredit, notifTitle, notifMsg, status = "SUCCESS", meta = {} }) {
+            const now = Date.now();
+            const timeStr = new Date(now).toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit', hour12: true });
+
+            const txObj = {
+                type: type || "GENERAL",
+                title: title || "লেনদেন",
+                amount: parseFloat(amount) || 0,
+                isCredit: isCredit !== false,
+                status: status,
+                time: timeStr,
+                timestamp: now,
+                ...meta
+            };
+            userDb.ref(`users/${uid}/transactions`).push(txObj);
+
+            if (notifTitle || notifMsg) {
+                const notifObj = {
+                    title: notifTitle || title,
+                    message: notifMsg || `${title} - পরিমাণ: ৳${amount}`,
+                    time: timeStr,
+                    timestamp: now,
+                    type: type
+                };
+                userDb.ref(`users/${uid}/notifications`).push(notifObj);
+            }
+        }
 
         function parseMatchStartTime(timeVal) {
             if (!timeVal) return null;
@@ -1367,7 +1404,7 @@
                 }
             });
 
-            // [CONTENT DB] - Game Categories (Live Arena Control)
+            // [CONTENT DB] - Game Categories
             contentDb.ref('game_categories').on('value', snap => {
                 const data = snap.val();
                 if (data) {
@@ -1377,7 +1414,7 @@
                 }
             });
 
-            // [CONTENT DB] - Realtime Matches Sync & Auto-Regen Check
+            // [CONTENT DB] - Realtime Matches Sync
             contentDb.ref('matches').on('value', snapshot => {
                 const data = snapshot.val();
                 realtimeMatches = [];
@@ -1415,7 +1452,6 @@
                             }
                         }
 
-                        // When special match is full -> Notify admin & instantly spawn a new special match!
                         if (m.current >= m.max && !m.adminNotifiedFull) {
                             notifyAdminViaTelegramDirect(m);
                             contentDb.ref(`matches/${m.id}`).update({ adminNotifiedFull: true });
@@ -1431,21 +1467,65 @@
                     try { localStorage.setItem('cache_matches', JSON.stringify(realtimeMatches)); } catch(e){}
                 }
 
-                // Make sure at least one open special match always exists
                 ensureSpecialMatchAvailability();
-
                 renderMatches();
                 renderPureMatchHistory();
             });
 
-            // [USER DB] - Strict Balance Listeners
+            // [USER DB] - Strict Balance Listeners with Admin Direct Change Detection
             userDb.ref(`users/${activeUser.id}/depositBalance`).on('value', snap => {
-                activeUser.depositBalance = parseFloat(snap.val()) || 0;
+                const newBal = parseFloat(snap.val()) || 0;
+                if (initialDepositLoaded) {
+                    if (!skipAdminDepLog) {
+                        const diff = newBal - prevDepositBal;
+                        if (Math.abs(diff) >= 0.01) {
+                            const isAdded = diff > 0;
+                            const adjAmount = Math.abs(diff);
+                            logTransactionAndNotification(activeUser.id, {
+                                type: isAdded ? "ADMIN_ADD_GAMING" : "ADMIN_DEDUCT_GAMING",
+                                title: isAdded ? "অ্যাডমিন ব্যালেন্স যোগ (গেমিং)" : "অ্যাডমিন ব্যালেন্স কর্তন (গেমিং)",
+                                amount: adjAmount,
+                                isCredit: isAdded,
+                                notifTitle: isAdded ? "গেমিং ব্যালেন্স যোগ হয়েছে 🎁" : "গেমিং ব্যালেন্স কর্তন ⚠️",
+                                notifMsg: `অ্যাডমিন কর্তৃক আপনার গেমিং ওয়ালেটে ৳${adjAmount.toFixed(2)} ${isAdded ? 'যোগ করা হয়েছে' : 'কর্তন করা হয়েছে'}।`
+                            });
+                        }
+                    } else {
+                        skipAdminDepLog = false;
+                    }
+                } else {
+                    initialDepositLoaded = true;
+                }
+                prevDepositBal = newBal;
+                activeUser.depositBalance = newBal;
                 updateUserInterface();
             });
 
             userDb.ref(`users/${activeUser.id}/winningBalance`).on('value', snap => {
-                activeUser.winningBalance = parseFloat(snap.val()) || 0;
+                const newBal = parseFloat(snap.val()) || 0;
+                if (initialWinningLoaded) {
+                    if (!skipAdminWinLog) {
+                        const diff = newBal - prevWinningBal;
+                        if (Math.abs(diff) >= 0.01) {
+                            const isAdded = diff > 0;
+                            const adjAmount = Math.abs(diff);
+                            logTransactionAndNotification(activeUser.id, {
+                                type: isAdded ? "ADMIN_ADD_WINNING" : "ADMIN_DEDUCT_WINNING",
+                                title: isAdded ? "অ্যাডমিন ব্যালেন্স যোগ (উইনিং)" : "অ্যাডমিন ব্যালেন্স কর্তন (উইনিং)",
+                                amount: adjAmount,
+                                isCredit: isAdded,
+                                notifTitle: isAdded ? "উইনিং ব্যালেন্স যোগ হয়েছে 🏆" : "উইনিং ব্যালেন্স কর্তন ⚠️",
+                                notifMsg: `অ্যাডমিন কর্তৃক আপনার উইনিং ওয়ালেটে ৳${adjAmount.toFixed(2)} ${isAdded ? 'যোগ করা হয়েছে' : 'কর্তন করা হয়েছে'}।`
+                            });
+                        }
+                    } else {
+                        skipAdminWinLog = false;
+                    }
+                } else {
+                    initialWinningLoaded = true;
+                }
+                prevWinningBal = newBal;
+                activeUser.winningBalance = newBal;
                 updateUserInterface();
             });
 
@@ -1607,6 +1687,7 @@
             btn.disabled = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> প্রসেসিং...';
 
+            skipAdminDepLog = true;
             activeUser.referralWallet = 0;
             activeUser.depositBalance += claimAmount;
             activeUser.lastReferralClaim = now;
@@ -1619,11 +1700,13 @@
                 depositBalance: activeUser.depositBalance,
                 lastReferralClaim: now
             }).then(() => {
-                recordTransaction(activeUser.id, {
+                logTransactionAndNotification(activeUser.id, {
                     type: "REFERRAL_CLAIM",
-                    title: "রেফারেল কমিশন ক্লেইম (গেমিং ব্যালেন্স)",
+                    title: "রেফারেল কমিশন ক্লেইম",
                     amount: claimAmount,
-                    isCredit: true
+                    isCredit: true,
+                    notifTitle: "রেফারেল বোনাস ক্লেইম সফল! 🎁",
+                    notifMsg: `৳${claimAmount.toFixed(2)} রেফারেল ব্যালেন্স আপনার গেমিং একাউন্টে যোগ হয়েছে।`
                 });
 
                 btn.disabled = false;
@@ -1735,20 +1818,16 @@
 
             winners.forEach((w, idx) => {
                 if (w.uid && w.prize > 0) {
+                    if (w.uid === activeUser.id) skipAdminDepLog = true;
                     userDb.ref(`users/${w.uid}/depositBalance`).transaction(curr => (curr || 0) + w.prize);
 
-                    recordTransaction(w.uid, {
+                    logTransactionAndNotification(w.uid, {
                         type: "LEADERBOARD_PRIZE",
                         title: `সাপ্তাহিক লিডারবোর্ড পুরস্কার (${idx + 1}ম স্থান)`,
                         amount: w.prize,
-                        isCredit: true
-                    });
-
-                    userDb.ref(`users/${w.uid}/notifications`).push({
-                        title: "🏆 লিডারবোর্ড পুরস্কার অনুমোদিত!",
-                        message: `অভিনন্দন! সাপ্তাহিক লিডারবোর্ডে ${idx + 1}ম হওয়ার জন্য আপনার গেমিং ব্যালেন্সে ৳${w.prize} যোগ করা হয়েছে।`,
-                        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                        timestamp: Date.now()
+                        isCredit: true,
+                        notifTitle: "🏆 লিডারবোর্ড পুরস্কার অনুমোদিত!",
+                        notifMsg: `অভিনন্দন! সাপ্তাহিক লিডারবোর্ডে ${idx + 1}ম স্থান অর্জনের জন্য আপনার গেমিং ব্যালেন্সে ৳${w.prize} যোগ করা হয়েছে।`
                     });
                 }
             });
@@ -1890,26 +1969,22 @@
 
             if (match.players) {
                 Object.keys(match.players).forEach(uid => {
+                    if (uid === activeUser.id) skipAdminDepLog = true;
                     userDb.ref(`users/${uid}/depositBalance`).transaction(curr => (curr || 0) + match.fee);
 
-                    recordTransaction(uid, {
+                    logTransactionAndNotification(uid, {
                         type: "REFUND",
                         title: `ম্যাচ রিফান্ড (${match.matchNo})`,
                         amount: match.fee,
-                        isCredit: true
+                        isCredit: true,
+                        notifTitle: "ম্যাচ রিফান্ড সম্পন্ন ⚠️",
+                        notifMsg: `${match.matchNo}-এ ${reason} আপনার ৳${match.fee} গেমিং ব্যালেন্সে ফেরত দেওয়া হয়েছে।`
                     });
 
                     userDb.ref(`users/${uid}/history/${match.id}`).update({
                         status: "REFUNDED",
                         refundReason: reason,
                         refundTime: Date.now()
-                    });
-
-                    userDb.ref(`users/${uid}/notifications`).push({
-                        title: "ম্যাচ রিফান্ড সম্পন্ন ⚠️",
-                        message: `${match.matchNo}-এ ${reason} আপনার ৳${match.fee} গেমিং ব্যালেন্সে রিফান্ড যোগ হয়েছে।`,
-                        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                        timestamp: Date.now()
                     });
                 });
             }
@@ -2167,11 +2242,14 @@
 
             let remainingFee = m.fee;
             if (activeUser.depositBalance >= remainingFee) {
+                skipAdminDepLog = true;
                 activeUser.depositBalance -= remainingFee;
                 remainingFee = 0;
             } else {
                 remainingFee -= activeUser.depositBalance;
+                skipAdminDepLog = true;
                 activeUser.depositBalance = 0;
+                skipAdminWinLog = true;
                 activeUser.winningBalance -= remainingFee;
             }
             updateUserInterface();
@@ -2179,11 +2257,13 @@
             userDb.ref(`users/${activeUser.id}/depositBalance`).set(activeUser.depositBalance);
             userDb.ref(`users/${activeUser.id}/winningBalance`).set(activeUser.winningBalance);
 
-            recordTransaction(activeUser.id, {
+            logTransactionAndNotification(activeUser.id, {
                 type: "MATCH_ENTRY",
                 title: `ম্যাচ এন্ট্রি ফি (${m.matchNo})`,
                 amount: m.fee,
-                isCredit: false
+                isCredit: false,
+                notifTitle: "টুর্নামেন্ট ম্যাচে জয়েন সফল! 🎮",
+                notifMsg: `ম্যাচ ${m.matchNo}-এ ৳${m.fee} দিয়ে জয়েন সম্পন্ন হয়েছে। খেলার সময়ের জন্য অপেক্ষা করুন।`
             });
 
             const playerPayload = {
@@ -2203,7 +2283,7 @@
                     fee: m.fee,
                     prize: m.prize,
                     status: "JOINED",
-                    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                    time: new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit', hour12: true }),
                     timestamp: Date.now()
                 };
                 userDb.ref(`users/${activeUser.id}/history/${m.id}`).set(historyItem);
@@ -2231,15 +2311,18 @@
             if (confirm(`আপনি কি ম্যাচটি থেকে বের হয়ে ৳${m.fee} রিফান্ড নিতে চান?`)) {
                 contentDb.ref(`matches/${m.id}/players/${activeUser.id}`).remove();
 
+                skipAdminDepLog = true;
                 activeUser.depositBalance += m.fee;
                 updateUserInterface();
                 userDb.ref(`users/${activeUser.id}/depositBalance`).set(activeUser.depositBalance);
 
-                recordTransaction(activeUser.id, {
+                logTransactionAndNotification(activeUser.id, {
                     type: "REFUND",
                     title: `স্বেচ্ছায় রিফান্ড (${m.matchNo})`,
                     amount: m.fee,
-                    isCredit: true
+                    isCredit: true,
+                    notifTitle: "রিফান্ড সফল হয়েছে 💰",
+                    notifMsg: `ম্যাচ ${m.matchNo} থেকে প্রত্যাহার করায় ৳${m.fee} গেমিং ব্যালেন্সে যোগ করা হয়েছে।`
                 });
 
                 userDb.ref(`users/${activeUser.id}/history/${m.id}`).update({
@@ -2307,17 +2390,20 @@
                 }
 
                 const prize = foundMatch.prize;
+                skipAdminWinLog = true;
                 activeUser.winningBalance += prize;
                 updateUserInterface();
                 userDb.ref(`users/${activeUser.id}/winningBalance`).set(activeUser.winningBalance);
 
                 userDb.ref(`users/${activeUser.id}/weeklyPoints`).transaction(c => (c || 0) + 1);
 
-                recordTransaction(activeUser.id, {
+                logTransactionAndNotification(activeUser.id, {
                     type: "MATCH_WIN",
                     title: `ম্যাচ জয় প্রাইজ (${foundMatch.matchNo})`,
                     amount: prize,
-                    isCredit: true
+                    isCredit: true,
+                    notifTitle: "🏆 অভিনন্দন! আপনি ম্যাচ জিতেছেন!",
+                    notifMsg: `ম্যাচ ${foundMatch.matchNo}-এ জয়ী হওয়ায় ৳${prize} আপনার উইনিং ওয়ালেটে যোগ করা হয়েছে।`
                 });
 
                 const playersMap = foundMatch.players || {};
@@ -2338,10 +2424,17 @@
                             playersSnapshot: playersArray,
                             completedAt: Date.now()
                         });
+
+                        userDb.ref(`users/${uid}/notifications`).push({
+                            title: "ম্যাচ সমাপ্তি 🎮",
+                            message: `ম্যাচ ${foundMatch.matchNo} সম্পন্ন হয়েছে। ভালো খেলার জন্য ধন্যবাদ!`,
+                            time: new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit', hour12: true }),
+                            timestamp: Date.now()
+                        });
                     }
                 });
 
-                // STRICT REFERRAL COMMISSION: ONLY IF THE REFERRED USER DEPOSITED >= 100
+                // STRICT REFERRAL COMMISSION
                 userDb.ref(`users/${activeUser.id}`).once('value', uSnap => {
                     const u = uSnap.val() || {};
                     const inviterUid = u.referredBy;
@@ -2353,11 +2446,13 @@
                                 userDb.ref(`users/${inviterUid}/referralWallet`).transaction(c => (c || 0) + comm);
                                 userDb.ref(`users/${inviterUid}/refer_earnings`).transaction(c => (c || 0) + comm);
                                 
-                                recordTransaction(inviterUid, {
+                                logTransactionAndNotification(inviterUid, {
                                     type: "REFERRAL_COMMISSION",
                                     title: `রেফারেল ম্যাচ কমিশন (${activeUser.name})`,
                                     amount: comm,
-                                    isCredit: true
+                                    isCredit: true,
+                                    notifTitle: "রেফারেল কমিশন অর্জিত! ⚡",
+                                    notifMsg: `আপনার আমন্ত্রিত বন্ধু (${activeUser.name}) ম্যাচ জয়ী হওয়ায় ৳${comm} কমিশন রেফারেল ওয়ালেটে জমা হয়েছে।`
                                 });
                             }
                         });
@@ -2366,7 +2461,6 @@
 
                 contentDb.ref(`matches/${foundMatch.id}`).remove();
 
-                // Instantly spawn a new special match if the completed one was special
                 if (foundMatch.isSpecial) {
                     spawnNewSpecialMatch(foundMatch.gameType, foundMatch.fee, foundMatch.prize, foundMatch.max, foundMatch.mode);
                 }
@@ -2404,16 +2498,19 @@
             btn.disabled = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> প্রসেসিং হচ্ছে...';
 
+            skipAdminWinLog = true;
             activeUser.winningBalance -= amount;
             updateUserInterface();
             userDb.ref(`users/${activeUser.id}/winningBalance`).set(activeUser.winningBalance);
 
-            recordTransaction(activeUser.id, {
+            logTransactionAndNotification(activeUser.id, {
                 type: "WITHDRAW",
                 title: `উত্তোলন অনুরোধ (${selectedWithdrawMethod})`,
                 amount: amount,
                 isCredit: false,
-                status: "PENDING"
+                status: "PENDING",
+                notifTitle: "উত্তোলন অনুরোধ পাঠানো হয়েছে ⏳",
+                notifMsg: `৳${amount} (${selectedWithdrawMethod}) উত্তোলনের অনুরোধ প্রক্রিয়াধীন রয়েছে। শীঘ্রই পেমেন্ট পাঠানো হবে।`
             });
 
             contentDb.ref(`admin_withdraw_requests`).push({
@@ -2586,7 +2683,7 @@
                             <i class="fas fa-robot text-rose-400 text-sm"></i> লাইভ অটো লুডু
                         </h4>
                         <p class="text-xs text-slate-400 font-bold mt-0.5">ইনস্ট্যান্ট স্বয়ংক্রিয় রুম কোড</p>
-                        <span class="text-[11px] text-cyan-400 font-extrabold">(খুব শীঘ্রই চালুর হবে)</span>
+                        <span class="text-[11px] text-cyan-400 font-extrabold">(খুব শীঘ্রই চালু হবে)</span>
                     </div>
                 </div>
             </div>`;
@@ -2641,7 +2738,7 @@
             const text = input.value.trim();
             if (!text) return;
 
-            const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const timeStr = new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit', hour12: true });
             contentDb.ref('support_chats/' + activeUser.id).push({
                 sender: 'user',
                 text: text,
@@ -2655,15 +2752,6 @@
         }
 
         // ================= TRANSACTIONS =================
-        function recordTransaction(uid, data) {
-            const txObj = {
-                ...data,
-                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                timestamp: Date.now()
-            };
-            userDb.ref(`users/${uid}/transactions`).push(txObj);
-        }
-
         function openTransactionsModal() {
             document.getElementById('transactions-modal').classList.remove('hidden');
             renderUnifiedTransactionsList();
@@ -2695,7 +2783,7 @@
                         </div>
                     </div>
                     <span class="text-sm font-black font-mono ${isCredit ? 'text-emerald-400' : 'text-rose-400'}">
-                        ${isCredit ? '+' : '-'}৳${item.amount}
+                        ${isCredit ? '+' : '-'}৳${parseFloat(item.amount).toFixed(2)}
                     </span>
                 </div>`;
             }).join('');
@@ -2796,6 +2884,12 @@
 
         function triggerRoomCodeLiveNotification(m) {
             showToast(`🎉 ম্যাচ ${m.matchNo}-এর রুম কোড: ${m.roomCode}`, 'success');
+            userDb.ref(`users/${activeUser.id}/notifications`).push({
+                title: `রুম কোড প্রদান করা হয়েছে 🔑`,
+                message: `ম্যাচ ${m.matchNo}-এর রুম কোড: ${m.roomCode}। খেলায় যোগ দিন।`,
+                time: new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit', hour12: true }),
+                timestamp: Date.now()
+            });
         }
 
         function toggleNotificationModal() { document.getElementById('notification-modal').classList.toggle('hidden'); }
@@ -2804,10 +2898,19 @@
         function renderNotifications() {
             const container = document.getElementById('notification-list-container');
             if (!container) return;
+
+            if (notifications.length === 0) {
+                container.innerHTML = `<div class="p-8 text-center text-xs text-slate-400">কোনো নোটিফিকেশন নেই</div>`;
+                return;
+            }
+
             container.innerHTML = notifications.map(n => `
-                <div class="bg-[#121a2d] p-3 rounded-2xl border border-white/5 space-y-1">
-                    <h5 class="font-bold text-xs text-amber-400">${n.title}</h5>
-                    <p class="text-xs text-slate-300">${n.message}</p>
+                <div class="bg-[#121a2d] p-3.5 rounded-2xl border border-white/5 space-y-1 shadow">
+                    <div class="flex items-center justify-between">
+                        <h5 class="font-black text-xs text-amber-400">${n.title}</h5>
+                        <span class="text-[10px] text-slate-500 font-mono">${n.time || ''}</span>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">${n.message}</p>
                 </div>
             `).join('');
         }
@@ -2865,15 +2968,24 @@
             }
         }
 
-        // ================= FIX: PREVENT AUTOMATIC/REPEATED BALANCE INCREASE =================
+        // ================= FIX: STRICT TRANSACTION IDEMPOTENCY (NO REPEAT ON RELOAD) =================
         async function checkReturnPaymentStatus() {
             const urlParams = new URLSearchParams(window.location.search);
             const transactionId = urlParams.get('transactionId') || urlParams.get('transaction_id') || urlParams.get('txid');
             const urlStatus = urlParams.get('status');
 
             if (transactionId || urlStatus === 'success') {
-                // Instantly remove URL params to prevent repeated processing on reload
+                // Instantly remove URL parameters to prevent repeated balance increase on reload
                 window.history.replaceState({}, document.title, window.location.pathname);
+
+                if (!transactionId) return;
+
+                // Check Firebase idempotency - verify if already credited
+                const procRef = userDb.ref(`processed_payments/${transactionId}`);
+                const procSnap = await procRef.once('value');
+                if (procSnap.exists()) {
+                    return; // Already processed!
+                }
 
                 showToast('পেমেন্ট ভেরিফাই করা হচ্ছে...');
                 try {
@@ -2886,14 +2998,24 @@
                     if (data.status === "SUCCESS" || data.payment_status === "COMPLETED" || data.success === true) {
                         let depositAmount = parseFloat(data.amount || urlParams.get('paymentAmount') || 0);
                         if (depositAmount > 0) {
+                            // Mark processed immediately
+                            await procRef.set({
+                                uid: activeUser.id,
+                                amount: depositAmount,
+                                processedAt: Date.now()
+                            });
+
+                            skipAdminDepLog = true;
                             userDb.ref(`users/${activeUser.id}/depositBalance`).transaction(curr => (curr || 0) + depositAmount);
 
-                            recordTransaction(activeUser.id, {
+                            logTransactionAndNotification(activeUser.id, {
                                 type: "DEPOSIT",
                                 title: "গেমিং ব্যালেন্স ডিপোজিট",
                                 amount: depositAmount,
                                 isCredit: true,
-                                txid: transactionId || "GATEWAY"
+                                notifTitle: "ডিপোজিট সফল হয়েছে! 💳",
+                                notifMsg: `আপনার একাউন্টে ৳${depositAmount} গেমিং ব্যালেন্স যুক্ত করা হয়েছে। TxID: ${transactionId}`,
+                                meta: { txid: transactionId }
                             });
 
                             // STRICT FIRST DEPOSIT & REFERRAL LOGIC
@@ -2911,7 +3033,6 @@
                                 });
 
                                 if (inviterId) {
-                                    // Rule 1: FIRST DEPOSIT ONLY AND MUST BE >= 100 FOR BONUS
                                     if (isFirstDeposit && depositAmount >= (referralConfig.firstDepositMin || 100)) {
                                         const bonus = referralConfig.firstDepositBonus || 10;
                                         userDb.ref(`users/${inviterId}/referralWallet`).transaction(c => (c || 0) + bonus);
@@ -2921,15 +3042,15 @@
                                             hasFirstDepositBonusGiven: true
                                         });
 
-                                        recordTransaction(inviterId, {
+                                        logTransactionAndNotification(inviterId, {
                                             type: "REFERRAL_BONUS",
                                             title: `১ম ডিপোজিট রেফার বোনাস (${activeUser.name})`,
                                             amount: bonus,
-                                            isCredit: true
+                                            isCredit: true,
+                                            notifTitle: "রেফারেল বোনাস যোগ হয়েছে! 🎁",
+                                            notifMsg: `আপনার আমন্ত্রিত বন্ধু (${activeUser.name}) প্রথমবার ৳১০০+ ডিপোজিট করায় ৳${bonus} রেফারেল বোনাস পেয়েছেন!`
                                         });
-                                    } 
-                                    // Rule 2: If first deposit was < 100, but now reached >= 100 -> only activate for match win commission
-                                    else if (newTotalDep >= 100 || depositAmount >= 100) {
+                                    } else if (newTotalDep >= 100 || depositAmount >= 100) {
                                         userDb.ref(`users/${inviterId}/referrals/${activeUser.id}`).update({
                                             isAccountActive: true
                                         });
@@ -2953,13 +3074,16 @@
             contentDb.ref(`promo_codes/${code}`).once('value', snap => {
                 if (snap.exists() && snap.val().active) {
                     const bonus = parseFloat(snap.val().amount || 20);
+                    skipAdminDepLog = true;
                     userDb.ref(`users/${activeUser.id}/depositBalance`).transaction(curr => (curr || 0) + bonus);
 
-                    recordTransaction(activeUser.id, {
+                    logTransactionAndNotification(activeUser.id, {
                         type: "PROMO",
                         title: `প্রোমো কোড বোনাস (${code})`,
                         amount: bonus,
-                        isCredit: true
+                        isCredit: true,
+                        notifTitle: "প্রোমো কোড রিডিম সফল! 🎁",
+                        notifMsg: `কোড: ${code} ব্যবহার করায় আপনার গেমিং ব্যালেন্সে ৳${bonus} যোগ করা হয়েছে।`
                     });
 
                     closeModal('redeem-code-modal');
