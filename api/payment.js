@@ -1,114 +1,107 @@
-// api/payment.js
 export default async function handler(req, res) {
-    // CORS হেডার
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept');
+  // CORS Headers
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, api-key, API-KEY, Authorization'
+  );
 
-    if (req.method === 'OPTIONS') {
-        return res.status(200).end();
-    }
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
 
-    const API_KEY = process.env.TZ_API_KEY || 'nWDiDXEmgVjTZSU0TY';
-    const { action } = req.query;
+  // 🔴 এখানে আপনার NagorikPay মার্চেন্ট প্যানেলের লাইভ API Key বসান
+  const API_KEY = 'hRECFjf99Y57Gl0wcs2pjeVaEWDPZCqU5WL85uYmaU5EVdEY3m';
+  const BASE_URL = 'https://secure-pay.nagorikpay.com/api/payment';
+  
+  const action = req.query.action;
 
+  // Body Parsing
+  let body = req.body;
+  if (typeof body === 'string') {
     try {
-        // ১. পেমেন্ট তৈরি (action=create)
-        if (action === 'create' && req.method === 'POST') {
-            const { cus_name, cus_email, cus_number, amount, success_url, cancel_url } = req.body;
-
-            if (!amount || parseFloat(amount) <= 0) {
-                return res.status(400).json({ status: false, message: 'সঠিক অ্যামাউন্ট প্রদান করুন' });
-            }
-
-            // লাইভ ডোমেইন নিশ্চিত করা
-            const safeDomain = 'https://used-mail-shop.firebaseapp.com';
-            const sUrl = (success_url && success_url.startsWith('http')) ? success_url : `${safeDomain}?status=success`;
-            const cUrl = (cancel_url && cancel_url.startsWith('http')) ? cancel_url : `${safeDomain}?status=cancel`;
-
-            const payload = {
-                api_key: API_KEY,
-                cus_name: cus_name || 'Customer',
-                cus_email: cus_email || 'customer@gmail.com',
-                cus_number: cus_number || '01700000000',
-                amount: parseFloat(amount),
-                success_url: sUrl,
-                cancel_url: cUrl,
-                callback_url: sUrl,
-                redirect: true
-            };
-
-            // redirect: 'manual' দেওয়া হয়েছে যাতে 302 রিডাইরেক্ট ক্যাচ করা যায়
-            const response = await fetch('https://tzsmmpay.com/api/payment/create', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify(payload),
-                redirect: 'manual'
-            });
-
-            // যদি গেটওয়ে সরাসরি 302 রিডাইরেক্ট করে
-            if (response.status >= 300 && response.status < 400) {
-                const redirectUrl = response.headers.get('location');
-                if (redirectUrl) {
-                    return res.status(200).json({ status: true, payment_url: redirectUrl });
-                }
-            }
-
-            const rawText = await response.text();
-            let data;
-            try {
-                data = JSON.parse(rawText);
-            } catch (err) {
-                return res.status(500).json({ 
-                    status: false, 
-                    message: 'গেটওয়ে থেকে অপ্রত্যাশিত রেসপন্স এসেছে', 
-                    raw: rawText.substring(0, 150) 
-                });
-            }
-
-            return res.status(response.status).json(data);
-        }
-
-        // ২. পেমেন্ট ভেরিফাই (action=verify)
-        else if (action === 'verify') {
-            const trx_id = req.query.trx_id || (req.body && req.body.trx_id);
-
-            if (!trx_id) {
-                return res.status(400).json({ status: false, message: 'Transaction ID (trx_id) পাওয়া যায়নি' });
-            }
-
-            const verifyUrl = `https://tzsmmpay.com/api/payment/verify?api_key=${API_KEY}&trx_id=${encodeURIComponent(trx_id)}`;
-            
-            const response = await fetch(verifyUrl, {
-                method: 'GET',
-                headers: { 'Accept': 'application/json' }
-            });
-
-            const rawText = await response.text();
-            let data;
-            try {
-                data = JSON.parse(rawText);
-            } catch (err) {
-                return res.status(500).json({ 
-                    status: false, 
-                    message: 'ভেরিফিকেশন রেসপন্স ত্রুটিপূর্ণ', 
-                    raw: rawText.substring(0, 150) 
-                });
-            }
-
-            return res.status(response.status).json(data);
-        }
-
-        return res.status(404).json({ status: false, message: 'Invalid Action' });
-
-    } catch (error) {
-        return res.status(500).json({ 
-            status: false, 
-            message: 'সার্ভার এরর: ' + error.message 
-        });
+      body = JSON.parse(body);
+    } catch (e) {
+      body = {};
     }
+  }
+  body = body || {};
+
+  try {
+    // ১. পেমেন্ট তৈরি (Create Payment)
+    if (action === 'create') {
+      const amountVal = String(parseInt(body.amount, 10) || 10);
+      
+      const host = req.headers.host;
+      const protocol = req.headers['x-forwarded-proto'] || 'https';
+      const siteUrl = `${protocol}://${host}`;
+
+      let successUrl = body.success_url || `${siteUrl}?status=success`;
+      let cancelUrl = body.cancel_url || `${siteUrl}?status=cancel`;
+      let webhookUrl = body.webhook_url || `${siteUrl}?status=webhook`;
+
+      // NagorikPay Official Payload Format
+      const payload = {
+        amount: amountVal,
+        success_url: successUrl,
+        cancel_url: cancelUrl,
+        webhook_url: webhookUrl,
+        metadata: {
+          phone: (body.metadata && body.metadata.phone) ? String(body.metadata.phone) : "01700000000"
+        }
+      };
+
+      const response = await fetch(`${BASE_URL}/create`, {
+        method: 'POST',
+        headers: {
+          'API-KEY': API_KEY,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+      
+      const rawText = await response.text();
+      let data;
+      try {
+        data = JSON.parse(rawText);
+      } catch (err) {
+        data = { message: rawText };
+      }
+
+      return res.status(response.status || 200).json(data);
+
+    // ২. পেমেন্ট ভেরিফিকেশন (Verify Payment)
+    } else if (action === 'verify') {
+      const trxId = body.transaction_id || body.trx_id || body.order_id;
+
+      if (!trxId) {
+        return res.status(400).json({ 
+          status: 'ERROR', 
+          message: 'Transaction ID is required' 
+        });
+      }
+
+      const response = await fetch(`${BASE_URL}/verify`, {
+        method: 'POST',
+        headers: {
+          'API-KEY': API_KEY,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({ transaction_id: String(trxId).trim() })
+      });
+      
+      const data = await response.json();
+      return res.status(response.status || 200).json(data);
+
+    } else {
+      return res.status(400).json({ error: 'Invalid Action. Use ?action=create or ?action=verify' });
+    }
+  } catch (error) {
+    console.error("NagorikPay API Error:", error);
+    return res.status(500).json({ error: error.message || 'Server Connection Failed' });
+  }
 }
