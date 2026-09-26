@@ -324,20 +324,6 @@
             background: #172442;
             box-shadow: 0 0 18px rgba(56, 189, 248, 0.25);
         }
-
-        .vs-divider {
-            position: relative;
-        }
-        .vs-divider::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: rgba(255, 255, 255, 0.1);
-            z-index: 1;
-        }
     </style>
 </head>
 <body class="max-w-md mx-auto relative min-h-screen pb-24 text-slate-100">
@@ -549,7 +535,7 @@
             </div>
         </div>
 
-        <!-- 4. ENHANCED MATCH HISTORY PAGE (VS & Opponent Visuals) -->
+        <!-- 4. MATCH HISTORY PAGE -->
         <div id="history-page" class="sub-page space-y-4">
             <div class="flex items-center justify-between pb-1">
                 <div class="flex items-center gap-2">
@@ -644,7 +630,7 @@
             </div>
         </div>
 
-        <!-- 6. LEADERBOARD PAGE (1 REFER = 1 POINT) -->
+        <!-- 6. LEADERBOARD PAGE -->
         <div id="leaderboard-page" class="sub-page space-y-4">
             <div class="flex items-center gap-2 pb-1">
                 <button onclick="navigateTo('profile-page')" class="w-9 h-9 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10">
@@ -1238,11 +1224,11 @@
             appId: "1:351633490277:web:11b0e79e9abe2f42ce218c"
         };
 
-        // Initialize Firebase with single instance
-        firebase.initializeApp(firebaseConfig);
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+
         const db = firebase.database();
-        const userDb = db;
-        const contentDb = db;
 
         let activeUser = {
             id: "6954647230",
@@ -1335,14 +1321,14 @@
                 }
             }
 
-            userDb.ref(`users/${activeUser.id}/profile`).once('value', snap => {
+            db.ref(`users/${activeUser.id}/profile`).once('value', snap => {
                 if (snap.exists()) {
                     const prof = snap.val();
                     if (prof.name) activeUser.name = prof.name;
                     if (prof.username) activeUser.username = prof.username;
                     if (prof.photo) activeUser.photo = prof.photo;
                 }
-                userDb.ref(`users/${activeUser.id}/profile`).update({
+                db.ref(`users/${activeUser.id}/profile`).update({
                     name: activeUser.name,
                     username: activeUser.username,
                     photo: activeUser.photo,
@@ -1383,7 +1369,7 @@
                 timestamp: now,
                 ...meta
             };
-            userDb.ref(`users/${uid}/transactions`).push(txObj);
+            db.ref(`users/${uid}/transactions`).push(txObj);
 
             if (notifTitle || notifMsg) {
                 const notifObj = {
@@ -1393,7 +1379,7 @@
                     timestamp: now,
                     type: type
                 };
-                userDb.ref(`users/${uid}/notifications`).push(notifObj);
+                db.ref(`users/${uid}/notifications`).push(notifObj);
             }
         }
 
@@ -1437,7 +1423,7 @@
             if (!startTime) return true;
             const now = new Date();
             const currentHour = now.getHours();
-            const isFirstSlot = currentHour < 12; // 00:00 to 11:59 AM
+            const isFirstSlot = currentHour < 12;
 
             const mDate = new Date(startTime);
             const isToday = mDate.toDateString() === now.toDateString();
@@ -1465,13 +1451,13 @@
 
         // ================= FIREBASE SYNC ENGINE =================
         function initRealtimeFirebaseSync() {
-            contentDb.ref('settings/notice').on('value', snap => {
+            db.ref('settings/notice').on('value', snap => {
                 if (snap.exists() && snap.val()) {
                     document.getElementById('main-notice-marquee').textContent = snap.val();
                 }
             });
 
-            contentDb.ref('settings/arena_enabled').on('value', snap => {
+            db.ref('settings/arena_enabled').on('value', snap => {
                 if (snap.exists()) {
                     isArenaEnabled = snap.val() === true || snap.val() === 'true';
                 } else {
@@ -1480,29 +1466,29 @@
                 renderGameCategories();
             });
 
-            contentDb.ref('settings/leaderboard_cycle_end').on('value', snap => {
+            db.ref('settings/leaderboard_cycle_end').on('value', snap => {
                 if (snap.exists() && snap.val()) {
                     leaderboardCycleEnd = parseInt(snap.val());
                 } else {
                     leaderboardCycleEnd = Date.now() + (7 * 24 * 60 * 60 * 1000);
-                    contentDb.ref('settings/leaderboard_cycle_end').set(leaderboardCycleEnd);
+                    db.ref('settings/leaderboard_cycle_end').set(leaderboardCycleEnd);
                 }
             });
 
-            contentDb.ref('settings/referral').on('value', snap => {
+            db.ref('settings/referral').on('value', snap => {
                 if (snap.exists() && snap.val()) {
                     referralConfig = Object.assign(referralConfig, snap.val());
                     updateReferralDisplay();
                 }
             });
 
-            contentDb.ref('settings/admin_config').on('value', snap => {
+            db.ref('settings/admin_config').on('value', snap => {
                 if (snap.exists() && snap.val()) {
                     adminConfig = Object.assign(adminConfig, snap.val());
                 }
             });
 
-            contentDb.ref('game_categories').on('value', snap => {
+            db.ref('game_categories').on('value', snap => {
                 const data = snap.val();
                 if (data) {
                     gameCategories = Object.keys(data).map(k => ({ key: k, ...data[k] }));
@@ -1511,7 +1497,7 @@
                 }
             });
 
-            contentDb.ref('matches').on('value', snapshot => {
+            db.ref('matches').on('value', snapshot => {
                 const data = snapshot.val();
                 realtimeMatches = [];
 
@@ -1549,13 +1535,12 @@
                             }
                         }
 
-                        // When Match is Full -> Notify Admin & Auto Spawn Next Special Match
                         if (m.current >= m.max && !m.adminNotifiedFull) {
                             notifyAdminViaTelegramDirect(m);
-                            contentDb.ref(`matches/${m.id}`).update({ adminNotifiedFull: true });
+                            db.ref(`matches/${m.id}`).update({ adminNotifiedFull: true });
 
                             if (m.isSpecial && !m.autoNextCreated) {
-                                contentDb.ref(`matches/${m.id}`).update({ autoNextCreated: true });
+                                db.ref(`matches/${m.id}`).update({ autoNextCreated: true });
                                 spawnNewSpecialMatch(m.gameType, m.fee, m.prize, m.max, m.mode);
                             }
                         }
@@ -1572,7 +1557,7 @@
             });
 
             // Balance Watchers
-            userDb.ref(`users/${activeUser.id}/depositBalance`).on('value', snap => {
+            db.ref(`users/${activeUser.id}/depositBalance`).on('value', snap => {
                 const newBal = parseFloat(snap.val()) || 0;
                 if (initialDepositLoaded) {
                     if (!skipAdminDepLog) {
@@ -1600,7 +1585,7 @@
                 updateUserInterface();
             });
 
-            userDb.ref(`users/${activeUser.id}/winningBalance`).on('value', snap => {
+            db.ref(`users/${activeUser.id}/winningBalance`).on('value', snap => {
                 const newBal = parseFloat(snap.val()) || 0;
                 if (initialWinningLoaded) {
                     if (!skipAdminWinLog) {
@@ -1628,16 +1613,16 @@
                 updateUserInterface();
             });
 
-            userDb.ref(`users/${activeUser.id}/referralWallet`).on('value', snap => {
+            db.ref(`users/${activeUser.id}/referralWallet`).on('value', snap => {
                 activeUser.referralWallet = parseFloat(snap.val()) || 0;
                 document.getElementById('ref-claimable-bal').textContent = `৳${activeUser.referralWallet.toFixed(2)}`;
             });
 
-            userDb.ref(`users/${activeUser.id}/lastReferralClaim`).on('value', snap => {
+            db.ref(`users/${activeUser.id}/lastReferralClaim`).on('value', snap => {
                 activeUser.lastReferralClaim = parseInt(snap.val()) || 0;
             });
 
-            userDb.ref(`users/${activeUser.id}/transactions`).on('value', snap => {
+            db.ref(`users/${activeUser.id}/transactions`).on('value', snap => {
                 allTransactions = [];
                 if (snap.exists()) {
                     snap.forEach(c => allTransactions.unshift({ id: c.key, ...c.val() }));
@@ -1645,7 +1630,7 @@
                 renderUnifiedTransactionsList();
             });
 
-            userDb.ref(`users/${activeUser.id}/history`).on('value', snap => {
+            db.ref(`users/${activeUser.id}/history`).on('value', snap => {
                 pureMatchHistory = [];
                 if (snap.exists()) {
                     snap.forEach(c => { pureMatchHistory.unshift({ id: c.key, ...c.val() }); });
@@ -1654,7 +1639,7 @@
                 renderPureMatchHistory();
             });
 
-            userDb.ref(`users/${activeUser.id}/notifications`).on('value', snap => {
+            db.ref(`users/${activeUser.id}/notifications`).on('value', snap => {
                 notifications = [];
                 if (snap.exists()) {
                     snap.forEach(c => { notifications.unshift(c.val()); });
@@ -1665,7 +1650,7 @@
                 renderNotifications();
             });
 
-            userDb.ref(`users/${activeUser.id}/referrals`).on('value', snap => {
+            db.ref(`users/${activeUser.id}/referrals`).on('value', snap => {
                 const container = document.getElementById('referred-users-list-container');
                 if (!container) return;
 
@@ -1717,7 +1702,7 @@
                 loadLeaderboard();
             });
 
-            userDb.ref(`users/${activeUser.id}/refer_earnings`).on('value', snap => {
+            db.ref(`users/${activeUser.id}/refer_earnings`).on('value', snap => {
                 const earn = parseFloat(snap.val()) || 0;
                 document.getElementById('ref-stat-earn').textContent = `৳${earn.toFixed(2)}`;
             });
@@ -1734,7 +1719,7 @@
         }
 
         function spawnNewSpecialMatch(gameType = "ludo", fee = 50, prize = 90, max = 2, mode = "1v1") {
-            contentDb.ref('settings/last_match_number').transaction(curr => (curr || 5020) + 1, (err, committed, snap) => {
+            db.ref('settings/last_match_number').transaction(curr => (curr || 5020) + 1, (err, committed, snap) => {
                 const nextNo = `#${snap.val()}`;
                 const now = Date.now();
                 const newSpecial = {
@@ -1752,7 +1737,7 @@
                     expiresAt: now + (30 * 60 * 1000),
                     order: 1
                 };
-                contentDb.ref('matches').push(newSpecial);
+                db.ref('matches').push(newSpecial);
             });
         }
 
@@ -1780,12 +1765,12 @@
         }
 
         function processAutoCancelAndRefund(match, reason) {
-            contentDb.ref(`matches/${match.id}`).remove();
+            db.ref(`matches/${match.id}`).remove();
 
             if (match.players) {
                 Object.keys(match.players).forEach(uid => {
                     if (uid === activeUser.id) skipAdminDepLog = true;
-                    userDb.ref(`users/${uid}/depositBalance`).transaction(curr => (curr || 0) + match.fee);
+                    db.ref(`users/${uid}/depositBalance`).transaction(curr => (curr || 0) + match.fee);
 
                     logTransactionAndNotification(uid, {
                         type: "REFUND",
@@ -1796,7 +1781,7 @@
                         notifMsg: `${match.matchNo}-এ ${reason} ৳${match.fee} আপনার গেমিং ব্যালেন্সে যোগ হয়েছে।`
                     });
 
-                    userDb.ref(`users/${uid}/history/${match.id}`).update({
+                    db.ref(`users/${uid}/history/${match.id}`).update({
                         status: "REFUNDED",
                         refundReason: reason,
                         refundTime: Date.now()
@@ -2071,8 +2056,8 @@
             }
             updateUserInterface();
 
-            userDb.ref(`users/${activeUser.id}/depositBalance`).set(activeUser.depositBalance);
-            userDb.ref(`users/${activeUser.id}/winningBalance`).set(activeUser.winningBalance);
+            db.ref(`users/${activeUser.id}/depositBalance`).set(activeUser.depositBalance);
+            db.ref(`users/${activeUser.id}/winningBalance`).set(activeUser.winningBalance);
 
             logTransactionAndNotification(activeUser.id, {
                 type: "MATCH_ENTRY",
@@ -2090,7 +2075,7 @@
                 joinedAt: Date.now()
             };
 
-            contentDb.ref(`matches/${m.id}/players/${activeUser.id}`).set(playerPayload).then(() => {
+            db.ref(`matches/${m.id}/players/${activeUser.id}`).set(playerPayload).then(() => {
                 const historyItem = {
                     type: "MATCH",
                     matchNo: m.matchNo,
@@ -2103,7 +2088,7 @@
                     time: new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit', hour12: true }),
                     timestamp: Date.now()
                 };
-                userDb.ref(`users/${activeUser.id}/history/${m.id}`).set(historyItem);
+                db.ref(`users/${activeUser.id}/history/${m.id}`).set(historyItem);
             });
 
             closeModal('join-match-modal');
@@ -2126,12 +2111,12 @@
             }
 
             if (confirm(`আপনি কি ম্যাচটি থেকে বের হয়ে ৳${m.fee} রিফান্ড নিতে চান?`)) {
-                contentDb.ref(`matches/${m.id}/players/${activeUser.id}`).remove();
+                db.ref(`matches/${m.id}/players/${activeUser.id}`).remove();
 
                 skipAdminDepLog = true;
                 activeUser.depositBalance += m.fee;
                 updateUserInterface();
-                userDb.ref(`users/${activeUser.id}/depositBalance`).set(activeUser.depositBalance);
+                db.ref(`users/${activeUser.id}/depositBalance`).set(activeUser.depositBalance);
 
                 logTransactionAndNotification(activeUser.id, {
                     type: "REFUND",
@@ -2142,7 +2127,7 @@
                     notifMsg: `ম্যাচ ${m.matchNo} থেকে প্রত্যাহার করায় ৳${m.fee} গেমিং ব্যালেন্সে যোগ করা হয়েছে।`
                 });
 
-                userDb.ref(`users/${activeUser.id}/history/${m.id}`).update({
+                db.ref(`users/${activeUser.id}/history/${m.id}`).update({
                     status: "REFUNDED",
                     refundTime: Date.now()
                 });
@@ -2185,7 +2170,7 @@
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> যাচাই হচ্ছে...';
 
-            contentDb.ref('matches').once('value').then(snapshot => {
+            db.ref('matches').once('value').then(snapshot => {
                 let foundMatch = null;
                 snapshot.forEach(child => {
                     const m = child.val();
@@ -2210,7 +2195,7 @@
                 skipAdminWinLog = true;
                 activeUser.winningBalance += prize;
                 updateUserInterface();
-                userDb.ref(`users/${activeUser.id}/winningBalance`).set(activeUser.winningBalance);
+                db.ref(`users/${activeUser.id}/winningBalance`).set(activeUser.winningBalance);
 
                 logTransactionAndNotification(activeUser.id, {
                     type: "MATCH_WIN",
@@ -2224,7 +2209,7 @@
                 const playersMap = foundMatch.players || {};
                 const playersArray = Object.values(playersMap);
 
-                userDb.ref(`users/${activeUser.id}/history/${foundMatch.id}`).update({
+                db.ref(`users/${activeUser.id}/history/${foundMatch.id}`).update({
                     status: "WIN",
                     roomCode: room,
                     playersSnapshot: playersArray,
@@ -2233,14 +2218,14 @@
 
                 Object.keys(playersMap).forEach(uid => {
                     if (uid !== activeUser.id) {
-                        userDb.ref(`users/${uid}/history/${foundMatch.id}`).update({
+                        db.ref(`users/${uid}/history/${foundMatch.id}`).update({
                             status: "LOSS",
                             roomCode: room,
                             playersSnapshot: playersArray,
                             completedAt: Date.now()
                         });
 
-                        userDb.ref(`users/${uid}/notifications`).push({
+                        db.ref(`users/${uid}/notifications`).push({
                             title: "ম্যাচ সমাপ্তি 🎮",
                             message: `ম্যাচ ${foundMatch.matchNo} সম্পন্ন হয়েছে। ভালো খেলার জন্য ধন্যবাদ!`,
                             time: new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit', hour12: true }),
@@ -2250,16 +2235,16 @@
                 });
 
                 // REFERRAL COMMISSION
-                userDb.ref(`users/${activeUser.id}`).once('value', uSnap => {
+                db.ref(`users/${activeUser.id}`).once('value', uSnap => {
                     const u = uSnap.val() || {};
                     const inviterUid = u.referredBy;
                     if (inviterUid) {
-                        userDb.ref(`users/${inviterUid}/referrals/${activeUser.id}`).once('value', refSnap => {
+                        db.ref(`users/${inviterUid}/referrals/${activeUser.id}`).once('value', refSnap => {
                             const refData = refSnap.val() || {};
                             if (refData.isAccountActive === true) {
                                 const comm = referralConfig.matchWinCommission || 2;
-                                userDb.ref(`users/${inviterUid}/referralWallet`).transaction(c => (c || 0) + comm);
-                                userDb.ref(`users/${inviterUid}/refer_earnings`).transaction(c => (c || 0) + comm);
+                                db.ref(`users/${inviterUid}/referralWallet`).transaction(c => (c || 0) + comm);
+                                db.ref(`users/${inviterUid}/refer_earnings`).transaction(c => (c || 0) + comm);
                                 
                                 logTransactionAndNotification(inviterUid, {
                                     type: "REFERRAL_COMMISSION",
@@ -2274,7 +2259,7 @@
                     }
                 });
 
-                contentDb.ref(`matches/${foundMatch.id}`).remove();
+                db.ref(`matches/${foundMatch.id}`).remove();
 
                 if (foundMatch.isSpecial) {
                     spawnNewSpecialMatch(foundMatch.gameType, foundMatch.fee, foundMatch.prize, foundMatch.max, foundMatch.mode);
@@ -2315,7 +2300,7 @@
             skipAdminWinLog = true;
             activeUser.winningBalance -= amount;
             updateUserInterface();
-            userDb.ref(`users/${activeUser.id}/winningBalance`).set(activeUser.winningBalance);
+            db.ref(`users/${activeUser.id}/winningBalance`).set(activeUser.winningBalance);
 
             logTransactionAndNotification(activeUser.id, {
                 type: "WITHDRAW",
@@ -2327,7 +2312,7 @@
                 notifMsg: `৳${amount} (${selectedWithdrawMethod}) উত্তোলনের অনুরোধ প্রক্রিয়াধীন রয়েছে।`
             });
 
-            contentDb.ref(`admin_withdraw_requests`).push({
+            db.ref(`admin_withdraw_requests`).push({
                 uid: activeUser.id,
                 name: activeUser.name,
                 method: selectedWithdrawMethod,
@@ -2362,7 +2347,7 @@
             if (statWinRate) statWinRate.textContent = `${winRate}%`;
         }
 
-        // ================= ENHANCED MATCH HISTORY (VS BATTLE CARD) =================
+        // ================= MATCH HISTORY (VS BATTLE CARD) =================
         function renderPureMatchHistory() {
             const container = document.getElementById('pure-match-history-container');
             if (!container) return;
@@ -2433,7 +2418,6 @@
 
                     ${isOneVsOne ? `
                         <div class="bg-[#090f1d] p-3.5 rounded-2xl border border-white/5 flex items-center justify-between relative">
-                            <!-- User Side -->
                             <div class="flex flex-col items-center gap-1 flex-1">
                                 <div class="w-12 h-12 rounded-full border-2 border-emerald-500 p-0.5 overflow-hidden shadow-lg bg-slate-900">
                                     <img src="${p1Photo}" class="w-full h-full object-cover rounded-full" alt="You">
@@ -2442,12 +2426,10 @@
                                 <span class="text-[9px] font-bold text-emerald-400">(YOU)</span>
                             </div>
 
-                            <!-- VS Badge -->
                             <div class="px-3 flex flex-col items-center justify-center">
                                 <span class="w-7 h-7 rounded-full bg-rose-600 text-white font-black text-xs italic flex items-center justify-center shadow-lg border border-rose-400">VS</span>
                             </div>
 
-                            <!-- Opponent Side -->
                             <div class="flex flex-col items-center gap-1 flex-1">
                                 <div class="w-12 h-12 rounded-full border-2 ${opponentList.length > 0 ? 'border-rose-500' : 'border-slate-700'} p-0.5 overflow-hidden shadow-lg bg-slate-900">
                                     <img src="${p2Photo}" class="w-full h-full object-cover rounded-full" onerror="this.src='https://cdn-icons-png.flaticon.com/512/847/847969.png'" alt="Opponent">
@@ -2588,7 +2570,7 @@
 
         function triggerRoomCodeLiveNotification(m) {
             showToast(`🎉 ম্যাচ ${m.matchNo}-এর রুম কোড: ${m.roomCode}`, 'success');
-            userDb.ref(`users/${activeUser.id}/notifications`).push({
+            db.ref(`users/${activeUser.id}/notifications`).push({
                 title: `রুম কোড প্রদান করা হয়েছে 🔑`,
                 message: `ম্যাচ ${m.matchNo}-এর রুম কোড: ${m.roomCode}। খেলায় যোগ দিন।`,
                 time: new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit', hour12: true }),
@@ -2677,7 +2659,7 @@
         }
 
         function loadChatMessages(uid) {
-            contentDb.ref('support_chats/' + uid).on('value', snap => {
+            db.ref('support_chats/' + uid).on('value', snap => {
                 const body = document.getElementById('chat-messages');
                 body.innerHTML = `
                     <div class="msg-row admin">
@@ -2714,7 +2696,7 @@
             if (!text) return;
 
             const timeStr = new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit', hour12: true });
-            contentDb.ref('support_chats/' + activeUser.id).push({
+            db.ref('support_chats/' + activeUser.id).push({
                 sender: 'user',
                 text: text,
                 userName: activeUser.name,
@@ -2772,7 +2754,7 @@
             if (distance <= 0) {
                 settleLeaderboardCycle();
                 leaderboardCycleEnd = Date.now() + (7 * 24 * 60 * 60 * 1000);
-                contentDb.ref('settings/leaderboard_cycle_end').set(leaderboardCycleEnd);
+                db.ref('settings/leaderboard_cycle_end').set(leaderboardCycleEnd);
                 distance = leaderboardCycleEnd - now;
             }
 
@@ -2787,7 +2769,7 @@
         }
 
         function settleLeaderboardCycle() {
-            userDb.ref('users').once('value').then(snapshot => {
+            db.ref('users').once('value').then(snapshot => {
                 let userArray = [];
                 if (snapshot.exists()) {
                     snapshot.forEach(c => {
@@ -2809,7 +2791,7 @@
                 userArray.sort((a, b) => b.points - a.points);
                 const topWinners = userArray.slice(0, 3);
                 if (topWinners.length > 0) {
-                    contentDb.ref('admin_leaderboard_claims').push({
+                    db.ref('admin_leaderboard_claims').push({
                         settledAt: Date.now(),
                         dateStr: new Date().toLocaleDateString('bn-BD'),
                         status: "PENDING_APPROVAL",
@@ -2823,7 +2805,7 @@
             const container = document.getElementById('leaderboard-list-container');
             if (!container) return;
 
-            userDb.ref('users').once('value').then(snapshot => {
+            db.ref('users').once('value').then(snapshot => {
                 let userArray = [];
                 if (snapshot.exists()) {
                     snapshot.forEach(c => {
@@ -2939,7 +2921,7 @@
             updateUserInterface();
             document.getElementById('ref-claimable-bal').textContent = `৳0.00`;
 
-            userDb.ref(`users/${activeUser.id}`).update({
+            db.ref(`users/${activeUser.id}`).update({
                 referralWallet: 0,
                 depositBalance: activeUser.depositBalance,
                 lastReferralClaim: now
@@ -2964,12 +2946,12 @@
         }
 
         function registerUserReferral(inviterId) {
-            const userRef = userDb.ref(`users/${activeUser.id}`);
+            const userRef = db.ref(`users/${activeUser.id}`);
             userRef.once('value', snapshot => {
                 const u = snapshot.val() || {};
                 if (!u.referredBy) {
                     userRef.update({ referredBy: inviterId });
-                    userDb.ref(`users/${inviterId}/referrals/${activeUser.id}`).set({
+                    db.ref(`users/${inviterId}/referrals/${activeUser.id}`).set({
                         uid: activeUser.id,
                         name: activeUser.name,
                         photo: activeUser.photo,
@@ -3028,7 +3010,7 @@
                 window.history.replaceState({}, document.title, window.location.pathname);
                 if (!transactionId) return;
 
-                const procRef = userDb.ref(`processed_payments/${transactionId}`);
+                const procRef = db.ref(`processed_payments/${transactionId}`);
                 const procSnap = await procRef.once('value');
                 if (procSnap.exists()) return;
 
@@ -3050,7 +3032,7 @@
                             });
 
                             skipAdminDepLog = true;
-                            userDb.ref(`users/${activeUser.id}/depositBalance`).transaction(curr => (curr || 0) + depositAmount);
+                            db.ref(`users/${activeUser.id}/depositBalance`).transaction(curr => (curr || 0) + depositAmount);
 
                             logTransactionAndNotification(activeUser.id, {
                                 type: "DEPOSIT",
@@ -3062,7 +3044,7 @@
                                 meta: { txid: transactionId }
                             });
 
-                            userDb.ref(`users/${activeUser.id}`).once('value', uSnap => {
+                            db.ref(`users/${activeUser.id}`).once('value', uSnap => {
                                 const u = uSnap.val() || {};
                                 const inviterId = u.referredBy;
                                 const isFirstDeposit = !u.depositHistoryCount || u.depositHistoryCount === 0;
@@ -3070,7 +3052,7 @@
                                 const newCount = (u.depositHistoryCount || 0) + 1;
                                 const newTotalDep = (u.totalDeposited || 0) + depositAmount;
 
-                                userDb.ref(`users/${activeUser.id}`).update({
+                                db.ref(`users/${activeUser.id}`).update({
                                     depositHistoryCount: newCount,
                                     totalDeposited: newTotalDep
                                 });
@@ -3078,9 +3060,9 @@
                                 if (inviterId) {
                                     if (isFirstDeposit && depositAmount >= (referralConfig.firstDepositMin || 100)) {
                                         const bonus = referralConfig.firstDepositBonus || 10;
-                                        userDb.ref(`users/${inviterId}/referralWallet`).transaction(c => (c || 0) + bonus);
-                                        userDb.ref(`users/${inviterId}/refer_earnings`).transaction(c => (c || 0) + bonus);
-                                        userDb.ref(`users/${inviterId}/referrals/${activeUser.id}`).update({
+                                        db.ref(`users/${inviterId}/referralWallet`).transaction(c => (c || 0) + bonus);
+                                        db.ref(`users/${inviterId}/refer_earnings`).transaction(c => (c || 0) + bonus);
+                                        db.ref(`users/${inviterId}/referrals/${activeUser.id}`).update({
                                             isAccountActive: true,
                                             hasFirstDepositBonusGiven: true
                                         });
@@ -3094,7 +3076,7 @@
                                             notifMsg: `আপনার আমন্ত্রিত বন্ধু (${activeUser.name}) প্রথমবার ৳১০০+ ডিপোজিট করায় ৳${bonus} রেফারেল বোনাস পেয়েছেন!`
                                         });
                                     } else if (newTotalDep >= 100 || depositAmount >= 100) {
-                                        userDb.ref(`users/${inviterId}/referrals/${activeUser.id}`).update({
+                                        db.ref(`users/${inviterId}/referrals/${activeUser.id}`).update({
                                             isAccountActive: true
                                         });
                                     }
@@ -3115,11 +3097,11 @@
             const code = document.getElementById('input-redeem-code').value.trim().toUpperCase();
             if (!code) return showToast("প্রোমো কোডটি দিন", "error");
 
-            contentDb.ref(`promo_codes/${code}`).once('value', snap => {
+            db.ref(`promo_codes/${code}`).once('value', snap => {
                 if (snap.exists() && snap.val().active) {
                     const bonus = parseFloat(snap.val().amount || 20);
                     skipAdminDepLog = true;
-                    userDb.ref(`users/${activeUser.id}/depositBalance`).transaction(curr => (curr || 0) + bonus);
+                    db.ref(`users/${activeUser.id}/depositBalance`).transaction(curr => (curr || 0) + bonus);
 
                     logTransactionAndNotification(activeUser.id, {
                         type: "PROMO",
