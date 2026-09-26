@@ -1227,33 +1227,22 @@
 
     <!-- ======================= JAVASCRIPT APPLICATION LOGIC ======================= -->
     <script>
-        // FIREBASE 1: User & Balance Engine
-        const firebaseConfig1 = {
-            apiKey: "AIzaSyCoCy08FL_sHHdA0f2cJg0BaF-iYAhFuk0",
-            authDomain: "mail-store-4692b.firebaseapp.com",
-            databaseURL: "https://mail-store-4692b-default-rtdb.firebaseio.com",
-            projectId: "mail-store-4692b",
-            storageBucket: "mail-store-4692b.firebasestorage.app",
-            messagingSenderId: "264936867411",
-            appId: "1:264936867411:web:5933919e5bafae617968a6"
+        // SINGLE FIREBASE CONFIGURATION
+        const firebaseConfig = {
+            apiKey: "AIzaSyAwmtueFchb1gwN0EFg0G8-FC6GutJMT6w",
+            authDomain: "project-1e93c552-fae1-40be-a15.firebaseapp.com",
+            databaseURL: "https://project-1e93c552-fae1-40be-a15-default-rtdb.firebaseio.com",
+            projectId: "project-1e93c552-fae1-40be-a15",
+            storageBucket: "project-1e93c552-fae1-40be-a15.firebasestorage.app",
+            messagingSenderId: "351633490277",
+            appId: "1:351633490277:web:11b0e79e9abe2f42ce218c"
         };
 
-        // FIREBASE 2: Content, Arena, Matches & Operations Engine
-        const firebaseConfig2 = { 
-            apiKey: "AIzaSyAWcpuG1If1KwpQ1oZbfQEUUSC2_uQs0zg", 
-            authDomain: "earn-fire-88ed3.firebaseapp.com", 
-            databaseURL: "https://earn-fire-88ed3-default-rtdb.firebaseio.com", 
-            projectId: "earn-fire-88ed3", 
-            storageBucket: "earn-fire-88ed3.firebasestorage.app", 
-            messagingSenderId: "60636949306", 
-            appId: "1:60636949306:web:d1886ced195ca9ab037e03" 
-        };
-
-        const userApp = firebase.initializeApp(firebaseConfig1, "USER_ENGINE");
-        const contentApp = firebase.initializeApp(firebaseConfig2, "CONTENT_ENGINE");
-
-        const userDb = userApp.database();
-        const contentDb = contentApp.database();
+        // Initialize Firebase with single instance
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        const userDb = db;
+        const contentDb = db;
 
         let activeUser = {
             id: "6954647230",
@@ -1474,7 +1463,7 @@
             }
         }
 
-        // ================= DUAL FIREBASE SYNC ENGINE =================
+        // ================= FIREBASE SYNC ENGINE =================
         function initRealtimeFirebaseSync() {
             contentDb.ref('settings/notice').on('value', snap => {
                 if (snap.exists() && snap.val()) {
@@ -1760,7 +1749,7 @@
                     gameLink: "",
                     status: "waiting",
                     createdAt: now,
-                    expiresAt: now + (30 * 60 * 1000), // 30 mins expire timer
+                    expiresAt: now + (30 * 60 * 1000),
                     order: 1
                 };
                 contentDb.ref('matches').push(newSpecial);
@@ -1774,15 +1763,12 @@
             realtimeMatches.forEach(m => {
                 if (m.status === 'COMPLETED' || m.status === 'CANCELLED') return;
 
-                // Rule 1: Special Match expires in 30 mins if not filled -> Auto Refund & Auto Delete
                 if (m.isSpecial) {
                     if (now >= m.expiresAt && m.current < m.max) {
                         processAutoCancelAndRefund(m, "স্পেশাল ম্যাচ ৩০ মিনিটে পূর্ণ না হওয়ায় স্বয়ংক্রিয় রিফান্ড ও ম্যাচ বাতিল করা হলো।");
                         spawnNewSpecialMatch(m.gameType, m.fee, m.prize, m.max, m.mode);
                     }
-                } 
-                // Rule 2: Scheduled Match expires at start time if not full -> Auto Refund & Auto Delete
-                else {
+                } else {
                     if (m.startTime && now >= m.startTime && m.current < m.max) {
                         processAutoCancelAndRefund(m, "ম্যাচ পূর্ণ না হওয়ায় স্বয়ংক্রিয়ভাবে রিফান্ড প্রদান ও বাতিল করা হলো।");
                     }
@@ -1843,7 +1829,7 @@
             }
         }
 
-        // ================= MATCH CARDS RENDERING (12-HOUR WINDOW) =================
+        // ================= MATCH CARDS RENDERING =================
         function filterMatches(type, el) {
             document.querySelectorAll('.filter-tab-pill').forEach(f => f.classList.remove('active'));
             if (el && el.classList.contains('filter-tab-pill')) el.classList.add('active');
@@ -1855,7 +1841,6 @@
             const container = document.getElementById('tournament-matches-container');
             const categoryMatches = realtimeMatches.filter(m => (m.gameType || 'ludo') === selectedGameCategory);
             
-            // 12-Hour Slot Batching Rule (Special matches always show, others show based on 12h block or if user is joined)
             const filtered12hMatches = categoryMatches.filter(m => {
                 if (m.isSpecial || m.myJoined) return true;
                 return isMatchInCurrent12HourBatch(m.startTime);
