@@ -223,15 +223,31 @@
         .filter-badge.badge-green { background: #063c2c; color: #10b981; border: 1px solid rgba(160, 185, 129, 0.2); }
         .filter-badge.badge-purple { background: #2e1065; color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.2); }
 
-        .match-card {
-            background: linear-gradient(145deg, #111a2e 0%, #0d1527 100%);
-            color: #ffffff;
+        /* ================= WHITE MATCH CARD DESIGN WITH GLOW BORDER ================= */
+        .match-card-white {
+            background: #ffffff;
+            color: #0f172a;
             border-radius: 22px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(99, 102, 241, 0.35);
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.35), 0 0 18px rgba(99, 102, 241, 0.22);
             position: relative;
             overflow: hidden;
             transition: all 0.25s ease;
+        }
+        .match-card-white:hover {
+            border-color: rgba(99, 102, 241, 0.65);
+            box-shadow: 0 12px 35px -5px rgba(0, 0, 0, 0.4), 0 0 24px rgba(99, 102, 241, 0.35);
+        }
+        .match-card-white.is-special-card {
+            border: 2px solid rgba(236, 72, 153, 0.45);
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.35), 0 0 20px rgba(236, 72, 153, 0.25);
+        }
+        .match-card-white.is-full-dimmed {
+            background: #f1f5f9;
+            opacity: 0.58;
+            filter: grayscale(35%);
+            border: 1.5px solid rgba(148, 163, 184, 0.5);
+            box-shadow: none;
         }
 
         .action-row-item {
@@ -457,25 +473,25 @@
             </div>
 
             <div class="filter-container-box">
-                <div class="filter-tab-pill active" onclick="filterMatches('all', this)">
+                <div class="filter-tab-pill active" onclick="filterMatches('all', this)" id="tab-pill-all">
                     <div class="tab-title"><i class="fas fa-layer-group text-[10px]"></i> সব ম্যাচ</div>
                     <span class="filter-badge badge-white" id="filter-count-all">0</span>
                 </div>
-                <div class="filter-tab-pill" onclick="filterMatches('special', this)">
+                <div class="filter-tab-pill" onclick="filterMatches('special', this)" id="tab-pill-special">
                     <div class="tab-title"><i class="fas fa-bolt text-[10px]"></i> স্পেশাল</div>
                     <span class="filter-badge badge-pink" id="filter-count-special">0</span>
                 </div>
-                <div class="filter-tab-pill" onclick="filterMatches('join1', this)">
+                <div class="filter-tab-pill" onclick="filterMatches('join1', this)" id="tab-pill-join1">
                     <div class="tab-title"><i class="fas fa-user-plus text-[10px]"></i> Join 1</div>
                     <span class="filter-badge badge-green" id="filter-count-join1">0</span>
                 </div>
-                <div class="filter-tab-pill" onclick="filterMatches('multi', this)">
+                <div class="filter-tab-pill" onclick="filterMatches('multi', this)" id="tab-pill-multi">
                     <div class="tab-title"><i class="fas fa-users text-[10px]"></i> 1v2/1v3</div>
                     <span class="filter-badge badge-purple" id="filter-count-multi">0</span>
                 </div>
             </div>
 
-            <div id="tournament-matches-container" class="space-y-3 pt-1"></div>
+            <div id="tournament-matches-container" class="space-y-3.5 pt-1"></div>
         </div>
 
         <!-- 3. SUPPORT PAGE -->
@@ -1513,16 +1529,18 @@
                         m.order = m.order !== undefined ? m.order : 100;
                         m.roomCode = m.roomCode || "";
                         m.gameLink = m.gameLink || "";
+                        m.createdAt = m.createdAt || Date.now();
 
                         m.playersList = m.players ? Object.values(m.players) : [];
                         m.current = m.playersList.length;
                         m.myJoined = m.players && m.players[activeUser.id] !== undefined;
 
-                        if (m.isSpecial) {
-                            m.expiresAt = m.expiresAt || (m.createdAt ? m.createdAt + (30 * 60 * 1000) : Date.now() + (30 * 60 * 1000));
-                        } else {
+                        // 30 MINUTE LIFESPAN PER MATCH
+                        m.expiresAt = m.expiresAt || (m.createdAt + (30 * 60 * 1000));
+
+                        if (!m.isSpecial) {
                             m.rawStartTime = m.startTime;
-                            m.startTime = parseMatchStartTime(m.startTime) || (m.createdAt ? m.createdAt + (25 * 60 * 1000) : Date.now() + (20 * 60 * 1000));
+                            m.startTime = parseMatchStartTime(m.startTime) || (m.createdAt + (25 * 60 * 1000));
                         }
 
                         realtimeMatches.push(m);
@@ -1535,14 +1553,11 @@
                             }
                         }
 
-                        if (m.current >= m.max && !m.adminNotifiedFull) {
+                        // AUTO SPAWN NEW MATCH AS SOON AS FULL
+                        if (m.current >= m.max && !m.autoNextCreated) {
+                            db.ref(`matches/${m.id}`).update({ autoNextCreated: true, adminNotifiedFull: true });
                             notifyAdminViaTelegramDirect(m);
-                            db.ref(`matches/${m.id}`).update({ adminNotifiedFull: true });
-
-                            if (m.isSpecial && !m.autoNextCreated) {
-                                db.ref(`matches/${m.id}`).update({ autoNextCreated: true });
-                                spawnNewSpecialMatch(m.gameType, m.fee, m.prize, m.max, m.mode);
-                            }
+                            spawnReplacementMatch(m);
                         }
                     });
 
@@ -1710,53 +1725,52 @@
             loadLeaderboard();
         }
 
-        // ================= SPECIAL MATCH AUTO-REGENERATION =================
-        function ensureSpecialMatchAvailability() {
-            const hasOpenSpecial = realtimeMatches.some(m => m.isSpecial && m.current < m.max);
-            if (!hasOpenSpecial) {
-                spawnNewSpecialMatch("ludo", 50, 90, 2, "1v1");
-            }
-        }
-
-        function spawnNewSpecialMatch(gameType = "ludo", fee = 50, prize = 90, max = 2, mode = "1v1") {
+        // ================= SPAWN IDENTICAL REPLACEMENT MATCH =================
+        function spawnReplacementMatch(oldMatch) {
             db.ref('settings/last_match_number').transaction(curr => (curr || 5020) + 1, (err, committed, snap) => {
                 const nextNo = `#${snap.val()}`;
                 const now = Date.now();
-                const newSpecial = {
+                const newMatch = {
                     matchNo: nextNo,
-                    gameType: gameType,
-                    mode: mode,
-                    max: max,
-                    fee: fee,
-                    prize: prize,
-                    isSpecial: true,
+                    gameType: oldMatch.gameType || "ludo",
+                    mode: oldMatch.mode || "1v1",
+                    max: oldMatch.max || 2,
+                    fee: oldMatch.fee || 50,
+                    prize: oldMatch.prize || 90,
+                    isSpecial: oldMatch.isSpecial === true,
                     roomCode: "",
                     gameLink: "",
                     status: "waiting",
                     createdAt: now,
                     expiresAt: now + (30 * 60 * 1000),
-                    order: 1
+                    startTime: oldMatch.isSpecial ? null : (now + (25 * 60 * 1000)),
+                    order: oldMatch.order || 1
                 };
-                db.ref('matches').push(newSpecial);
+                db.ref('matches').push(newMatch);
             });
         }
 
-        // ================= TIMING RULES, 5-MIN LOCK & AUTO-REFUND =================
+        function ensureSpecialMatchAvailability() {
+            const hasOpenSpecial = realtimeMatches.some(m => m.isSpecial && m.current < m.max);
+            if (!hasOpenSpecial) {
+                spawnReplacementMatch({ gameType: "ludo", fee: 50, prize: 90, max: 2, mode: "1v1", isSpecial: true, order: 2 });
+            }
+        }
+
+        // ================= 30-MINUTES AUTO-CANCEL & REPLACEMENT ENGINE =================
         function checkMatchTimingRules() {
             const now = Date.now();
 
             realtimeMatches.forEach(m => {
                 if (m.status === 'COMPLETED' || m.status === 'CANCELLED') return;
 
-                if (m.isSpecial) {
-                    if (now >= m.expiresAt && m.current < m.max) {
-                        processAutoCancelAndRefund(m, "স্পেশাল ম্যাচ ৩০ মিনিটে পূর্ণ না হওয়ায় স্বয়ংক্রিয় রিফান্ড ও ম্যাচ বাতিল করা হলো।");
-                        spawnNewSpecialMatch(m.gameType, m.fee, m.prize, m.max, m.mode);
-                    }
-                } else {
-                    if (m.startTime && now >= m.startTime && m.current < m.max) {
-                        processAutoCancelAndRefund(m, "ম্যাচ পূর্ণ না হওয়ায় স্বয়ংক্রিয়ভাবে রিফান্ড প্রদান ও বাতিল করা হলো।");
-                    }
+                // 30 MINUTE LIFESPAN: IF NOT FULL -> CANCEL, REFUND & SPAWN NEW ONE
+                if (now >= m.expiresAt && m.current < m.max) {
+                    processAutoCancelAndRefund(m, "ম্যাচ ৩০ মিনিটে পূর্ণ না হওয়ায় রিফান্ড ও নতুন ম্যাচ তৈরি করা হলো।");
+                    spawnReplacementMatch(m);
+                } else if (!m.isSpecial && m.startTime && now >= m.startTime && m.current < m.max) {
+                    processAutoCancelAndRefund(m, "ম্যাচ শুরুর সময়ে পূর্ণ না হওয়ায় রিফান্ড ও নতুন ম্যাচ তৈরি করা হলো।");
+                    spawnReplacementMatch(m);
                 }
             });
 
@@ -1814,10 +1828,17 @@
             }
         }
 
-        // ================= MATCH CARDS RENDERING =================
+        // ================= MATCH RENDERING (WHITE CARD & ALL SORTING) =================
         function filterMatches(type, el) {
             document.querySelectorAll('.filter-tab-pill').forEach(f => f.classList.remove('active'));
-            if (el && el.classList.contains('filter-tab-pill')) el.classList.add('active');
+            const toggleJoinedBtn = document.getElementById('btn-joined-list-toggle');
+            
+            if (el && el.classList.contains('filter-tab-pill')) {
+                el.classList.add('active');
+                toggleJoinedBtn.classList.remove('ring-2', 'ring-amber-400');
+            } else if (type === 'joined') {
+                toggleJoinedBtn.classList.add('ring-2', 'ring-amber-400');
+            }
             currentActiveFilter = type;
             renderMatches();
         }
@@ -1835,20 +1856,32 @@
             document.getElementById('joined-count-badge').textContent = joinedMatches.length;
 
             const isJoin1Match = (m) => (m.current === 1 || (m.max - m.current) === 1);
-            const availableMatches = filtered12hMatches.filter(m => !m.myJoined && m.current < m.max);
+            const availableOpenMatches = filtered12hMatches.filter(m => !m.myJoined && m.current < m.max);
 
-            document.getElementById('filter-count-all').textContent = availableMatches.length;
-            document.getElementById('filter-count-special').textContent = availableMatches.filter(m => m.isSpecial).length;
-            document.getElementById('filter-count-join1').textContent = availableMatches.filter(isJoin1Match).length;
-            document.getElementById('filter-count-multi').textContent = availableMatches.filter(m => m.mode === '1v2' || m.mode === '1v3').length;
+            document.getElementById('filter-count-all').textContent = availableOpenMatches.length;
+            document.getElementById('filter-count-special').textContent = availableOpenMatches.filter(m => m.isSpecial).length;
+            document.getElementById('filter-count-join1').textContent = availableOpenMatches.filter(isJoin1Match).length;
+            document.getElementById('filter-count-multi').textContent = availableOpenMatches.filter(m => m.mode === '1v2' || m.mode === '1v3').length;
 
             let displayList = [];
-            if (currentActiveFilter === 'joined') displayList = joinedMatches;
-            else {
-                displayList = availableMatches;
-                if (currentActiveFilter === 'special') displayList = displayList.filter(m => m.isSpecial);
-                else if (currentActiveFilter === 'join1') displayList = displayList.filter(isJoin1Match);
-                else if (currentActiveFilter === 'multi') displayList = displayList.filter(m => m.mode === '1v2' || m.mode === '1v3');
+
+            if (currentActiveFilter === 'joined') {
+                displayList = joinedMatches;
+            } else if (currentActiveFilter === 'all') {
+                // 1st: TIMING MATCHES (NOT SPECIAL, NOT FULL, NOT JOINED)
+                const timingMatches = availableOpenMatches.filter(m => !m.isSpecial);
+                // 2nd: SPECIAL MATCHES (NOT FULL, NOT JOINED)
+                const specialMatches = availableOpenMatches.filter(m => m.isSpecial);
+                // 3rd: FULL MATCHES (LIGHT DIMMED, HIDDEN FOR JOINED USERS)
+                const fullMatches = filtered12hMatches.filter(m => m.current >= m.max && !m.myJoined);
+
+                displayList = [...timingMatches, ...specialMatches, ...fullMatches];
+            } else if (currentActiveFilter === 'special') {
+                displayList = availableOpenMatches.filter(m => m.isSpecial);
+            } else if (currentActiveFilter === 'join1') {
+                displayList = availableOpenMatches.filter(isJoin1Match);
+            } else if (currentActiveFilter === 'multi') {
+                displayList = availableOpenMatches.filter(m => m.mode === '1v2' || m.mode === '1v3');
             }
 
             if (displayList.length === 0) {
@@ -1856,9 +1889,9 @@
                     <div class="bg-[#121a2d] p-8 rounded-3xl text-center space-y-2 border border-white/5">
                         <i class="fas fa-gamepad text-3xl text-slate-500"></i>
                         <h4 class="text-sm font-bold text-slate-300">
-                            ${currentActiveFilter === 'joined' ? 'আপনি এখনো কোনো সক্রিয় ম্যাচে জয়েন করেননি।' : 'বর্তমান ১২ ঘণ্টার শিডিউলে কোনো ম্যাচ অবশিষ্ট নেই।'}
+                            ${currentActiveFilter === 'joined' ? 'আপনি এখনো কোনো সক্রিয় ম্যাচে জয়েন করেননি।' : 'বর্তমান শিডিউলে কোনো ম্যাচ অবশিষ্ট নেই।'}
                         </h4>
-                        <p class="text-[11px] text-slate-500">পরবর্তী ১২ ঘণ্টার ম্যাচ সময়ে স্বয়ংক্রিয়ভাবে প্রকাশ পাবে।</p>
+                        <p class="text-[11px] text-slate-500">শীঘ্রই নতুন ম্যাচ স্বয়ংক্রিয়ভাবে প্রকাশ পাবে।</p>
                     </div>`;
                 return;
             }
@@ -1874,20 +1907,25 @@
                 const isWithin5Min = !m.isSpecial && timeDiff <= (5 * 60 * 1000) && timeDiff > 0;
                 const isRefundLocked = isFull || isWithin5Min;
 
+                // WHITE CARD STYLING & FULL-STATE HANDLING
+                let cardClass = "match-card-white p-4 space-y-3.5";
+                if (m.isSpecial) cardClass += " is-special-card";
+                if (isFull && !m.myJoined) cardClass += " is-full-dimmed";
+
                 return `
-                <div class="match-card p-4 space-y-3.5" id="card-match-${m.id}">
+                <div class="${cardClass}" id="card-match-${m.id}">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2.5">
                             <div class="relative">
-                                <img src="${getGameIcon(m.gameType)}" class="w-11 h-11 rounded-2xl border border-white/10 shadow" alt="Game">
-                                <span class="absolute -top-1 -left-1 px-1.5 py-0.2 bg-blue-600 rounded text-[9px] font-black uppercase text-white shadow">${modeLabel}</span>
+                                <img src="${getGameIcon(m.gameType)}" class="w-12 h-12 rounded-2xl border-2 border-indigo-500/30 shadow-md object-cover" alt="Game">
+                                <span class="absolute -top-1.5 -left-1.5 px-2 py-0.5 bg-indigo-600 rounded-lg text-[9px] font-black uppercase text-white shadow">${modeLabel}</span>
                             </div>
                             <div>
-                                <h3 class="text-sm font-black text-white flex items-center gap-1.5">
+                                <h3 class="text-sm font-black text-slate-900 flex items-center gap-1.5">
                                     ${(m.gameType || 'GAME').toUpperCase()} - Match ${m.matchNo}
-                                    ${m.isSpecial ? '<span class="px-1.5 py-0.5 rounded bg-gradient-to-r from-amber-500 to-rose-500 text-white text-[9px] font-black">SPECIAL</span>' : ''}
+                                    ${m.isSpecial ? '<span class="px-2 py-0.5 rounded-full bg-gradient-to-r from-pink-500 to-rose-500 text-white text-[9px] font-black shadow-sm">SPECIAL</span>' : ''}
                                     ${m.myJoined ? `
-                                        <span class="px-2 py-0.5 rounded-md bg-emerald-500 text-white text-[9px] font-black uppercase tracking-wider shadow">
+                                        <span class="px-2 py-0.5 rounded-full bg-emerald-600 text-white text-[9px] font-black uppercase tracking-wider shadow">
                                             <i class="fas fa-check-circle"></i> JOINED
                                         </span>
                                     ` : ''}
@@ -1895,18 +1933,18 @@
                                 
                                 <div class="flex items-center gap-1.5 mt-1" id="timer-box-${m.id}">
                                     ${m.isSpecial ? `
-                                        <span class="px-2 py-0.5 rounded-full bg-purple-950 text-purple-300 border border-purple-500/30 font-bold text-[10px] flex items-center gap-1">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-ping"></span> 
+                                        <span class="px-2.5 py-0.5 rounded-full bg-pink-100 text-pink-700 border border-pink-300 font-extrabold text-[10px] flex items-center gap-1">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-pink-500 animate-ping"></span> 
                                             ${maxPlayers} জন পূর্ণ হলেই শুরু (৩০ মি.)
                                         </span>
                                     ` : `
                                         ${isWithin5Min ? `
-                                            <span class="px-2 py-0.5 rounded-full bg-rose-950 text-rose-300 border border-rose-500/40 font-black text-[10px] flex items-center gap-1 animate-pulse">
-                                                <i class="fas fa-hourglass-half"></i> শুরু হতে বাকি: <span class="countdown-badge" id="timer-${m.id}">00:04:59</span>
+                                            <span class="px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-700 border border-rose-300 font-black text-[10px] flex items-center gap-1 animate-pulse">
+                                                <i class="fas fa-hourglass-half text-rose-600"></i> শুরু হতে বাকি: <span class="countdown-badge font-mono" id="timer-${m.id}">00:04:59</span>
                                             </span>
                                         ` : `
-                                            <span class="px-2.5 py-0.5 rounded-full bg-blue-950 text-sky-300 border border-blue-500/30 font-bold text-[10px] flex items-center gap-1">
-                                                <i class="fas fa-clock text-sky-400 text-[10px]"></i> 
+                                            <span class="px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200 font-bold text-[10px] flex items-center gap-1">
+                                                <i class="fas fa-clock text-indigo-500 text-[10px]"></i> 
                                                 ম্যাচ শুরু: <b>${formatMatchTime(m.startTime)}</b>
                                             </span>
                                         `}
@@ -1916,27 +1954,27 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-3 gap-2 text-center py-2 px-3 rounded-2xl bg-black/40 border border-white/5">
+                    <div class="grid grid-cols-3 gap-2 text-center py-2 px-3 rounded-2xl bg-slate-100 border border-slate-200/80">
                         <div>
-                            <span class="text-[10px] font-bold text-slate-400 block uppercase">Total Prize</span>
-                            <span class="text-base font-black text-emerald-400">৳${m.prize}</span>
+                            <span class="text-[10px] font-bold text-slate-500 block uppercase">Total Prize</span>
+                            <span class="text-base font-black text-emerald-600">৳${m.prize}</span>
                         </div>
                         <div class="flex items-center justify-center">
-                            <span class="px-2.5 py-1 rounded-xl bg-slate-800 text-cyan-300 border border-cyan-500/20 font-black text-xs">${modeLabel}</span>
+                            <span class="px-2.5 py-1 rounded-xl bg-white text-indigo-700 border border-indigo-200 font-black text-xs shadow-sm">${modeLabel}</span>
                         </div>
                         <div>
-                            <span class="text-[10px] font-bold text-slate-400 block uppercase">Entry Fee</span>
-                            <span class="text-base font-black text-white">৳${m.fee}</span>
+                            <span class="text-[10px] font-bold text-slate-500 block uppercase">Entry Fee</span>
+                            <span class="text-base font-black text-slate-800">৳${m.fee}</span>
                         </div>
                     </div>
 
                     <div class="space-y-1">
-                        <div class="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
-                            <div class="h-full bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 rounded-full transition-all duration-300" style="width: ${(m.current / maxPlayers) * 100}%;"></div>
+                        <div class="w-full h-2 rounded-full bg-slate-200 overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600 rounded-full transition-all duration-300" style="width: ${(m.current / maxPlayers) * 100}%;"></div>
                         </div>
-                        <div class="flex justify-between text-[11px] font-black text-slate-400">
+                        <div class="flex justify-between text-[11px] font-black text-slate-600">
                             <span><i class="fas fa-user-friends text-slate-500"></i> ${m.current} / ${maxPlayers} Players</span>
-                            <span class="${isFull ? 'text-rose-400' : 'text-emerald-400'} uppercase">${isFull ? 'FULL' : 'SLOTS OPEN'}</span>
+                            <span class="${isFull ? 'text-rose-600' : 'text-emerald-600'} uppercase">${isFull ? 'FULL' : 'SLOTS OPEN'}</span>
                         </div>
                     </div>
 
@@ -1944,21 +1982,21 @@
                         ${m.myJoined ? `
                             ${!isRefundLocked ? `
                                 <div class="grid grid-cols-2 gap-2 pt-1">
-                                    <button onclick="handleManualRefund('${m.id}')" class="py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs shadow flex items-center justify-center gap-1 active:scale-95 transition">
+                                    <button onclick="handleManualRefund('${m.id}')" class="py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs shadow-md flex items-center justify-center gap-1 active:scale-95 transition">
                                         <i class="fas fa-undo"></i> রিফান্ড নিন
                                     </button>
-                                    <button disabled class="py-2.5 rounded-xl bg-slate-800 text-slate-400 font-bold text-xs flex items-center justify-center gap-1 cursor-not-allowed border border-white/5">
+                                    <button disabled class="py-2.5 rounded-xl bg-slate-100 text-slate-400 font-bold text-xs flex items-center justify-center gap-1 cursor-not-allowed border border-slate-200">
                                         <i class="fas fa-lock"></i> রুম কোড (অপেক্ষা)
                                     </button>
                                 </div>
                             ` : `
                                 ${!hasRoomCode ? `
                                     <div class="grid grid-cols-2 gap-2 pt-1">
-                                        <button disabled class="py-2.5 rounded-xl bg-slate-800 text-slate-500 font-black text-xs flex items-center justify-center gap-1 cursor-not-allowed border border-white/5">
+                                        <button disabled class="py-2.5 rounded-xl bg-slate-100 text-slate-400 font-black text-xs flex items-center justify-center gap-1 cursor-not-allowed border border-slate-200">
                                             <i class="fas fa-lock"></i> ৫ মি. রিফান্ড লক
                                         </button>
-                                        <div class="py-2.5 rounded-xl bg-amber-950/60 text-amber-300 border border-amber-500/30 font-extrabold text-xs flex items-center justify-center gap-1.5 animate-pulse">
-                                            <i class="fas fa-spinner fa-spin text-amber-400"></i> রুম কোড আসছে...
+                                        <div class="py-2.5 rounded-xl bg-amber-100 text-amber-800 border border-amber-300 font-extrabold text-xs flex items-center justify-center gap-1.5 animate-pulse">
+                                            <i class="fas fa-spinner fa-spin text-amber-600"></i> রুম কোড আসছে...
                                         </div>
                                     </div>
                                 ` : `
@@ -1974,11 +2012,11 @@
                             `}
                         ` : `
                             ${isFull ? `
-                                <button disabled class="w-full py-3 rounded-xl bg-slate-800 text-slate-500 font-black text-xs cursor-not-allowed border border-white/5">
+                                <button disabled class="w-full py-3 rounded-xl bg-slate-200 text-slate-500 font-black text-xs cursor-not-allowed border border-slate-300">
                                     ম্যাচটি সম্পূর্ণ ফুল
                                 </button>
                             ` : `
-                                <button onclick="openJoinMatchModal('${m.id}')" class="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 text-white font-black text-xs shadow-md active:scale-95 transition">
+                                <button onclick="openJoinMatchModal('${m.id}')" class="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 text-white font-black text-xs shadow-lg active:scale-95 transition">
                                     JOIN MATCH (৳${m.fee})
                                 </button>
                             `}
@@ -1999,8 +2037,8 @@
                 if (timeDiff <= (5 * 60 * 1000) && timeDiff > 0) {
                     if (timerBox && !document.getElementById(`timer-${m.id}`)) {
                         timerBox.innerHTML = `
-                            <span class="px-2 py-0.5 rounded-full bg-rose-950 text-rose-300 border border-rose-500/40 font-black text-[10px] flex items-center gap-1 animate-pulse">
-                                <i class="fas fa-hourglass-half"></i> শুরু হতে বাকি: <span class="countdown-badge" id="timer-${m.id}">00:04:59</span>
+                            <span class="px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-700 border border-rose-300 font-black text-[10px] flex items-center gap-1 animate-pulse">
+                                <i class="fas fa-hourglass-half text-rose-600"></i> শুরু হতে বাকি: <span class="countdown-badge font-mono" id="timer-${m.id}">00:04:59</span>
                             </span>`;
                     }
                     const activeTimer = document.getElementById(`timer-${m.id}`);
@@ -2013,7 +2051,7 @@
             });
         }
 
-        // ================= JOIN & REFUND ACTIONS =================
+        // ================= JOIN & AUTO-REDIRECT TO JOINED LIST =================
         function openJoinMatchModal(id) {
             const m = realtimeMatches.find(x => x.id === id);
             if (!m) return;
@@ -2094,6 +2132,11 @@
             closeModal('join-match-modal');
             showToast(`অভিনন্দন! ম্যাচ ${m.matchNo}-এ জয়েন সম্পন্ন হয়েছে।`, 'success');
             pendingJoinMatchId = null;
+
+            // INSTANT REDIRECT TO JOINED LIST
+            setTimeout(() => {
+                filterMatches('joined', document.getElementById('btn-joined-list-toggle'));
+            }, 300);
         }
 
         function handleManualRefund(id) {
@@ -2262,7 +2305,7 @@
                 db.ref(`matches/${foundMatch.id}`).remove();
 
                 if (foundMatch.isSpecial) {
-                    spawnNewSpecialMatch(foundMatch.gameType, foundMatch.fee, foundMatch.prize, foundMatch.max, foundMatch.mode);
+                    spawnReplacementMatch(foundMatch);
                 }
 
                 submitBtn.disabled = false;
