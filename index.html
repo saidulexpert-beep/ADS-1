@@ -111,7 +111,7 @@
 
         .countdown-badge {
             font-family: 'Share Tech Mono', monospace;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
 
         .gaming-header {
@@ -224,10 +224,11 @@
         .filter-badge.badge-purple { background: #2e1065; color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.2); }
 
         .match-card {
-            background: #ffffff;
-            color: #0f172a;
-            border-radius: 24px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(145deg, #111a2e 0%, #0d1527 100%);
+            color: #ffffff;
+            border-radius: 22px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
             position: relative;
             overflow: hidden;
             transition: all 0.25s ease;
@@ -323,6 +324,20 @@
             background: #172442;
             box-shadow: 0 0 18px rgba(56, 189, 248, 0.25);
         }
+
+        .vs-divider {
+            position: relative;
+        }
+        .vs-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 1;
+        }
     </style>
 </head>
 <body class="max-w-md mx-auto relative min-h-screen pb-24 text-slate-100">
@@ -409,7 +424,7 @@
                     <i class="fas fa-bullhorn text-xs"></i> নোটিশ:
                 </span>
                 <marquee id="main-notice-marquee" class="text-xs text-slate-300 font-semibold" behavior="scroll" direction="left">
-                    👉 🎁 ম্যাচ শুরুর ৫ মিনিট আগ পর্যন্ত রিফান্ড নেওয়া যাবে। খেলা শেষে ম্যাচ সম্পন্ন হওয়ার সাথে সাথে পয়েন্ট ও প্রাইজ আপডেট হবে।
+                    👉 🎁 খেলা শুরুর ৫ মিনিট আগ পর্যন্ত রিফান্ড নেওয়া যাবে। ম্যাচ পূর্ণ না হলে সম্পূর্ণ টাকা স্বয়ংক্রিয়ভাবে ফেরত পাবেন।
                 </marquee>
             </div>
 
@@ -435,7 +450,12 @@
                 <h2 class="text-xl font-black text-amber-400 tracking-wider inline-block" id="arena-header-title" style="font-family: 'Russo One', sans-serif;">
                     LUDO KING (লুডো কিং)
                 </h2>
-                <p class="text-[11px] text-slate-300 mt-0.5">লাইভ টুর্নামেন্ট ও ইনস্ট্যান্ট উইথড্র সিস্টেম</p>
+                <!-- 12-HOUR SLOT INDICATOR -->
+                <div class="mt-1 flex items-center justify-center gap-1.5">
+                    <span class="px-2.5 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-400/30 text-[10px] font-bold" id="slot-indicator-badge">
+                        <i class="fas fa-clock text-amber-400"></i> শিডিউল: লোড হচ্ছে...
+                    </span>
+                </div>
             </div>
 
             <div class="grid grid-cols-2 gap-2">
@@ -529,7 +549,7 @@
             </div>
         </div>
 
-        <!-- 4. MATCH HISTORY -->
+        <!-- 4. ENHANCED MATCH HISTORY PAGE (VS & Opponent Visuals) -->
         <div id="history-page" class="sub-page space-y-4">
             <div class="flex items-center justify-between pb-1">
                 <div class="flex items-center gap-2">
@@ -538,8 +558,11 @@
                     </button>
                     <h2 class="text-base font-black text-white" style="font-family: 'Russo One', sans-serif;">টুর্নামেন্ট ম্যাচ হিস্ট্রি</h2>
                 </div>
-                <span class="text-[10px] bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full border border-white/10 font-bold">ম্যাচ রেকর্ডস</span>
+                <span class="text-[10px] bg-slate-800 text-cyan-400 px-2.5 py-1 rounded-full border border-white/10 font-bold flex items-center gap-1">
+                    <i class="fas fa-shield-halved"></i> প্লেয়ার রেকর্ডস
+                </span>
             </div>
+            
             <div id="pure-match-history-container" class="space-y-3 min-h-[300px]"></div>
         </div>
 
@@ -689,7 +712,7 @@
             </div>
         </div>
 
-        <!-- 7. ENHANCED PROFILE PAGE (Total Balance & Total Win Balance) -->
+        <!-- 7. PROFILE PAGE -->
         <div id="profile-page" class="sub-page space-y-4">
             <div class="flex items-center justify-between">
                 <button onclick="navigateTo('home-page')" class="w-9 h-9 rounded-full bg-slate-800 text-white flex items-center justify-center border border-white/10">
@@ -714,10 +737,10 @@
                 <h3 id="profile-name-text" class="text-xl font-black text-white tracking-wide uppercase" style="font-family: 'Russo One', sans-serif;">PLAYER</h3>
                 <p id="profile-username-display" class="text-xs font-bold text-slate-400 mt-0.5">@player</p>
 
-                <!-- UID Card (Telegram Chat ID) -->
+                <!-- UID Card -->
                 <div class="inline-flex items-center gap-2 mt-3 px-4 py-1.5 rounded-full bg-cyan-500/15 border border-cyan-500/40 text-cyan-300 font-mono font-bold text-xs cursor-pointer shadow-sm active:scale-95 transition" onclick="copyTelegramUID()">
                     <i class="fas fa-id-card text-xs"></i>
-                    <span>UID (Chat ID): <b id="profile-uid-display" class="text-white">6954647230</b></span>
+                    <span>UID: <b id="profile-uid-display" class="text-white">6954647230</b></span>
                     <i class="fas fa-copy text-xs ml-1 text-cyan-400"></i>
                 </div>
             </div>
@@ -738,7 +761,7 @@
                 </div>
             </div>
 
-            <!-- UPDATED: Profile Total Balance & Total Win Balance Cards -->
+            <!-- Total Balance & Win Balance -->
             <div class="grid grid-cols-2 gap-2">
                 <div class="bg-[#121a2d] border border-blue-500/30 p-3.5 rounded-2xl shadow">
                     <span class="text-[10px] font-black text-blue-400 uppercase block flex items-center gap-1">
@@ -1202,7 +1225,7 @@
         </div>
     </div>
 
-    <!-- ======================= DUAL FIREBASE APPLICATION LOGIC ======================= -->
+    <!-- ======================= JAVASCRIPT APPLICATION LOGIC ======================= -->
     <script>
         // FIREBASE 1: User & Balance Engine
         const firebaseConfig1 = {
@@ -1263,7 +1286,7 @@
             botToken: "7774136622:AAHXv-zV_2Z10mR4Q70k7a1W7-hV7hF7uL4"
         };
 
-        let isArenaEnabled = true; // Controlled via Firebase settings/arena_enabled
+        let isArenaEnabled = true;
         let selectedWithdrawMethod = 'bKash';
         let selectedGameCategory = 'ludo'; 
         let realtimeMatches = [];
@@ -1299,7 +1322,6 @@
         renderGameCategories();
 
         window.addEventListener('DOMContentLoaded', function() {
-            // Check Telegram SDK context
             if (window.Telegram?.WebApp) {
                 window.Telegram.WebApp.ready();
                 window.Telegram.WebApp.expand();
@@ -1324,7 +1346,6 @@
                 }
             }
 
-            // Sync user profile to User DB & fetch stored details
             userDb.ref(`users/${activeUser.id}/profile`).once('value', snap => {
                 if (snap.exists()) {
                     const prof = snap.val();
@@ -1358,7 +1379,7 @@
             }, 800);
         });
 
-        // ================= UNIFIED LOGGING (TRANSACTIONS & NOTIFICATIONS) =================
+        // ================= UNIFIED LOGGING =================
         function logTransactionAndNotification(uid, { type, title, amount, isCredit, notifTitle, notifMsg, status = "SUCCESS", meta = {} }) {
             const now = Date.now();
             const timeStr = new Date(now).toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit', hour12: true });
@@ -1387,7 +1408,7 @@
             }
         }
 
-        // ================= PARSE MATCH TIME =================
+        // ================= 12-HOUR TIME PARSING & WINDOWING =================
         function parseMatchStartTime(timeVal) {
             if (!timeVal) return null;
             if (typeof timeVal === 'number') return timeVal;
@@ -1423,16 +1444,44 @@
             return null;
         }
 
+        function isMatchInCurrent12HourBatch(startTime) {
+            if (!startTime) return true;
+            const now = new Date();
+            const currentHour = now.getHours();
+            const isFirstSlot = currentHour < 12; // 00:00 to 11:59 AM
+
+            const mDate = new Date(startTime);
+            const isToday = mDate.toDateString() === now.toDateString();
+
+            if (!isToday) return false;
+
+            const mHour = mDate.getHours();
+            const isMatchFirstSlot = mHour < 12;
+
+            return isFirstSlot === isMatchFirstSlot;
+        }
+
+        function updateSlotIndicatorBadge() {
+            const now = new Date();
+            const hour = now.getHours();
+            const badge = document.getElementById('slot-indicator-badge');
+            if (!badge) return;
+
+            if (hour < 12) {
+                badge.innerHTML = `<i class="fas fa-sun text-amber-400"></i> সকালের শিডিউল (রাত ১২টা - দুপুর ১২টা)`;
+            } else {
+                badge.innerHTML = `<i class="fas fa-moon text-indigo-400"></i> বিকালের শিডিউল (দুপুর ১২টা - রাত ১২টা)`;
+            }
+        }
+
         // ================= DUAL FIREBASE SYNC ENGINE =================
         function initRealtimeFirebaseSync() {
-            // 1. Notice
             contentDb.ref('settings/notice').on('value', snap => {
                 if (snap.exists() && snap.val()) {
                     document.getElementById('main-notice-marquee').textContent = snap.val();
                 }
             });
 
-            // 2. LIVE ARENA STATUS (Enabled / Disabled toggle from Firebase)
             contentDb.ref('settings/arena_enabled').on('value', snap => {
                 if (snap.exists()) {
                     isArenaEnabled = snap.val() === true || snap.val() === 'true';
@@ -1442,7 +1491,6 @@
                 renderGameCategories();
             });
 
-            // 3. Weekly Leaderboard Cycle
             contentDb.ref('settings/leaderboard_cycle_end').on('value', snap => {
                 if (snap.exists() && snap.val()) {
                     leaderboardCycleEnd = parseInt(snap.val());
@@ -1452,7 +1500,6 @@
                 }
             });
 
-            // 4. Referral Config
             contentDb.ref('settings/referral').on('value', snap => {
                 if (snap.exists() && snap.val()) {
                     referralConfig = Object.assign(referralConfig, snap.val());
@@ -1460,14 +1507,12 @@
                 }
             });
 
-            // 5. Admin Bot Config
             contentDb.ref('settings/admin_config').on('value', snap => {
                 if (snap.exists() && snap.val()) {
                     adminConfig = Object.assign(adminConfig, snap.val());
                 }
             });
 
-            // 6. Game Categories
             contentDb.ref('game_categories').on('value', snap => {
                 const data = snap.val();
                 if (data) {
@@ -1477,7 +1522,6 @@
                 }
             });
 
-            // 7. Matches Sync
             contentDb.ref('matches').on('value', snapshot => {
                 const data = snapshot.val();
                 realtimeMatches = [];
@@ -1485,7 +1529,7 @@
                 if (data) {
                     Object.keys(data).forEach(key => {
                         const m = data[key];
-                        if (m.status === 'COMPLETED') return;
+                        if (m.status === 'COMPLETED' || m.status === 'CANCELLED') return;
 
                         m.id = key;
                         m.gameType = m.gameType || 'ludo';
@@ -1516,6 +1560,7 @@
                             }
                         }
 
+                        // When Match is Full -> Notify Admin & Auto Spawn Next Special Match
                         if (m.current >= m.max && !m.adminNotifiedFull) {
                             notifyAdminViaTelegramDirect(m);
                             contentDb.ref(`matches/${m.id}`).update({ adminNotifiedFull: true });
@@ -1534,9 +1579,10 @@
                 ensureSpecialMatchAvailability();
                 renderMatches();
                 renderPureMatchHistory();
+                updateSlotIndicatorBadge();
             });
 
-            // 8. User Deposit & Winning Balances
+            // Balance Watchers
             userDb.ref(`users/${activeUser.id}/depositBalance`).on('value', snap => {
                 const newBal = parseFloat(snap.val()) || 0;
                 if (initialDepositLoaded) {
@@ -1630,7 +1676,6 @@
                 renderNotifications();
             });
 
-            // 9. Referrals Sync
             userDb.ref(`users/${activeUser.id}/referrals`).on('value', snap => {
                 const container = document.getElementById('referred-users-list-container');
                 if (!container) return;
@@ -1693,8 +1738,8 @@
 
         // ================= SPECIAL MATCH AUTO-REGENERATION =================
         function ensureSpecialMatchAvailability() {
-            const hasSpecial = realtimeMatches.some(m => m.isSpecial && m.current < m.max);
-            if (!hasSpecial) {
+            const hasOpenSpecial = realtimeMatches.some(m => m.isSpecial && m.current < m.max);
+            if (!hasOpenSpecial) {
                 spawnNewSpecialMatch("ludo", 50, 90, 2, "1v1");
             }
         }
@@ -1715,57 +1760,37 @@
                     gameLink: "",
                     status: "waiting",
                     createdAt: now,
-                    expiresAt: now + (30 * 60 * 1000),
+                    expiresAt: now + (30 * 60 * 1000), // 30 mins expire timer
                     order: 1
                 };
                 contentDb.ref('matches').push(newSpecial);
             });
         }
 
+        // ================= TIMING RULES, 5-MIN LOCK & AUTO-REFUND =================
         function checkMatchTimingRules() {
             const now = Date.now();
 
             realtimeMatches.forEach(m => {
                 if (m.status === 'COMPLETED' || m.status === 'CANCELLED') return;
 
+                // Rule 1: Special Match expires in 30 mins if not filled -> Auto Refund & Auto Delete
                 if (m.isSpecial) {
                     if (now >= m.expiresAt && m.current < m.max) {
-                        processAutoCancelAndRefund(m, "স্পেশাল ম্যাচ ৩০ মিনিটে পূর্ণ না হওয়ায় স্বয়ংক্রিয় রিফান্ড সম্পন্ন।");
+                        processAutoCancelAndRefund(m, "স্পেশাল ম্যাচ ৩০ মিনিটে পূর্ণ না হওয়ায় স্বয়ংক্রিয় রিফান্ড ও ম্যাচ বাতিল করা হলো।");
                         spawnNewSpecialMatch(m.gameType, m.fee, m.prize, m.max, m.mode);
                     }
-                } else {
+                } 
+                // Rule 2: Scheduled Match expires at start time if not full -> Auto Refund & Auto Delete
+                else {
                     if (m.startTime && now >= m.startTime && m.current < m.max) {
-                        processAutoCancelAndRefund(m, "নির্ধারিত সময়ে ম্যাচ পূর্ণ না হওয়ায় রিফান্ড এবং ম্যাচটি আগামীকালের জন্য শিডিউল করা হলো।");
-                        rescheduleMatchForTomorrow(m);
+                        processAutoCancelAndRefund(m, "ম্যাচ পূর্ণ না হওয়ায় স্বয়ংক্রিয়ভাবে রিফান্ড প্রদান ও বাতিল করা হলো।");
                     }
                 }
             });
 
             updateMatchCountdowns();
-        }
-
-        function rescheduleMatchForTomorrow(m) {
-            contentDb.ref('settings/last_match_number').transaction(curr => (curr || 5020) + 1, (err, committed, snap) => {
-                const nextNo = `#${snap.val()}`;
-                const tomorrowStartTime = (m.startTime ? m.startTime + (24 * 60 * 60 * 1000) : Date.now() + (24 * 60 * 60 * 1000));
-                
-                const rescheduled = {
-                    matchNo: nextNo,
-                    gameType: m.gameType || 'ludo',
-                    mode: m.mode || '1v1',
-                    max: m.max || 2,
-                    fee: m.fee,
-                    prize: m.prize,
-                    isSpecial: false,
-                    roomCode: "",
-                    gameLink: "",
-                    status: "waiting",
-                    createdAt: Date.now(),
-                    startTime: tomorrowStartTime,
-                    order: m.order || 50
-                };
-                contentDb.ref('matches').push(rescheduled);
-            });
+            updateSlotIndicatorBadge();
         }
 
         function processAutoCancelAndRefund(match, reason) {
@@ -1782,7 +1807,7 @@
                         amount: match.fee,
                         isCredit: true,
                         notifTitle: "ম্যাচ রিফান্ড সম্পন্ন ⚠️",
-                        notifMsg: `${match.matchNo}-এ ${reason} আপনার ৳${match.fee} গেমিং ব্যালেন্সে ফেরত দেওয়া হয়েছে।`
+                        notifMsg: `${match.matchNo}-এ ${reason} ৳${match.fee} আপনার গেমিং ব্যালেন্সে যোগ হয়েছে।`
                     });
 
                     userDb.ref(`users/${uid}/history/${match.id}`).update({
@@ -1818,7 +1843,7 @@
             }
         }
 
-        // ================= MATCH CARDS RENDERING =================
+        // ================= MATCH CARDS RENDERING (12-HOUR WINDOW) =================
         function filterMatches(type, el) {
             document.querySelectorAll('.filter-tab-pill').forEach(f => f.classList.remove('active'));
             if (el && el.classList.contains('filter-tab-pill')) el.classList.add('active');
@@ -1829,11 +1854,18 @@
         function renderMatches() {
             const container = document.getElementById('tournament-matches-container');
             const categoryMatches = realtimeMatches.filter(m => (m.gameType || 'ludo') === selectedGameCategory);
-            const joinedMatches = categoryMatches.filter(m => m.myJoined);
+            
+            // 12-Hour Slot Batching Rule (Special matches always show, others show based on 12h block or if user is joined)
+            const filtered12hMatches = categoryMatches.filter(m => {
+                if (m.isSpecial || m.myJoined) return true;
+                return isMatchInCurrent12HourBatch(m.startTime);
+            });
+
+            const joinedMatches = filtered12hMatches.filter(m => m.myJoined);
             document.getElementById('joined-count-badge').textContent = joinedMatches.length;
 
             const isJoin1Match = (m) => (m.current === 1 || (m.max - m.current) === 1);
-            const availableMatches = categoryMatches.filter(m => !m.myJoined && m.current < m.max);
+            const availableMatches = filtered12hMatches.filter(m => !m.myJoined && m.current < m.max);
 
             document.getElementById('filter-count-all').textContent = availableMatches.length;
             document.getElementById('filter-count-special').textContent = availableMatches.filter(m => m.isSpecial).length;
@@ -1854,8 +1886,9 @@
                     <div class="bg-[#121a2d] p-8 rounded-3xl text-center space-y-2 border border-white/5">
                         <i class="fas fa-gamepad text-3xl text-slate-500"></i>
                         <h4 class="text-sm font-bold text-slate-300">
-                            ${currentActiveFilter === 'joined' ? 'আপনি এখনো কোনো সক্রিয় ম্যাচে জয়েন করেননি।' : 'এই ফিল্টারে কোনো ম্যাচ উপলব্ধ নেই।'}
+                            ${currentActiveFilter === 'joined' ? 'আপনি এখনো কোনো সক্রিয় ম্যাচে জয়েন করেননি।' : 'বর্তমান ১২ ঘণ্টার শিডিউলে কোনো ম্যাচ অবশিষ্ট নেই।'}
                         </h4>
+                        <p class="text-[11px] text-slate-500">পরবর্তী ১২ ঘণ্টার ম্যাচ সময়ে স্বয়ংক্রিয়ভাবে প্রকাশ পাবে।</p>
                     </div>`;
                 return;
             }
@@ -1872,14 +1905,17 @@
                 const isRefundLocked = isFull || isWithin5Min;
 
                 return `
-                <div class="match-card p-4 space-y-3.5 border border-slate-200" id="card-match-${m.id}">
+                <div class="match-card p-4 space-y-3.5" id="card-match-${m.id}">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2.5">
-                            <img src="${getGameIcon(m.gameType)}" class="w-10 h-10 rounded-xl" alt="Game">
+                            <div class="relative">
+                                <img src="${getGameIcon(m.gameType)}" class="w-11 h-11 rounded-2xl border border-white/10 shadow" alt="Game">
+                                <span class="absolute -top-1 -left-1 px-1.5 py-0.2 bg-blue-600 rounded text-[9px] font-black uppercase text-white shadow">${modeLabel}</span>
+                            </div>
                             <div>
-                                <h3 class="text-sm font-black text-slate-900 flex items-center gap-1.5">
+                                <h3 class="text-sm font-black text-white flex items-center gap-1.5">
                                     ${(m.gameType || 'GAME').toUpperCase()} - Match ${m.matchNo}
-                                    ${m.isSpecial ? '<span class="px-1.5 py-0.5 rounded bg-amber-500 text-white text-[9px] font-black">SPECIAL</span>' : ''}
+                                    ${m.isSpecial ? '<span class="px-1.5 py-0.5 rounded bg-gradient-to-r from-amber-500 to-rose-500 text-white text-[9px] font-black">SPECIAL</span>' : ''}
                                     ${m.myJoined ? `
                                         <span class="px-2 py-0.5 rounded-md bg-emerald-500 text-white text-[9px] font-black uppercase tracking-wider shadow">
                                             <i class="fas fa-check-circle"></i> JOINED
@@ -1887,21 +1923,21 @@
                                     ` : ''}
                                 </h3>
                                 
-                                <div class="flex items-center gap-1.5 mt-0.5" id="timer-box-${m.id}">
+                                <div class="flex items-center gap-1.5 mt-1" id="timer-box-${m.id}">
                                     ${m.isSpecial ? `
-                                        <span class="px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 font-bold text-[10px] flex items-center gap-1">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-purple-600 animate-ping"></span> 
+                                        <span class="px-2 py-0.5 rounded-full bg-purple-950 text-purple-300 border border-purple-500/30 font-bold text-[10px] flex items-center gap-1">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-ping"></span> 
                                             ${maxPlayers} জন পূর্ণ হলেই শুরু (৩০ মি.)
                                         </span>
                                     ` : `
                                         ${isWithin5Min ? `
-                                            <span class="px-2 py-0.5 rounded-full bg-rose-100 text-rose-700 font-black text-[10px] flex items-center gap-1 animate-pulse">
+                                            <span class="px-2 py-0.5 rounded-full bg-rose-950 text-rose-300 border border-rose-500/40 font-black text-[10px] flex items-center gap-1 animate-pulse">
                                                 <i class="fas fa-hourglass-half"></i> শুরু হতে বাকি: <span class="countdown-badge" id="timer-${m.id}">00:04:59</span>
                                             </span>
                                         ` : `
-                                            <span class="px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-700 font-bold text-[10px] flex items-center gap-1">
-                                                <i class="fas fa-clock text-blue-600 text-[10px]"></i> 
-                                                শুরু: <b>${formatMatchTime(m.startTime)}</b>
+                                            <span class="px-2.5 py-0.5 rounded-full bg-blue-950 text-sky-300 border border-blue-500/30 font-bold text-[10px] flex items-center gap-1">
+                                                <i class="fas fa-clock text-sky-400 text-[10px]"></i> 
+                                                ম্যাচ শুরু: <b>${formatMatchTime(m.startTime)}</b>
                                             </span>
                                         `}
                                     `}
@@ -1910,27 +1946,27 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-3 gap-2 text-center py-2 px-3 rounded-2xl bg-slate-50 border border-slate-200">
+                    <div class="grid grid-cols-3 gap-2 text-center py-2 px-3 rounded-2xl bg-black/40 border border-white/5">
                         <div>
                             <span class="text-[10px] font-bold text-slate-400 block uppercase">Total Prize</span>
-                            <span class="text-base font-black text-emerald-600">৳${m.prize}</span>
+                            <span class="text-base font-black text-emerald-400">৳${m.prize}</span>
                         </div>
                         <div class="flex items-center justify-center">
-                            <span class="px-2.5 py-1 rounded-lg bg-gradient-to-r from-rose-500 to-amber-500 text-white font-black text-xs shadow tracking-wider">${modeLabel}</span>
+                            <span class="px-2.5 py-1 rounded-xl bg-slate-800 text-cyan-300 border border-cyan-500/20 font-black text-xs">${modeLabel}</span>
                         </div>
                         <div>
                             <span class="text-[10px] font-bold text-slate-400 block uppercase">Entry Fee</span>
-                            <span class="text-base font-black text-slate-800">৳${m.fee}</span>
+                            <span class="text-base font-black text-white">৳${m.fee}</span>
                         </div>
                     </div>
 
                     <div class="space-y-1">
-                        <div class="w-full h-2 rounded-full bg-slate-200 overflow-hidden">
-                            <div class="h-full bg-gradient-to-r from-orange-500 to-rose-600 rounded-full transition-all duration-300" style="width: ${(m.current / maxPlayers) * 100}%;"></div>
+                        <div class="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 rounded-full transition-all duration-300" style="width: ${(m.current / maxPlayers) * 100}%;"></div>
                         </div>
-                        <div class="flex justify-between text-[11px] font-black text-slate-600">
-                            <span>${m.current} / ${maxPlayers} Players</span>
-                            <span class="${isFull ? 'text-rose-600' : 'text-blue-600'} uppercase">${isFull ? 'FULL' : 'SLOTS OPEN'}</span>
+                        <div class="flex justify-between text-[11px] font-black text-slate-400">
+                            <span><i class="fas fa-user-friends text-slate-500"></i> ${m.current} / ${maxPlayers} Players</span>
+                            <span class="${isFull ? 'text-rose-400' : 'text-emerald-400'} uppercase">${isFull ? 'FULL' : 'SLOTS OPEN'}</span>
                         </div>
                     </div>
 
@@ -1941,18 +1977,18 @@
                                     <button onclick="handleManualRefund('${m.id}')" class="py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs shadow flex items-center justify-center gap-1 active:scale-95 transition">
                                         <i class="fas fa-undo"></i> রিফান্ড নিন
                                     </button>
-                                    <button disabled class="py-2.5 rounded-xl bg-slate-200 text-slate-400 font-bold text-xs flex items-center justify-center gap-1 cursor-not-allowed border border-slate-300">
+                                    <button disabled class="py-2.5 rounded-xl bg-slate-800 text-slate-400 font-bold text-xs flex items-center justify-center gap-1 cursor-not-allowed border border-white/5">
                                         <i class="fas fa-lock"></i> রুম কোড (অপেক্ষা)
                                     </button>
                                 </div>
                             ` : `
                                 ${!hasRoomCode ? `
                                     <div class="grid grid-cols-2 gap-2 pt-1">
-                                        <button disabled class="py-2.5 rounded-xl bg-slate-200 text-slate-400 font-black text-xs flex items-center justify-center gap-1 cursor-not-allowed">
-                                            <i class="fas fa-lock"></i> রিফান্ড লক
+                                        <button disabled class="py-2.5 rounded-xl bg-slate-800 text-slate-500 font-black text-xs flex items-center justify-center gap-1 cursor-not-allowed border border-white/5">
+                                            <i class="fas fa-lock"></i> ৫ মি. রিফান্ড লক
                                         </button>
-                                        <div class="py-2.5 rounded-xl bg-amber-50 text-amber-700 border border-amber-300 font-extrabold text-xs flex items-center justify-center gap-1.5 animate-pulse">
-                                            <i class="fas fa-spinner fa-spin text-amber-600"></i> রুম কোড তৈরি হচ্ছে...
+                                        <div class="py-2.5 rounded-xl bg-amber-950/60 text-amber-300 border border-amber-500/30 font-extrabold text-xs flex items-center justify-center gap-1.5 animate-pulse">
+                                            <i class="fas fa-spinner fa-spin text-amber-400"></i> রুম কোড আসছে...
                                         </div>
                                     </div>
                                 ` : `
@@ -1968,7 +2004,7 @@
                             `}
                         ` : `
                             ${isFull ? `
-                                <button disabled class="w-full py-3 rounded-xl bg-slate-200 text-slate-400 font-black text-xs cursor-not-allowed">
+                                <button disabled class="w-full py-3 rounded-xl bg-slate-800 text-slate-500 font-black text-xs cursor-not-allowed border border-white/5">
                                     ম্যাচটি সম্পূর্ণ ফুল
                                 </button>
                             ` : `
@@ -1993,7 +2029,7 @@
                 if (timeDiff <= (5 * 60 * 1000) && timeDiff > 0) {
                     if (timerBox && !document.getElementById(`timer-${m.id}`)) {
                         timerBox.innerHTML = `
-                            <span class="px-2 py-0.5 rounded-full bg-rose-100 text-rose-700 font-black text-[10px] flex items-center gap-1 animate-pulse">
+                            <span class="px-2 py-0.5 rounded-full bg-rose-950 text-rose-300 border border-rose-500/40 font-black text-[10px] flex items-center gap-1 animate-pulse">
                                 <i class="fas fa-hourglass-half"></i> শুরু হতে বাকি: <span class="countdown-badge" id="timer-${m.id}">00:04:59</span>
                             </span>`;
                     }
@@ -2059,7 +2095,7 @@
                 amount: m.fee,
                 isCredit: false,
                 notifTitle: "টুর্নামেন্ট ম্যাচে জয়েন সফল! 🎮",
-                notifMsg: `ম্যাচ ${m.matchNo}-এ ৳${m.fee} দিয়ে জয়েন সম্পন্ন হয়েছে। খেলার সময়ের জন্য অপেক্ষা করুন।`
+                notifMsg: `ম্যাচ ${m.matchNo}-এ ৳${m.fee} দিয়ে জয়েন সম্পন্ন হয়েছে।`
             });
 
             const playerPayload = {
@@ -2303,7 +2339,7 @@
                 isCredit: false,
                 status: "PENDING",
                 notifTitle: "উত্তোলন অনুরোধ পাঠানো হয়েছে ⏳",
-                notifMsg: `৳${amount} (${selectedWithdrawMethod}) উত্তোলনের অনুরোধ প্রক্রিয়াধীন রয়েছে। শীঘ্রই পেমেন্ট পাঠানো হবে।`
+                notifMsg: `৳${amount} (${selectedWithdrawMethod}) উত্তোলনের অনুরোধ প্রক্রিয়াধীন রয়েছে।`
             });
 
             contentDb.ref(`admin_withdraw_requests`).push({
@@ -2341,7 +2377,7 @@
             if (statWinRate) statWinRate.textContent = `${winRate}%`;
         }
 
-        // ================= PURE MATCH HISTORY (ENHANCED OPPONENT VIEW) =================
+        // ================= ENHANCED MATCH HISTORY (VS BATTLE CARD) =================
         function renderPureMatchHistory() {
             const container = document.getElementById('pure-match-history-container');
             if (!container) return;
@@ -2367,7 +2403,7 @@
 
                 let p1Photo = activeUser.photo || "https://i.postimg.cc/CMj5tPpH/file-000000004dc082119a469192b761c18a.png";
                 let p2Photo = "https://cdn-icons-png.flaticon.com/512/847/847969.png";
-                let p2Name = "প্লেয়ারের অপেক্ষায়...";
+                let p2Name = "প্রতিদ্বন্দ্বীর অপেক্ষায়...";
 
                 const opponentList = players.filter(p => String(p.uid) !== String(activeUser.id));
                 if (opponentList.length > 0) {
@@ -2375,53 +2411,64 @@
                     p2Name = opponentList[0].name || p2Name;
                 }
 
-                let statusColor = "text-amber-400 bg-amber-500/10 border-amber-500/30";
-                let statusText = item.status;
+                let statusBadge = '';
+                let cardBorder = 'border-white/5';
 
                 if (item.status === 'WIN') {
-                    statusColor = "text-emerald-400 bg-emerald-500/10 border-emerald-500/30";
-                    statusText = "🏆 WINNER";
+                    statusBadge = `<span class="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-[10px] font-black tracking-wider flex items-center gap-1 shadow-sm">
+                        <i class="fas fa-trophy text-amber-400"></i> 🏆 WINNER (+৳${item.prize})
+                    </span>`;
+                    cardBorder = 'border-emerald-500/30';
                 } else if (item.status === 'LOSS') {
-                    statusColor = "text-rose-400 bg-rose-500/10 border-rose-500/30";
-                    statusText = "LOST";
+                    statusBadge = `<span class="px-2.5 py-1 rounded-full bg-rose-500/20 text-rose-400 border border-rose-500/40 text-[10px] font-black tracking-wider flex items-center gap-1">
+                        <i class="fas fa-times-circle"></i> ❌ LOST
+                    </span>`;
+                    cardBorder = 'border-rose-500/20';
                 } else if (item.status === 'REFUNDED') {
-                    statusColor = "text-yellow-400 bg-yellow-500/10 border-yellow-500/30";
-                    statusText = "রিফান্ড";
-                } else if (item.status === 'JOINED') {
-                    statusColor = "text-sky-400 bg-sky-500/10 border-sky-500/30";
-                    statusText = "🎮 রানিং / জয়েনড";
+                    statusBadge = `<span class="px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[10px] font-black tracking-wider flex items-center gap-1">
+                        <i class="fas fa-undo"></i> ↩️ REFUNDED
+                    </span>`;
+                    cardBorder = 'border-amber-500/20';
+                } else {
+                    statusBadge = `<span class="px-2.5 py-1 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/40 text-[10px] font-black tracking-wider flex items-center gap-1 animate-pulse">
+                        <i class="fas fa-gamepad"></i> ⏳ PENDING / LIVE
+                    </span>`;
+                    cardBorder = 'border-sky-500/30';
                 }
 
                 return `
-                <div class="bg-[#121a2d] p-4 rounded-3xl border border-white/5 shadow-md space-y-3">
-                    <div class="flex items-center justify-between">
+                <div class="bg-[#11192e] p-4 rounded-3xl border ${cardBorder} shadow-lg space-y-3 relative overflow-hidden">
+                    <div class="flex items-center justify-between pb-1 border-b border-white/5">
                         <div class="flex items-center gap-2">
                             <span class="px-2 py-0.5 rounded-lg bg-blue-500/20 text-blue-400 text-[10px] font-black uppercase tracking-wider">${(item.mode || '1v1').toUpperCase()}</span>
                             <h4 class="text-xs font-black text-white">${(item.gameType || 'GAME').toUpperCase()} ${item.matchNo}</h4>
                         </div>
-                        <span class="px-2.5 py-0.5 rounded-full border text-[10px] font-black ${statusColor}">
-                            ${statusText}
-                        </span>
+                        ${statusBadge}
                     </div>
 
                     ${isOneVsOne ? `
-                        <div class="bg-[#090f1d] p-3 rounded-2xl border border-white/5 flex items-center justify-around relative">
-                            <div class="flex flex-col items-center gap-1">
-                                <div class="w-12 h-12 rounded-full border-2 border-emerald-500 p-0.5 overflow-hidden shadow-lg bg-slate-800">
+                        <div class="bg-[#090f1d] p-3.5 rounded-2xl border border-white/5 flex items-center justify-between relative">
+                            <!-- User Side -->
+                            <div class="flex flex-col items-center gap-1 flex-1">
+                                <div class="w-12 h-12 rounded-full border-2 border-emerald-500 p-0.5 overflow-hidden shadow-lg bg-slate-900">
                                     <img src="${p1Photo}" class="w-full h-full object-cover rounded-full" alt="You">
                                 </div>
-                                <span class="text-[10px] font-bold text-slate-300">You (${activeUser.name})</span>
+                                <span class="text-[11px] font-black text-white truncate max-w-[90px]">${activeUser.name}</span>
+                                <span class="text-[9px] font-bold text-emerald-400">(YOU)</span>
                             </div>
 
-                            <div class="text-center">
-                                <span class="text-base font-black italic text-rose-500 tracking-wider">VS</span>
+                            <!-- VS Badge -->
+                            <div class="px-3 flex flex-col items-center justify-center">
+                                <span class="w-7 h-7 rounded-full bg-rose-600 text-white font-black text-xs italic flex items-center justify-center shadow-lg border border-rose-400">VS</span>
                             </div>
 
-                            <div class="flex flex-col items-center gap-1">
-                                <div class="w-12 h-12 rounded-full border-2 ${opponentList.length > 0 ? 'border-rose-500' : 'border-slate-600'} p-0.5 overflow-hidden shadow-lg bg-slate-800">
+                            <!-- Opponent Side -->
+                            <div class="flex flex-col items-center gap-1 flex-1">
+                                <div class="w-12 h-12 rounded-full border-2 ${opponentList.length > 0 ? 'border-rose-500' : 'border-slate-700'} p-0.5 overflow-hidden shadow-lg bg-slate-900">
                                     <img src="${p2Photo}" class="w-full h-full object-cover rounded-full" onerror="this.src='https://cdn-icons-png.flaticon.com/512/847/847969.png'" alt="Opponent">
                                 </div>
-                                <span class="text-[10px] font-bold text-slate-400 truncate max-w-[85px]">${p2Name}</span>
+                                <span class="text-[11px] font-black text-slate-300 truncate max-w-[90px]">${p2Name}</span>
+                                <span class="text-[9px] font-bold text-slate-500">OPPONENT</span>
                             </div>
                         </div>
                     ` : `
@@ -2429,17 +2476,17 @@
                             <span class="text-[10px] text-slate-400 uppercase font-black">ম্যাচ প্লেয়ারগণ (${item.mode.toUpperCase()}):</span>
                             <div class="flex items-center gap-2 overflow-x-auto pb-1">
                                 ${players.map(p => `
-                                    <div class="flex items-center gap-1.5 bg-slate-800/80 px-2 py-1 rounded-xl border border-white/5 flex-shrink-0">
+                                    <div class="flex items-center gap-1.5 bg-slate-800/80 px-2.5 py-1.5 rounded-xl border border-white/5 flex-shrink-0">
                                         <img src="${p.photo || 'https://cdn-icons-png.flaticon.com/512/847/847969.png'}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/847/847969.png'" class="w-5 h-5 rounded-full object-cover">
-                                        <span class="text-[10px] text-slate-300 font-bold truncate max-w-[60px]">${p.name}</span>
+                                        <span class="text-[10px] text-slate-200 font-bold truncate max-w-[65px]">${p.name}</span>
                                     </div>
                                 `).join('')}
                             </div>
                         </div>
                     `}
 
-                    <div class="flex items-center justify-between text-[11px] text-slate-400 pt-1 border-t border-white/5">
-                        <span>এন্ট্রি ফি: <b class="text-white">৳${item.fee}</b> • প্রাইজ: <b class="text-emerald-400">৳${item.prize}</b></span>
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 pt-1 border-t border-white/5 font-mono">
+                        <span>ফি: <b class="text-white">৳${item.fee}</b> • প্রাইজ: <b class="text-emerald-400">৳${item.prize}</b></span>
                         <span>${item.time}</span>
                     </div>
                 </div>`;
@@ -2458,14 +2505,12 @@
             document.getElementById('winning-bal-text').textContent = `৳${activeUser.winningBalance.toFixed(0)}`;
             document.getElementById('withdraw-available-bal').textContent = `৳${activeUser.winningBalance.toFixed(0)}`;
 
-            // Profile Fields
             document.getElementById('profile-name-text').textContent = activeUser.name.toUpperCase();
             document.getElementById('profile-username-display').textContent = activeUser.username;
             document.getElementById('profile-uid-display').textContent = activeUser.id;
             document.getElementById('user-profile-img').src = activeUser.photo;
             document.getElementById('header-avatar').src = activeUser.photo;
 
-            // Updated Profile Section: Total Balance & Total Win Balance
             const profTotalBal = document.getElementById('prof-total-bal');
             const profWinningBal = document.getElementById('prof-winning-bal');
             if (profTotalBal) profTotalBal.textContent = `৳${total.toFixed(0)}`;
@@ -2476,7 +2521,7 @@
 
         function copyTelegramUID() {
             navigator.clipboard.writeText(activeUser.id).then(() => {
-                showToast(`UID (Chat ID): ${activeUser.id} কপি হয়েছে!`, "success");
+                showToast(`UID: ${activeUser.id} কপি হয়েছে!`, "success");
             });
         }
 
@@ -2500,8 +2545,6 @@
             container.appendChild(toast);
             setTimeout(() => toast.remove(), 3500);
         }
-
-        function showComingSoonAlert(t) { showToast(`🔥 ${t} - খুব শীঘ্রই চালু হবে!`, 'info'); }
 
         function navigateTo(pageId) {
             const dotLoader = document.getElementById('page-dot-loader');
@@ -2529,7 +2572,6 @@
 
         function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
         
-        // ================= GAME ARENA SWITCH CHECK =================
         function openGameArena(title, categoryKey) {
             if (!isArenaEnabled) {
                 return showToast("বর্তমানে টুর্নামেন্ট বন্ধ আছে, শীঘ্রই চালু হবে ইনশাল্লাহ!", "warning");
@@ -2555,7 +2597,7 @@
             if (customGameLink && customGameLink.trim() !== "") {
                 window.open(customGameLink.trim(), '_blank');
             } else {
-                showToast("গেমটি ওপেন করে কোড দিয়ে জয়েন করুন!", "info");
+                showToast("গেমটি ওপেন করে রুম কোড দিয়ে যোগ দিন!", "info");
             }
         }
 
@@ -2743,7 +2785,6 @@
             let distance = leaderboardCycleEnd - now;
 
             if (distance <= 0) {
-                // 7-day cycle ended: trigger claim requests to Firebase for Admin Review & reset next cycle
                 settleLeaderboardCycle();
                 leaderboardCycleEnd = Date.now() + (7 * 24 * 60 * 60 * 1000);
                 contentDb.ref('settings/leaderboard_cycle_end').set(leaderboardCycleEnd);
@@ -2768,7 +2809,7 @@
                         const u = c.val() || {};
                         const prof = u.profile || {};
                         const refsMap = u.referrals || {};
-                        const refCount = Object.keys(refsMap).length; // 1 Refer = 1 Point (No deposit condition required)
+                        const refCount = Object.keys(refsMap).length;
                         if (refCount > 0) {
                             userArray.push({
                                 uid: c.key,
@@ -2786,7 +2827,7 @@
                     contentDb.ref('admin_leaderboard_claims').push({
                         settledAt: Date.now(),
                         dateStr: new Date().toLocaleDateString('bn-BD'),
-                        status: "PENDING_APPROVAL", // Admin can approve or reject
+                        status: "PENDING_APPROVAL",
                         winners: topWinners
                     });
                 }
@@ -2804,7 +2845,7 @@
                         const u = c.val() || {};
                         const prof = u.profile || {};
                         const refsMap = u.referrals || {};
-                        const refCount = Object.keys(refsMap).length; // 1 Refer = 1 Point
+                        const refCount = Object.keys(refsMap).length;
 
                         userArray.push({
                             uid: c.key,
