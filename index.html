@@ -2,1947 +2,1394 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <title>EASY FOREST - Magic Mining & Automated Payment</title>
 
-    <title>Social SMM Shop - Payment & Auth</title>
-
+    <!-- Telegram WebApp SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-
+    <!-- Firebase Compat SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
     <style>
         :root {
-            --theme-color: #e2136e;
-            --brand-purple: #7854f7;
-            --brand-blue: #3b5bfd;
-            --text-dark: #1e293b;
-            --text-gray: #64748b;
+            --brand-green: #10b981;
+            --brand-gold: #f59e0b;
+            --dark-forest: #09140f;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Plus Jakarta Sans', 'Hind Siliguri', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            background: linear-gradient(135deg, #818cf8 0%, #a78bfa 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 16px 10px;
-        }
-
-        .payment-modal {
-            width: 100%;
-            max-width: 395px;
-            background: #ffffff;
-            border-radius: 24px;
-            box-shadow: 0 25px 60px -15px rgba(0,0,0,.2);
-            overflow: hidden;
-            position: relative;
-            min-height: 650px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .step-container {
-            display: none;
-            flex-direction: column;
-            width: 100%;
+        html, body {
             height: 100%;
-            animation: fadeIn .25s ease-in-out;
-            flex: 1;
+            overflow-x: hidden;
+            overscroll-behavior: none;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
+            font-family: 'Plus Jakarta Sans', 'Hind Siliguri', sans-serif;
+            background: #0d1712 url('https://images.unsplash.com/photo-1543857778-c4a1a3e0b2eb?q=80&w=1000&auto=format&fit=crop') no-repeat center top fixed;
+            background-size: cover;
+            color: #1e293b;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
-        .step-container.active {
-            display: flex;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(6px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .auth-container {
-            padding: 30px 24px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            flex: 1;
-        }
-
-        .auth-title {
-            font-size: 24px;
-            font-weight: 800;
-            color: var(--text-dark);
-            text-align: center;
-            margin-bottom: 6px;
-        }
-
-        .auth-sub {
-            font-size: 13.5px;
-            color: var(--text-gray);
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .auth-form-group {
-            margin-bottom: 14px;
-            text-align: left;
-        }
-
-        .auth-form-group label {
-            display: block;
-            font-size: 13px;
-            font-weight: 700;
-            color: #334155;
-            margin-bottom: 6px;
-        }
-
-        .auth-input {
-            width: 100%;
-            padding: 13px 16px;
-            font-size: 14.5px;
-            border: 1.5px solid #cbd5e1;
-            border-radius: 12px;
+        input, select, textarea, button {
+            font-size: 16px !important;
+            -webkit-tap-highlight-color: transparent;
             outline: none;
-            transition: .2s;
         }
 
-        .auth-input:focus {
-            border-color: var(--brand-purple);
-            box-shadow: 0 0 0 3px rgba(120,84,247,.15);
+        .ambient-overlay {
+            background: linear-gradient(180deg, rgba(9, 20, 15, 0.90) 0%, rgba(11, 23, 17, 0.95) 40%, rgba(5, 10, 8, 0.98) 100%);
+            min-height: 100vh;
         }
 
-        .auth-toggle-link {
-            text-align: center;
-            margin-top: 18px;
-            font-size: 13.5px;
-            color: var(--text-gray);
+        /* 3D MARBLE CARDS */
+        .stone-card {
+            background: linear-gradient(160deg, #ffffff 0%, #edf2f7 50%, #d8e2ec 100%);
+            border: 2px solid rgba(255, 255, 255, 0.95);
+            box-shadow: 
+                inset 0 2px 4px rgba(255, 255, 255, 1),
+                inset 0 -2px 5px rgba(160, 175, 195, 0.4),
+                0 16px 30px -8px rgba(0, 0, 0, 0.6);
+            border-radius: 24px;
+            position: relative;
         }
 
-        .auth-toggle-link span {
-            color: var(--brand-purple);
-            font-weight: 700;
+        .stone-btn {
+            background: linear-gradient(180deg, #ffffff 0%, #dbe3ed 100%);
+            border: 1.5px solid #ffffff;
+            box-shadow: inset 0 2px 2px rgba(255, 255, 255, 0.9), 0 4px 10px rgba(0, 0, 0, 0.25), 0 2px 0px #8292a5;
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
-            text-decoration: underline;
+        }
+        .stone-btn:active {
+            transform: translateY(2px) scale(0.98);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.25);
         }
 
-        .landing-header {
-            width: 100%;
-            background: #ffffff;
-            padding: 16px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #f1f5f9;
+        /* TABS */
+        .active-magic-tab {
+            background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
+            color: #ffffff !important;
+            border: 1.5px solid #a7f3d0;
+            box-shadow: 0 4px 18px rgba(16, 185, 129, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.6);
         }
 
-        .header-balance-box {
+        .inactive-stone-tab {
+            background: linear-gradient(180deg, #dce4ee 0%, #b8c5d6 100%);
+            border: 1.5px solid #ffffff;
+            color: #334155;
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.7), 0 3px 6px rgba(0,0,0,0.2);
+        }
+
+        /* 3D COLLECT BUTTON */
+        .collect-master-btn {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+            border: 2px solid #fef08a;
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.55), inset 0 2px 4px rgba(255, 255, 255, 0.95), 0 4px 0 #b45309;
+            color: #451a03;
+            font-weight: 900;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .collect-master-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.8), inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* SCREENSHOT HERO MARBLE CARDS */
+        .screenshot-marble-card {
+            background: linear-gradient(180deg, #ffffff 0%, #edf2f8 65%, #dce4ef 100%);
+            border: 2px solid #ffffff;
+            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.4), inset 0 2px 2px #ffffff;
+            border-radius: 26px;
+            position: relative;
+            overflow: hidden;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
         }
 
-        .header-balance-box .b-title {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--text-gray);
-            text-transform: uppercase;
-        }
-
-        .header-balance-box .b-val {
-            font-size: 18px;
-            font-weight: 800;
-            color: #10b981;
-        }
-
-        .header-right-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .header-icon-btn {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            color: #475569;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            position: relative;
-            font-size: 15px;
-        }
-
-        .header-icon-btn .notif-dot {
+        .screenshot-badge {
             position: absolute;
             top: 8px;
-            right: 9px;
-            width: 8px;
-            height: 8px;
-            background: #ef4444;
-            border-radius: 50%;
-            display: none;
-        }
-
-        .step-1-content {
-            padding: 20px 24px 24px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            flex: 1;
-        }
-
-        .main-avatar-wrap {
-            width: 90px;
-            height: 90px;
-            border-radius: 24px;
-            background: #050b14;
-            border: 2.5px solid #38bdf8;
-            box-shadow: 0 10px 25px rgba(56,189,248,.35);
-            overflow: hidden;
-            margin-bottom: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .main-avatar-wrap img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .shop-heading {
-            font-size: 22px;
-            font-weight: 800;
-            color: #1e293b;
-            letter-spacing: -.5px;
-        }
-
-        .user-email-badge {
-            font-size: 12px;
-            color: var(--brand-purple);
-            font-weight: 700;
-            background: #f5f3ff;
-            padding: 4px 10px;
-            border-radius: 20px;
-            margin-top: 4px;
-        }
-
-        .line-sep {
-            width: 100%;
-            height: 1px;
-            background: #f1f5f9;
-            margin: 14px 0;
-        }
-
-        .note-card {
-            background-color: #fffdf0;
-            border-left: 4.5px solid #f59e0b;
-            border-radius: 6px 14px 14px 6px;
-            padding: 12px 14px;
-            text-align: left;
-            margin-bottom: 16px;
-            box-shadow: 0 2px 8px rgba(245,158,11,.06);
-        }
-
-        .note-card h5 {
-            color: #92400e;
-            font-size: 13.5px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .note-card p {
-            font-size: 12px;
-            color: #78350f;
-            line-height: 1.4;
-        }
-
-        .input-box-wrap {
-            width: 100%;
-            text-align: left;
-            margin-bottom: 16px;
-        }
-
-        .input-box-wrap label {
-            display: block;
-            font-size: 13.5px;
-            font-weight: 700;
-            color: #334155;
-            margin-bottom: 6px;
-        }
-
-        .amount-field {
-            width: 100%;
-            padding: 12px 16px;
-            font-size: 16.5px;
-            font-weight: 700;
-            color: #1e293b;
-            border: 2px solid #60a5fa;
-            border-radius: 14px;
-            outline: none;
-            transition: all .2s ease;
-            text-align: center;
-        }
-
-        .amount-field:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 4px rgba(59,130,246,.15);
-        }
-
-        .btn-continue-gradient {
-            width: 100%;
-            background: linear-gradient(135deg,var(--brand-purple) 0%,#4f46e5 100%);
+            right: 8px;
+            background: #451515;
             color: #ffffff;
-            border: none;
-            padding: 16px;
-            border-radius: 14px;
-            font-size: 16px;
-            font-weight: 700;
+            border-radius: 9999px;
+            padding: 2.5px 8px;
+            font-size: 11px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.3);
+            font-family: 'Share Tech Mono', monospace;
+            z-index: 10;
+        }
+
+        .screenshot-pill-btn {
+            background: linear-gradient(180deg, #e4eaf2 0%, #bcc9da 100%);
+            border: 1.5px solid #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15), inset 0 2px 2px #ffffff;
+            border-radius: 9999px;
             cursor: pointer;
+            width: 88%;
+            margin: 0 auto 12px auto;
+            padding: 8px 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            box-shadow: 0 8px 20px rgba(120,84,247,.35);
-            transition: .2s transform;
-            margin-top: auto;
+            gap: 6px;
         }
 
-        .btn-continue-gradient:disabled {
-            opacity: .65;
-            cursor: not-allowed;
+        .silhouetted-character {
+            filter: grayscale(100%) brightness(50%) opacity(40%);
         }
 
-        .success-wrapper {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 30px;
-            text-align: center;
+        .gem-glow {
+            filter: drop-shadow(0 3px 6px rgba(245, 158, 11, 0.6));
         }
 
-        .success-icon {
-            font-size: 65px;
-            color: #10b981;
-            margin-bottom: 12px;
-            animation: scaleIn .4s ease-out;
-        }
-
-        .success-title {
-            font-size: 22px;
-            font-weight: 800;
-            color: #1e293b;
-            margin-bottom: 6px;
-        }
-
-        .success-msg {
-            font-size: 14.5px;
-            color: #64748b;
-            margin-bottom: 24px;
-            line-height: 1.5;
-        }
-
-        .txid-box {
-            background: #f8fafc;
-            padding: 16px 20px;
-            border-radius: 12px;
-            border: 1px dashed #cbd5e1;
-            font-size: 15px;
-            color: #334155;
-            margin-bottom: 28px;
-            width: 100%;
-            text-align: left;
-        }
-
-        .txid-box div {
-            margin-bottom: 8px;
-        }
-
-        .txid-box div:last-child {
-            margin-bottom: 0;
-        }
-
-        .txid-box span {
-            font-weight: 700;
-            color: var(--text-dark);
-        }
-
-        .txid-box .highlight-txid {
-            color: var(--brand-purple);
-            font-family: monospace;
-            font-size: 16px;
-            word-break: break-all;
-        }
-
-        @keyframes scaleIn {
-            0% {
-                transform: scale(0);
-            }
-
-            80% {
-                transform: scale(1.2);
-            }
-
-            100% {
-                transform: scale(1);
-            }
-        }
-
-        .toast-popup {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%) translateY(-30px);
-            background: #1e293b;
-            color: #ffffff;
-            padding: 12px 20px;
-            border-radius: 20px;
-            font-size: 13.5px;
-            font-weight: 600;
-            opacity: 0;
+        .spark-particle {
+            position: fixed;
             pointer-events: none;
-            transition: .3s all;
             z-index: 9999;
-            box-shadow: 0 4px 12px rgba(0,0,0,.2);
-            width: 85%;
-            text-align: center;
-            line-height: 1.4;
+            font-size: 18px;
+            animation: sparkFly 0.85s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+        }
+        @keyframes sparkFly {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0.2); opacity: 0; }
         }
 
-        .toast-popup.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
+        .app-view { display: none; }
+        .app-view.active { display: block; animation: fadeIn 0.25s ease-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
+        /* NOTIFICATION SLIDE-UP DRAWER */
         .notif-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,.5);
-            z-index: 1000;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
             display: none;
-            flex-direction: column;
             justify-content: flex-end;
+            flex-direction: column;
             opacity: 0;
-            transition: .3s opacity;
+            transition: opacity 0.25s ease;
         }
-
-        .notif-overlay.show {
-            display: flex;
-            opacity: 1;
-        }
-
-        .notif-modal-content {
-            background: #ffffff;
+        .notif-overlay.show { display: flex; opacity: 1; }
+        .notif-content {
+            background: #f8fafc;
+            border-radius: 26px 26px 0 0;
             width: 100%;
-            height: 80%;
-            border-radius: 24px 24px 0 0;
+            max-height: 80vh;
             display: flex;
             flex-direction: column;
             transform: translateY(100%);
-            transition: .3s transform;
+            transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+            border-top: 2px solid #ffffff;
         }
+        .notif-overlay.show .notif-content { transform: translateY(0); }
 
-        .notif-overlay.show .notif-modal-content {
-            transform: translateY(0);
-        }
-
-        .notif-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 24px;
-            border-bottom: 1px solid #f1f5f9;
-        }
-
-        .notif-header h3 {
-            font-size: 18px;
-            font-weight: 700;
-            color: #1e293b;
-        }
-
-        .notif-header button {
-            background: none;
-            border: none;
-            font-size: 20px;
-            color: #64748b;
-            cursor: pointer;
-        }
-
-        .notif-list {
-            padding: 16px 20px;
-            overflow-y: auto;
+        /* PRELOADER */
+        #loader-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 999999;
+            background: radial-gradient(circle at 50% 40%, #133927 0%, #091d14 45%, #030806 100%);
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            flex: 1;
-        }
-
-        .notif-item {
-            padding: 14px;
-            border-radius: 12px;
-            background: #f8fafc;
-            border-left: 4px solid var(--text-gray);
-            font-size: 14px;
-            color: #334155;
-            line-height: 1.5;
-        }
-
-        .notif-item.unread {
-            font-weight: 700;
-            background: #f0fdf4;
-            border-left-color: #10b981;
-        }
-
-        .notif-time {
-            font-size: 11.5px;
-            color: #94a3b8;
-            margin-top: 6px;
-            display: block;
-            font-weight: 500;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
         }
     </style>
 </head>
+<body class="max-w-md mx-auto relative min-h-screen">
 
-<body>
+    <!-- ================= PRE-LOADER ================= -->
+    <div id="loader-screen">
+        <div class="w-24 h-24 rounded-3xl bg-gradient-to-tr from-emerald-800 to-teal-500 border border-emerald-300/40 flex items-center justify-center shadow-2xl shadow-emerald-500/20 animate-pulse">
+            <span class="text-5xl">🌿</span>
+        </div>
+        <h1 class="text-2xl font-black text-white mt-5 tracking-widest font-mono">EASY FOREST</h1>
+        <div class="text-xs text-emerald-400 font-bold uppercase tracking-widest mt-1">Smart Magic Mining</div>
+        
+        <div class="w-56 h-2 bg-white/10 rounded-full mt-7 overflow-hidden p-0.5 border border-white/20">
+            <div id="loading-progress" class="h-full bg-gradient-to-r from-emerald-400 to-teal-300 rounded-full transition-all duration-150" style="width: 5%;"></div>
+        </div>
+        <div id="loading-percent" class="text-xs text-white/50 font-mono mt-2">10%</div>
+    </div>
 
-<div class="payment-modal">
-
-    <div id="toastNotification" class="toast-popup"></div>
-
-    <!-- NOTIFICATION -->
-    <div id="notifModal" class="notif-overlay">
-
-        <div class="notif-modal-content">
-
-            <div class="notif-header">
-                <h3>নোটিফিকেশন</h3>
-
-                <button onclick="closeNotifModal()">
+    <!-- ================= NOTIFICATION DRAWER ================= -->
+    <div id="notifModal" class="notif-overlay" onclick="closeNotifModal(event)">
+        <div class="notif-content" onclick="event.stopPropagation()">
+            <div class="flex items-center justify-between p-4 border-b border-slate-200">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-bell text-emerald-600 text-lg"></i>
+                    <h3 class="text-base font-extrabold text-slate-800">নোটিফিকেশন বক্স</h3>
+                </div>
+                <button onclick="closeNotifModal()" class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
-
-            <div id="notifList" class="notif-list"></div>
-
+            <div id="notifList" class="p-4 overflow-y-auto space-y-2.5 max-h-[60vh]">
+                <div class="text-center py-8 text-xs text-slate-400">কোনো নোটিফিকেশন নেই</div>
+            </div>
         </div>
     </div>
 
+    <!-- ================= MAIN WRAPPER ================= -->
+    <div class="ambient-overlay px-3.5 pt-3 pb-24 flex flex-col gap-3.5">
 
-    <!-- AUTH -->
-    <div id="step-auth" class="step-container">
-
-        <div class="auth-container">
-
-            <h2 class="auth-title" id="authTitle">
-                লগইন করুন
-            </h2>
-
-            <p class="auth-sub" id="authSub">
-                ডিপোজিট সম্পন্ন করতে একাউন্টে প্রবেশ করুন
-            </p>
-
-            <div class="auth-form-group">
-
-                <label>Email Address</label>
-
-                <input
-                    type="email"
-                    id="authEmail"
-                    class="auth-input"
-                    placeholder="example@mail.com"
-                >
-
+        <!-- ================= TOP HEADER ================= -->
+        <div class="flex items-center justify-between gap-2.5">
+            <!-- Balance Pill -->
+            <div class="stone-card px-4 py-2 flex items-center gap-2.5 rounded-full flex-1">
+                <div class="flex flex-col">
+                    <span class="text-[9px] font-black text-slate-500 uppercase tracking-widest">My Balance</span>
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-lg gem-glow">🔶</span>
+                        <span id="header-user-balance" class="text-xl font-black text-slate-900 tracking-tight font-mono">0.00</span>
+                    </div>
+                </div>
             </div>
 
-            <div class="auth-form-group">
-
-                <label>Password</label>
-
-                <input
-                    type="password"
-                    id="authPassword"
-                    class="auth-input"
-                    placeholder="••••••••"
-                >
-
+            <!-- Notification Bell with Active Pulse Badge -->
+            <div onclick="openNotifModal()" class="relative w-11 h-11 rounded-2xl stone-btn flex items-center justify-center text-slate-700 cursor-pointer shadow">
+                <i class="fa-regular fa-bell text-lg"></i>
+                <span id="notif-dot" class="hidden absolute top-2 right-2 w-2.5 h-2.5 bg-rose-500 rounded-full border border-white animate-ping"></span>
+                <span id="notif-dot-solid" class="hidden absolute top-2 right-2 w-2.5 h-2.5 bg-rose-500 rounded-full border border-white"></span>
             </div>
 
-            <button
-                class="btn-continue-gradient"
-                id="btnAuthSubmit"
-                onclick="handleAuthAction()"
-                style="margin-top:10px;"
-            >
-                Login
+            <!-- Profile Avatar Button -->
+            <div onclick="navigateTo('profile-view')" class="stone-btn px-3 py-1.5 rounded-2xl flex items-center gap-2">
+                <div class="w-8 h-8 rounded-full overflow-hidden border border-white bg-slate-900 shadow-sm">
+                    <img id="user-header-avatar" src="https://i.postimg.cc/CMj5tPpH/file-000000004dc082119a469192b761c18a.png" class="w-full h-full object-cover" alt="User">
+                </div>
+                <span id="user-header-name" class="text-xs font-black text-slate-800 max-w-[70px] truncate">User</span>
+            </div>
+        </div>
+
+        <!-- ================= TOP NAVIGATION TABS ================= -->
+        <div class="grid grid-cols-4 gap-1.5">
+            <button onclick="switchTab('magician')" id="tab-magician" class="active-magic-tab py-2.5 rounded-2xl text-xs font-black tracking-wide text-center">
+                Forest
             </button>
-
-            <div class="auth-toggle-link">
-
-                <span
-                    id="authToggleText"
-                    onclick="toggleAuthMode()"
-                >
-                    নতুন একাউন্ট তৈরি করুন
-                </span>
-
-            </div>
-
+            <button onclick="switchTab('deposit')" id="tab-deposit" class="inactive-stone-tab py-2.5 rounded-2xl text-xs font-black tracking-wide text-center">
+                Deposit
+            </button>
+            <button onclick="switchTab('withdraw')" id="tab-withdraw" class="inactive-stone-tab py-2.5 rounded-2xl text-xs font-black tracking-wide text-center">
+                Withdraw
+            </button>
+            <button onclick="switchTab('partners')" id="tab-partners" class="inactive-stone-tab py-2.5 rounded-2xl text-xs font-black tracking-wide text-center">
+                Partners
+            </button>
         </div>
 
-    </div>
-
-
-    <!-- DASHBOARD -->
-    <div id="step-1" class="step-container active">
-
-        <div class="landing-header">
-
-            <div class="header-balance-box">
-
-                <span class="b-title">
-                    Current Balance
-                </span>
-
-                <span
-                    class="b-val"
-                    id="userBalanceDisplay"
-                >
-                    0.00 BDT
-                </span>
-
-            </div>
-
-
-            <div class="header-right-actions">
-
-                <div
-                    class="header-icon-btn"
-                    onclick="openNotifModal()"
-                    title="Notifications"
-                >
-
-                    <i class="fa-regular fa-bell"></i>
-
-                    <span class="notif-dot"></span>
-
+        <!-- ============================================================== -->
+        <!-- 1. FOREST MINING VIEW                                          -->
+        <!-- ============================================================== -->
+        <div id="magician-view" class="app-view active space-y-3.5">
+            
+            <!-- Daily Income Bar -->
+            <div class="space-y-1.5 px-1">
+                <div class="flex items-center justify-between text-white font-black text-xs">
+                    <span class="tracking-wide flex items-center gap-1.5">
+                        <span>Daily Income</span>
+                        <span id="daily-cap-status-badge" class="hidden px-2 py-0.5 rounded-full bg-rose-600 text-white font-black text-[9px] tracking-widest animate-pulse">MAX CAP</span>
+                    </span>
+                    <div class="flex items-center gap-1 text-sm font-mono">
+                        <span class="gem-glow">🔶</span>
+                        <span id="daily-income-total" class="text-amber-300 font-black">25</span>
+                    </div>
                 </div>
 
+                <div class="w-full h-2 rounded-full bg-slate-950/90 p-0.5 border border-amber-500/40 overflow-hidden shadow-inner">
+                    <div id="daily-progress-fill" class="h-full bg-gradient-to-r from-amber-500 via-orange-500 to-yellow-400 rounded-full transition-all duration-300" style="width: 15%;"></div>
+                </div>
+            </div>
 
-                <div
-                    class="header-icon-btn"
-                    onclick="logoutUser()"
-                    title="Logout"
-                >
+            <!-- Hero Box & Mini Grid -->
+            <div class="grid grid-cols-12 gap-2.5 items-stretch">
+                <!-- Left Hero Card with 3D Collect -->
+                <div class="col-span-5 stone-card p-3 flex flex-col items-center justify-between text-center relative overflow-hidden min-h-[305px]">
+                    <div class="absolute top-2 left-2 px-2.5 py-0.5 rounded-xl bg-slate-900/10 border border-white/80">
+                        <span class="text-[11px] font-black text-slate-800 font-mono">LVL <b id="main-magician-level">2</b></span>
+                    </div>
 
-                    <i
-                        class="fa-solid fa-right-from-bracket"
-                        style="color:#ef4444;"
-                    ></i>
+                    <div class="w-full flex-1 flex items-center justify-center relative mt-3">
+                        <div class="w-28 h-36 rounded-2xl overflow-hidden shadow-lg border-2 border-white/90 bg-slate-900">
+                            <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=400&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Hero">
+                        </div>
+                    </div>
 
+                    <div class="w-full flex items-center justify-center gap-1.5 py-1 z-20">
+                        <span class="text-base gem-glow">🔶</span>
+                        <span id="uncollected-balance" class="text-lg font-black text-slate-900 tracking-tight font-mono">0.0000</span>
+                    </div>
+
+                    <button id="btn-collect-master" onclick="collectIncome(event)" class="collect-master-btn w-full py-2.5 rounded-2xl text-xs uppercase flex items-center justify-center gap-1.5 transition-transform">
+                        <i class="fas fa-hand-holding-dollar text-sm"></i>
+                        <span>COLLECT</span>
+                    </button>
                 </div>
 
+                <!-- Mini Grid -->
+                <div class="col-span-7 grid grid-cols-3 gap-1.5" id="mini-grid-container"></div>
             </div>
 
+            <!-- Forest Force / Energy -->
+            <div class="space-y-1.5 px-1">
+                <div class="flex items-center justify-between text-white font-black text-xs">
+                    <span class="tracking-wide flex items-center gap-1">Forest Energy <span class="text-sm">🫈</span></span>
+                    <div class="flex items-center gap-1 font-mono text-emerald-300">
+                        <span id="forest-energy-val">5 486</span> <span>🫈</span>
+                    </div>
+                </div>
+                <div class="w-full h-2 rounded-full bg-slate-950/90 p-0.5 border border-emerald-500/40 overflow-hidden shadow-inner">
+                    <div id="forest-progress-fill" class="h-full bg-gradient-to-r from-emerald-500 to-teal-300 rounded-full transition-all duration-300" style="width: 78%;"></div>
+                </div>
+                <div class="text-[11px] font-bold text-slate-300 flex items-center justify-between">
+                    <span>Lasts ≈ <b class="text-white font-mono" id="forest-duration-display">96 d 4 h</b></span>
+                    <span id="forest-status-hint" class="text-[10px] text-emerald-400 font-bold font-mono">ACTIVE (10 🫈/h)</span>
+                </div>
+            </div>
+
+            <!-- Nature Pots -->
+            <div class="grid grid-cols-3 gap-2">
+                <div class="stone-card p-3 rounded-3xl flex flex-col items-center justify-between text-center min-h-[140px]">
+                    <span class="text-3xl">🫈</span>
+                    <div class="font-black text-xs text-slate-800 font-mono">+500 🫈</div>
+                    <button onclick="buyForestEnergy(500, 100)" class="stone-btn w-full py-1.5 rounded-xl flex items-center justify-center gap-1 text-[11px] font-black text-slate-800">
+                        <span class="text-[10px]">🔶</span><span>100</span>
+                    </button>
+                </div>
+                <div class="stone-card p-3 rounded-3xl flex flex-col items-center justify-between text-center min-h-[140px]">
+                    <span class="text-3xl">🫈</span>
+                    <div class="font-black text-xs text-slate-800 font-mono">+5 000 🫈</div>
+                    <button onclick="buyForestEnergy(5000, 1000)" class="stone-btn w-full py-1.5 rounded-xl flex items-center justify-center gap-1 text-[11px] font-black text-slate-800">
+                        <span class="text-[10px]">🔶</span><span>1 000</span>
+                    </button>
+                </div>
+                <div class="stone-card p-3 rounded-3xl flex flex-col items-center justify-between text-center min-h-[140px]">
+                    <span class="text-3xl">🫈</span>
+                    <div class="font-black text-xs text-slate-800 font-mono">+25 000 🫈</div>
+                    <button onclick="buyForestEnergy(25000, 5000)" class="stone-btn w-full py-1.5 rounded-xl flex items-center justify-center gap-1 text-[11px] font-black text-slate-800">
+                        <span class="text-[10px]">🔶</span><span>5 000</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 12 Heroes -->
+            <div class="space-y-2 pt-2">
+                <div class="flex items-center justify-between px-1">
+                    <h3 class="text-xs font-black text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                        <i class="fas fa-shield-halved text-amber-400"></i> Forest Heroes Market
+                    </h3>
+                    <span class="text-[11px] font-black text-slate-400 font-mono">12 Heroes Available</span>
+                </div>
+                <div class="grid grid-cols-2 gap-3" id="character-cards-grid"></div>
+            </div>
         </div>
 
+        <!-- ============================================================== -->
+        <!-- 2. DEPOSIT VIEW (PROFESSIONAL GATEWAY INTEGRATION)             -->
+        <!-- ============================================================== -->
+        <div id="deposit-view" class="app-view space-y-3.5">
+            <!-- Method Selection List -->
+            <div id="deposit-method-list" class="space-y-3">
+                <div onclick="openDepositForm('bKash', 1)" class="stone-card p-4 rounded-3xl flex items-center gap-3.5 cursor-pointer active:scale-[0.99] transition">
+                    <div class="w-14 h-14 rounded-2xl bg-pink-500/10 border-2 border-pink-400 p-2 flex items-center justify-center flex-shrink-0 shadow-inner">
+                        <span class="text-pink-600 font-black text-xl">bK</span>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-base font-black text-slate-900 leading-tight">bKash (Instant)</h4>
+                            <span class="text-[10px] font-black bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">AUTO</span>
+                        </div>
+                        <p class="text-xs font-bold text-slate-600 mt-0.5">বিকাশ গেটওয়ে • ১ ডলার = ৫,০০০ 🔶</p>
+                        <div class="text-xs font-bold text-slate-700 mt-1 font-mono">Min: $1.00 (~120 BDT)</div>
+                    </div>
+                </div>
 
-        <div class="step-1-content">
+                <div onclick="openDepositForm('Tether USD (TRC20)', 1)" class="stone-card p-4 rounded-3xl flex items-center gap-3.5 cursor-pointer active:scale-[0.99] transition">
+                    <div class="w-14 h-14 rounded-2xl bg-teal-500/10 border-2 border-teal-400 p-2.5 flex items-center justify-center flex-shrink-0 shadow-inner">
+                        <img src="https://cdn-icons-png.flaticon.com/512/825/825488.png" class="w-full h-full object-contain" alt="USDT">
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-base font-black text-slate-900 leading-tight">Tether USDT</h4>
+                            <span class="text-[10px] font-black bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">TRC20</span>
+                        </div>
+                        <p class="text-xs font-bold text-slate-600 mt-0.5">১ ডলার = ৫,০০০ 🔶 জেমস</p>
+                        <div class="text-xs font-bold text-slate-700 mt-1 font-mono">Min: $1.00 USDT</div>
+                    </div>
+                </div>
 
-            <div class="main-avatar-wrap">
-
-                <img
-                    src="https://i.ibb.co/r2q5RcBg/x.jpg"
-                    alt="Logo"
-                    onerror="this.src='https://via.placeholder.com/110'"
-                >
-
+                <div onclick="openDepositForm('TON / GRAM', 1)" class="stone-card p-4 rounded-3xl flex items-center gap-3.5 cursor-pointer active:scale-[0.99] transition">
+                    <div class="w-14 h-14 rounded-2xl bg-sky-500/10 border-2 border-sky-400 p-2.5 flex items-center justify-center flex-shrink-0 shadow-inner">
+                        <img src="https://cdn-icons-png.flaticon.com/512/5968/5968804.png" class="w-full h-full object-contain" alt="TON">
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-base font-black text-slate-900 leading-tight">TON / GRAM</h4>
+                            <span class="text-[10px] font-black bg-sky-100 text-sky-700 px-2 py-0.5 rounded-full">FAST</span>
+                        </div>
+                        <p class="text-xs font-bold text-slate-600 mt-0.5">টেলিগ্রাম ওয়ালেট ও টনকয়েন</p>
+                        <div class="text-xs font-bold text-slate-700 mt-1 font-mono">Min: $1.00</div>
+                    </div>
+                </div>
             </div>
 
-
-            <h2 class="shop-heading">
-                Social Smm Shop
-            </h2>
-
-
-            <div
-                class="user-email-badge"
-                id="userEmailBadge"
-            >
-                user@mail.com
-            </div>
-
-
-            <div class="line-sep"></div>
-
-
-            <div class="note-card">
-
-                <h5>
-                    Payment Note
-                </h5>
-
-                <p>
-                    নিরাপদ পেমেন্ট সম্পন্ন করতে টাকার পরিমাণ লিখে
-                    Continue বাটনে ক্লিক করুন। পেমেন্ট সম্পন্ন হলে
-                    আপনার ব্যালেন্স স্বয়ংক্রিয়ভাবে আপডেট হবে।
-                </p>
-
-            </div>
-
-
-            <div class="input-box-wrap">
-
-                <label for="amountInput">
-                    আপনি কত টাকা ডিপোজিট করতে চান লিখুন
-                </label>
-
-                <input
-                    type="number"
-                    id="amountInput"
-                    class="amount-field"
-                    value="500"
-                    placeholder="500"
-                    min="10"
-                >
-
-            </div>
-
-
-            <button
-                id="btnPayGateway"
-                class="btn-continue-gradient"
-                onclick="initiatePayment()"
-            >
-
-                <i
-                    class="fa-solid fa-lock"
-                    style="color:#facc15;"
-                ></i>
-
-                Continue to Payment
-
-            </button>
-
-        </div>
-
-    </div>
-
-
-    <!-- SUCCESS -->
-    <div id="step-5" class="step-container">
-
-        <div class="success-wrapper">
-
-            <i
-                class="fa-solid fa-circle-check success-icon"
-            ></i>
-
-
-            <h3
-                style="
-                    color:#10b981;
-                    font-size:18px;
-                    font-weight:700;
-                    margin-bottom:4px;
-                "
-            >
-                পেমেন্ট সফলভাবে রিসিভ হয়েছে!
-            </h3>
-
-
-            <h2 class="success-title">
-                Payment Successful!
-            </h2>
-
-
-            <p class="success-msg">
-                Your transaction has been verified automatically
-                and balance updated.
-            </p>
-
-
-            <div class="txid-box">
-
-                <div>
-                    TXID :
-                    <span
-                        class="highlight-txid"
-                        id="displayTxid"
-                    ></span>
+            <!-- Dynamic Input Form -->
+            <div id="deposit-input-card" class="stone-card p-5 rounded-3xl space-y-4 hidden">
+                <div class="flex items-center justify-between bg-white/70 p-3 rounded-2xl border border-slate-200">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-400 flex items-center justify-center text-emerald-600 text-xl font-black">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <div>
+                            <h4 id="dep-chosen-name" class="text-sm font-black text-slate-900">bKash (Instant)</h4>
+                            <span class="text-[11px] font-bold text-slate-500">Secure Payment Gateway</span>
+                        </div>
+                    </div>
+                    <button onclick="closeDepositForm()" class="text-slate-400 hover:text-slate-700 text-sm p-1">
+                        <i class="fa-solid fa-xmark text-base"></i>
+                    </button>
                 </div>
 
                 <div>
-                    Amount :
-                    <span id="displayAmount"></span>
+                    <label class="text-xs font-extrabold text-slate-700 block mb-1.5">ডিপোজিট পরিমাণ (USD):</label>
+                    <div class="relative">
+                        <input id="deposit-usd-input" type="number" value="1" min="1" step="1" oninput="calculateDepositGems(this.value)" class="w-full p-3.5 pl-9 rounded-2xl bg-white border-2 border-slate-300 text-lg font-black text-slate-900 font-mono focus:border-emerald-500 transition">
+                        <span class="absolute left-3.5 top-3.5 text-slate-400 font-black text-lg">$</span>
+                    </div>
                 </div>
 
+                <!-- Quick Buttons -->
+                <div class="grid grid-cols-4 gap-2">
+                    <button onclick="setDepositAmount(1)" class="stone-btn py-1.5 rounded-xl text-xs font-black text-slate-800">$1</button>
+                    <button onclick="setDepositAmount(5)" class="stone-btn py-1.5 rounded-xl text-xs font-black text-slate-800">$5</button>
+                    <button onclick="setDepositAmount(10)" class="stone-btn py-1.5 rounded-xl text-xs font-black text-slate-800">$10</button>
+                    <button onclick="setDepositAmount(25)" class="stone-btn py-1.5 rounded-xl text-xs font-black text-slate-800">$25</button>
+                </div>
+
+                <div class="p-3 bg-emerald-50 rounded-2xl border border-emerald-200 flex items-center justify-between text-xs font-black text-slate-800 font-mono">
+                    <span class="text-slate-600">আপনি পাবেন:</span>
+                    <span class="text-emerald-700 flex items-center gap-1 text-sm">
+                        <span>🔶</span>
+                        <b id="deposit-gem-preview">5,000</b> জেমস
+                    </span>
+                </div>
+
+                <button onclick="proceedToPaymentGateway()" id="btn-top-up" class="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-sm shadow-xl active:scale-[0.98] transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-lock text-amber-300"></i>
+                    <span>Continue to Payment</span>
+                </button>
             </div>
 
+            <!-- Transaction History -->
+            <div class="stone-card rounded-3xl overflow-hidden shadow">
+                <div class="bg-slate-200/70 grid grid-cols-4 px-3 py-2.5 text-[11px] font-black text-slate-700 text-center">
+                    <span>Date</span>
+                    <span>Method</span>
+                    <span>Amount</span>
+                    <span>Status</span>
+                </div>
+                <div id="deposit-tx-list" class="divide-y divide-slate-200 text-xs font-black text-slate-800 text-center font-mono">
+                    <div class="p-6 text-center text-xs text-slate-400">এখনো কোনো ডিপোজিট হিস্টোরি নেই</div>
+                </div>
+            </div>
+        </div>
 
-            <button
-                class="btn-continue-gradient"
-                onclick="changeStep(1)"
-            >
-                Return to Shop
-            </button>
+        <!-- ============================================================== -->
+        <!-- 3. WITHDRAW VIEW                                               -->
+        <!-- ============================================================== -->
+        <div id="withdraw-view" class="app-view space-y-3.5">
+            <div class="space-y-3">
+                <div onclick="openWithdrawModal('bKash Personal')" class="stone-card p-4 rounded-3xl flex items-center gap-3.5 cursor-pointer active:scale-[0.99] transition">
+                    <div class="w-14 h-14 rounded-2xl bg-pink-500/10 border-2 border-pink-400 p-2 flex items-center justify-center flex-shrink-0">
+                        <span class="text-pink-600 font-black text-xl">bK</span>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-base font-black text-slate-900 leading-tight">bKash Personal</h4>
+                        <div class="flex items-center gap-1 text-xs font-bold text-slate-600 mt-0.5">
+                            <span>Minimum:</span><span class="text-[10px]">🔶</span><span class="font-black text-slate-900 font-mono">10 000 ($1.00)</span>
+                        </div>
+                        <p class="text-[11px] text-slate-500 font-mono mt-0.5">Rate: 10,000 🔶 = 120 BDT</p>
+                    </div>
+                </div>
 
+                <div onclick="openWithdrawModal('USDT (TRC20)') class="stone-card p-4 rounded-3xl flex items-center gap-3.5 cursor-pointer active:scale-[0.99] transition">
+                    <div class="w-14 h-14 rounded-2xl bg-teal-500/10 border-2 border-teal-400 p-2.5 flex items-center justify-center flex-shrink-0">
+                        <img src="https://cdn-icons-png.flaticon.com/512/825/825488.png" class="w-full h-full object-contain" alt="USDT">
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-base font-black text-slate-900 leading-tight">USDT (TRC20)</h4>
+                        <div class="flex items-center gap-1 text-xs font-bold text-slate-600 mt-0.5">
+                            <span>Minimum:</span><span class="text-[10px]">🔶</span><span class="font-black text-slate-900 font-mono">10 000 ($1.00)</span>
+                        </div>
+                        <p class="text-[11px] text-slate-500 font-mono mt-0.5">Rate: 10,000 🔶 = $1.00</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Withdraw History -->
+            <div class="stone-card rounded-3xl overflow-hidden shadow">
+                <div class="bg-slate-200/70 grid grid-cols-4 px-3 py-2.5 text-[11px] font-black text-slate-700 text-center">
+                    <span>Date</span>
+                    <span>Method</span>
+                    <span>Sum</span>
+                    <span>Status</span>
+                </div>
+                <div id="withdraw-tx-list" class="divide-y divide-slate-200 text-xs font-black text-slate-800 text-center font-mono">
+                    <div class="p-6 text-center text-xs text-slate-400">কোনো উইথড্র রেকর্ড নেই</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- 4. PARTNERS VIEW                                               -->
+        <!-- ============================================================== -->
+        <div id="partners-view" class="app-view space-y-3.5">
+            <div class="stone-card p-4 rounded-3xl flex items-center justify-between">
+                <div>
+                    <span class="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block">Claimable Bonus</span>
+                    <div class="flex items-center gap-1.5 mt-0.5">
+                        <span class="text-xl gem-glow">🔶</span>
+                        <span class="text-2xl font-black text-slate-900 font-mono" id="partner-claimable-bal">0.00</span>
+                    </div>
+                </div>
+                <button onclick="claimPartnerBonus()" class="stone-btn px-6 py-2.5 rounded-2xl text-xs font-black text-slate-800 tracking-wider">
+                    Collect
+                </button>
+            </div>
+
+            <div class="stone-card p-3 rounded-2xl flex flex-col gap-2.5">
+                <div class="flex items-center justify-between gap-2 bg-white/70 p-2 rounded-xl border border-slate-200">
+                    <div class="flex items-center gap-2 overflow-hidden flex-1">
+                        <i class="fas fa-link text-slate-500 text-xs"></i>
+                        <span class="text-xs font-mono font-bold text-slate-800 truncate select-all" id="ref-link-display">https://t.me/EXPERTearn_team?startapp=</span>
+                    </div>
+                    <button onclick="copyPartnerLink()" class="stone-btn px-3 py-1.5 rounded-xl text-xs font-black text-slate-800">
+                        Copy
+                    </button>
+                </div>
+                <button onclick="shareDirectlyToTelegram()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black py-3 rounded-xl text-xs flex items-center justify-center gap-2 shadow active:scale-95 transition">
+                    <i class="fab fa-telegram-plane text-sm"></i>
+                    <span>টেলিগ্রামে বন্ধুদের ইনভাইট করুন</span>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 text-center">
+                <div class="stone-card p-3 rounded-2xl">
+                    <div class="text-[10px] font-extrabold text-slate-500 uppercase">Partners</div>
+                    <div class="text-lg font-black text-slate-900 font-mono mt-0.5" id="stat-partners-count">0</div>
+                </div>
+                <div class="stone-card p-3 rounded-2xl">
+                    <div class="text-[10px] font-extrabold text-slate-500 uppercase">Total Income</div>
+                    <div class="text-lg font-black text-slate-900 font-mono mt-0.5 flex items-center justify-center gap-1">
+                        <span>🔶</span><span id="stat-partner-income">0.00</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stone-card rounded-3xl overflow-hidden shadow">
+                <div class="bg-slate-200/70 grid grid-cols-4 px-3 py-2 text-[11px] font-black text-slate-700 text-center">
+                    <span>Date</span>
+                    <span>User</span>
+                    <span>Deposit</span>
+                    <span>Bonus</span>
+                </div>
+                <div id="partner-tx-list" class="divide-y divide-slate-200 text-xs font-black text-slate-800 text-center font-mono">
+                    <div class="p-6 text-center text-xs text-slate-400">আপনার রেফারে এখনো কেউ যুক্ত হয়নি</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- 5. PROFILE VIEW                                                -->
+        <!-- ============================================================== -->
+        <div id="profile-view" class="app-view space-y-3.5">
+            <div class="stone-card p-4 rounded-3xl flex items-center gap-3.5 shadow">
+                <div class="w-12 h-12 rounded-2xl bg-emerald-100 flex items-center justify-center text-emerald-600 text-xl border border-white shadow">
+                    <i class="fas fa-user-astronaut"></i>
+                </div>
+                <div>
+                    <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest block">User ID</span>
+                    <h3 id="display-user-id" class="text-lg font-black text-slate-900 font-mono tracking-wider">6954647230</h3>
+                </div>
+            </div>
+
+            <div class="stone-card p-4 rounded-3xl flex items-center justify-between shadow">
+                <div class="flex items-center gap-3.5">
+                    <div class="w-12 h-12 rounded-2xl bg-teal-100 flex items-center justify-center text-teal-600 text-xl border border-white shadow">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-black text-slate-900 leading-tight">ডিপোজিট হিস্টোরি</h4>
+                        <p class="text-xs font-bold text-slate-500 mt-0.5">সব সফল লেনদেন দেখুন</p>
+                    </div>
+                </div>
+                <button onclick="switchTab('deposit')" class="stone-btn px-4 py-2 rounded-2xl text-xs font-black text-slate-800">
+                    Open
+                </button>
+            </div>
+
+            <div class="stone-card p-4 rounded-3xl flex items-center justify-between shadow">
+                <div class="flex items-center gap-3.5">
+                    <div class="w-12 h-12 rounded-2xl bg-purple-100 flex items-center justify-center text-purple-600 text-xl border border-white shadow">
+                        <i class="fas fa-money-bill-transfer"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-black text-slate-900 leading-tight">উইথড্র হিস্টোরি</h4>
+                        <p class="text-xs font-bold text-slate-500 mt-0.5">পেন্ডিং ও কমপ্লিট ক্যাশআউট</p>
+                    </div>
+                </div>
+                <button onclick="switchTab('withdraw')" class="stone-btn px-4 py-2 rounded-2xl text-xs font-black text-slate-800">
+                    Open
+                </button>
+            </div>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- 6. PAYMENT SUCCESS RECEIPT SCREEN                              -->
+        <!-- ============================================================== -->
+        <div id="payment-success-view" class="app-view space-y-4 text-center">
+            <div class="stone-card p-6 rounded-3xl flex flex-col items-center shadow-2xl">
+                <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 text-3xl flex items-center justify-center mb-3 shadow-inner">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <h3 class="text-xl font-black text-slate-900">Payment Successful!</h3>
+                <p class="text-xs font-bold text-slate-500 mt-1">আপনার ডিপোজিট স্বয়ংক্রিয়ভাবে ব্যালেন্সে যুক্ত হয়েছে</p>
+
+                <div class="w-full bg-white/70 p-4 rounded-2xl border border-slate-200 mt-4 text-left font-mono space-y-2 text-xs">
+                    <div class="flex justify-between">
+                        <span class="text-slate-500">Transaction ID:</span>
+                        <span id="receipt-txid" class="font-black text-emerald-700 select-all">TX123456789</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-500">Amount Paid:</span>
+                        <span id="receipt-amount" class="font-black text-slate-900">$1.00</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-500">Credited Gems:</span>
+                        <span id="receipt-gems" class="font-black text-amber-600">5,000 🔶</span>
+                    </div>
+                </div>
+
+                <button onclick="switchTab('magician')" class="w-full mt-5 py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-sm shadow-lg active:scale-95 transition">
+                    Return to Game
+                </button>
+            </div>
         </div>
 
     </div>
 
-
-<script>
-
-    /*
-    =========================================================
-    FIREBASE CONFIG
-    =========================================================
-    */
-
-    const firebaseConfig = {
-  apiKey: "AIzaSyAwmtueFchb1gwN0EFg0G8-FC6GutJMT6w",
-  authDomain: "project-1e93c552-fae1-40be-a15.firebaseapp.com",
-  databaseURL: "https://project-1e93c552-fae1-40be-a15-default-rtdb.firebaseio.com",
-  projectId: "project-1e93c552-fae1-40be-a15",
-  storageBucket: "project-1e93c552-fae1-40be-a15.firebasestorage.app",
-  messagingSenderId: "351633490277",
-  appId: "1:351633490277:web:11b0e79e9abe2f42ce218c"
-};
-
-
-    if (!firebase.apps.length) {
-
-        firebase.initializeApp(firebaseConfig);
-
-    }
-
-
-    const auth = firebase.auth();
-
-    const database = firebase.database();
-
-
-    let currentUser = null;
-
-    let isRegisterMode = false;
-
-
-    /*
-    =========================================================
-    AUTH MODE
-    =========================================================
-    */
-
-    function toggleAuthMode() {
-
-        isRegisterMode = !isRegisterMode;
-
-
-        document.getElementById("authTitle").textContent =
-            isRegisterMode
-                ? "একাউন্ট খুলুন"
-                : "লগইন করুন";
-
-
-        document.getElementById("authSub").textContent =
-            isRegisterMode
-                ? "আপনার ইমেইল ও পাসওয়ার্ড দিয়ে রেজিস্টার করুন"
-                : "ডিপোজিট সম্পন্ন করতে একাউন্টে প্রবেশ করুন";
-
-
-        document.getElementById("btnAuthSubmit").textContent =
-            isRegisterMode
-                ? "Register"
-                : "Login";
-
-
-        document.getElementById("authToggleText").textContent =
-            isRegisterMode
-                ? "আগে থেকেই একাউন্ট আছে? লগইন করুন"
-                : "নতুন একাউন্ট তৈরি করুন";
-
-    }
-
-
-    /*
-    =========================================================
-    LOGIN / REGISTER
-    =========================================================
-    */
-
-    function handleAuthAction() {
-
-        const email =
-            document.getElementById("authEmail").value.trim();
-
-        const password =
-            document.getElementById("authPassword").value.trim();
-
-
-        if (!email || !password) {
-
-            return showToastPopup(
-                "ইমেইল ও পাসওয়ার্ড প্রদান করুন"
-            );
-
-        }
-
-
-        const btn =
-            document.getElementById("btnAuthSubmit");
-
-
-        const originalText =
-            isRegisterMode
-                ? "Register"
-                : "Login";
-
-
-        btn.innerHTML =
-            '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
-
-        btn.disabled = true;
-
-
-        if (isRegisterMode) {
-
-            auth
-                .createUserWithEmailAndPassword(
-                    email,
-                    password
-                )
-
-                .then(userCredential => {
-
-                    return database
-                        .ref(
-                            `users/${userCredential.user.uid}`
-                        )
-                        .set({
-
-                            email: email,
-
-                            balance: 0,
-
-                            createdAt:
-                                firebase.database.ServerValue.TIMESTAMP
-
-                        });
-
-                })
-
-                .then(() => {
-
-                    showToastPopup(
-                        "একাউন্ট তৈরি হয়েছে!"
-                    );
-
-                    btn.innerHTML = originalText;
-
-                    btn.disabled = false;
-
-                })
-
-                .catch(error => {
-
-                    showToastPopup(
-                        getFirebaseErrorMessage(error)
-                    );
-
-                    btn.innerHTML = originalText;
-
-                    btn.disabled = false;
-
-                });
-
-        } else {
-
-            auth
-                .signInWithEmailAndPassword(
-                    email,
-                    password
-                )
-
-                .catch(error => {
-
-                    showToastPopup(
-                        getFirebaseErrorMessage(error)
-                    );
-
-                    btn.innerHTML = originalText;
-
-                    btn.disabled = false;
-
-                });
-
-        }
-
-    }
-
-
-    /*
-    =========================================================
-    FIREBASE AUTH STATE
-    =========================================================
-    */
-
-    auth.onAuthStateChanged(user => {
-
-        if (user) {
-
-            currentUser = user;
-
-
-            document.getElementById(
-                "userEmailBadge"
-            ).textContent = user.email;
-
-
-            listenUserData(user.uid);
-
-            listenForNotifications(user.uid);
-
-
-            changeStep(1);
-
-
-            checkReturnPaymentStatus();
-
-        } else {
-
-            currentUser = null;
-
-            changeStep("auth");
-
-        }
-
-    });
-
-
-    /*
-    =========================================================
-    USER BALANCE
-    =========================================================
-    */
-
-    function listenUserData(uid) {
-
-        database
-            .ref(`users/${uid}/balance`)
-            .on("value", snapshot => {
-
-                const balance =
-                    snapshot.val() || 0;
-
-
-                document.getElementById(
-                    "userBalanceDisplay"
-                ).textContent =
-                    `${parseFloat(balance).toFixed(2)} BDT`;
-
-            });
-
-    }
-
-
-    /*
-    =========================================================
-    TRYBIT PAYMENT CREATE
-    =========================================================
-    IMPORTANT:
-    Token is NOT placed in this HTML.
-    Token must remain on Vercel server.
-    =========================================================
-    */
-
-    async function initiatePayment() {
-
-        if (!currentUser) {
-
-            return showToastPopup(
-                "প্রথমে লগইন করুন"
-            );
-
-        }
-
-
-        const amount =
-            document.getElementById(
-                "amountInput"
-            ).value.trim();
-
-
-        if (
-            !amount ||
-            parseFloat(amount) <= 0
-        ) {
-
-            return showToastPopup(
-                "সঠিক এমাউন্ট লিখুন"
-            );
-
-        }
-
-
-        if (parseFloat(amount) < 10) {
-
-            return showToastPopup(
-                "সর্বনিম্ন ১০ টাকা দিন"
-            );
-
-        }
-
-
-        const btn =
-            document.getElementById(
-                "btnPayGateway"
-            );
-
-
-        btn.disabled = true;
-
-
-        btn.innerHTML =
-            '<i class="fa-solid fa-circle-notch fa-spin"></i> Creating Payment...';
-
-
-        /*
-        Remove existing query parameters.
-        */
-
-        const baseUrl =
-            window.location.origin +
-            window.location.pathname;
-
-
-        const successUrl =
-            baseUrl + "?status=success";
-
-
-        const cancelUrl =
-            baseUrl + "?status=cancel";
-
-
-        const payload = {
-
-            amount: String(amount),
-
-            currency: "BDT",
-
-            success_url: successUrl,
-
-            cancel_url: cancelUrl,
-
-            metadata: {
-
-                uid: currentUser.uid,
-
-                email: currentUser.email,
-
-                amount: String(amount)
-
+    <!-- WITHDRAW MODAL -->
+    <div id="withdraw-modal" class="hidden fixed inset-0 z-[1000] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="stone-card w-full max-w-xs p-5 rounded-3xl space-y-3.5">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                <h4 class="text-sm font-black text-slate-900" id="withdraw-modal-title">Withdraw Funds</h4>
+                <button onclick="closeWithdrawModal()" class="text-slate-400 hover:text-slate-800 text-sm"><i class="fas fa-times"></i></button>
+            </div>
+            <div>
+                <label class="text-xs font-black text-slate-700 block mb-1">একাউন্ট / ওয়ালেট অ্যাড্রেস:</label>
+                <input id="withdraw-address" type="text" placeholder="01XXXXXXXXX or USDT Address" class="w-full p-3 rounded-xl bg-white border border-slate-300 text-xs font-mono outline-none">
+            </div>
+            <div>
+                <label class="text-xs font-black text-slate-700 block mb-1">পরিমাণ (জেমস):</label>
+                <input id="withdraw-gems-input" type="number" value="10000" min="10000" step="1000" class="w-full p-3 rounded-xl bg-white border border-slate-300 text-sm font-black font-mono outline-none">
+                <span class="text-[10px] text-slate-500 font-bold mt-1 block font-mono">মিনিমাম: ১০,০০০ 🔶 ($১.০০)</span>
+            </div>
+            <button onclick="submitWithdrawal()" class="w-full py-3 rounded-xl bg-slate-900 text-white font-black text-xs active:scale-95 transition">
+                Confirm Cashout
+            </button>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast-box" class="fixed top-5 left-1/2 -translate-x-1/2 z-[1050] pointer-events-none opacity-0 transition-opacity duration-300 w-11/12 max-w-xs">
+        <div class="stone-card px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-2.5 text-slate-900 font-black text-xs border border-white">
+            <span id="toast-icon" class="text-base">✨</span>
+            <span id="toast-msg">Success!</span>
+        </div>
+    </div>
+
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <script>
+        // STRICT MOBILE ZOOM LOCK
+        document.addEventListener('gesturestart', (e) => e.preventDefault());
+        document.addEventListener('gesturechange', (e) => e.preventDefault());
+        document.addEventListener('gestureend', (e) => e.preventDefault());
+
+        // PRELOADER TIMER
+        let loadProgress = 10;
+        const loadBar = document.getElementById("loading-progress");
+        const loadPercent = document.getElementById("loading-percent");
+        const loaderScreen = document.getElementById("loader-screen");
+
+        const loadTimer = setInterval(() => {
+            loadProgress += Math.floor(Math.random() * 8) + 4;
+            if (loadProgress >= 100) {
+                loadProgress = 100;
+                clearInterval(loadTimer);
+                setTimeout(() => {
+                    loaderScreen.style.opacity = "0";
+                    setTimeout(() => loaderScreen.style.display = "none", 400);
+                }, 350);
             }
+            loadBar.style.width = loadProgress + "%";
+            loadPercent.textContent = loadProgress + "%";
+        }, 45);
 
+        // ================= FIREBASE CONFIG =================
+        const firebaseConfig = {
+            apiKey: "AIzaSyAwmtueFchb1gwN0EFg0G8-FC6GutJMT6w",
+            authDomain: "project-1e93c552-fae1-40be-a15.firebaseapp.com",
+            databaseURL: "https://project-1e93c552-fae1-40be-a15-default-rtdb.firebaseio.com",
+            projectId: "project-1e93c552-fae1-40be-a15",
+            storageBucket: "project-1e93c552-fae1-40be-a15.firebasestorage.app",
+            messagingSenderId: "351633490277",
+            appId: "1:351633490277:web:11b0e79e9abe2f42ce218c"
         };
 
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
-        try {
+        let activeUser = {
+            id: "6954647230",
+            name: "Player",
+            username: "@player",
+            photo: "https://i.postimg.cc/CMj5tPpH/file-000000004dc082119a469192b761c18a.png",
+            balance: 0.00,
+            uncollected: 0.00,
+            forestEnergy: 5486,
+            referralWallet: 0.00,
+            referralBaseUrl: "https://t.me/EXPERTearn_team?startapp="
+        };
 
-            /*
-            HTML -> Vercel API
-            Vercel API -> Trybit
-            */
+        // 12 HEROES LIST
+        const defaultHeroes = [
+            { id: 1, name: "Paladin Knight", badgeIcon: "⚔️", count: 1, unlocked: true, cost: 50, pct: 15, bonus: 10, subText: "", img: "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=400&auto=format&fit=crop&q=80" },
+            { id: 2, name: "Master Blacksmith", badgeIcon: "⚙️", count: 1, unlocked: true, cost: 75, pct: 10, bonus: 15, subText: "(Building Boost)", img: "https://images.unsplash.com/photo-1589254065878-42c9da997008?w=400&auto=format&fit=crop&q=80" },
+            { id: 3, name: "Forest Ranger", badgeIcon: "🏹", count: 0, unlocked: false, cost: 120, pct: 18, bonus: 22, subText: "(Agility Boost)", img: "https://images.unsplash.com/photo-1544717305-2782549b5136?w=400&auto=format&fit=crop&q=80" },
+            { id: 4, name: "Nature Druid", badgeIcon: "🌿", count: 0, unlocked: false, cost: 200, pct: 20, bonus: 40, subText: "(Nature Well)", img: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=400&auto=format&fit=crop&q=80" },
+            { id: 5, name: "Emerald Dragon", badgeIcon: "🐉", count: 0, unlocked: false, cost: 350, pct: 22, bonus: 77, subText: "(Flame Burst)", img: "https://images.unsplash.com/photo-1577493340887-b7bfff550145?w=400&auto=format&fit=crop&q=80" },
+            { id: 6, name: "Ancient Treant", badgeIcon: "🌳", count: 0, unlocked: false, cost: 500, pct: 24, bonus: 120, subText: "(Stone Skin)", img: "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?w=400&auto=format&fit=crop&q=80" },
+            { id: 7, name: "Mystic Stag", badgeIcon: "🦌", count: 0, unlocked: false, cost: 750, pct: 25, bonus: 185, subText: "(Forest Aura)", img: "https://images.unsplash.com/photo-1484406566174-9da000fda645?w=400&auto=format&fit=crop&q=80" },
+            { id: 8, name: "Young Wizard", badgeIcon: "🔮", count: 0, unlocked: false, cost: 1000, pct: 26, bonus: 260, subText: "(Arcane Gift)", img: "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=400&auto=format&fit=crop&q=80" },
+            { id: 9, name: "Stone Golem", badgeIcon: "🛡️", count: 0, unlocked: false, cost: 1500, pct: 28, bonus: 420, subText: "(Titan Wall)", img: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=400&auto=format&fit=crop&q=80" },
+            { id: 10, name: "Kitsune Fox", badgeIcon: "🦊", count: 0, unlocked: false, cost: 2200, pct: 30, bonus: 660, subText: "(Spirit Fire)", img: "https://images.unsplash.com/photo-1474511320723-9a56873867b5?w=400&auto=format&fit=crop&q=80" },
+            { id: 11, name: "High Enchantress", badgeIcon: "✨", count: 0, unlocked: false, cost: 3200, pct: 32, bonus: 1024, subText: "(Star Light)", img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400&auto=format&fit=crop&q=80" },
+            { id: 12, name: "Forest Fairy", badgeIcon: "🧚", count: 0, unlocked: false, cost: 4500, pct: 35, bonus: 1575, subText: "(Bloom Bless)", img: "https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=400&auto=format&fit=crop&q=80" }
+        ];
+        let magicians = defaultHeroes;
 
-            const response =
-                await fetch(
-                    "/api/payment?action=create",
-                    {
-
-                        method: "POST",
-
-                        headers: {
-
-                            "Content-Type":
-                                "application/json"
-
-                        },
-
-                        body:
-                            JSON.stringify(payload)
-
-                    }
-                );
-
-
-            const data =
-                await response.json();
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    data.message ||
-                    "Payment creation failed"
-                );
-
-            }
-
-
-            /*
-            Different possible response structures
-            */
-
-            const payUrl =
-                data.payment_url ||
-                data.invoice_url ||
-                data.checkout_url ||
-                data.url ||
-                (data.data &&
-                    (
-                        data.data.payment_url ||
-                        data.data.invoice_url ||
-                        data.data.checkout_url ||
-                        data.data.url
-                    ));
-
-
-            if (payUrl) {
-
-                window.location.href =
-                    payUrl;
-
-                return;
-
-            }
-
-
-            console.error(
-                "Trybit response:",
-                data
-            );
-
-
-            showToastPopup(
-                data.message ||
-                "Payment URL পাওয়া যায়নি"
-            );
-
-
-            resetPaymentButton();
-
-
-        } catch (error) {
-
-            console.error(
-                "Payment error:",
-                error
-            );
-
-
-            showToastPopup(
-                error.message ||
-                "সার্ভার কানেকশন ব্যর্থ হয়েছে"
-            );
-
-
-            resetPaymentButton();
-
+        function getDailyIncomeTotal() {
+            let total = 0;
+            magicians.forEach(m => {
+                if (m.unlocked && m.count > 0) total += (m.count * m.bonus);
+            });
+            return total || 25;
         }
 
-    }
+        // ================= FIREBASE SYNC =================
+        function initFirebaseListeners() {
+            const userRef = db.ref(`users/${activeUser.id}`);
 
+            userRef.child('balance').on('value', snap => {
+                activeUser.balance = snap.exists() ? parseFloat(snap.val()) || 0 : activeUser.balance;
+                document.getElementById('header-user-balance').textContent = activeUser.balance.toFixed(2);
+            });
 
-    /*
-    =========================================================
-    RESET PAYMENT BUTTON
-    =========================================================
-    */
+            userRef.child('forestEnergy').on('value', snap => {
+                if (snap.exists()) {
+                    activeUser.forestEnergy = parseFloat(snap.val()) || 0;
+                    updateForestDurationDisplay();
+                }
+            });
 
-    function resetPaymentButton() {
+            userRef.child('referralWallet').on('value', snap => {
+                activeUser.referralWallet = snap.exists() ? parseFloat(snap.val()) || 0 : 0;
+                document.getElementById('partner-claimable-bal').textContent = activeUser.referralWallet.toFixed(2);
+            });
 
-        const btn =
-            document.getElementById(
-                "btnPayGateway"
-            );
+            // Sync Heroes from cloud
+            userRef.child('heroes').on('value', snap => {
+                if (snap.exists()) {
+                    const cloudHeroes = snap.val();
+                    magicians.forEach(m => {
+                        if (cloudHeroes[m.id]) {
+                            m.count = cloudHeroes[m.id].count || m.count;
+                            m.unlocked = cloudHeroes[m.id].unlocked ?? m.unlocked;
+                        }
+                    });
+                }
+                renderAllComponents();
+            });
 
+            // Sync Deposits
+            userRef.child('deposits').orderByChild('timestamp').limitToLast(10).on('value', snap => {
+                const box = document.getElementById('deposit-tx-list');
+                if (snap.exists()) {
+                    const deps = [];
+                    snap.forEach(c => deps.push(c.val()));
+                    deps.reverse();
+                    box.innerHTML = deps.map(d => `
+                        <div class="grid grid-cols-4 px-3 py-2 text-xs font-black text-slate-800 text-center font-mono bg-white/40">
+                            <span>${d.timestamp ? new Date(d.timestamp).toLocaleDateString() : 'Today'}</span>
+                            <span>${d.gateway || 'Online'}</span>
+                            <span>${d.amount} 🔶</span>
+                            <span class="text-emerald-600 font-bold">PAID</span>
+                        </div>
+                    `).join('');
+                }
+            });
 
-        btn.disabled = false;
+            // Sync Withdrawals
+            db.ref(`users/${activeUser.id}/withdrawals`).orderByChild('timestamp').limitToLast(10).on('value', snap => {
+                const box = document.getElementById('withdraw-tx-list');
+                if (snap.exists()) {
+                    const wds = [];
+                    snap.forEach(c => wds.push(c.val()));
+                    wds.reverse();
+                    box.innerHTML = wds.map(w => `
+                        <div class="grid grid-cols-4 px-3 py-2 text-xs font-black text-slate-800 text-center font-mono bg-white/40">
+                            <span>${w.timestamp ? new Date(w.timestamp).toLocaleDateString() : 'Today'}</span>
+                            <span>${w.method}</span>
+                            <span>${w.gems} 🔶</span>
+                            <span class="${w.status === 'PAID' ? 'text-emerald-600' : 'text-amber-600'}">${w.status}</span>
+                        </div>
+                    `).join('');
+                }
+            });
 
+            listenNotifications(activeUser.id);
+        }
 
-        btn.innerHTML =
-            '<i class="fa-solid fa-lock" style="color:#facc15;"></i> Continue to Payment';
+        // ================= MINING LOOP =================
+        const FOREST_DRAIN_PER_SEC = 10 / 3600;
 
-    }
+        setInterval(() => {
+            const dailyCap = getDailyIncomeTotal();
 
+            if (activeUser.forestEnergy > 0) {
+                activeUser.forestEnergy = Math.max(0, activeUser.forestEnergy - (FOREST_DRAIN_PER_SEC / 10));
 
-    /*
-    =========================================================
-    PAYMENT RETURN
-    =========================================================
-    */
+                if (activeUser.uncollected < dailyCap) {
+                    const earnRate = (dailyCap / (24 * 3600)) / 10;
+                    activeUser.uncollected += earnRate;
+                    document.getElementById('daily-cap-status-badge').classList.add('hidden');
+                } else {
+                    activeUser.uncollected = dailyCap;
+                    document.getElementById('daily-cap-status-badge').classList.remove('hidden');
+                }
+            } else {
+                document.getElementById('forest-status-hint').textContent = "DEPLETED (STOPPED)";
+                document.getElementById('forest-status-hint').className = "text-[10px] text-rose-400 font-bold font-mono";
+            }
 
-    async function checkReturnPaymentStatus() {
+            document.getElementById('uncollected-balance').textContent = activeUser.uncollected.toFixed(4);
+            document.getElementById('forest-energy-val').textContent = Math.floor(activeUser.forestEnergy).toLocaleString();
 
-        const urlParams =
-            new URLSearchParams(
-                window.location.search
-            );
+            const dailyProgressPercent = Math.min(100, (activeUser.uncollected / dailyCap) * 100);
+            document.getElementById('daily-progress-fill').style.width = `${dailyProgressPercent}%`;
 
+            updateForestDurationDisplay();
+        }, 100);
 
-        const transactionId =
-            urlParams.get("transactionId") ||
-            urlParams.get("transaction_id") ||
-            urlParams.get("txid") ||
-            urlParams.get("invoice_id");
+        function updateForestDurationDisplay() {
+            const hoursLeft = activeUser.forestEnergy / 10;
+            const daysLeft = Math.floor(hoursLeft / 24);
+            const remainingHours = Math.floor(hoursLeft % 24);
 
+            const displayEl = document.getElementById('forest-duration-display');
+            if (hoursLeft <= 0) {
+                displayEl.textContent = "0 h (Stopped)";
+            } else if (daysLeft >= 1) {
+                displayEl.textContent = `${daysLeft} d ${remainingHours} h`;
+            } else {
+                displayEl.textContent = `${remainingHours} h`;
+            }
 
-        const urlStatus =
-            urlParams.get("status");
+            const percent = Math.min(100, (activeUser.forestEnergy / 7000) * 100);
+            document.getElementById('forest-progress-fill').style.width = `${percent}%`;
+        }
 
+        // ================= 3D COLLECT =================
+        function collectIncome(e) {
+            if (activeUser.uncollected <= 0.001) {
+                showToast("Nothing to collect yet!", "⚠️");
+                return;
+            }
 
-        if (
-            transactionId ||
-            urlStatus === "success"
-        ) {
+            const collected = activeUser.uncollected;
+            activeUser.balance += collected;
+            activeUser.uncollected = 0.0000;
 
-            showToastPopup(
-                "পেমেন্ট ভেরিফাই করা হচ্ছে..."
-            );
+            db.ref(`users/${activeUser.id}/balance`).transaction(b => (b || 0) + collected);
+            document.getElementById('header-user-balance').textContent = activeUser.balance.toFixed(2);
+            document.getElementById('uncollected-balance').textContent = "0.0000";
+            document.getElementById('daily-progress-fill').style.width = "0%";
 
+            if (e && e.clientX) spawnSparks(e.clientX, e.clientY);
+            showToast(`Collected +${collected.toFixed(4)} 🔶!`, '🔶');
+            triggerHaptic('success');
+        }
+
+        function spawnSparks(x, y) {
+            for (let i = 0; i < 12; i++) {
+                const p = document.createElement('div');
+                p.className = 'spark-particle';
+                p.innerHTML = '🔶';
+                p.style.left = `${x}px`;
+                p.style.top = `${y}px`;
+                p.style.setProperty('--tx', `${(Math.random() - 0.5) * 160}px`);
+                p.style.setProperty('--ty', `${(Math.random() - 0.7) * 160}px`);
+                document.body.appendChild(p);
+                setTimeout(() => p.remove(), 850);
+            }
+        }
+
+        // ================= RENDER COMPONENTS =================
+        function renderAllComponents() {
+            renderMiniGrid();
+            renderScreenshotCards();
+            let total = 0;
+            magicians.forEach(m => total += m.count);
+            document.getElementById('main-magician-level').textContent = total;
+            document.getElementById('daily-income-total').textContent = getDailyIncomeTotal();
+            document.getElementById('header-user-balance').textContent = activeUser.balance.toFixed(2);
+        }
+
+        function renderMiniGrid() {
+            const container = document.getElementById('mini-grid-container');
+            container.innerHTML = magicians.map(m => `
+                <div class="stone-card aspect-square rounded-2xl p-1 flex flex-col items-center justify-center relative shadow-sm overflow-hidden">
+                    <img src="${m.img}" class="w-full h-full object-cover rounded-xl ${m.unlocked ? '' : 'silhouetted-character'}" alt="${m.name}">
+                    <span class="absolute bottom-1 right-1 px-1.5 py-0.2 bg-black/75 rounded text-[10px] font-black text-amber-300 font-mono">×${m.count}</span>
+                </div>
+            `).join('');
+        }
+
+        function renderScreenshotCards() {
+            const container = document.getElementById('character-cards-grid');
+            container.innerHTML = magicians.map(m => `
+                <div class="screenshot-marble-card min-h-[305px]">
+                    <div class="screenshot-badge">
+                        <span>${m.badgeIcon}</span>
+                        <span>×${m.count}</span>
+                    </div>
+
+                    <div class="w-full h-32 relative overflow-hidden rounded-t-[24px]">
+                        <img src="${m.img}" class="w-full h-full object-cover ${m.unlocked ? '' : 'silhouetted-character'}" alt="${m.name}">
+                    </div>
+
+                    <div class="px-2 pt-1 pb-1 text-center space-y-1 z-10">
+                        <h3 class="text-sm font-black text-slate-800 tracking-tight leading-tight">
+                            Daily Income <span class="text-emerald-700 font-black">+${m.pct}%</span>
+                        </h3>
+                        <div class="flex items-center justify-center gap-1.5 text-xs font-black text-slate-800">
+                            <span>${m.badgeIcon}</span>
+                            <span class="font-extrabold font-mono">+${m.bonus}</span>
+                            ${m.subText ? `<span class="text-[10px] font-extrabold text-slate-500 block">${m.subText}</span>` : ''}
+                        </div>
+                    </div>
+
+                    <button onclick="hireMagician(${m.id})" class="screenshot-pill-btn active:scale-95">
+                        <span class="text-base gem-glow">🔶</span>
+                        <span class="text-lg font-black text-slate-800 font-mono">${m.cost}</span>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function hireMagician(id) {
+            const mage = magicians.find(m => m.id === id);
+            if (!mage) return;
+
+            if (activeUser.balance < mage.cost) {
+                showToast(`Need ${mage.cost} 🔶 gems!`, "⚠️");
+                return;
+            }
+
+            activeUser.balance -= mage.cost;
+            mage.count += 1;
+            mage.unlocked = true;
+
+            // Sync with Firebase
+            db.ref(`users/${activeUser.id}/balance`).transaction(b => (b || 0) - mage.cost);
+            db.ref(`users/${activeUser.id}/heroes/${mage.id}`).set({ count: mage.count, unlocked: true });
+
+            renderAllComponents();
+            showToast(`Hired ${mage.name}! (+${mage.bonus} Daily)`, '⚔️');
+            triggerHaptic('success');
+        }
+
+        function buyForestEnergy(energyReward, cost) {
+            if (activeUser.balance < cost) {
+                showToast(`Need ${cost} 🔶 gems!`, "⚠️");
+                return;
+            }
+            activeUser.balance -= cost;
+            activeUser.forestEnergy += energyReward;
+
+            db.ref(`users/${activeUser.id}/balance`).transaction(b => (b || 0) - cost);
+            db.ref(`users/${activeUser.id}/forestEnergy`).set(activeUser.forestEnergy);
+
+            document.getElementById('header-user-balance').textContent = activeUser.balance.toFixed(2);
+            document.getElementById('forest-energy-val').textContent = Math.floor(activeUser.forestEnergy).toLocaleString();
+            updateForestDurationDisplay();
+
+            showToast(`Added +${energyReward} 🫈 Forest Force!`, '🫈');
+            triggerHaptic('medium');
+        }
+
+        // ================= AUTOMATED PAYMENT GATEWAY =================
+        let selectedDepMethod = 'bKash';
+
+        function openDepositForm(methodName, defaultUsd) {
+            triggerHaptic('light');
+            selectedDepMethod = methodName;
+            document.getElementById('deposit-method-list').classList.add('hidden');
+            const form = document.getElementById('deposit-input-card');
+            form.classList.remove('hidden');
+
+            document.getElementById('dep-chosen-name').textContent = methodName;
+            setDepositAmount(defaultUsd);
+        }
+
+        function closeDepositForm() {
+            triggerHaptic('light');
+            document.getElementById('deposit-method-list').classList.remove('hidden');
+            document.getElementById('deposit-input-card').classList.add('hidden');
+        }
+
+        function setDepositAmount(usdVal) {
+            document.getElementById('deposit-usd-input').value = usdVal;
+            calculateDepositGems(usdVal);
+        }
+
+        function calculateDepositGems(usdValue) {
+            const val = parseFloat(usdValue) || 0;
+            const gems = Math.round(val * 5000);
+            document.getElementById('deposit-gem-preview').textContent = gems.toLocaleString();
+        }
+
+        // Call Vercel Serverless Gateway to create payment
+        async function proceedToPaymentGateway() {
+            triggerHaptic('medium');
+            const amountUsd = document.getElementById('deposit-usd-input').value.trim();
+            if (!amountUsd || parseFloat(amountUsd) <= 0) return showToast("সঠিক এমাউন্ট লিখুন!", "⚠️");
+
+            const btn = document.getElementById('btn-top-up');
+            const originalHTML = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
+
+            const returnUrl = window.location.href.split('?')[0];
+            const payload = {
+                amount: String(amountUsd),
+                currency: selectedDepMethod.includes('bKash') ? 'BDT' : 'USD',
+                method: selectedDepMethod,
+                success_url: returnUrl + "?status=success",
+                cancel_url: returnUrl + "?status=cancel",
+                metadata: {
+                    uid: activeUser.id,
+                    username: activeUser.username,
+                    gateway: selectedDepMethod
+                }
+            };
 
             try {
+                const res = await fetch('/api/payment?action=create', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                let payUrl = data.payment_url || data.url || (data.data && data.data.payment_url);
 
-                const response =
-                    await fetch(
-                        "/api/payment?action=verify",
-                        {
-
-                            method: "POST",
-
-                            headers: {
-
-                                "Content-Type":
-                                    "application/json"
-
-                            },
-
-                            body:
-                                JSON.stringify({
-
-                                    transaction_id:
-                                        transactionId,
-
-                                    uid:
-                                        currentUser.uid
-
-                                })
-
-                        }
-                    );
-
-
-                const data =
-                    await response.json();
-
-
-                const apiStatus =
-                    data.status
-                        ? String(
-                            data.status
-                        ).toUpperCase()
-                        : "";
-
-
-                const successful =
-                    apiStatus === "SUCCESS" ||
-                    apiStatus === "COMPLETED" ||
-                    apiStatus === "PAID" ||
-                    data.payment_status === "COMPLETED" ||
-                    data.payment_status === "PAID" ||
-                    data.success === true;
-
-
-                if (successful) {
-
-                    const depositAmount =
-                        parseFloat(
-                            data.amount ||
-                            data.payment_amount ||
-                            urlParams.get(
-                                "paymentAmount"
-                            ) ||
-                            0
-                        );
-
-
-                    if (depositAmount > 0) {
-
-                        const txid =
-                            transactionId ||
-                            data.transaction_id ||
-                            data.txid ||
-                            data.id ||
-                            "N/A";
-
-
-                        await savePaymentAndUpdateBalance(
-                            depositAmount,
-                            txid,
-                            data
-                        );
-
-
-                        document.getElementById(
-                            "displayTxid"
-                        ).textContent =
-                            txid;
-
-
-                        document.getElementById(
-                            "displayAmount"
-                        ).textContent =
-                            depositAmount +
-                            " BDT";
-
-
-                        changeStep(5);
-
-
-                        window.history.replaceState(
-                            {},
-                            document.title,
-                            window.location.pathname
-                        );
-
-                    } else {
-
-                        showToastPopup(
-                            "Payment amount পাওয়া যায়নি"
-                        );
-
-                    }
-
+                if (payUrl) {
+                    window.location.href = payUrl;
                 } else {
-
-                    showToastPopup(
-                        data.message ||
-                        "পেমেন্ট ভেরিফিকেশন সফল হয়নি"
-                    );
-
+                    showToast(data.message || 'পেমেন্ট গেটওয়েতে সমস্যা হচ্ছে!', '⚠️');
+                    btn.disabled = false;
+                    btn.innerHTML = originalHTML;
                 }
-
-            } catch (error) {
-
-                console.error(
-                    "Verification error:",
-                    error
-                );
-
-
-                showToastPopup(
-                    "ভেরিফিকেশনে সমস্যা হয়েছে"
-                );
-
+            } catch (err) {
+                showToast('সার্ভার কানেকশন ব্যর্থ হয়েছে!', '⚠️');
+                btn.disabled = false;
+                btn.innerHTML = originalHTML;
             }
-
         }
 
-    }
+        // Check Payment Status when redirected back
+        async function checkReturnPaymentStatus() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const transactionId = urlParams.get('transactionId') || urlParams.get('transaction_id') || urlParams.get('txid');
+            const urlStatus = urlParams.get('status');
 
+            if (transactionId || urlStatus === 'success') {
+                showToast('পেমেন্ট যাচাই করা হচ্ছে...', '⏳');
 
-    /*
-    =========================================================
-    SAVE DEPOSIT + UPDATE BALANCE
-    =========================================================
-    */
+                try {
+                    const res = await fetch('/api/payment?action=verify', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ transaction_id: transactionId })
+                    });
 
-    async function savePaymentAndUpdateBalance(
-        depositAmount,
-        txid,
-        fullData
-    ) {
+                    const data = await res.json();
+                    const apiStatus = data.status ? String(data.status).toUpperCase() : "";
 
-        if (!currentUser) return;
+                    if (apiStatus === "SUCCESS" || apiStatus === "COMPLETED" || data.payment_status === "COMPLETED" || data.success === true) {
+                        const paidUsd = parseFloat(data.amount || urlParams.get('amount') || 1);
+                        const gemsAwarded = Math.round(paidUsd * 5000);
 
-
-        const uid =
-            currentUser.uid;
-
-
-        /*
-        TXID না থাকলে duplicate protection
-        */
-
-        const safeTxid =
-            String(txid || "unknown")
-                .replace(/[.#$/[\]]/g, "_");
-
-
-        const txRef =
-            database.ref(
-                `users/${uid}/deposits/${safeTxid}`
-            );
-
-
-        const snapshot =
-            await txRef.once("value");
-
-
-        /*
-        Already processed হলে আবার balance add হবে না
-        */
-
-        if (snapshot.exists()) {
-
-            return;
-
-        }
-
-
-        await txRef.set({
-
-            txid: txid,
-
-            amount: depositAmount,
-
-            gateway: "Trybit",
-
-            details: fullData,
-
-            timestamp:
-                firebase.database.ServerValue.TIMESTAMP
-
-        });
-
-
-        /*
-        Firebase transaction ব্যবহার করা হয়েছে
-        যাতে simultaneous update হলেও
-        balance overwrite না হয়।
-        */
-
-        await database
-            .ref(`users/${uid}/balance`)
-            .transaction(
-                currentBalance => {
-
-                    return (
-                        parseFloat(
-                            currentBalance || 0
-                        ) +
-                        parseFloat(
-                            depositAmount
-                        )
-                    );
-
+                        saveDepositAndCreditUser(gemsAwarded, transactionId, paidUsd, data);
+                        window.history.replaceState({}, document.title, window.location.pathname);
+                    } else {
+                        showToast('পেমেন্ট ভেরিফিকেশন সফল হয়নি!', '❌');
+                    }
+                } catch (e) {
+                    showToast('ভেরিফিকেশন সম্পন্ন করা যায়নি!', '⚠️');
                 }
-            );
+            }
+        }
 
+        function saveDepositAndCreditUser(gems, txid, usdAmount, fullData) {
+            const safeTxId = txid || ('TX_' + Date.now());
+            const txRef = db.ref(`users/${activeUser.id}/deposits/${safeTxId}`);
 
-        await database
-            .ref(
-                `users/${uid}/notifications`
-            )
-            .push({
+            txRef.once('value', snapshot => {
+                if (!snapshot.exists()) {
+                    txRef.set({
+                        txid: safeTxId,
+                        amount: gems,
+                        usd: usdAmount,
+                        gateway: fullData.method || 'Online',
+                        timestamp: firebase.database.ServerValue.TIMESTAMP
+                    }).then(() => {
+                        db.ref(`users/${activeUser.id}/balance`).transaction(b => (b || 0) + gems);
 
-                message:
-                    `অভিনন্দন! আপনার একাউন্টে ${depositAmount} BDT সফলভাবে অ্যাড হয়েছে। (TXID: ${txid})`,
-
-                timestamp:
-                    firebase.database.ServerValue.TIMESTAMP,
-
-                read: false
-
-            });
-
-    }
-
-
-    /*
-    =========================================================
-    NOTIFICATIONS
-    =========================================================
-    */
-
-    function openNotifModal() {
-
-        document
-            .getElementById("notifModal")
-            .classList.add("show");
-
-
-        loadNotificationsList();
-
-    }
-
-
-    function closeNotifModal() {
-
-        document
-            .getElementById("notifModal")
-            .classList.remove("show");
-
-    }
-
-
-    function loadNotificationsList() {
-
-        if (!currentUser) return;
-
-
-        const uid =
-            currentUser.uid;
-
-
-        const listDiv =
-            document.getElementById(
-                "notifList"
-            );
-
-
-        listDiv.innerHTML =
-            `
-            <div style="
-                text-align:center;
-                padding:20px;
-                color:#64748b;
-            ">
-                <i class="fa-solid fa-spinner fa-spin"></i>
-                Loading...
-            </div>
-            `;
-
-
-        database
-            .ref(
-                `users/${uid}/notifications`
-            )
-            .orderByChild("timestamp")
-            .limitToLast(10)
-            .once("value", snapshot => {
-
-                listDiv.innerHTML = "";
-
-
-                if (snapshot.exists()) {
-
-                    const notifs = [];
-
-
-                    snapshot.forEach(child => {
-
-                        notifs.push({
-
-                            id: child.key,
-
-                            ...child.val()
-
+                        db.ref(`users/${activeUser.id}/notifications`).push({
+                            message: `অভিনন্দন! আপনার একাউন্টে +${gems.toLocaleString()} 🔶 জেমস জমা হয়েছে। (TX: ${safeTxId})`,
+                            timestamp: firebase.database.ServerValue.TIMESTAMP,
+                            read: false
                         });
 
+                        // Show Receipt
+                        document.getElementById('receipt-txid').textContent = safeTxId;
+                        document.getElementById('receipt-amount').textContent = `$${usdAmount}`;
+                        document.getElementById('receipt-gems').textContent = `${gems.toLocaleString()} 🔶`;
+                        navigateTo('payment-success-view');
                     });
-
-
-                    notifs.reverse();
-
-
-                    notifs.forEach(data => {
-
-                        const div =
-                            document.createElement(
-                                "div"
-                            );
-
-
-                        div.className =
-                            `notif-item ${
-                                !data.read
-                                    ? "unread"
-                                    : ""
-                            }`;
-
-
-                        const dateObj =
-                            new Date(
-                                data.timestamp
-                            );
-
-
-                        div.innerHTML =
-                            `
-                            ${escapeHtml(
-                                data.message || ""
-                            )}
-
-                            <span class="notif-time">
-                                ${dateObj.toLocaleDateString()}
-                                -
-                                ${dateObj.toLocaleTimeString()}
-                            </span>
-                            `;
-
-
-                        listDiv.appendChild(div);
-
-
-                        if (!data.read) {
-
-                            database
-                                .ref(
-                                    `users/${uid}/notifications/${data.id}`
-                                )
-                                .update({
-                                    read: true
-                                });
-
-                        }
-
-                    });
-
-                } else {
-
-                    listDiv.innerHTML =
-                        `
-                        <div style="
-                            text-align:center;
-                            color:#64748b;
-                            font-size:14px;
-                            margin-top:20px;
-                        ">
-                            কোনো নোটিফিকেশন নেই
-                        </div>
-                        `;
-
                 }
-
             });
-
-    }
-
-
-    /*
-    =========================================================
-    NOTIFICATION DOT
-    =========================================================
-    */
-
-    function listenForNotifications(uid) {
-
-        database
-            .ref(
-                `users/${uid}/notifications`
-            )
-            .orderByChild("read")
-            .equalTo(false)
-            .on("value", snapshot => {
-
-                const dot =
-                    document.querySelector(
-                        ".notif-dot"
-                    );
-
-
-                if (dot) {
-
-                    dot.style.display =
-                        snapshot.exists()
-                            ? "block"
-                            : "none";
-
-                }
-
-            });
-
-    }
-
-
-    /*
-    =========================================================
-    STEP CONTROL
-    =========================================================
-    */
-
-    function changeStep(stepId) {
-
-        document
-            .querySelectorAll(
-                ".step-container"
-            )
-            .forEach(page => {
-
-                page.classList.remove(
-                    "active"
-                );
-
-            });
-
-
-        const target =
-            document.getElementById(
-                `step-${stepId}`
-            );
-
-
-        if (target) {
-
-            target.classList.add(
-                "active"
-            );
-
         }
 
-    }
+        // ================= WITHDRAW SYSTEM =================
+        let currentWdMethod = 'bKash';
+        function openWithdrawModal(method) {
+            triggerHaptic('light');
+            currentWdMethod = method;
+            document.getElementById('withdraw-modal-title').textContent = `Withdraw via ${method}`;
+            document.getElementById('withdraw-modal').classList.remove('hidden');
+        }
+        function closeWithdrawModal() {
+            document.getElementById('withdraw-modal').classList.add('hidden');
+        }
 
+        function submitWithdrawal() {
+            const addr = document.getElementById('withdraw-address').value.trim();
+            const gems = parseFloat(document.getElementById('withdraw-gems-input').value);
 
-    /*
-    =========================================================
-    TOAST
-    =========================================================
-    */
+            if (!addr) return showToast("অ্যাকাউন্ট বা ওয়ালেট নম্বর দিন!", "⚠️");
+            if (gems < 10000) return showToast("মিনিমাম ক্যাশআউট ১০,০০০ 🔶", "⚠️");
+            if (gems > activeUser.balance) return showToast("পর্যাপ্ত ব্যালেন্স নেই!", "⚠️");
 
-    function showToastPopup(message) {
+            activeUser.balance -= gems;
+            db.ref(`users/${activeUser.id}/balance`).transaction(b => (b || 0) - gems);
+            
+            const wdPayload = {
+                uid: activeUser.id,
+                username: activeUser.username,
+                address: addr,
+                gems: gems,
+                method: currentWdMethod,
+                status: 'PENDING',
+                timestamp: firebase.database.ServerValue.TIMESTAMP
+            };
 
-        const toast =
-            document.getElementById(
-                "toastNotification"
-            );
+            db.ref(`users/${activeUser.id}/withdrawals`).push(wdPayload);
+            db.ref(`admin_withdrawals`).push(wdPayload);
 
-
-        if (!toast) return;
-
-
-        toast.textContent =
-            message;
-
-
-        toast.classList.add(
-            "show"
-        );
-
-
-        setTimeout(() => {
-
-            toast.classList.remove(
-                "show"
-            );
-
-        }, 3500);
-
-    }
-
-
-    /*
-    =========================================================
-    LOGOUT
-    =========================================================
-    */
-
-    function logoutUser() {
-
-        auth.signOut()
-            .then(() => {
-
-                showToastPopup(
-                    "লগআউট করা হয়েছে"
-                );
-
+            db.ref(`users/${activeUser.id}/notifications`).push({
+                message: `আপনার ${gems} 🔶 উইথড্র রিকোয়েস্ট সাবমিট হয়েছে। কিছুক্ষণের মধ্যে প্রসেস হবে।`,
+                timestamp: firebase.database.ServerValue.TIMESTAMP,
+                read: false
             });
 
-    }
+            closeWithdrawModal();
+            showToast("উইথড্র রিকোয়েস্ট পাঠানো হয়েছে!", "📤");
+            triggerHaptic('success');
+        }
 
+        // ================= NOTIFICATIONS =================
+        function openNotifModal() {
+            triggerHaptic('light');
+            document.getElementById('notifModal').classList.add('show');
+            loadNotificationList();
+        }
+        function closeNotifModal(e) {
+            document.getElementById('notifModal').classList.remove('show');
+        }
 
-    /*
-    =========================================================
-    FIREBASE ERROR TRANSLATION
-    =========================================================
-    */
+        function loadNotificationList() {
+            const listDiv = document.getElementById('notifList');
+            db.ref(`users/${activeUser.id}/notifications`).orderByChild('timestamp').limitToLast(12).once('value', snapshot => {
+                if (snapshot.exists()) {
+                    const notifs = [];
+                    snapshot.forEach(c => notifs.push({ id: c.key, ...c.val() }));
+                    notifs.reverse();
 
-    function getFirebaseErrorMessage(error) {
+                    listDiv.innerHTML = notifs.map(n => `
+                        <div class="p-3 rounded-2xl ${n.read ? 'bg-slate-100 text-slate-700' : 'bg-emerald-50 border border-emerald-200 text-emerald-950 font-bold'} text-xs space-y-1">
+                            <div>${n.message}</div>
+                            <div class="text-[10px] text-slate-400 font-mono">${new Date(n.timestamp).toLocaleString()}</div>
+                        </div>
+                    `).join('');
 
-        const code =
-            error && error.code
-                ? error.code
-                : "";
+                    notifs.forEach(n => {
+                        if (!n.read) db.ref(`users/${activeUser.id}/notifications/${n.id}`).update({ read: true });
+                    });
+                } else {
+                    listDiv.innerHTML = '<div class="text-center py-8 text-xs text-slate-400">কোনো নোটিফিকেশন নেই</div>';
+                }
+            });
+        }
 
+        function listenNotifications(uid) {
+            db.ref(`users/${uid}/notifications`).orderByChild('read').equalTo(false).on('value', snap => {
+                const hasUnread = snap.exists();
+                document.getElementById('notif-dot').classList.toggle('hidden', !hasUnread);
+                document.getElementById('notif-dot-solid').classList.toggle('hidden', !hasUnread);
+            });
+        }
 
-        const messages = {
+        // ================= PARTNERS / REFERRAL =================
+        function copyPartnerLink() {
+            const fullUrl = `${activeUser.referralBaseUrl}${activeUser.id}`;
+            navigator.clipboard.writeText(fullUrl).then(() => {
+                showToast("রেফারেল লিঙ্ক কপি হয়েছে!", "📋");
+                triggerHaptic('light');
+            });
+        }
 
-            "auth/email-already-in-use":
-                "এই ইমেইল দিয়ে ইতিমধ্যে একাউন্ট আছে।",
+        function shareDirectlyToTelegram() {
+            triggerHaptic('medium');
+            const fullUrl = `${activeUser.referralBaseUrl}${activeUser.id}`;
+            const text = encodeURIComponent("🌿 Join Easy Forest Mining and earn free crypto & gems daily!");
+            const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(fullUrl)}&text=${text}`;
+            if (window.Telegram?.WebApp?.openTelegramLink) window.Telegram.WebApp.openTelegramLink(shareUrl);
+            else window.open(shareUrl, '_blank');
+        }
 
-            "auth/invalid-email":
-                "সঠিক ইমেইল দিন।",
+        function claimPartnerBonus() {
+            if (activeUser.referralWallet <= 0) return showToast("কোনো পার্টনার বোনাস নেই!", "⚠️");
+            const claimed = activeUser.referralWallet;
+            activeUser.balance += claimed;
+            activeUser.referralWallet = 0;
 
-            "auth/weak-password":
-                "পাসওয়ার্ড আরও শক্তিশালী দিন।",
+            db.ref(`users/${activeUser.id}`).update({ balance: activeUser.balance, referralWallet: 0 });
+            document.getElementById('header-user-balance').textContent = activeUser.balance.toFixed(2);
+            document.getElementById('partner-claimable-bal').textContent = "0.00";
+            showToast(`Claimed +${claimed.toFixed(2)} 🔶!`, "🎁");
+            triggerHaptic('success');
+        }
 
-            "auth/user-not-found":
-                "এই ইমেইলে কোনো একাউন্ট পাওয়া যায়নি।",
+        // ================= NAVIGATION =================
+        function switchTab(tabId) {
+            triggerHaptic('light');
+            document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active'));
+            ['magician', 'deposit', 'withdraw', 'partners'].forEach(t => {
+                const btn = document.getElementById(`tab-${t}`);
+                if (btn) btn.className = (t === tabId) ? 'active-magic-tab py-2.5 rounded-2xl text-xs font-black tracking-wide text-center' : 'inactive-stone-tab py-2.5 rounded-2xl text-xs font-black tracking-wide text-center';
+            });
+            const target = document.getElementById(`${tabId}-view`);
+            if (target) target.classList.add('active');
+            if (tabId === 'deposit') closeDepositForm();
+        }
 
-            "auth/wrong-password":
-                "পাসওয়ার্ড সঠিক নয়।",
+        function navigateTo(viewId) {
+            triggerHaptic('light');
+            document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active'));
+            const target = document.getElementById(viewId);
+            if (target) target.classList.add('active');
+            ['magician', 'deposit', 'withdraw', 'partners'].forEach(t => {
+                const btn = document.getElementById(`tab-${t}`);
+                if (btn) btn.className = 'inactive-stone-tab py-2.5 rounded-2xl text-xs font-black tracking-wide text-center';
+            });
+        }
 
-            "auth/invalid-credential":
-                "ইমেইল অথবা পাসওয়ার্ড সঠিক নয়।"
+        function triggerHaptic(type) {
+            if (window.Telegram?.WebApp?.HapticFeedback) {
+                if (type === 'success') window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
+                else window.Telegram.WebApp.HapticFeedback.impactOccurred(type);
+            }
+        }
 
-        };
+        function showToast(msg, icon = '✨') {
+            const box = document.getElementById('toast-box');
+            document.getElementById('toast-msg').textContent = msg;
+            document.getElementById('toast-icon').textContent = icon;
+            box.style.opacity = '1';
+            setTimeout(() => { box.style.opacity = '0'; }, 2400);
+        }
 
+        // ================= INIT =================
+        window.addEventListener('DOMContentLoaded', () => {
+            if (window.Telegram?.WebApp) {
+                window.Telegram.WebApp.ready();
+                window.Telegram.WebApp.expand();
+                const tgUser = window.Telegram.WebApp.initDataUnsafe?.user;
+                if (tgUser) {
+                    activeUser.id = String(tgUser.id);
+                    activeUser.name = tgUser.first_name || activeUser.name;
+                    activeUser.username = tgUser.username ? `@${tgUser.username}` : activeUser.username;
+                    if (tgUser.photo_url) activeUser.photo = tgUser.photo_url;
+                }
+            }
 
-        return messages[code] ||
-            "অনুরোধটি সম্পন্ন করা যায়নি।";
+            document.getElementById('display-user-id').textContent = activeUser.id;
+            document.getElementById('ref-link-display').textContent = `${activeUser.referralBaseUrl}${activeUser.id}`;
+            document.getElementById('user-header-avatar').src = activeUser.photo;
+            document.getElementById('user-header-name').textContent = activeUser.name;
 
-    }
-
-
-    /*
-    =========================================================
-    BASIC HTML ESCAPE
-    =========================================================
-    */
-
-    function escapeHtml(value) {
-
-        return String(value)
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-
-    }
-
-</script>
-
-</div>
-
+            initFirebaseListeners();
+            renderAllComponents();
+            updateForestDurationDisplay();
+            checkReturnPaymentStatus();
+        });
+    </script>
 </body>
 </html>
