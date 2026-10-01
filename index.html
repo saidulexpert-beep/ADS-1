@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
-    <title>EASY FOREST - Magic Mining & Automated Payment</title>
+    <title>EASY FOREST - Magic Mining</title>
 
     <!-- Telegram WebApp SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -23,7 +23,6 @@
         :root {
             --brand-green: #10b981;
             --brand-gold: #f59e0b;
-            --dark-forest: #09140f;
         }
 
         html, body {
@@ -33,11 +32,13 @@
             -webkit-overflow-scrolling: touch;
             touch-action: pan-y;
             font-family: 'Plus Jakarta Sans', 'Hind Siliguri', sans-serif;
-            background: #0d1712 url('https://images.unsplash.com/photo-1543857778-c4a1a3e0b2eb?q=80&w=1000&auto=format&fit=crop') no-repeat center top fixed;
+            background: #0e1713 url('https://images.unsplash.com/photo-1543857778-c4a1a3e0b2eb?q=80&w=1000&auto=format&fit=crop') no-repeat center top fixed;
             background-size: cover;
             color: #1e293b;
             user-select: none;
             -webkit-user-select: none;
+            margin: 0;
+            padding: 0;
         }
 
         input, select, textarea, button {
@@ -47,7 +48,7 @@
         }
 
         .ambient-overlay {
-            background: linear-gradient(180deg, rgba(9, 20, 15, 0.90) 0%, rgba(11, 23, 17, 0.95) 40%, rgba(5, 10, 8, 0.98) 100%);
+            background: linear-gradient(180deg, rgba(10, 22, 16, 0.90) 0%, rgba(12, 24, 18, 0.95) 45%, rgba(6, 12, 9, 0.98) 100%);
             min-height: 100vh;
         }
 
@@ -106,7 +107,7 @@
             box-shadow: 0 0 10px rgba(245, 158, 11, 0.8), inset 0 2px 4px rgba(0,0,0,0.3);
         }
 
-        /* SCREENSHOT HERO MARBLE CARDS */
+        /* SCREENSHOT HERO CARDS */
         .screenshot-marble-card {
             background: linear-gradient(180deg, #ffffff 0%, #edf2f8 65%, #dce4ef 100%);
             border: 2px solid #ffffff;
@@ -151,6 +152,13 @@
             align-items: center;
             justify-content: center;
             gap: 6px;
+        }
+
+        .table-header-pill {
+            background: linear-gradient(180deg, #d3ded4 0%, #bdccbe 100%);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            color: #273729;
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.85);
         }
 
         .silhouetted-character {
@@ -255,11 +263,11 @@
         </div>
     </div>
 
-    <!-- ================= MAIN WRAPPER ================= -->
+    <!-- ================= MAIN APP AMBIENT WRAPPER ================= -->
     <div class="ambient-overlay px-3.5 pt-3 pb-24 flex flex-col gap-3.5">
 
         <!-- ================= TOP HEADER ================= -->
-        <div class="flex items-center justify-between gap-2.5">
+        <div class="flex items-center justify-between gap-2">
             <!-- Balance Pill -->
             <div class="stone-card px-4 py-2 flex items-center gap-2.5 rounded-full flex-1">
                 <div class="flex flex-col">
@@ -271,7 +279,7 @@
                 </div>
             </div>
 
-            <!-- Notification Bell with Active Pulse Badge -->
+            <!-- Notification Bell -->
             <div onclick="openNotifModal()" class="relative w-11 h-11 rounded-2xl stone-btn flex items-center justify-center text-slate-700 cursor-pointer shadow">
                 <i class="fa-regular fa-bell text-lg"></i>
                 <span id="notif-dot" class="hidden absolute top-2 right-2 w-2.5 h-2.5 bg-rose-500 rounded-full border border-white animate-ping"></span>
@@ -283,7 +291,7 @@
                 <div class="w-8 h-8 rounded-full overflow-hidden border border-white bg-slate-900 shadow-sm">
                     <img id="user-header-avatar" src="https://i.postimg.cc/CMj5tPpH/file-000000004dc082119a469192b761c18a.png" class="w-full h-full object-cover" alt="User">
                 </div>
-                <span id="user-header-name" class="text-xs font-black text-slate-800 max-w-[70px] truncate">User</span>
+                <span id="user-header-name" class="text-xs font-black text-slate-800 max-w-[65px] truncate">SAIDUL</span>
             </div>
         </div>
 
@@ -410,10 +418,10 @@
         </div>
 
         <!-- ============================================================== -->
-        <!-- 2. DEPOSIT VIEW (PROFESSIONAL GATEWAY INTEGRATION)             -->
+        <!-- 2. DEPOSIT VIEW ($1 = 125 BDT AUTO CONVERT GATEWAY)            -->
         <!-- ============================================================== -->
         <div id="deposit-view" class="app-view space-y-3.5">
-            <!-- Method Selection List -->
+            <!-- Method List -->
             <div id="deposit-method-list" class="space-y-3">
                 <div onclick="openDepositForm('bKash', 1)" class="stone-card p-4 rounded-3xl flex items-center gap-3.5 cursor-pointer active:scale-[0.99] transition">
                     <div class="w-14 h-14 rounded-2xl bg-pink-500/10 border-2 border-pink-400 p-2 flex items-center justify-center flex-shrink-0 shadow-inner">
@@ -424,8 +432,8 @@
                             <h4 class="text-base font-black text-slate-900 leading-tight">bKash (Instant)</h4>
                             <span class="text-[10px] font-black bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">AUTO</span>
                         </div>
-                        <p class="text-xs font-bold text-slate-600 mt-0.5">বিকাশ গেটওয়ে • ১ ডলার = ৫,০০০ 🔶</p>
-                        <div class="text-xs font-bold text-slate-700 mt-1 font-mono">Min: $1.00 (~120 BDT)</div>
+                        <p class="text-xs font-bold text-slate-600 mt-0.5">$1.00 = 125 BDT = 5,000 🔶</p>
+                        <div class="text-xs font-bold text-slate-700 mt-1 font-mono">Gateway Amount: 125 BDT</div>
                     </div>
                 </div>
 
@@ -438,7 +446,7 @@
                             <h4 class="text-base font-black text-slate-900 leading-tight">Tether USDT</h4>
                             <span class="text-[10px] font-black bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">TRC20</span>
                         </div>
-                        <p class="text-xs font-bold text-slate-600 mt-0.5">১ ডলার = ৫,০০০ 🔶 জেমস</p>
+                        <p class="text-xs font-bold text-slate-600 mt-0.5">$1.00 = 5,000 🔶 জেমস</p>
                         <div class="text-xs font-bold text-slate-700 mt-1 font-mono">Min: $1.00 USDT</div>
                     </div>
                 </div>
@@ -491,12 +499,19 @@
                     <button onclick="setDepositAmount(25)" class="stone-btn py-1.5 rounded-xl text-xs font-black text-slate-800">$25</button>
                 </div>
 
-                <div class="p-3 bg-emerald-50 rounded-2xl border border-emerald-200 flex items-center justify-between text-xs font-black text-slate-800 font-mono">
-                    <span class="text-slate-600">আপনি পাবেন:</span>
-                    <span class="text-emerald-700 flex items-center gap-1 text-sm">
-                        <span>🔶</span>
-                        <b id="deposit-gem-preview">5,000</b> জেমস
-                    </span>
+                <!-- BDT and Gems Preview -->
+                <div class="p-3 bg-emerald-50 rounded-2xl border border-emerald-200 space-y-1.5 text-xs font-black text-slate-800 font-mono">
+                    <div class="flex items-center justify-between">
+                        <span class="text-slate-600">গেটওয়েতে পরিশোধ করবেন:</span>
+                        <span class="text-pink-600 font-bold text-sm" id="deposit-bdt-preview">125 BDT</span>
+                    </div>
+                    <div class="flex items-center justify-between border-t border-emerald-200/60 pt-1.5">
+                        <span class="text-slate-600">আপনি জেমস পাবেন:</span>
+                        <span class="text-emerald-700 flex items-center gap-1 text-sm">
+                            <span>🔶</span>
+                            <b id="deposit-gem-preview">5,000</b> জেমস
+                        </span>
+                    </div>
                 </div>
 
                 <button onclick="proceedToPaymentGateway()" id="btn-top-up" class="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-sm shadow-xl active:scale-[0.98] transition flex items-center justify-center gap-2">
@@ -520,106 +535,133 @@
         </div>
 
         <!-- ============================================================== -->
-        <!-- 3. WITHDRAW VIEW                                               -->
+        <!-- 3. WITHDRAW VIEW (MODERN, CLEAN & SECURE)                      -->
         <!-- ============================================================== -->
         <div id="withdraw-view" class="app-view space-y-3.5">
             <div class="space-y-3">
-                <div onclick="openWithdrawModal('bKash Personal')" class="stone-card p-4 rounded-3xl flex items-center gap-3.5 cursor-pointer active:scale-[0.99] transition">
-                    <div class="w-14 h-14 rounded-2xl bg-pink-500/10 border-2 border-pink-400 p-2 flex items-center justify-center flex-shrink-0">
+                <!-- bKash Withdraw -->
+                <div onclick="openWithdrawModal('bKash Personal', '01XXXXXXXXX', 10000, 120)" class="stone-card p-4 rounded-3xl flex items-center gap-3.5 cursor-pointer active:scale-[0.99] transition">
+                    <div class="w-14 h-14 rounded-2xl bg-pink-500/10 border-2 border-pink-400 p-2 flex items-center justify-center flex-shrink-0 shadow-inner">
                         <span class="text-pink-600 font-black text-xl">bK</span>
                     </div>
                     <div class="flex-1">
-                        <h4 class="text-base font-black text-slate-900 leading-tight">bKash Personal</h4>
-                        <div class="flex items-center gap-1 text-xs font-bold text-slate-600 mt-0.5">
-                            <span>Minimum:</span><span class="text-[10px]">🔶</span><span class="font-black text-slate-900 font-mono">10 000 ($1.00)</span>
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-base font-black text-slate-900 leading-tight">bKash Personal</h4>
+                            <span class="text-[10px] font-black bg-pink-100 text-pink-700 px-2 py-0.5 rounded-full font-mono">BDT</span>
+                        </div>
+                        <div class="flex items-center gap-1 text-xs font-bold text-slate-600 mt-1">
+                            <span>Minimum:</span><span class="text-[10px]">🔶</span><span class="font-black text-slate-900 font-mono">10,000 (120 BDT)</span>
                         </div>
                         <p class="text-[11px] text-slate-500 font-mono mt-0.5">Rate: 10,000 🔶 = 120 BDT</p>
                     </div>
                 </div>
 
-                <div onclick="openWithdrawModal('USDT (TRC20)') class="stone-card p-4 rounded-3xl flex items-center gap-3.5 cursor-pointer active:scale-[0.99] transition">
-                    <div class="w-14 h-14 rounded-2xl bg-teal-500/10 border-2 border-teal-400 p-2.5 flex items-center justify-center flex-shrink-0">
+                <!-- Nagad Withdraw -->
+                <div onclick="openWithdrawModal('Nagad Personal', '01XXXXXXXXX', 10000, 120)" class="stone-card p-4 rounded-3xl flex items-center gap-3.5 cursor-pointer active:scale-[0.99] transition">
+                    <div class="w-14 h-14 rounded-2xl bg-orange-500/10 border-2 border-orange-400 p-2 flex items-center justify-center flex-shrink-0 shadow-inner">
+                        <span class="text-orange-600 font-black text-xl">নগদ</span>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-base font-black text-slate-900 leading-tight">Nagad Personal</h4>
+                            <span class="text-[10px] font-black bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full font-mono">BDT</span>
+                        </div>
+                        <div class="flex items-center gap-1 text-xs font-bold text-slate-600 mt-1">
+                            <span>Minimum:</span><span class="text-[10px]">🔶</span><span class="font-black text-slate-900 font-mono">10,000 (120 BDT)</span>
+                        </div>
+                        <p class="text-[11px] text-slate-500 font-mono mt-0.5">Rate: 10,000 🔶 = 120 BDT</p>
+                    </div>
+                </div>
+
+                <!-- USDT Withdraw -->
+                <div onclick="openWithdrawModal('USDT (TRC20)', 'TRC20 Wallet Address', 10000, 1)" class="stone-card p-4 rounded-3xl flex items-center gap-3.5 cursor-pointer active:scale-[0.99] transition">
+                    <div class="w-14 h-14 rounded-2xl bg-teal-500/10 border-2 border-teal-400 p-2.5 flex items-center justify-center flex-shrink-0 shadow-inner">
                         <img src="https://cdn-icons-png.flaticon.com/512/825/825488.png" class="w-full h-full object-contain" alt="USDT">
                     </div>
                     <div class="flex-1">
-                        <h4 class="text-base font-black text-slate-900 leading-tight">USDT (TRC20)</h4>
-                        <div class="flex items-center gap-1 text-xs font-bold text-slate-600 mt-0.5">
-                            <span>Minimum:</span><span class="text-[10px]">🔶</span><span class="font-black text-slate-900 font-mono">10 000 ($1.00)</span>
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-base font-black text-slate-900 leading-tight">USDT (TRC20)</h4>
+                            <span class="text-[10px] font-black bg-teal-100 text-teal-700 px-2 py-0.5 rounded-full font-mono">CRYPTO</span>
                         </div>
-                        <p class="text-[11px] text-slate-500 font-mono mt-0.5">Rate: 10,000 🔶 = $1.00</p>
+                        <div class="flex items-center gap-1 text-xs font-bold text-slate-600 mt-1">
+                            <span>Minimum:</span><span class="text-[10px]">🔶</span><span class="font-black text-slate-900 font-mono">10,000 ($1.00)</span>
+                        </div>
+                        <p class="text-[11px] text-slate-500 font-mono mt-0.5">Rate: 10,000 🔶 = $1.00 USDT</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Withdraw History -->
+            <!-- Withdraw History Table -->
             <div class="stone-card rounded-3xl overflow-hidden shadow">
-                <div class="bg-slate-200/70 grid grid-cols-4 px-3 py-2.5 text-[11px] font-black text-slate-700 text-center">
-                    <span>Date</span>
-                    <span>Method</span>
-                    <span>Sum</span>
-                    <span>Status</span>
+                <div class="table-header-pill grid grid-cols-4 px-3 py-2.5 text-[11px] font-black text-center">
+                    <span class="underline underline-offset-2">Date</span>
+                    <span class="underline underline-offset-2">Method</span>
+                    <span class="underline underline-offset-2">Sum</span>
+                    <span class="underline underline-offset-2">Status</span>
                 </div>
-                <div id="withdraw-tx-list" class="divide-y divide-slate-200 text-xs font-black text-slate-800 text-center font-mono">
-                    <div class="p-6 text-center text-xs text-slate-400">কোনো উইথড্র রেকর্ড নেই</div>
+                <div id="withdraw-tx-list" class="divide-y divide-slate-300 text-xs font-black text-slate-800 text-center font-mono">
+                    <div class="p-6 text-center text-xs text-slate-400">Nothing here yet.</div>
                 </div>
             </div>
         </div>
 
         <!-- ============================================================== -->
-        <!-- 4. PARTNERS VIEW                                               -->
+        <!-- 4. PARTNERS VIEW (EXACT ORIGINAL DESIGN & REALTIME FIREBASE)   -->
         <!-- ============================================================== -->
         <div id="partners-view" class="app-view space-y-3.5">
-            <div class="stone-card p-4 rounded-3xl flex items-center justify-between">
-                <div>
-                    <span class="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block">Claimable Bonus</span>
-                    <div class="flex items-center gap-1.5 mt-0.5">
-                        <span class="text-xl gem-glow">🔶</span>
-                        <span class="text-2xl font-black text-slate-900 font-mono" id="partner-claimable-bal">0.00</span>
-                    </div>
+            <!-- Top Claim Card -->
+            <div class="stone-card p-3 rounded-3xl flex items-center justify-between">
+                <div class="flex items-center gap-2 pl-2">
+                    <span class="text-2xl gem-glow">🔶</span>
+                    <span class="text-2xl font-black text-slate-900 font-mono" id="partner-claimable-bal">0.00</span>
                 </div>
-                <button onclick="claimPartnerBonus()" class="stone-btn px-6 py-2.5 rounded-2xl text-xs font-black text-slate-800 tracking-wider">
+                <button onclick="claimPartnerBonus()" id="btn-claim-partner" class="stone-btn px-6 py-2.5 rounded-2xl text-xs font-black text-slate-800 tracking-wider">
                     Collect
                 </button>
             </div>
 
-            <div class="stone-card p-3 rounded-2xl flex flex-col gap-2.5">
-                <div class="flex items-center justify-between gap-2 bg-white/70 p-2 rounded-xl border border-slate-200">
+            <!-- Link Box & Telegram Share -->
+            <div class="stone-card p-2.5 rounded-2xl flex flex-col gap-2">
+                <div class="flex items-center justify-between gap-2 bg-white/60 p-2 rounded-xl">
                     <div class="flex items-center gap-2 overflow-hidden flex-1">
-                        <i class="fas fa-link text-slate-500 text-xs"></i>
-                        <span class="text-xs font-mono font-bold text-slate-800 truncate select-all" id="ref-link-display">https://t.me/EXPERTearn_team?startapp=</span>
+                        <i class="fas fa-link text-slate-600 text-xs"></i>
+                        <span class="text-[11px] font-mono font-bold text-slate-800 truncate select-all" id="ref-link-display">https://t.me/EXPERTearn_team?startapp=</span>
                     </div>
-                    <button onclick="copyPartnerLink()" class="stone-btn px-3 py-1.5 rounded-xl text-xs font-black text-slate-800">
+                    <button onclick="copyPartnerLink()" class="stone-btn px-3 py-1.5 rounded-xl text-xs font-black text-slate-800 flex-shrink-0">
                         Copy
                     </button>
                 </div>
-                <button onclick="shareDirectlyToTelegram()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black py-3 rounded-xl text-xs flex items-center justify-center gap-2 shadow active:scale-95 transition">
+                <button onclick="shareDirectlyToTelegram()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow active:scale-95 transition">
                     <i class="fab fa-telegram-plane text-sm"></i>
-                    <span>টেলিগ্রামে বন্ধুদের ইনভাইট করুন</span>
+                    <span>Invite Friends via Telegram</span>
                 </button>
             </div>
 
+            <!-- 2x2 Stats -->
             <div class="grid grid-cols-2 gap-2 text-center">
-                <div class="stone-card p-3 rounded-2xl">
-                    <div class="text-[10px] font-extrabold text-slate-500 uppercase">Partners</div>
-                    <div class="text-lg font-black text-slate-900 font-mono mt-0.5" id="stat-partners-count">0</div>
+                <div class="space-y-1">
+                    <div class="stone-card py-1.5 rounded-xl text-xs font-black text-slate-800">Partners</div>
+                    <div class="stone-card py-2 rounded-xl text-lg font-black text-slate-900 font-mono" id="stat-partners-count">0</div>
                 </div>
-                <div class="stone-card p-3 rounded-2xl">
-                    <div class="text-[10px] font-extrabold text-slate-500 uppercase">Total Income</div>
-                    <div class="text-lg font-black text-slate-900 font-mono mt-0.5 flex items-center justify-center gap-1">
-                        <span>🔶</span><span id="stat-partner-income">0.00</span>
+                <div class="space-y-1">
+                    <div class="stone-card py-1.5 rounded-xl text-xs font-black text-slate-800">Total income</div>
+                    <div class="stone-card py-2 rounded-xl text-lg font-black text-slate-900 flex items-center justify-center gap-1.5 font-mono">
+                        <span class="text-sm">🔶</span>
+                        <span id="stat-partner-income">0.00</span>
                     </div>
                 </div>
             </div>
 
+            <!-- Partner Referral History Table -->
             <div class="stone-card rounded-3xl overflow-hidden shadow">
-                <div class="bg-slate-200/70 grid grid-cols-4 px-3 py-2 text-[11px] font-black text-slate-700 text-center">
-                    <span>Date</span>
-                    <span>User</span>
-                    <span>Deposit</span>
-                    <span>Bonus</span>
+                <div class="table-header-pill grid grid-cols-4 px-3 py-2 text-xs font-black text-center">
+                    <span class="underline underline-offset-2">Date</span>
+                    <span class="underline underline-offset-2">User</span>
+                    <span class="underline underline-offset-2">Deposit</span>
+                    <span class="underline underline-offset-2">Income</span>
                 </div>
-                <div id="partner-tx-list" class="divide-y divide-slate-200 text-xs font-black text-slate-800 text-center font-mono">
-                    <div class="p-6 text-center text-xs text-slate-400">আপনার রেফারে এখনো কেউ যুক্ত হয়নি</div>
+                <div id="partner-tx-list" class="divide-y divide-slate-300 text-xs font-black text-slate-800 text-center font-mono">
+                    <div class="p-6 text-center text-xs text-slate-500">আপনার রেফার লিংকে এখনো কেউ যোগ দেয়নি।</div>
                 </div>
             </div>
         </div>
@@ -687,7 +729,7 @@
                     </div>
                     <div class="flex justify-between">
                         <span class="text-slate-500">Amount Paid:</span>
-                        <span id="receipt-amount" class="font-black text-slate-900">$1.00</span>
+                        <span id="receipt-amount" class="font-black text-slate-900">125 BDT</span>
                     </div>
                     <div class="flex justify-between">
                         <span class="text-slate-500">Credited Gems:</span>
@@ -703,7 +745,7 @@
 
     </div>
 
-    <!-- WITHDRAW MODAL -->
+    <!-- ================= WITHDRAW MODAL ================= -->
     <div id="withdraw-modal" class="hidden fixed inset-0 z-[1000] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="stone-card w-full max-w-xs p-5 rounded-3xl space-y-3.5">
             <div class="flex items-center justify-between border-b border-slate-200 pb-2">
@@ -711,16 +753,30 @@
                 <button onclick="closeWithdrawModal()" class="text-slate-400 hover:text-slate-800 text-sm"><i class="fas fa-times"></i></button>
             </div>
             <div>
-                <label class="text-xs font-black text-slate-700 block mb-1">একাউন্ট / ওয়ালেট অ্যাড্রেস:</label>
-                <input id="withdraw-address" type="text" placeholder="01XXXXXXXXX or USDT Address" class="w-full p-3 rounded-xl bg-white border border-slate-300 text-xs font-mono outline-none">
+                <label class="text-xs font-black text-slate-700 block mb-1" id="lbl-withdraw-addr">একাউন্ট / ওয়ালেট নম্বর:</label>
+                <input id="withdraw-address" type="text" placeholder="01XXXXXXXXX" class="w-full p-3 rounded-xl bg-white border border-slate-300 text-xs font-mono outline-none">
             </div>
             <div>
                 <label class="text-xs font-black text-slate-700 block mb-1">পরিমাণ (জেমস):</label>
-                <input id="withdraw-gems-input" type="number" value="10000" min="10000" step="1000" class="w-full p-3 rounded-xl bg-white border border-slate-300 text-sm font-black font-mono outline-none">
-                <span class="text-[10px] text-slate-500 font-bold mt-1 block font-mono">মিনিমাম: ১০,০০০ 🔶 ($১.০০)</span>
+                <input id="withdraw-gems-input" type="number" value="10000" min="10000" step="1000" oninput="calculateWithdrawOutput(this.value)" class="w-full p-3 rounded-xl bg-white border border-slate-300 text-sm font-black font-mono outline-none">
+                
+                <!-- Quick Chips -->
+                <div class="grid grid-cols-4 gap-1.5 mt-2">
+                    <button onclick="setWithdrawGems(10000)" class="stone-btn py-1 rounded-lg text-[10px] font-black">10K</button>
+                    <button onclick="setWithdrawGems(25000)" class="stone-btn py-1 rounded-lg text-[10px] font-black">25K</button>
+                    <button onclick="setWithdrawGems(50000)" class="stone-btn py-1 rounded-lg text-[10px] font-black">50K</button>
+                    <button onclick="setWithdrawGems(100000)" class="stone-btn py-1 rounded-lg text-[10px] font-black">100K</button>
+                </div>
             </div>
-            <button onclick="submitWithdrawal()" class="w-full py-3 rounded-xl bg-slate-900 text-white font-black text-xs active:scale-95 transition">
-                Confirm Cashout
+
+            <div class="p-2.5 bg-slate-100 rounded-xl border border-slate-200 text-xs flex justify-between font-mono font-bold">
+                <span class="text-slate-500">আপনি পাবেন:</span>
+                <span class="text-emerald-700" id="withdraw-receive-preview">120 BDT</span>
+            </div>
+
+            <button onclick="submitWithdrawal()" id="btn-confirm-cashout" class="w-full py-3 rounded-xl bg-slate-900 text-white font-black text-xs active:scale-95 transition flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-paper-plane text-xs"></i>
+                <span>Confirm Cashout</span>
             </button>
         </div>
     </div>
@@ -740,7 +796,7 @@
         document.addEventListener('gesturechange', (e) => e.preventDefault());
         document.addEventListener('gestureend', (e) => e.preventDefault());
 
-        // PRELOADER TIMER
+        // PRELOADER
         let loadProgress = 10;
         const loadBar = document.getElementById("loading-progress");
         const loadPercent = document.getElementById("loading-percent");
@@ -774,10 +830,18 @@
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
+        // APP SETTINGS (CAN BE OVERRIDDEN DIRECTLY FROM FIREBASE settings/)
+        let appSettings = {
+            usd_to_bdt: 125,          // $1 = 125 BDT for gateway
+            usd_to_gems: 5000,        // $1 = 5000 🔶
+            withdraw_gem_rate: 10000, // 10000 🔶 = 120 BDT
+            withdraw_bdt_rate: 120
+        };
+
         let activeUser = {
             id: "6954647230",
-            name: "Player",
-            username: "@player",
+            name: "SAIDUL",
+            username: "@saidul_gamer",
             photo: "https://i.postimg.cc/CMj5tPpH/file-000000004dc082119a469192b761c18a.png",
             balance: 0.00,
             uncollected: 0.00,
@@ -786,7 +850,7 @@
             referralBaseUrl: "https://t.me/EXPERTearn_team?startapp="
         };
 
-        // 12 HEROES LIST
+        // DEFAULT 12 HEROES (CAN BE EXTENDED / OVERRIDDEN FROM FIREBASE settings/heroes)
         const defaultHeroes = [
             { id: 1, name: "Paladin Knight", badgeIcon: "⚔️", count: 1, unlocked: true, cost: 50, pct: 15, bonus: 10, subText: "", img: "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=400&auto=format&fit=crop&q=80" },
             { id: 2, name: "Master Blacksmith", badgeIcon: "⚙️", count: 1, unlocked: true, cost: 75, pct: 10, bonus: 15, subText: "(Building Boost)", img: "https://images.unsplash.com/photo-1589254065878-42c9da997008?w=400&auto=format&fit=crop&q=80" },
@@ -811,8 +875,20 @@
             return total || 25;
         }
 
-        // ================= FIREBASE SYNC =================
+        // ================= FIREBASE SYNC & DYNAMIC SETTINGS =================
         function initFirebaseListeners() {
+            // 1. Settings listener (Admin changes rate/heroes in Firebase)
+            db.ref('settings').on('value', snap => {
+                if (snap.exists()) {
+                    const data = snap.val();
+                    if (data.usd_to_bdt) appSettings.usd_to_bdt = parseFloat(data.usd_to_bdt);
+                    if (data.usd_to_gems) appSettings.usd_to_gems = parseFloat(data.usd_to_gems);
+                    if (data.withdraw_bdt_rate) appSettings.withdraw_bdt_rate = parseFloat(data.withdraw_bdt_rate);
+                    calculateDepositGems(document.getElementById('deposit-usd-input').value || 1);
+                }
+            });
+
+            // 2. User data listeners
             const userRef = db.ref(`users/${activeUser.id}`);
 
             userRef.child('balance').on('value', snap => {
@@ -832,13 +908,13 @@
                 document.getElementById('partner-claimable-bal').textContent = activeUser.referralWallet.toFixed(2);
             });
 
-            // Sync Heroes from cloud
+            // Sync User Heroes from Firebase
             userRef.child('heroes').on('value', snap => {
                 if (snap.exists()) {
                     const cloudHeroes = snap.val();
                     magicians.forEach(m => {
                         if (cloudHeroes[m.id]) {
-                            m.count = cloudHeroes[m.id].count || m.count;
+                            m.count = cloudHeroes[m.id].count ?? m.count;
                             m.unlocked = cloudHeroes[m.id].unlocked ?? m.unlocked;
                         }
                     });
@@ -846,7 +922,27 @@
                 renderAllComponents();
             });
 
-            // Sync Deposits
+            // 3. Referrals list (Exactly as original file)
+            userRef.child('referrals').on('value', snap => {
+                const listContainer = document.getElementById('partner-tx-list');
+                if (snap.exists()) {
+                    const refs = Object.values(snap.val());
+                    document.getElementById('stat-partners-count').textContent = refs.length;
+                    let incomeTotal = 0;
+                    refs.forEach(r => { if (r.commission) incomeTotal += parseFloat(r.commission); });
+                    document.getElementById('stat-partner-income').textContent = incomeTotal.toFixed(2);
+                    listContainer.innerHTML = refs.map(r => `
+                        <div class="grid grid-cols-4 px-3 py-2.5 items-center">
+                            <span class="text-slate-600">${r.date || 'Today'}</span>
+                            <span class="truncate">${r.name || ('UID:' + r.uid)}</span>
+                            <span>${r.deposit ? '$' + r.deposit : '—'}</span>
+                            <span class="text-emerald-700">+${r.commission || 0}</span>
+                        </div>
+                    `).join('');
+                }
+            });
+
+            // 4. Deposit history
             userRef.child('deposits').orderByChild('timestamp').limitToLast(10).on('value', snap => {
                 const box = document.getElementById('deposit-tx-list');
                 if (snap.exists()) {
@@ -864,8 +960,8 @@
                 }
             });
 
-            // Sync Withdrawals
-            db.ref(`users/${activeUser.id}/withdrawals`).orderByChild('timestamp').limitToLast(10).on('value', snap => {
+            // 5. Withdrawal history
+            userRef.child('withdrawals').orderByChild('timestamp').limitToLast(10).on('value', snap => {
                 const box = document.getElementById('withdraw-tx-list');
                 if (snap.exists()) {
                     const wds = [];
@@ -876,7 +972,7 @@
                             <span>${w.timestamp ? new Date(w.timestamp).toLocaleDateString() : 'Today'}</span>
                             <span>${w.method}</span>
                             <span>${w.gems} 🔶</span>
-                            <span class="${w.status === 'PAID' ? 'text-emerald-600' : 'text-amber-600'}">${w.status}</span>
+                            <span class="${w.status === 'PAID' ? 'text-emerald-600' : 'text-amber-600'} font-bold">${w.status}</span>
                         </div>
                     `).join('');
                 }
@@ -1063,7 +1159,7 @@
             triggerHaptic('medium');
         }
 
-        // ================= AUTOMATED PAYMENT GATEWAY =================
+        // ================= AUTOMATED GATEWAY ($1 = 125 BDT) =================
         let selectedDepMethod = 'bKash';
 
         function openDepositForm(methodName, defaultUsd) {
@@ -1090,15 +1186,22 @@
 
         function calculateDepositGems(usdValue) {
             const val = parseFloat(usdValue) || 0;
-            const gems = Math.round(val * 5000);
+            const bdtAmount = Math.round(val * appSettings.usd_to_bdt);
+            const gems = Math.round(val * appSettings.usd_to_gems);
+
+            document.getElementById('deposit-bdt-preview').textContent = `${bdtAmount} BDT`;
             document.getElementById('deposit-gem-preview').textContent = gems.toLocaleString();
         }
 
-        // Call Vercel Serverless Gateway to create payment
+        // Proceed to Gateway ($1 takes 125 BDT to gateway)
         async function proceedToPaymentGateway() {
             triggerHaptic('medium');
-            const amountUsd = document.getElementById('deposit-usd-input').value.trim();
-            if (!amountUsd || parseFloat(amountUsd) <= 0) return showToast("সঠিক এমাউন্ট লিখুন!", "⚠️");
+            const amountUsd = parseFloat(document.getElementById('deposit-usd-input').value.trim()) || 0;
+            if (amountUsd <= 0) return showToast("সঠিক এমাউন্ট লিখুন!", "⚠️");
+
+            const isBkash = selectedDepMethod.includes('bKash');
+            // If bKash, multiply by 125 ($1 = 125 BDT)
+            const finalGatewayAmount = isBkash ? String(Math.round(amountUsd * appSettings.usd_to_bdt)) : String(amountUsd);
 
             const btn = document.getElementById('btn-top-up');
             const originalHTML = btn.innerHTML;
@@ -1107,15 +1210,16 @@
 
             const returnUrl = window.location.href.split('?')[0];
             const payload = {
-                amount: String(amountUsd),
-                currency: selectedDepMethod.includes('bKash') ? 'BDT' : 'USD',
+                amount: finalGatewayAmount,
+                currency: isBkash ? 'BDT' : 'USD',
                 method: selectedDepMethod,
                 success_url: returnUrl + "?status=success",
                 cancel_url: returnUrl + "?status=cancel",
                 metadata: {
                     uid: activeUser.id,
                     username: activeUser.username,
-                    gateway: selectedDepMethod
+                    gateway: selectedDepMethod,
+                    usd: amountUsd
                 }
             };
 
@@ -1142,7 +1246,7 @@
             }
         }
 
-        // Check Payment Status when redirected back
+        // Payment status return verifier
         async function checkReturnPaymentStatus() {
             const urlParams = new URLSearchParams(window.location.search);
             const transactionId = urlParams.get('transactionId') || urlParams.get('transaction_id') || urlParams.get('txid');
@@ -1162,10 +1266,12 @@
                     const apiStatus = data.status ? String(data.status).toUpperCase() : "";
 
                     if (apiStatus === "SUCCESS" || apiStatus === "COMPLETED" || data.payment_status === "COMPLETED" || data.success === true) {
-                        const paidUsd = parseFloat(data.amount || urlParams.get('amount') || 1);
-                        const gemsAwarded = Math.round(paidUsd * 5000);
+                        const paidAmount = parseFloat(data.amount || urlParams.get('amount') || 125);
+                        // Calculate gems: if BDT, divide by 125 * 5000; else USD * 5000
+                        const isBdt = paidAmount >= 50; 
+                        const gemsAwarded = isBdt ? Math.round((paidAmount / appSettings.usd_to_bdt) * appSettings.usd_to_gems) : Math.round(paidAmount * appSettings.usd_to_gems);
 
-                        saveDepositAndCreditUser(gemsAwarded, transactionId, paidUsd, data);
+                        saveDepositAndCreditUser(gemsAwarded, transactionId, paidAmount, data);
                         window.history.replaceState({}, document.title, window.location.pathname);
                     } else {
                         showToast('পেমেন্ট ভেরিফিকেশন সফল হয়নি!', '❌');
@@ -1176,7 +1282,7 @@
             }
         }
 
-        function saveDepositAndCreditUser(gems, txid, usdAmount, fullData) {
+        function saveDepositAndCreditUser(gems, txid, paidAmount, fullData) {
             const safeTxId = txid || ('TX_' + Date.now());
             const txRef = db.ref(`users/${activeUser.id}/deposits/${safeTxId}`);
 
@@ -1185,7 +1291,7 @@
                     txRef.set({
                         txid: safeTxId,
                         amount: gems,
-                        usd: usdAmount,
+                        paidAmount: paidAmount,
                         gateway: fullData.method || 'Online',
                         timestamp: firebase.database.ServerValue.TIMESTAMP
                     }).then(() => {
@@ -1197,9 +1303,8 @@
                             read: false
                         });
 
-                        // Show Receipt
                         document.getElementById('receipt-txid').textContent = safeTxId;
-                        document.getElementById('receipt-amount').textContent = `$${usdAmount}`;
+                        document.getElementById('receipt-amount').textContent = `${paidAmount} ${paidAmount >= 50 ? 'BDT' : 'USD'}`;
                         document.getElementById('receipt-gems').textContent = `${gems.toLocaleString()} 🔶`;
                         navigateTo('payment-success-view');
                     });
@@ -1208,15 +1313,43 @@
         }
 
         // ================= WITHDRAW SYSTEM =================
-        let currentWdMethod = 'bKash';
-        function openWithdrawModal(method) {
+        let currentWdMethod = 'bKash Personal';
+        let currentWdRate = 120; // 10,000 gems = 120 BDT
+
+        function openWithdrawModal(method, placeholder, minGems, rate) {
             triggerHaptic('light');
             currentWdMethod = method;
+            currentWdRate = rate;
+
             document.getElementById('withdraw-modal-title').textContent = `Withdraw via ${method}`;
+            document.getElementById('lbl-withdraw-addr').textContent = method.includes('USDT') ? 'USDT TRC20 ওয়ালেট অ্যাড্রেস:' : `${method} পার্সোনাল নম্বর:`;
+            document.getElementById('withdraw-address').placeholder = placeholder;
+            document.getElementById('withdraw-gems-input').value = minGems;
+            
+            calculateWithdrawOutput(minGems);
             document.getElementById('withdraw-modal').classList.remove('hidden');
         }
+
         function closeWithdrawModal() {
             document.getElementById('withdraw-modal').classList.add('hidden');
+        }
+
+        function setWithdrawGems(gems) {
+            document.getElementById('withdraw-gems-input').value = gems;
+            calculateWithdrawOutput(gems);
+        }
+
+        function calculateWithdrawOutput(gemsVal) {
+            const gems = parseFloat(gemsVal) || 0;
+            const isUsdt = currentWdMethod.includes('USDT');
+            
+            if (isUsdt) {
+                const usd = (gems / 10000).toFixed(2);
+                document.getElementById('withdraw-receive-preview').textContent = `$${usd} USDT`;
+            } else {
+                const bdt = Math.round((gems / 10000) * appSettings.withdraw_bdt_rate);
+                document.getElementById('withdraw-receive-preview').textContent = `${bdt} BDT`;
+            }
         }
 
         function submitWithdrawal() {
@@ -1227,28 +1360,37 @@
             if (gems < 10000) return showToast("মিনিমাম ক্যাশআউট ১০,০০০ 🔶", "⚠️");
             if (gems > activeUser.balance) return showToast("পর্যাপ্ত ব্যালেন্স নেই!", "⚠️");
 
+            const btn = document.getElementById('btn-confirm-cashout');
+            btn.disabled = true;
+
             activeUser.balance -= gems;
             db.ref(`users/${activeUser.id}/balance`).transaction(b => (b || 0) - gems);
             
+            const isUsdt = currentWdMethod.includes('USDT');
+            const receiveAmount = isUsdt ? `$${(gems / 10000).toFixed(2)}` : `${Math.round((gems / 10000) * appSettings.withdraw_bdt_rate)} BDT`;
+
             const wdPayload = {
                 uid: activeUser.id,
                 username: activeUser.username,
                 address: addr,
                 gems: gems,
+                receiveAmount: receiveAmount,
                 method: currentWdMethod,
-                status: 'PENDING',
+                status: 'WAITING',
                 timestamp: firebase.database.ServerValue.TIMESTAMP
             };
 
+            // Push to user records and global admin review table
             db.ref(`users/${activeUser.id}/withdrawals`).push(wdPayload);
             db.ref(`admin_withdrawals`).push(wdPayload);
 
             db.ref(`users/${activeUser.id}/notifications`).push({
-                message: `আপনার ${gems} 🔶 উইথড্র রিকোয়েস্ট সাবমিট হয়েছে। কিছুক্ষণের মধ্যে প্রসেস হবে।`,
+                message: `আপনার ${gems.toLocaleString()} 🔶 (${receiveAmount}) উইথড্র রিকোয়েস্ট সাবমিট হয়েছে।`,
                 timestamp: firebase.database.ServerValue.TIMESTAMP,
                 read: false
             });
 
+            btn.disabled = false;
             closeWithdrawModal();
             showToast("উইথড্র রিকোয়েস্ট পাঠানো হয়েছে!", "📤");
             triggerHaptic('success');
@@ -1296,7 +1438,7 @@
             });
         }
 
-        // ================= PARTNERS / REFERRAL =================
+        // ================= PARTNERS / REFERRAL (ORIGINAL SYSTEM) =================
         function copyPartnerLink() {
             const fullUrl = `${activeUser.referralBaseUrl}${activeUser.id}`;
             navigator.clipboard.writeText(fullUrl).then(() => {
@@ -1389,6 +1531,7 @@
             renderAllComponents();
             updateForestDurationDisplay();
             checkReturnPaymentStatus();
+            calculateDepositGems(1);
         });
     </script>
 </body>
