@@ -38,7 +38,7 @@
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: #070a14 url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1000&auto=format&fit=crop') no-repeat center top fixed;
+            background: #080c1a url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1000&auto=format&fit=crop') no-repeat center top fixed;
             background-size: cover;
             color: #1e293b;
             user-select: none;
@@ -46,44 +46,56 @@
         }
 
         .ambient-overlay {
-            background: linear-gradient(180deg, rgba(6, 9, 20, 0.90) 0%, rgba(10, 14, 32, 0.96) 45%, rgba(4, 6, 15, 0.99) 100%);
+            background: linear-gradient(180deg, rgba(6, 9, 22, 0.94) 0%, rgba(10, 15, 36, 0.97) 40%, rgba(4, 6, 16, 0.99) 100%);
             min-height: 100vh;
         }
 
-        /* 3D Carved Luxury Marble Stone Card */
-        .stone-card {
-            background: linear-gradient(145deg, #f1f4f9 0%, #dce3ee 50%, #cad3e2 100%);
-            border: 1.5px solid rgba(255, 255, 255, 0.9);
-            box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.95), 
-                        0 10px 22px -5px rgba(0, 0, 0, 0.5), 
-                        0 3px 5px rgba(0, 0, 0, 0.25);
-            border-radius: 24px;
+        /* ULTRA LUXURY MARBLE CARD (Matching Screenshot) */
+        .marble-card {
+            background: linear-gradient(160deg, #f4f6fa 0%, #e2e8f1 50%, #cdd7e4 100%);
+            border: 2px solid rgba(255, 255, 255, 0.95);
+            box-shadow: 
+                inset 0 2px 3px rgba(255, 255, 255, 1),
+                inset 0 -2px 4px rgba(160, 175, 195, 0.35),
+                0 14px 26px -6px rgba(0, 0, 0, 0.6),
+                0 4px 8px rgba(0, 0, 0, 0.3);
+            border-radius: 28px;
             position: relative;
         }
 
         .stone-card-sm {
             background: linear-gradient(180deg, #edf2f8 0%, #d8dfea 100%);
-            border: 1px solid rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.9);
             box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.9), 0 3px 6px rgba(0,0,0,0.15);
             border-radius: 18px;
         }
 
-        /* Tactile Stone Button */
-        .stone-btn {
-            background: linear-gradient(180deg, #d8dfeb 0%, #b3bdcc 100%);
-            border: 1.5px solid #edf1f7;
-            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.9), 
-                        0 4px 10px rgba(0, 0, 0, 0.35), 
-                        0 2px 0px #828c9b;
-            transition: all 0.12s ease;
+        /* TACTILE 3D BUTTONS */
+        .marble-btn {
+            background: linear-gradient(180deg, #dce4ef 0%, #b2becf 100%);
+            border: 1.5px solid #ffffff;
+            box-shadow: 
+                inset 0 2px 2px rgba(255, 255, 255, 0.95), 
+                0 5px 12px rgba(0, 0, 0, 0.35), 
+                0 2px 0px #7e8b9d;
+            transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
         }
-        .stone-btn:active {
-            transform: translateY(2px);
-            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.2);
+        .marble-btn:active {
+            transform: translateY(2px) scale(0.98);
+            box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.2);
         }
 
-        /* Glowing Active Tab Pill */
+        /* 3D HEADER BALANCE POD */
+        .header-pod {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1.5px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 1px 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        /* TOP NAVIGATION TABS */
         .active-magic-tab {
             background: linear-gradient(135deg, #6366f1 0%, #4f46e5 50%, #3730a3 100%);
             color: #ffffff !important;
@@ -105,32 +117,109 @@
             box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.85);
         }
 
-        .crack-decoration {
+        /* 3D COLLECT MASTER BUTTON WITH GLOW & SHIMMER */
+        .collect-master-btn {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+            border: 2px solid #fef08a;
+            box-shadow: 
+                0 0 25px rgba(245, 158, 11, 0.65),
+                inset 0 2px 4px rgba(255, 255, 255, 0.95),
+                0 4px 0 #b45309;
+            color: #451a03;
+            font-weight: 900;
+            letter-spacing: 0.12em;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.15s ease;
+            cursor: pointer;
+        }
+        .collect-master-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.85), inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .collect-master-btn::after {
+            content: '';
             position: absolute;
-            right: 18px;
-            top: 14px;
-            width: 32px;
-            height: 38px;
-            opacity: 0.18;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50"><path d="M10 0 L15 20 L5 30 L25 50" stroke="%23000" stroke-width="2" fill="none"/></svg>');
+            top: -50%;
+            left: -60%;
+            width: 50%;
+            height: 200%;
+            background: linear-gradient(60deg, transparent, rgba(255,255,255,0.7), transparent);
+            transform: rotate(25deg);
+            animation: btnShimmer 3s infinite ease-in-out;
+        }
+
+        @keyframes btnShimmer {
+            0% { left: -60%; }
+            50%, 100% { left: 140%; }
+        }
+
+        /* SMOOTH 3D FLOATING ANIMATIONS */
+        @keyframes floatHero {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(1deg); }
+        }
+        .animate-float-hero {
+            animation: floatHero 3.6s ease-in-out infinite;
+        }
+
+        @keyframes floatCard {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+        .animate-float-card {
+            animation: floatCard 4.2s ease-in-out infinite;
+        }
+
+        @keyframes magicAuraPulse {
+            0%, 100% { filter: drop-shadow(0 4px 12px rgba(99, 102, 241, 0.5)); }
+            50% { filter: drop-shadow(0 8px 24px rgba(168, 85, 247, 0.85)); }
+        }
+        .aura-pulse {
+            animation: magicAuraPulse 3s infinite ease-in-out;
+        }
+
+        /* 3D Gem Glow */
+        .gem-glow {
+            filter: drop-shadow(0 3px 6px rgba(249, 115, 22, 0.7));
+            display: inline-block;
+        }
+
+        @keyframes gemPulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 2px 5px rgba(249, 115, 22, 0.6)); }
+            50% { transform: scale(1.1); filter: drop-shadow(0 4px 12px rgba(249, 115, 22, 0.9)); }
+        }
+        .gem-glow-pulse {
+            animation: gemPulse 2.5s infinite ease-in-out;
+        }
+
+        .silhouetted-character {
+            filter: grayscale(100%) brightness(65%) contrast(140%) opacity(30%);
+        }
+
+        /* Crack Pattern Matching Screenshot */
+        .marble-crack {
+            position: absolute;
+            width: 44px;
+            height: 48px;
+            opacity: 0.16;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60"><path d="M5 5 L22 26 L12 36 L38 58" stroke="%23000" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>');
             background-repeat: no-repeat;
             pointer-events: none;
         }
 
-        .silhouetted-character {
-            filter: grayscale(100%) brightness(80%) contrast(120%) opacity(35%);
+        /* Spark Burst on Collect */
+        .spark-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            font-size: 18px;
+            animation: sparkFly 0.85s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
         }
-
-        .gem-glow {
-            filter: drop-shadow(0 2px 6px rgba(249, 115, 22, 0.6));
-        }
-
-        .magic-progress-glow {
-            box-shadow: 0 0 14px rgba(168, 85, 247, 0.85), 0 0 4px #ec4899;
-        }
-
-        .daily-progress-glow {
-            box-shadow: 0 0 14px rgba(249, 115, 22, 0.85), 0 0 4px #eab308;
+        @keyframes sparkFly {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0.2); opacity: 0; }
         }
 
         /* Floating Language Button */
@@ -143,8 +232,7 @@
         }
 
         .app-view { display: none; }
-        .app-view.active { display: block; animation: fadeIn 0.2s ease-out; }
-
+        .app-view.active { display: block; animation: fadeIn 0.22s ease-out; }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(4px); }
             to { opacity: 1; transform: translateY(0); }
@@ -155,27 +243,33 @@
     
     <div class="ambient-overlay px-3.5 pt-3 pb-24 flex flex-col gap-3.5">
 
-        <!-- ================= BALANCE & PROFILE BAR ================= -->
+        <!-- ================= ULTRA-PRO HEADER & BALANCE POD ================= -->
         <div class="flex items-center justify-between gap-2.5">
-            <!-- Balance Pill -->
-            <div class="stone-card px-4 py-2.5 flex items-center gap-2.5 rounded-full flex-1">
-                <div class="flex flex-col">
-                    <span class="text-[10.5px] font-extrabold text-slate-600 leading-tight uppercase tracking-wider" id="lbl-my-balance">My balance</span>
-                    <div class="flex items-center gap-1.5 mt-0.5">
-                        <span class="text-xl gem-glow">🔶</span>
-                        <span id="header-user-balance" class="text-2xl font-black text-slate-900 tracking-tight font-mono">0.00</span>
+            <!-- Balance Card -->
+            <div class="header-pod px-4 py-2.5 flex items-center gap-3 rounded-full flex-1">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-amber-500 to-yellow-300 p-0.5 flex items-center justify-center shadow-lg">
+                    <div class="w-full h-full bg-slate-900 rounded-full flex items-center justify-center">
+                        <span class="text-xl gem-glow-pulse">🔶</span>
                     </div>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-[10px] font-black text-slate-300 uppercase tracking-widest" id="lbl-my-balance">My balance</span>
+                    <span id="header-user-balance" class="text-2xl font-black text-white tracking-tight font-mono leading-tight drop-shadow-md">0.00</span>
                 </div>
             </div>
 
-            <!-- Profile Avatar -->
-            <div class="w-14 h-14 rounded-full border-2 border-slate-300/80 p-0.5 shadow-xl bg-slate-900 flex-shrink-0 relative overflow-hidden cursor-pointer" onclick="navigateTo('profile-view')">
-                <img id="user-header-avatar" src="https://i.postimg.cc/CMj5tPpH/file-000000004dc082119a469192b761c18a.png" class="w-full h-full object-cover rounded-full" alt="Avatar">
+            <!-- Profile Avatar with Online Ring -->
+            <div class="relative cursor-pointer flex-shrink-0" onclick="navigateTo('profile-view')">
+                <div class="w-13 h-13 rounded-full p-[2px] bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 shadow-xl active:scale-95 transition">
+                    <img id="user-header-avatar" src="https://i.postimg.cc/CMj5tPpH/file-000000004dc082119a469192b761c18a.png" class="w-12 h-12 object-cover rounded-full bg-slate-900 border border-white/50" alt="Avatar">
+                </div>
+                <span class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 border-2 border-slate-900 rounded-full shadow"></span>
             </div>
 
             <!-- Profile Button -->
-            <button onclick="navigateTo('profile-view')" id="top-btn-profile" class="stone-card px-4 py-3 rounded-2xl text-slate-800 text-xs font-black tracking-wide shadow-md active:scale-95 transition">
-                Profile
+            <button onclick="navigateTo('profile-view')" id="top-btn-profile" class="marble-btn px-4 py-3 rounded-2xl text-slate-800 text-xs font-black tracking-wide shadow active:scale-95 transition flex items-center gap-1.5">
+                <i class="fas fa-user-shield text-[11px] text-slate-700"></i>
+                <span>Profile</span>
             </button>
         </div>
 
@@ -196,74 +290,71 @@
         </div>
 
         <!-- ============================================================== -->
-        <!-- 1. MAGICIAN TAB (MINING & CHARACTERS VIEW)                     -->
+        <!-- 1. MAGICIAN VIEW (MINING & SCREENSHOT MARBLE CARDS)            -->
         <!-- ============================================================== -->
         <div id="magician-view" class="app-view active space-y-3.5">
             
-            <!-- DAILY INCOME TICKER WITH DYNAMIC % DISPLAY -->
-            <div class="space-y-1.5 px-0.5">
+            <!-- DAILY INCOME TICKER (No % symbol in top ticker bar) -->
+            <div class="space-y-1.5 px-1">
                 <div class="flex items-center justify-between text-white font-black">
                     <span class="text-sm tracking-wide drop-shadow-md flex items-center gap-1.5">
                         <span id="lbl-daily-income">Daily income</span>
-                        <!-- Live Dynamic Overall % -->
-                        <span id="daily-income-overall-pct" class="px-2 py-0.5 rounded-full bg-emerald-500/25 border border-emerald-400 text-emerald-300 font-mono text-xs font-black">
-                            24.0%
-                        </span>
-                        <span id="daily-cap-status-badge" class="hidden px-2 py-0.5 rounded-full bg-gradient-to-r from-red-500 to-rose-600 text-white font-black text-[10px] tracking-widest shadow animate-pulse">FULL</span>
+                        <span id="daily-cap-status-badge" class="hidden px-2 py-0.5 rounded-full bg-rose-600 text-white font-black text-[9px] tracking-widest shadow animate-pulse">MAX CAP</span>
                     </span>
-                    <div class="flex items-center gap-1 text-sm drop-shadow-md">
-                        <span class="text-xs">🔶</span>
-                        <span id="daily-income-total" class="font-mono text-amber-300 font-black">57</span>
+                    <div class="flex items-center gap-1 text-base drop-shadow-md font-mono">
+                        <span class="text-sm gem-glow">🔶</span>
+                        <span id="daily-income-total" class="text-amber-300 font-black">27</span>
                     </div>
                 </div>
 
-                <!-- Daily Progress Line -->
-                <div class="w-full h-2 rounded-full bg-slate-900/90 p-0.5 border border-amber-500/40 overflow-hidden shadow-inner">
-                    <div id="daily-progress-fill" class="h-full bg-gradient-to-r from-amber-500 via-orange-500 to-yellow-400 rounded-full daily-progress-glow transition-all duration-300" style="width: 15%;"></div>
+                <div class="w-full h-2 rounded-full bg-slate-950/90 p-0.5 border border-amber-500/40 overflow-hidden shadow-inner">
+                    <div id="daily-progress-fill" class="h-full bg-gradient-to-r from-amber-500 via-orange-500 to-yellow-400 rounded-full transition-all duration-300" style="width: 25%;"></div>
                 </div>
             </div>
 
             <!-- HERO SECTION (ACTIVE WIZARD & 3x4 MINI GRID) -->
             <div class="grid grid-cols-12 gap-2.5 items-stretch">
-                <!-- Left Hero Box -->
-                <div class="col-span-5 stone-card p-3 flex flex-col items-center justify-between text-center relative overflow-hidden min-h-[300px]">
-                    <div class="crack-decoration"></div>
+                <!-- Left Hero Box with 3D Collect Button -->
+                <div class="col-span-5 marble-card p-3 flex flex-col items-center justify-between text-center relative overflow-hidden min-h-[305px]">
+                    <div class="marble-crack top-2 right-2"></div>
                     
                     <!-- Level Pill Badge -->
-                    <div class="absolute top-28 z-20 px-4 py-0.5 rounded-xl stone-card-sm border border-slate-300 shadow-md">
-                        <span class="text-lg font-black text-slate-800 font-mono" id="main-magician-level">4</span>
+                    <div class="absolute top-2 left-2 px-3 py-0.5 rounded-xl bg-slate-900/10 border border-white/80 shadow-sm">
+                        <span class="text-xs font-black text-slate-800 font-mono">LVL <b id="main-magician-level">2</b></span>
                     </div>
 
-                    <div class="w-full flex-1 flex items-center justify-center relative mt-1">
-                        <img src="https://cdn-icons-png.flaticon.com/512/3408/3408593.png" class="w-32 h-36 object-contain relative z-10 drop-shadow-2xl" alt="Archmage">
+                    <div class="w-full flex-1 flex items-center justify-center relative mt-3">
+                        <img src="https://cdn-icons-png.flaticon.com/512/3408/3408593.png" class="w-28 h-32 object-contain relative z-10 animate-float-hero aura-pulse" alt="Hero Magician">
                     </div>
 
-                    <!-- Live Uncollected Income -->
-                    <div class="w-full flex items-center justify-center gap-1.5 py-1 mt-6 z-20">
-                        <span class="text-base gem-glow">🔶</span>
-                        <span id="uncollected-balance" class="text-xl font-black text-slate-900 tracking-tight font-mono">0.0762</span>
+                    <!-- Live Realtime Uncollected Earnings -->
+                    <div class="w-full flex items-center justify-center gap-1.5 py-1 z-20">
+                        <span class="text-lg gem-glow">🔶</span>
+                        <span id="uncollected-balance" class="text-xl font-black text-slate-900 tracking-tight font-mono">0.0000</span>
                     </div>
 
-                    <button onclick="collectIncome()" class="stone-btn w-full py-2.5 rounded-2xl text-xs font-black text-slate-800 tracking-widest uppercase transition-all mt-1" id="btn-collect">
-                        COLLECT
+                    <!-- PRO 3D COLLECT BUTTON WITH GLOW & PARTICLES -->
+                    <button id="btn-collect-master" onclick="collectIncome(event)" class="collect-master-btn w-full py-2.5 rounded-2xl text-xs uppercase flex items-center justify-center gap-1.5 transition-transform">
+                        <i class="fas fa-hand-holding-dollar text-sm"></i>
+                        <span id="btn-collect">COLLECT</span>
                     </button>
                 </div>
 
-                <!-- Right 3x4 Grid -->
+                <!-- Right 3x4 Grid of Magicians -->
                 <div class="col-span-7 grid grid-cols-3 gap-1.5" id="mini-grid-container"></div>
             </div>
 
             <!-- MAGIC MANA BAR (500 Magic = 50 Hours) -->
-            <div class="space-y-1.5 px-0.5">
+            <div class="space-y-1.5 px-1">
                 <div class="flex items-center justify-between text-white font-black text-xs">
                     <span class="tracking-wide drop-shadow" id="lbl-magic">Magic Mana</span>
-                    <div class="flex items-center gap-1.5 drop-shadow">
-                        <span class="tracking-tight font-mono text-purple-300" id="magic-mana-val">5 486</span>
+                    <div class="flex items-center gap-1.5 drop-shadow font-mono">
+                        <span class="tracking-tight text-purple-300" id="magic-mana-val">5 486</span>
                         <span>🔮</span>
                     </div>
                 </div>
-                <div class="w-full h-2 rounded-full bg-slate-900/90 p-0.5 border border-purple-500/40 overflow-hidden shadow-inner">
-                    <div id="magic-progress-fill" class="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full magic-progress-glow transition-all duration-300" style="width: 78%;"></div>
+                <div class="w-full h-2 rounded-full bg-slate-950/90 p-0.5 border border-purple-500/40 overflow-hidden shadow-inner">
+                    <div id="magic-progress-fill" class="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full transition-all duration-300" style="width: 78%;"></div>
                 </div>
                 <div class="text-[11px] font-bold text-slate-300 flex items-center justify-between">
                     <span><span id="lbl-magic-lasts">Magic lasts</span> ≈ <b class="text-white font-mono" id="magic-duration-display">96 d 4 h</b></span>
@@ -273,104 +364,102 @@
 
             <!-- SPELLBOOKS (BUY MANA) -->
             <div class="grid grid-cols-3 gap-2">
-                <div class="stone-card p-3 rounded-3xl flex flex-col items-center justify-between text-center min-h-[145px]">
-                    <img src="https://cdn-icons-png.flaticon.com/512/3408/3408479.png" class="w-11 h-11 object-contain drop-shadow" alt="B1">
+                <div class="marble-card p-3 rounded-3xl flex flex-col items-center justify-between text-center min-h-[145px]">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3408/3408479.png" class="w-10 h-10 object-contain drop-shadow" alt="Book">
                     <div class="flex items-center gap-1 font-black text-xs text-slate-800 font-mono">
                         <span>+500</span><span>🔮</span>
                     </div>
-                    <button onclick="buySpellbook(500, 100)" class="stone-btn w-full py-1.5 rounded-xl flex items-center justify-center gap-1 text-[11px] font-black text-slate-800">
+                    <button onclick="buySpellbook(500, 100)" class="marble-btn w-full py-1.5 rounded-xl flex items-center justify-center gap-1 text-[11px] font-black text-slate-800">
                         <span class="text-[10px]">🔶</span><span>100</span>
                     </button>
                 </div>
-                <div class="stone-card p-3 rounded-3xl flex flex-col items-center justify-between text-center min-h-[145px]">
-                    <img src="https://cdn-icons-png.flaticon.com/512/3408/3408483.png" class="w-11 h-11 object-contain drop-shadow" alt="B2">
+                <div class="marble-card p-3 rounded-3xl flex flex-col items-center justify-between text-center min-h-[145px]">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3408/3408483.png" class="w-10 h-10 object-contain drop-shadow" alt="Book">
                     <div class="flex items-center gap-1 font-black text-xs text-slate-800 font-mono">
                         <span>+5 000</span><span>🔮</span>
                     </div>
-                    <button onclick="buySpellbook(5000, 1000)" class="stone-btn w-full py-1.5 rounded-xl flex items-center justify-center gap-1 text-[11px] font-black text-slate-800">
+                    <button onclick="buySpellbook(5000, 1000)" class="marble-btn w-full py-1.5 rounded-xl flex items-center justify-center gap-1 text-[11px] font-black text-slate-800">
                         <span class="text-[10px]">🔶</span><span>1 000</span>
                     </button>
                 </div>
-                <div class="stone-card p-3 rounded-3xl flex flex-col items-center justify-between text-center min-h-[145px]">
-                    <img src="https://cdn-icons-png.flaticon.com/512/3408/3408480.png" class="w-11 h-11 object-contain drop-shadow" alt="B3">
+                <div class="marble-card p-3 rounded-3xl flex flex-col items-center justify-between text-center min-h-[145px]">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3408/3408480.png" class="w-10 h-10 object-contain drop-shadow" alt="Book">
                     <div class="flex items-center gap-1 font-black text-xs text-slate-800 font-mono">
                         <span>+25 000</span><span>🔮</span>
                     </div>
-                    <button onclick="buySpellbook(25000, 5000)" class="stone-btn w-full py-1.5 rounded-xl flex items-center justify-center gap-1 text-[11px] font-black text-slate-800">
+                    <button onclick="buySpellbook(25000, 5000)" class="marble-btn w-full py-1.5 rounded-xl flex items-center justify-center gap-1 text-[11px] font-black text-slate-800">
                         <span class="text-[10px]">🔶</span><span>5 000</span>
                     </button>
                 </div>
             </div>
 
-            <!-- ALL 12 PRODUCTS/CHARACTERS WITH INDIVIDUAL PERCENTAGES -->
-            <div class="space-y-1.5 pt-1">
+            <!-- ================= EXACT SCREENSHOT MARBLE CARDS (12 HEROES) ================= -->
+            <div class="space-y-2 pt-2">
                 <div class="flex items-center justify-between px-1">
                     <h3 class="text-xs font-black text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                        <i class="fas fa-wand-magic-sparkles text-amber-400"></i> Magicians Market
+                        <i class="fas fa-hat-wizard text-amber-400"></i> Magicians Market
                     </h3>
-                    <span class="text-[11px] font-black text-slate-400 font-mono">
-                        12 Heroes Available
-                    </span>
+                    <span class="text-[11px] font-black text-slate-400 font-mono">12 Heroes Available</span>
                 </div>
-                <div class="grid grid-cols-2 gap-2.5" id="character-cards-grid"></div>
+                <div class="grid grid-cols-2 gap-3" id="character-cards-grid"></div>
             </div>
         </div>
 
         <!-- ============================================================== -->
-        <!-- 2. DEPOSIT TAB (ORIGINAL INTERFACE + REAL GATEWAY INTEGRATION) -->
+        <!-- 2. DEPOSIT VIEW (FULL ORIGINAL LOGIC & GATEWAY RESTORED)        -->
         <!-- ============================================================== -->
         <div id="deposit-view" class="app-view space-y-3.5">
             <div id="deposit-method-list" class="space-y-3">
                 <!-- bKash Gateway -->
-                <div onclick="openDepositForm('bKash', 1, 5000)" class="stone-card p-4 rounded-3xl flex items-center gap-3.5 cursor-pointer active:scale-[0.99] transition">
-                    <div class="crack-decoration"></div>
-                    <div class="w-14 h-14 rounded-full bg-pink-500/20 border-2 border-pink-400 p-2 flex items-center justify-center shadow flex-shrink-0">
+                <div onclick="openDepositForm('bKash', 1, 5000)" class="marble-card p-4 rounded-3xl flex items-center gap-3.5 cursor-pointer active:scale-[0.99] transition">
+                    <div class="marble-crack top-2 right-2"></div>
+                    <div class="w-13 h-13 rounded-full bg-pink-500/20 border-2 border-pink-400 p-2 flex items-center justify-center shadow flex-shrink-0">
                         <span class="text-pink-600 font-black text-lg">bK</span>
                     </div>
                     <div>
                         <h4 class="text-base font-black text-slate-900 leading-tight">bKash (Instant)</h4>
                         <p class="text-xs font-extrabold text-slate-700 mt-0.5">Automated Gateway • $1.00</p>
                         <div class="flex items-center gap-1 text-xs font-extrabold text-slate-700">
-                            <span>Get:</span><span class="text-[10px]">🔶</span><span class="font-black text-slate-900">5 000</span>
+                            <span>Get:</span><span class="text-[10px]">🔶</span><span class="font-black text-slate-900 font-mono">5 000</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Tether USD (Crypto) -->
-                <div onclick="openDepositForm('Tether USD', 1, 5000)" class="stone-card p-4 rounded-3xl flex items-center gap-3.5 cursor-pointer active:scale-[0.99] transition">
-                    <div class="crack-decoration"></div>
-                    <div class="w-14 h-14 rounded-full bg-teal-500/20 border-2 border-teal-400 p-2 flex items-center justify-center shadow flex-shrink-0">
+                <div onclick="openDepositForm('Tether USD', 1, 5000)" class="marble-card p-4 rounded-3xl flex items-center gap-3.5 cursor-pointer active:scale-[0.99] transition">
+                    <div class="marble-crack top-2 right-2"></div>
+                    <div class="w-13 h-13 rounded-full bg-teal-500/20 border-2 border-teal-400 p-2 flex items-center justify-center shadow flex-shrink-0">
                         <img src="https://cdn-icons-png.flaticon.com/512/825/825488.png" class="w-full h-full object-contain" alt="USDT">
                     </div>
                     <div>
                         <h4 class="text-base font-black text-slate-900 leading-tight">Tether USD (TRC20)</h4>
                         <p class="text-xs font-extrabold text-slate-700 mt-0.5">Minimum: $1.00</p>
                         <div class="flex items-center gap-1 text-xs font-extrabold text-slate-700">
-                            <span>Get:</span><span class="text-[10px]">🔶</span><span class="font-black text-slate-900">5 000</span>
+                            <span>Get:</span><span class="text-[10px]">🔶</span><span class="font-black text-slate-900 font-mono">5 000</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- GRAM / TON -->
-                <div onclick="openDepositForm('GRAM', 1, 5000)" class="stone-card p-4 rounded-3xl flex items-center gap-3.5 cursor-pointer active:scale-[0.99] transition">
-                    <div class="crack-decoration"></div>
-                    <div class="w-14 h-14 rounded-full bg-blue-500/20 border-2 border-blue-400 p-2 flex items-center justify-center shadow flex-shrink-0">
+                <div onclick="openDepositForm('GRAM', 1, 5000)" class="marble-card p-4 rounded-3xl flex items-center gap-3.5 cursor-pointer active:scale-[0.99] transition">
+                    <div class="marble-crack top-2 right-2"></div>
+                    <div class="w-13 h-13 rounded-full bg-blue-500/20 border-2 border-blue-400 p-2 flex items-center justify-center shadow flex-shrink-0">
                         <img src="https://cdn-icons-png.flaticon.com/512/5968/5968804.png" class="w-full h-full object-contain" alt="GRAM">
                     </div>
                     <div>
                         <h4 class="text-base font-black text-slate-900 leading-tight">GRAM / TON</h4>
                         <p class="text-xs font-extrabold text-slate-700 mt-0.5">Minimum: $1.00</p>
                         <div class="flex items-center gap-1 text-xs font-extrabold text-slate-700">
-                            <span>Get:</span><span class="text-[10px]">🔶</span><span class="font-black text-slate-900">5 000</span>
+                            <span>Get:</span><span class="text-[10px]">🔶</span><span class="font-black text-slate-900 font-mono">5 000</span>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Deposit Input Form -->
-            <div id="deposit-input-card" class="stone-card p-4 rounded-3xl space-y-4 hidden">
-                <div class="crack-decoration"></div>
-                <div class="flex items-center justify-between bg-white/40 p-2.5 rounded-2xl border border-white/60">
+            <div id="deposit-input-card" class="marble-card p-4 rounded-3xl space-y-4 hidden">
+                <div class="marble-crack top-2 right-2"></div>
+                <div class="flex items-center justify-between bg-white/50 p-2.5 rounded-2xl border border-white">
                     <div class="flex items-center gap-3">
                         <img id="dep-chosen-icon" src="https://cdn-icons-png.flaticon.com/512/825/825488.png" class="w-10 h-10 object-contain" alt="Method">
                         <div>
@@ -396,7 +485,7 @@
                     <span>· Amount: <b id="deposit-usdt-preview" class="font-mono">1 USDT</b></span>
                 </div>
 
-                <button onclick="proceedToPaymentGateway()" id="btn-top-up" class="stone-btn w-full py-3.5 rounded-2xl text-base font-black text-slate-900 shadow-md flex items-center justify-center gap-2">
+                <button onclick="proceedToPaymentGateway()" id="btn-top-up" class="marble-btn w-full py-3.5 rounded-2xl text-base font-black text-slate-900 shadow flex items-center justify-center gap-2">
                     <i class="fas fa-lock text-xs text-slate-700"></i>
                     <span>Top up</span>
                 </button>
@@ -409,7 +498,7 @@
             </div>
 
             <!-- Transaction Table -->
-            <div class="stone-card rounded-3xl overflow-hidden shadow-md">
+            <div class="marble-card rounded-3xl overflow-hidden shadow">
                 <div class="table-header-pill grid grid-cols-4 px-4 py-2.5 text-xs font-black text-center">
                     <span class="underline underline-offset-2">Date</span>
                     <span class="underline underline-offset-2">Method</span>
@@ -423,13 +512,13 @@
         </div>
 
         <!-- ============================================================== -->
-        <!-- 3. WITHDRAW TAB                                                -->
+        <!-- 3. WITHDRAW VIEW (FULL ORIGINAL LOGIC RESTORED)                -->
         <!-- ============================================================== -->
         <div id="withdraw-view" class="app-view space-y-3.5">
             <div class="space-y-3">
-                <div onclick="openWithdrawModal('bKash')" class="stone-card p-4 rounded-3xl flex items-center gap-3.5 cursor-pointer active:scale-[0.99] transition">
-                    <div class="crack-decoration"></div>
-                    <div class="w-14 h-14 rounded-full bg-pink-500/20 border-2 border-pink-400 p-2 flex items-center justify-center shadow flex-shrink-0">
+                <div onclick="openWithdrawModal('bKash')" class="marble-card p-4 rounded-3xl flex items-center gap-3.5 cursor-pointer active:scale-[0.99] transition">
+                    <div class="marble-crack top-2 right-2"></div>
+                    <div class="w-13 h-13 rounded-full bg-pink-500/20 border-2 border-pink-400 p-2 flex items-center justify-center shadow flex-shrink-0">
                         <span class="text-pink-600 font-black text-lg">bK</span>
                     </div>
                     <div>
@@ -441,9 +530,9 @@
                     </div>
                 </div>
 
-                <div onclick="openWithdrawModal('Tether USD')" class="stone-card p-4 rounded-3xl flex items-center gap-3.5 cursor-pointer active:scale-[0.99] transition">
-                    <div class="crack-decoration"></div>
-                    <div class="w-14 h-14 rounded-full bg-teal-500/20 border-2 border-teal-400 p-2 flex items-center justify-center shadow flex-shrink-0">
+                <div onclick="openWithdrawModal('Tether USD')" class="marble-card p-4 rounded-3xl flex items-center gap-3.5 cursor-pointer active:scale-[0.99] transition">
+                    <div class="marble-crack top-2 right-2"></div>
+                    <div class="w-13 h-13 rounded-full bg-teal-500/20 border-2 border-teal-400 p-2 flex items-center justify-center shadow flex-shrink-0">
                         <img src="https://cdn-icons-png.flaticon.com/512/825/825488.png" class="w-full h-full object-contain" alt="USDT">
                     </div>
                     <div>
@@ -457,7 +546,7 @@
             </div>
 
             <!-- Transaction Table -->
-            <div class="stone-card rounded-3xl overflow-hidden shadow-md">
+            <div class="marble-card rounded-3xl overflow-hidden shadow">
                 <div class="table-header-pill grid grid-cols-4 px-4 py-2.5 text-xs font-black text-center">
                     <span class="underline underline-offset-2">Date</span>
                     <span class="underline underline-offset-2">Method</span>
@@ -471,31 +560,31 @@
         </div>
 
         <!-- ============================================================== -->
-        <!-- 4. PARTNERS TAB (FIXED REFERRAL SYSTEM - NO API CRASH)        -->
+        <!-- 4. PARTNERS VIEW (FULL ORIGINAL LOGIC RESTORED)                -->
         <!-- ============================================================== -->
         <div id="partners-view" class="app-view space-y-3.5">
-            <div class="stone-card p-3 rounded-3xl flex items-center justify-between">
+            <div class="marble-card p-3 rounded-3xl flex items-center justify-between">
                 <div class="flex items-center gap-2 pl-2">
                     <span class="text-2xl gem-glow">🔶</span>
                     <span class="text-2xl font-black text-slate-900 font-mono" id="partner-claimable-bal">0.00</span>
                 </div>
-                <button onclick="claimPartnerBonus()" id="btn-claim-partner" class="stone-btn px-6 py-2.5 rounded-2xl text-xs font-black text-slate-800 tracking-wider">
+                <button onclick="claimPartnerBonus()" id="btn-claim-partner" class="marble-btn px-6 py-2.5 rounded-2xl text-xs font-black text-slate-800 tracking-wider">
                     Collect
                 </button>
             </div>
 
             <!-- Referral Link & Native Share Buttons -->
-            <div class="stone-card p-2.5 rounded-2xl flex flex-col gap-2">
+            <div class="marble-card p-2.5 rounded-2xl flex flex-col gap-2">
                 <div class="flex items-center justify-between gap-2 bg-white/60 p-2 rounded-xl">
                     <div class="flex items-center gap-2 overflow-hidden flex-1">
                         <i class="fas fa-link text-slate-600 text-xs"></i>
                         <span class="text-[11px] font-mono font-bold text-slate-800 truncate select-all" id="ref-link-display">https://t.me/EXPERTearn_team?startapp=</span>
                     </div>
-                    <button onclick="copyPartnerLink()" class="stone-btn px-3 py-1.5 rounded-xl text-xs font-black text-slate-800 flex-shrink-0">
+                    <button onclick="copyPartnerLink()" class="marble-btn px-3 py-1.5 rounded-xl text-xs font-black text-slate-800 flex-shrink-0">
                         Copy
                     </button>
                 </div>
-                <!-- One-click Telegram Share Button -->
+                <!-- Telegram Share Button -->
                 <button onclick="shareDirectlyToTelegram()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow active:scale-95 transition">
                     <i class="fab fa-telegram-plane text-sm"></i>
                     <span>Invite Friends via Telegram</span>
@@ -503,7 +592,7 @@
             </div>
 
             <div class="grid grid-cols-3 gap-2">
-                <div class="stone-card p-3 rounded-2xl flex flex-col items-center text-center justify-between min-h-[140px]">
+                <div class="marble-card p-3 rounded-2xl flex flex-col items-center text-center justify-between min-h-[140px]">
                     <div class="flex items-center gap-1">
                         <img src="https://cdn-icons-png.flaticon.com/512/3408/3408593.png" class="w-5 h-5 object-contain" alt="m">
                         <span class="text-base font-black text-slate-900" id="ref-comm-rate">10%</span>
@@ -511,7 +600,7 @@
                     <p class="text-[10px] font-bold text-slate-700 leading-tight">Get commission from partners for purchasing a mage.</p>
                     <div class="w-1 h-1"></div>
                 </div>
-                <div class="stone-card p-3 rounded-2xl flex flex-col items-center text-center justify-between min-h-[140px]">
+                <div class="marble-card p-3 rounded-2xl flex flex-col items-center text-center justify-between min-h-[140px]">
                     <div class="flex items-center gap-1">
                         <span class="text-sm">🔮</span>
                         <span class="text-base font-black text-slate-900">12%</span>
@@ -519,7 +608,7 @@
                     <p class="text-[10px] font-bold text-slate-700 leading-tight">Get 12% from partners on magic purchases.</p>
                     <div class="w-1 h-1"></div>
                 </div>
-                <div class="stone-card p-3 rounded-2xl flex flex-col items-center text-center justify-between min-h-[140px]">
+                <div class="marble-card p-3 rounded-2xl flex flex-col items-center text-center justify-between min-h-[140px]">
                     <div class="flex items-center gap-1">
                         <span class="text-sm">🔶</span>
                         <span class="text-base font-black text-slate-900" id="ref-bonus-flat">25</span>
@@ -535,19 +624,19 @@
 
             <div class="grid grid-cols-2 gap-2 text-center">
                 <div class="space-y-1">
-                    <div class="stone-card py-1.5 rounded-xl text-xs font-black text-slate-800">Partners</div>
-                    <div class="stone-card py-2 rounded-xl text-lg font-black text-slate-900 font-mono" id="stat-partners-count">0</div>
+                    <div class="marble-card py-1.5 rounded-xl text-xs font-black text-slate-800">Partners</div>
+                    <div class="marble-card py-2 rounded-xl text-lg font-black text-slate-900 font-mono" id="stat-partners-count">0</div>
                 </div>
                 <div class="space-y-1">
-                    <div class="stone-card py-1.5 rounded-xl text-xs font-black text-slate-800">Total income</div>
-                    <div class="stone-card py-2 rounded-xl text-lg font-black text-slate-900 flex items-center justify-center gap-1.5 font-mono">
+                    <div class="marble-card py-1.5 rounded-xl text-xs font-black text-slate-800">Total income</div>
+                    <div class="marble-card py-2 rounded-xl text-lg font-black text-slate-900 flex items-center justify-center gap-1.5 font-mono">
                         <span class="text-sm">🔶</span>
                         <span id="stat-partner-income">0.00</span>
                     </div>
                 </div>
             </div>
 
-            <div class="stone-card rounded-3xl overflow-hidden shadow-md">
+            <div class="marble-card rounded-3xl overflow-hidden shadow">
                 <div class="table-header-pill grid grid-cols-4 px-3 py-2 text-xs font-black text-center">
                     <span class="underline underline-offset-2">Date</span>
                     <span class="underline underline-offset-2">User</span>
@@ -561,11 +650,11 @@
         </div>
 
         <!-- ============================================================== -->
-        <!-- 5. PROFILE VIEW                                                -->
+        <!-- 5. PROFILE VIEW (FULL ORIGINAL LOGIC RESTORED)                 -->
         <!-- ============================================================== -->
         <div id="profile-view" class="app-view space-y-3.5">
-            <div class="stone-card p-4 rounded-3xl flex items-center gap-3.5 shadow-md">
-                <div class="crack-decoration"></div>
+            <div class="marble-card p-4 rounded-3xl flex items-center gap-3.5 shadow">
+                <div class="marble-crack top-2 right-2"></div>
                 <div class="w-12 h-12 rounded-2xl bg-blue-100 flex items-center justify-center text-blue-600 text-xl border border-white shadow">
                     <i class="fas fa-user"></i>
                 </div>
@@ -575,8 +664,8 @@
                 </div>
             </div>
 
-            <div class="stone-card p-4 rounded-3xl flex items-center justify-between shadow-md">
-                <div class="crack-decoration"></div>
+            <div class="marble-card p-4 rounded-3xl flex items-center justify-between shadow">
+                <div class="marble-crack top-2 right-2"></div>
                 <div class="flex items-center gap-3.5">
                     <div class="w-12 h-12 rounded-2xl bg-purple-100 flex items-center justify-center text-purple-600 text-xl border border-white shadow">
                         <i class="fas fa-wallet"></i>
@@ -586,13 +675,13 @@
                         <p class="text-xs font-extrabold text-slate-600 mt-0.5">History of replenishments</p>
                     </div>
                 </div>
-                <button onclick="switchTab('deposit')" class="stone-btn px-5 py-2 rounded-2xl text-xs font-black text-slate-800">
+                <button onclick="switchTab('deposit')" class="marble-btn px-5 py-2 rounded-2xl text-xs font-black text-slate-800">
                     Open
                 </button>
             </div>
 
-            <div class="stone-card p-4 rounded-3xl flex items-center justify-between shadow-md">
-                <div class="crack-decoration"></div>
+            <div class="marble-card p-4 rounded-3xl flex items-center justify-between shadow">
+                <div class="marble-crack top-2 right-2"></div>
                 <div class="flex items-center gap-3.5">
                     <div class="w-12 h-12 rounded-2xl bg-purple-100 flex items-center justify-center text-purple-600 text-xl border border-white shadow">
                         <i class="fas fa-shield-alt"></i>
@@ -602,7 +691,7 @@
                         <p class="text-xs font-extrabold text-slate-600 mt-0.5">Withdrawal history</p>
                     </div>
                 </div>
-                <button onclick="switchTab('withdraw')" class="stone-btn px-5 py-2 rounded-2xl text-xs font-black text-slate-800">
+                <button onclick="switchTab('withdraw')" class="marble-btn px-5 py-2 rounded-2xl text-xs font-black text-slate-800">
                     Open
                 </button>
             </div>
@@ -611,7 +700,7 @@
     </div>
 
     <!-- ================= FLOATING LANGUAGE SELECTOR ================= -->
-    <button onclick="toggleLangModal()" class="floating-lang-pill stone-card px-4 py-2.5 rounded-2xl flex items-center gap-2 text-slate-900 font-black text-xs">
+    <button onclick="toggleLangModal()" class="floating-lang-pill marble-card px-4 py-2.5 rounded-2xl flex items-center gap-2 text-slate-900 font-black text-xs shadow-xl">
         <span id="floating-lang-flag" class="text-base">🇬🇧</span>
         <span id="floating-lang-code">EN</span>
         <i class="fas fa-chevron-up text-[10px] text-slate-600"></i>
@@ -619,29 +708,29 @@
 
     <!-- ================= LANGUAGE MODAL ================= -->
     <div id="language-modal" class="hidden fixed inset-0 z-[1000] bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-4">
-        <div class="stone-card w-full max-w-xs p-5 rounded-3xl space-y-3">
+        <div class="marble-card w-full max-w-xs p-5 rounded-3xl space-y-3">
             <div class="flex items-center justify-between border-b border-slate-300 pb-2">
                 <h4 class="text-sm font-black text-slate-900">Select Language</h4>
                 <button onclick="toggleLangModal()" class="text-slate-600 text-sm p-1"><i class="fas fa-times"></i></button>
             </div>
             <div class="space-y-2">
-                <button onclick="setLanguage('en', '🇬🇧', 'English')" class="w-full stone-btn p-3 rounded-2xl flex items-center justify-between text-xs font-black text-slate-900">
+                <button onclick="setLanguage('en', '🇬🇧', 'English')" class="w-full marble-btn p-3 rounded-2xl flex items-center justify-between text-xs font-black text-slate-900">
                     <span class="flex items-center gap-2.5"><span class="text-lg">🇬🇧</span> <span>English</span></span>
                     <span class="text-[10px] font-mono text-slate-600">EN</span>
                 </button>
-                <button onclick="setLanguage('es', '🇪🇸', 'Español')" class="w-full stone-btn p-3 rounded-2xl flex items-center justify-between text-xs font-black text-slate-900">
+                <button onclick="setLanguage('es', '🇪🇸', 'Español')" class="w-full marble-btn p-3 rounded-2xl flex items-center justify-between text-xs font-black text-slate-900">
                     <span class="flex items-center gap-2.5"><span class="text-lg">🇪🇸</span> <span>Español</span></span>
                     <span class="text-[10px] font-mono text-slate-600">ES</span>
                 </button>
-                <button onclick="setLanguage('hi', '🇮🇳', 'हिन्दी')" class="w-full stone-btn p-3 rounded-2xl flex items-center justify-between text-xs font-black text-slate-900">
+                <button onclick="setLanguage('hi', '🇮🇳', 'हिन्दी')" class="w-full marble-btn p-3 rounded-2xl flex items-center justify-between text-xs font-black text-slate-900">
                     <span class="flex items-center gap-2.5"><span class="text-lg">🇮🇳</span> <span>हिन्दी</span></span>
                     <span class="text-[10px] font-mono text-slate-600">HI</span>
                 </button>
-                <button onclick="setLanguage('ru', '🇷🇺', 'Русский')" class="w-full stone-btn p-3 rounded-2xl flex items-center justify-between text-xs font-black text-slate-900">
+                <button onclick="setLanguage('ru', '🇷🇺', 'Русский')" class="w-full marble-btn p-3 rounded-2xl flex items-center justify-between text-xs font-black text-slate-900">
                     <span class="flex items-center gap-2.5"><span class="text-lg">🇷🇺</span> <span>Русский</span></span>
                     <span class="text-[10px] font-mono text-slate-600">RU</span>
                 </button>
-                <button onclick="setLanguage('bn', '🇧🇩', 'বাংলা')" class="w-full stone-btn p-3 rounded-2xl flex items-center justify-between text-xs font-black text-slate-900">
+                <button onclick="setLanguage('bn', '🇧🇩', 'বাংলা')" class="w-full marble-btn p-3 rounded-2xl flex items-center justify-between text-xs font-black text-slate-900">
                     <span class="flex items-center gap-2.5"><span class="text-lg">🇧🇩</span> <span>বাংলা</span></span>
                     <span class="text-[10px] font-mono text-slate-600">BN</span>
                 </button>
@@ -651,7 +740,7 @@
 
     <!-- ================= WITHDRAW MODAL ================= -->
     <div id="withdraw-modal" class="hidden fixed inset-0 z-[1000] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="stone-card w-full max-w-xs p-5 rounded-3xl space-y-4">
+        <div class="marble-card w-full max-w-xs p-5 rounded-3xl space-y-4">
             <div class="flex items-center justify-between border-b border-slate-300 pb-2">
                 <h4 class="text-sm font-black text-slate-900" id="withdraw-modal-title">Withdraw Funds</h4>
                 <button onclick="closeWithdrawModal()" class="text-slate-600 hover:text-slate-900 text-sm"><i class="fas fa-times"></i></button>
@@ -665,7 +754,7 @@
                 <input id="withdraw-gems-input" type="number" value="10000" min="10000" class="w-full p-3 rounded-xl bg-white/90 border border-slate-300 text-sm font-black font-mono outline-none">
                 <span class="text-[10px] text-slate-500 font-bold mt-1 block font-mono">Minimum: 10 000 🔶 ($1.00)</span>
             </div>
-            <button onclick="submitWithdrawal()" class="stone-btn w-full py-3 rounded-xl text-xs font-black text-slate-800">
+            <button onclick="submitWithdrawal()" class="marble-btn w-full py-3 rounded-xl text-xs font-black text-slate-800">
                 Confirm Cashout
             </button>
         </div>
@@ -673,7 +762,7 @@
 
     <!-- ================= FLOATING TOAST ================= -->
     <div id="toast-box" class="fixed top-5 left-1/2 -translate-x-1/2 z-[1050] pointer-events-none opacity-0 transition-opacity duration-300">
-        <div class="stone-card px-4 py-2.5 rounded-2xl shadow-2xl flex items-center gap-2 text-slate-900 font-black text-xs border border-white">
+        <div class="marble-card px-4 py-2.5 rounded-2xl shadow-2xl flex items-center gap-2 text-slate-900 font-black text-xs border border-white">
             <span id="toast-icon">✨</span>
             <span id="toast-msg">Income collected!</span>
         </div>
@@ -694,7 +783,7 @@
             lastTouchEnd = now;
         }, false);
 
-        // FIREBASE INITIALIZATION
+        // FIREBASE SETUP
         const firebaseConfig = {
             apiKey: "AIzaSyAwmtueFchb1gwN0EFg0G8-FC6GutJMT6w",
             authDomain: "project-1e93c552-fae1-40be-a15.firebaseapp.com",
@@ -720,23 +809,23 @@
             referralBaseUrl: "https://t.me/EXPERTearn_team?startapp="
         };
 
-        // 12 Characters with customized individual percentages (bonus / cost)
+        // 12 Products matching exact formula: cost * (pct/100) = bonus
         let defaultProducts = [
-            { id: 1, name: "Apprentice Mage", count: 1, unlocked: true, bonus: 2, cost: 10, pct: 20.0, img: "https://cdn-icons-png.flaticon.com/512/3408/3408593.png" },
-            { id: 2, name: "Forest Witch", count: 0, unlocked: false, bonus: 5, cost: 25, pct: 20.0, img: "https://cdn-icons-png.flaticon.com/512/3408/3408545.png" },
-            { id: 3, name: "Mystic Scholar", count: 1, unlocked: true, bonus: 11, cost: 50, pct: 22.0, img: "https://cdn-icons-png.flaticon.com/512/3408/3408764.png" },
-            { id: 4, name: "Thunder Sorceress", count: 2, unlocked: true, bonus: 24, cost: 100, pct: 24.0, img: "https://cdn-icons-png.flaticon.com/512/3408/3408552.png" },
-            { id: 5, name: "Fire Evoker", count: 0, unlocked: false, bonus: 50, cost: 200, pct: 25.0, img: "https://cdn-icons-png.flaticon.com/512/3408/3408593.png" },
-            { id: 6, name: "Dark Summoner", count: 0, unlocked: false, bonus: 91, cost: 350, pct: 26.0, img: "https://cdn-icons-png.flaticon.com/512/3408/3408545.png" },
-            { id: 7, name: "Arcane Cleric", count: 0, unlocked: false, bonus: 135, cost: 500, pct: 27.0, img: "https://cdn-icons-png.flaticon.com/512/3408/3408764.png" },
-            { id: 8, name: "Frost Weaver", count: 0, unlocked: false, bonus: 210, cost: 750, pct: 28.0, img: "https://cdn-icons-png.flaticon.com/512/3408/3408552.png" },
-            { id: 9, name: "Rune Knight", count: 0, unlocked: false, bonus: 290, cost: 1000, pct: 29.0, img: "https://cdn-icons-png.flaticon.com/512/3408/3408593.png" },
-            { id: 10, name: "Celestial Priest", count: 0, unlocked: false, bonus: 450, cost: 1500, pct: 30.0, img: "https://cdn-icons-png.flaticon.com/512/3408/3408545.png" },
-            { id: 11, name: "Void Walker", count: 0, unlocked: false, bonus: 800, cost: 2500, pct: 32.0, img: "https://cdn-icons-png.flaticon.com/512/3408/3408764.png" },
-            { id: 12, name: "Chaos Sorcerer", count: 0, unlocked: false, bonus: 1400, cost: 4000, pct: 35.0, img: "https://cdn-icons-png.flaticon.com/512/3408/3408552.png" }
+            { id: 1, name: "Apprentice Mage", count: 1, unlocked: true, cost: 10, pct: 20, bonus: 2, img: "https://cdn-icons-png.flaticon.com/512/3408/3408593.png" },
+            { id: 2, name: "Forest Witch", count: 1, unlocked: true, cost: 25, pct: 20, bonus: 5, img: "https://cdn-icons-png.flaticon.com/512/3408/3408545.png" },
+            { id: 3, name: "Mystic Scholar", count: 0, unlocked: false, cost: 50, pct: 22, bonus: 11, img: "https://cdn-icons-png.flaticon.com/512/3408/3408764.png" },
+            { id: 4, name: "Thunder Sorceress", count: 0, unlocked: false, cost: 100, pct: 24, bonus: 24, img: "https://cdn-icons-png.flaticon.com/512/3408/3408552.png" },
+            { id: 5, name: "Fire Evoker", count: 0, unlocked: false, cost: 200, pct: 25, bonus: 50, img: "https://cdn-icons-png.flaticon.com/512/3408/3408593.png" },
+            { id: 6, name: "Dark Summoner", count: 0, unlocked: false, cost: 350, pct: 26, bonus: 91, img: "https://cdn-icons-png.flaticon.com/512/3408/3408545.png" },
+            { id: 7, name: "Arcane Cleric", count: 0, unlocked: false, cost: 500, pct: 27, bonus: 135, img: "https://cdn-icons-png.flaticon.com/512/3408/3408764.png" },
+            { id: 8, name: "Frost Weaver", count: 0, unlocked: false, cost: 750, pct: 28, bonus: 210, img: "https://cdn-icons-png.flaticon.com/512/3408/3408552.png" },
+            { id: 9, name: "Rune Knight", count: 0, unlocked: false, cost: 1000, pct: 29, bonus: 290, img: "https://cdn-icons-png.flaticon.com/512/3408/3408593.png" },
+            { id: 10, name: "Celestial Priest", count: 0, unlocked: false, cost: 1500, pct: 30, bonus: 450, img: "https://cdn-icons-png.flaticon.com/512/3408/3408545.png" },
+            { id: 11, name: "Void Walker", count: 0, unlocked: false, cost: 2500, pct: 32, bonus: 800, img: "https://cdn-icons-png.flaticon.com/512/3408/3408764.png" },
+            { id: 12, name: "Chaos Sorcerer", count: 0, unlocked: false, cost: 4000, pct: 35, bonus: 1400, img: "https://cdn-icons-png.flaticon.com/512/3408/3408552.png" }
         ];
 
-        let magicians = JSON.parse(localStorage.getItem('magia_products_v4')) || defaultProducts;
+        let magicians = JSON.parse(localStorage.getItem('magia_heroes_v6')) || defaultProducts;
         let depositHistory = JSON.parse(localStorage.getItem('magia_dep_hist')) || [];
         let withdrawHistory = JSON.parse(localStorage.getItem('magia_wd_hist')) || [];
 
@@ -749,22 +838,14 @@
         };
         let currentLang = 'en';
 
-        // Calculation of Total Daily Cap & Weighted Average Percentage
-        function getDailyIncomeMetrics() {
-            let totalGems = 20;
-            let totalCost = 100; // Base baseline
-            let totalEarn = 20;
-
+        function getDailyIncomeTotal() {
+            let total = 0;
             magicians.forEach(m => {
                 if (m.unlocked && m.count > 0) {
-                    totalGems += (m.count * m.bonus);
-                    totalCost += (m.count * m.cost);
-                    totalEarn += (m.count * m.bonus);
+                    total += (m.count * m.bonus);
                 }
             });
-
-            const overallPct = ((totalEarn / totalCost) * 100).toFixed(1);
-            return { totalGems, overallPct };
+            return total || 7;
         }
 
         // ================= FIREBASE SYNC ENGINE =================
@@ -788,7 +869,7 @@
                 document.getElementById('partner-claimable-bal').textContent = activeUser.referralWallet.toFixed(2);
             });
 
-            // Safe listener for referrals (Prevents unhandled API errors)
+            // Safe Referral Handler
             db.ref(`users/${activeUser.id}/referrals`).on('value', snap => {
                 const listContainer = document.getElementById('partner-tx-list');
                 if (snap.exists()) {
@@ -813,11 +894,9 @@
                     document.getElementById('stat-partner-income').textContent = '0.00';
                     listContainer.innerHTML = `<div class="p-6 text-center text-xs text-slate-500">আপনার রেফার লিংকে এখনো কেউ যোগ দেয়নি।</div>`;
                 }
-            }, err => {
-                console.log("Safe referral handler active.");
-            });
+            }, () => {});
 
-            // Listen to Deposit History
+            // Deposit History Listener
             db.ref(`users/${activeUser.id}/deposits`).orderByChild('timestamp').limitToLast(10).on('value', snap => {
                 const box = document.getElementById('deposit-tx-list');
                 if (snap.exists()) {
@@ -843,8 +922,7 @@
         const MAGIC_DRAIN_PER_SEC = 10 / 3600;
 
         setInterval(() => {
-            const metrics = getDailyIncomeMetrics();
-            const dailyCap = metrics.totalGems;
+            const dailyCap = getDailyIncomeTotal();
 
             if (activeUser.magicMana > 0) {
                 activeUser.magicMana = Math.max(0, activeUser.magicMana - (MAGIC_DRAIN_PER_SEC / 10));
@@ -890,7 +968,8 @@
             document.getElementById('magic-progress-fill').style.width = `${percent}%`;
         }
 
-        function collectIncome() {
+        // ================= 3D COLLECT BUTTON WITH BURST ANIMATION =================
+        function collectIncome(e) {
             if (activeUser.uncollected <= 0.001) {
                 showToast("⚠️ Nothing to collect yet!");
                 return;
@@ -906,67 +985,91 @@
             document.getElementById('daily-progress-fill').style.width = "0%";
             document.getElementById('daily-cap-status-badge').classList.add('hidden');
 
+            if (e && e.clientX) {
+                spawnSparks(e.clientX, e.clientY);
+            }
+
             showToast(`Collected +${collected.toFixed(4)} 🔶!`, '🔶');
-            triggerHaptic('medium');
+            triggerHaptic('success');
         }
 
-        // ================= DUAL RENDER WITH INDIVIDUAL % =================
+        function spawnSparks(x, y) {
+            for (let i = 0; i < 14; i++) {
+                const p = document.createElement('div');
+                p.className = 'spark-particle';
+                p.innerHTML = '🔶';
+                p.style.left = `${x}px`;
+                p.style.top = `${y}px`;
+                const tx = (Math.random() - 0.5) * 180;
+                const ty = (Math.random() - 0.7) * 180;
+                p.style.setProperty('--tx', `${tx}px`);
+                p.style.setProperty('--ty', `${ty}px`);
+                document.body.appendChild(p);
+                setTimeout(() => p.remove(), 850);
+            }
+        }
+
+        // ================= RENDER COMPONENTS =================
         function renderAllComponents() {
             renderMiniGrid();
-            renderCharacterCards();
-            updateMainLevelBadge();
+            renderScreenshotCards();
             
-            const metrics = getDailyIncomeMetrics();
-            document.getElementById('daily-income-total').textContent = metrics.totalGems;
-            document.getElementById('daily-income-overall-pct').textContent = `${metrics.overallPct}%`;
+            let total = 0;
+            magicians.forEach(m => total += m.count);
+            document.getElementById('main-magician-level').textContent = total;
+            document.getElementById('daily-income-total').textContent = getDailyIncomeTotal();
             document.getElementById('header-user-balance').textContent = activeUser.balance.toFixed(2);
         }
 
         function renderMiniGrid() {
             const container = document.getElementById('mini-grid-container');
             container.innerHTML = magicians.map(m => `
-                <div class="stone-card aspect-square rounded-2xl p-1 flex flex-col items-center justify-center relative shadow-sm">
+                <div class="marble-card aspect-square rounded-2xl p-1 flex flex-col items-center justify-center relative shadow-sm">
                     <img src="${m.img}" class="w-10 h-10 object-contain ${m.unlocked ? 'drop-shadow' : 'silhouetted-character'}" alt="${m.name}">
                     <span class="absolute bottom-1 font-black text-[11px] ${m.unlocked ? 'text-slate-800' : 'text-slate-500'} font-mono">${m.count}</span>
                 </div>
             `).join('');
         }
 
-        function renderCharacterCards() {
+        // EXACT SCREENSHOT MARBLE CARDS (Daily income 20% -> +2 🔶 -> 10 🔶 Button)
+        function renderScreenshotCards() {
             const container = document.getElementById('character-cards-grid');
             container.innerHTML = magicians.map(m => `
-                <div class="stone-card p-3 rounded-3xl flex flex-col items-center justify-between text-center relative overflow-hidden min-h-[285px]">
-                    <!-- Individual Dynamic Percentage Badge -->
-                    <span class="absolute top-2 left-2.5 px-2 py-0.5 rounded-lg bg-emerald-600/90 text-white font-black text-[10px] shadow font-mono">
-                        ${m.pct || ((m.bonus / m.cost) * 100).toFixed(0)}% /day
-                    </span>
+                <div class="marble-card p-3 rounded-3xl flex flex-col items-center justify-between text-center relative overflow-hidden min-h-[305px]">
+                    <div class="marble-crack top-2 left-2"></div>
+                    <div class="marble-crack bottom-2 right-2"></div>
 
-                    ${m.unlocked && m.count > 0 ? `
-                        <span class="absolute top-2 right-2.5 px-2 py-0.5 rounded-lg bg-blue-600 text-white font-black text-[10px] shadow font-mono">
+                    <!-- Top-Right ×1 Oval Badge from Screenshot -->
+                    ${m.count > 0 ? `
+                        <div class="absolute top-2.5 right-2.5 px-2.5 py-0.5 rounded-full bg-blue-700/90 text-white font-black text-[11px] shadow-md font-mono tracking-tight">
                             ×${m.count}
-                        </span>` : ''}
+                        </div>
+                    ` : ''}
 
-                    <img src="${m.img}" class="w-20 h-20 object-contain ${m.unlocked ? 'drop-shadow-xl' : 'silhouetted-character'} my-2" alt="${m.name}">
-                    
-                    <div class="w-full space-y-1">
-                        <span class="text-xs font-black text-slate-800 block truncate">${m.name}</span>
-                        <div class="stone-card-sm py-1 px-1.5 rounded-xl border border-white/80 flex items-center justify-center gap-1 text-[11px] font-extrabold text-slate-700">
-                            <span>Income:</span>
-                            <b class="text-emerald-700 font-mono">+${m.bonus} 🔶</b>
+                    <!-- 3D Floating Character -->
+                    <div class="w-full flex items-center justify-center h-28 my-1 relative">
+                        <img src="${m.img}" class="w-24 h-24 object-contain ${m.unlocked ? 'animate-float-card drop-shadow-xl' : 'silhouetted-character'}" alt="${m.name}">
+                    </div>
+
+                    <!-- Daily income text matching Screenshot -->
+                    <div class="w-full space-y-1 my-1">
+                        <h4 class="text-[13px] font-black text-slate-700 tracking-tight leading-none">
+                            Daily income <span class="font-black text-slate-900 font-mono">${m.pct}%</span>
+                        </h4>
+                        <!-- Daily Reward (+2 🔶) -->
+                        <div class="flex items-center justify-center gap-1 text-sm font-black text-slate-900 font-mono">
+                            <span class="gem-glow text-sm">🔶</span>
+                            <span>+${m.bonus}</span>
                         </div>
                     </div>
 
-                    <button onclick="hireMagician(${m.id})" class="stone-btn w-full py-2 rounded-2xl flex items-center justify-center gap-1.5 text-xs font-black text-slate-800 mt-2 font-mono">
-                        <span class="text-[10px]">🔶</span><span>${m.cost}</span>
+                    <!-- Rounded Tactile Buy Button Matching Screenshot -->
+                    <button onclick="hireMagician(${m.id})" class="marble-btn w-full py-2.5 rounded-full flex items-center justify-center gap-2 text-sm font-black text-slate-900 font-mono mt-1">
+                        <span class="gem-glow text-sm">🔶</span>
+                        <span>${m.cost}</span>
                     </button>
                 </div>
             `).join('');
-        }
-
-        function updateMainLevelBadge() {
-            let total = 0;
-            magicians.forEach(m => total += m.count);
-            document.getElementById('main-magician-level').textContent = total;
         }
 
         function hireMagician(id) {
@@ -983,7 +1086,7 @@
             mage.unlocked = true;
 
             db.ref(`users/${activeUser.id}/balance`).set(activeUser.balance);
-            localStorage.setItem('magia_products_v4', JSON.stringify(magicians));
+            localStorage.setItem('magia_heroes_v6', JSON.stringify(magicians));
 
             renderAllComponents();
             showToast(`Hired ${mage.name}! (+${mage.bonus} Daily)`, '🧙‍♂️');
@@ -1009,7 +1112,7 @@
             triggerHaptic('medium');
         }
 
-        // ================= EXACT REAL GATEWAY INTEGRATION =================
+        // ================= DEPOSIT GATEWAY INTEGRATION =================
         let selectedDepMethod = 'bKash';
 
         function openDepositForm(methodName, defaultUsd, gemRate) {
@@ -1046,7 +1149,6 @@
             document.getElementById('deposit-usdt-preview').textContent = `${val} USDT`;
         }
 
-        // Real Gateway Call (File 1 Style)
         async function proceedToPaymentGateway() {
             triggerHaptic('medium');
             const amount = document.getElementById('deposit-usd-input').value.trim();
@@ -1096,7 +1198,6 @@
             }
         }
 
-        // Return Payment Verification (File 1 Style)
         async function checkReturnPaymentStatus() {
             const urlParams = new URLSearchParams(window.location.search);
             const transactionId = urlParams.get('transactionId') || urlParams.get('transaction_id') || urlParams.get('txid');
@@ -1205,14 +1306,13 @@
             `).join('');
         }
 
-        // ================= CLEAN REFERRAL ACTIONS (FIXED) =================
+        // ================= REFERRAL / PARTNERS =================
         function copyPartnerLink() {
             const fullUrl = `${activeUser.referralBaseUrl}${activeUser.id}`;
             navigator.clipboard.writeText(fullUrl).then(() => {
                 showToast("Referral link copied!", "📋");
                 triggerHaptic('light');
             }).catch(() => {
-                // Fallback for iframe copy
                 const el = document.createElement('textarea');
                 el.value = fullUrl;
                 document.body.appendChild(el);
@@ -1267,7 +1367,7 @@
                         : 'inactive-stone-tab py-2.5 px-1 rounded-2xl text-xs font-black tracking-wide text-center';
                 }
             });
-            document.getElementById('top-btn-profile').className = 'stone-card px-4 py-3 rounded-2xl text-slate-800 text-xs font-black tracking-wide shadow-md active:scale-95 transition';
+            document.getElementById('top-btn-profile').className = 'marble-btn px-4 py-3 rounded-2xl text-slate-800 text-xs font-black tracking-wide shadow active:scale-95 transition flex items-center gap-1.5';
             const target = document.getElementById(`${tabId}-view`);
             if (target) target.classList.add('active');
             if (tabId === 'deposit') closeDepositForm();
@@ -1285,7 +1385,7 @@
             });
 
             if (viewId === 'profile-view') {
-                document.getElementById('top-btn-profile').className = 'active-magic-tab px-4 py-3 rounded-2xl text-xs font-black tracking-wide shadow-md';
+                document.getElementById('top-btn-profile').className = 'active-magic-tab px-4 py-3 rounded-2xl text-xs font-black tracking-wide shadow flex items-center gap-1.5';
             }
         }
 
@@ -1329,7 +1429,7 @@
             setTimeout(() => { box.style.opacity = '0'; }, 2200);
         }
 
-        // Initialize App
+        // ================= APP INITIALIZATION =================
         window.addEventListener('DOMContentLoaded', () => {
             if (window.Telegram?.WebApp) {
                 window.Telegram.WebApp.ready();
